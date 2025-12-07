@@ -1,0 +1,128 @@
+# Dependencies
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+
+# Docusaurus
+.build/
+.dist/
+.temp/
+.cache/
+.docusaurus/
+
+# Production builds
+build/
+out/
+
+# Environment variables
+.env*
+!.env.example
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+
+# Coverage
+coverage/
+.nyc_output/
+
+# Python (for ROS components)
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+.venv/
+pip-log.txt
+pip-delete-this-directory.txt
+.tox/
+.coverage
+.coverage.*
+.cache
+
+# Runtime
+.hugo_build.lock
+.rpt2_cache/
+.rts2_cache_c/
+.rts2_cache_es/
+.rts2_cache_umd/
+
+# Temporary files
+*.tmp
+*.temp
+*.bak
+
+# GitHub
+.github/
+
+# JetBrains IDE
+*.iml
+*.ipr
+*.iws
+.idea/
+
+# WebStorm
+.jsb
+[._]*.s[a-v][a-z]
+[a-z]._*
+
+# Eclipse
+.metadata
+bin/
+tmp/
+*.tmp
+*.bak
+*.swp
+*~.nib
+local.properties
+.settings/
+.loadpath
+.recommenders
+
+# IntelliJ IDEA
+*.iws
+*.ipr
+*.iml
+.idea/
+
+# NetBeans
+/nbproject/private/
+/nbbuild/
+/dist/
+/nbdist/
+/.nb-gradle/
+
+# VS Code
+.vscode
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+Icon?
+._*
+.Spotlight-V100
+.Trashes
+.VolumeIcon.icns
+.com.apple.timemachine.donotpresent
+.com.apple.receipts.bom
+.com.apple.receipts.installtype
+.InstallApp

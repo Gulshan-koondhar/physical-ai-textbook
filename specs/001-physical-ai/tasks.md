@@ -28,9 +28,9 @@ description: "Task list for Physical AI & Humanoid Robotics textbook implementat
 
 **Purpose**: Project initialization and basic structure
 
-- [ ] T001 Create project structure per implementation plan in docs/, src/, static/, .github/workflows/
-- [ ] T002 [P] Initialize Docusaurus project with TypeScript, classic preset, dark mode
-- [ ] T003 [P] Configure linting and formatting tools for MDX files
+- [X] T001 Create project structure per implementation plan in docs/, src/, static/, .github/workflows/
+- [X] T002 [P] Initialize Docusaurus project with TypeScript, classic preset, dark mode
+- [X] T003 [P] Configure linting and formatting tools for MDX files
 
 ---
 
@@ -42,13 +42,13 @@ description: "Task list for Physical AI & Humanoid Robotics textbook implementat
 
 Examples of foundational tasks (adjust based on your project):
 
-- [ ] T004 Setup GitHub Pages deployment workflow in .github/workflows/deploy.yml
-- [ ] T005 [P] Install Starboard notebook plugin for in-browser Python/ROS execution
-- [ ] T006 [P] Configure MDX with interactive code block support in docusaurus.config.js
-- [ ] T007 Create standard frontmatter template for all chapters in docs/_frontmatter-template.md
-- [ ] T008 Configure dark mode and versioning in docusaurus.config.js
-- [ ] T009 Setup sidebar generation with 14-16 items exactly matching plan chapters in sidebars.js
-- [ ] T010 Create base content structure per plan.md project structure in docs/
+- [X] T004 Setup GitHub Pages deployment workflow in .github/workflows/deploy.yml
+- [X] T005 [P] Install Starboard notebook plugin for in-browser Python/ROS execution
+- [X] T006 [P] Configure MDX with interactive code block support in docusaurus.config.js
+- [X] T007 Create standard frontmatter template for all chapters in docs/_frontmatter-template.md
+- [X] T008 Configure dark mode and versioning in docusaurus.config.js
+- [X] T009 Setup sidebar generation with 14-16 items exactly matching plan chapters in sidebars.js
+- [X] T010 Create base content structure per plan.md project structure in docs/
 
 **Checkpoint**: Foundation ready - user story implementation can now begin in parallel
 
@@ -64,17 +64,17 @@ Examples of foundational tasks (adjust based on your project):
 
 > **NOTE: Write these tests FIRST, ensure they FAIL before implementation**
 
-- [ ] T011 [P] [US1] Readability test for capstone chapter in docs/capstone/01-red-cup-project.mdx
-- [ ] T012 [P] [US1] Plagiarism check for voice command demo content
+- [X] T011 [P] [US1] Readability test for capstone chapter in docs/capstone/01-red-cup-project.mdx
+- [X] T012 [P] [US1] Plagiarism check for voice command demo content
 
 ### Implementation for User Story 1
 
-- [ ] T013 [P] [US1] Create capstone project chapter in docs/capstone/01-red-cup-project.mdx
-- [ ] T014 [P] [US1] Create ROS 2 launch file for voice command demo in static/launch/voice_command_demo.launch.py
-- [ ] T015 [US1] Add voice command demo code blocks to capstone chapter with Starboard integration
-- [ ] T016 [US1] Implement voice-to-action pipeline code example in static/code/voice_pipeline.py
-- [ ] T017 [US1] Add humanoid model URDF to static/models/ for capstone demo
-- [ ] T018 [US1] Add documentation for success criteria verification in capstone chapter
+- [X] T013 [P] [US1] Create capstone project chapter in docs/capstone/01-red-cup-project.mdx
+- [X] T014 [P] [US1] Create ROS 2 launch file for voice command demo in static/launch/voice_command_demo.launch.py
+- [X] T015 [US1] Add voice command demo code blocks to capstone chapter with Starboard integration
+- [X] T016 [US1] Implement voice-to-action pipeline code example in static/code/voice_pipeline.py
+- [X] T017 [US1] Add humanoid model URDF to static/models/ for capstone demo
+- [X] T018 [US1] Add documentation for success criteria verification in capstone chapter
 
 **Checkpoint**: At this point, User Story 1 should be fully functional and testable independently
 
@@ -88,17 +88,17 @@ Examples of foundational tasks (adjust based on your project):
 
 ### Tests for User Story 2 (OPTIONAL - only if tests requested) ⚠️
 
-- [ ] T019 [P] [US2] Readability test for ROS 2 fundamentals chapters
-- [ ] T020 [P] [US2] Code execution test for ROS 2 examples
+- [X] T019 [P] [US2] Readability test for ROS 2 fundamentals chapters
+- [X] T020 [P] [US2] Code execution test for ROS 2 examples
 
 ### Implementation for User Story 2
 
-- [ ] T021 [P] [US2] Create introduction to Physical AI chapter in docs/intro/01-introduction-to-physical-ai.mdx
-- [ ] T022 [P] [US2] Create ROS 2 from zero chapter in docs/module-1-ros/02-ros2-from-zero.mdx
+- [X] T021 [P] [US2] Create introduction to Physical AI chapter in docs/intro/01-introduction-to-physical-ai.mdx
+- [X] T022 [P] [US2] Create ROS 2 from zero chapter in docs/module-1-ros/02-ros2-from-zero.mdx
 - [ ] T023 [P] [US2] Create URDF/Xacro mastery chapter in docs/module-1-ros/03-urdf-xacro-mastery.mdx
 - [ ] T024 [US2] Create ROS 2 core concepts chapter in docs/module-1-ros/04-nodes-topics-services.mdx
 - [ ] T025 [US2] Add interactive ROS 2 code examples to module 1 chapters
-- [ ] T026 [US2] Create 22-DoF humanoid URDF model in static/models/humanoid.urdf.xacro
+- [X] T026 [US2] Create 22-DoF humanoid URDF model in static/models/humanoid.urdf.xacro
 - [ ] T027 [US2] Add RViz2 configuration files for humanoid visualization
 - [ ] T028 [US2] Include ros2 bag examples and Foxglove Studio integration content
 
@@ -172,12 +172,12 @@ Examples of foundational tasks (adjust based on your project):
 
 ### Implementation for Supporting Chapters
 
-- [ ] T052 [P] [US5] Create hardware guide chapter in docs/hardware/01-hardware-guide.mdx
-- [ ] T053 [P] [US5] Create troubleshooting appendix in docs/appendix/troubleshooting.mdx
-- [ ] T054 [US5] Create URDF repository appendix in docs/appendix/urdf-repository.mdx
+- [X] T052 [P] [US5] Create hardware guide chapter in docs/hardware/01-hardware-guide.mdx
+- [X] T053 [P] [US5] Create troubleshooting appendix in docs/appendix/troubleshooting.mdx
+- [X] T054 [US5] Create URDF repository appendix in docs/appendix/urdf-repository.mdx
 - [ ] T055 [US5] Add complete code examples to appendix B
-- [ ] T056 [US5] Include RTX workstation and Jetson kit requirements in hardware guide
-- [ ] T057 [US5] Add Unitree G1/Go2 options to hardware guide
+- [X] T056 [US5] Include RTX workstation and Jetson kit requirements in hardware guide
+- [X] T057 [US5] Add Unitree G1/Go2 options to hardware guide
 
 **Checkpoint**: All chapters including supporting materials should be complete
 
