@@ -1,32 +1,20 @@
-// @ts-check
-// Note: type annotations allow type checking and IDEs autocompletion
+// Vercel-specific configuration
+// This file can be used when deploying to Vercel to ensure correct base URL
 
-const lightCodeTheme = require('prism-react-renderer').themes.github;
-const darkCodeTheme = require('prism-react-renderer').themes.dracula;
-
-/** @type {import('@docusaurus/types').Config} */
 const config = {
   title: 'Physical AI & Humanoid Robotics',
   tagline: 'From Digital Intelligence to Embodied Humanoid Agents',
   favicon: 'img/favicon.ico',
 
-  // Set the production url of your site here
-  url: typeof process.env.VERCEL_ENV !== 'undefined' ||
-       process.env.DEPLOYMENT_PLATFORM === 'vercel' ||
-       (typeof process.env.npm_lifecycle_script !== 'undefined' && process.env.npm_lifecycle_script && process.env.npm_lifecycle_script.includes('vercel'))
-       ? 'https://your-project-name.vercel.app' // Vercel deployment URL
-       : 'https://Gulshan-koondhar.github.io', // GitHub Pages URL
-  // Set the /<baseUrl>/ pathname under which your site is served
-  baseUrl: typeof process.env.VERCEL_ENV !== 'undefined' ||
-           process.env.DEPLOYMENT_PLATFORM === 'vercel' ||
-           (typeof process.env.npm_lifecycle_script !== 'undefined' && process.env.npm_lifecycle_script && process.env.npm_lifecycle_script.includes('vercel'))
-           ? '/' // Root path for Vercel
-           : '/physical-ai-textbook/', // GitHub Pages path
+  // Vercel deployment configuration
+  url: 'https://your-project-name.vercel.app', // Update this to your actual Vercel URL
+  baseUrl: '/', // Root path for Vercel deployment
+  trailingSlash: undefined, // Let Vercel handle this automatically
 
-  // GitHub pages deployment config.
+  // GitHub pages deployment config (for reference only)
   organizationName: 'Gulshan-koondhar', // Usually your GitHub org/user name.
   projectName: 'physical-ai-textbook', // Usually your repo name.
-  trailingSlash: undefined, // Let Vercel handle this automatically
+
   onBrokenLinks: 'warn',
   onBrokenMarkdownLinks: 'warn',
   markdown: {
@@ -137,8 +125,8 @@ const config = {
         copyright: `Copyright © ${new Date().getFullYear()} My Project, Inc. Built with Docusaurus.`,
       },
       prism: {
-        theme: lightCodeTheme,
-        darkTheme: darkCodeTheme,
+        theme: require('prism-react-renderer').themes.github,
+        darkTheme: require('prism-react-renderer').themes.dracula,
       },
     }),
 };
