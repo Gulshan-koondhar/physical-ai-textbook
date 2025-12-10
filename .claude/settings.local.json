@@ -5,7 +5,8 @@
       "Bash(npm start)",
       "Bash(git add:*)",
       "Bash(npm run build)",
-      "Bash(dir .github /s)"
+      "Bash(dir .github /s)",
+      "Bash(npx docusaurus build)"
     ],
     "deny": [],
     "ask": []

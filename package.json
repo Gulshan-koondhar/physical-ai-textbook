@@ -28,20 +28,20 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@docusaurus/core": "^3.9.2",
     "@docusaurus/plugin-content-docs": "^3.9.2",
-    "@docusaurus/preset-classic": "^3.9.2",
     "@docusaurus/theme-common": "^3.9.2",
     "@mdx-js/react": "^3.1.1",
     "clsx": "^2.1.1",
     "path-browserify": "^1.0.1",
-    "prism-react-renderer": "^2.4.0",
+    "prism-react-renderer": "^2.4.1",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "starboard-notebook": "^0.15.7"
   },
   "devDependencies": {
+    "@docusaurus/core": "^3.9.2",
     "@docusaurus/module-type-aliases": "^3.9.2",
+    "@docusaurus/preset-classic": "^3.9.2",
     "@docusaurus/tsconfig": "^3.9.2",
     "@docusaurus/types": "^3.9.2"
   },
