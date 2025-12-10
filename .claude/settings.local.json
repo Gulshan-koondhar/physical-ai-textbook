@@ -6,7 +6,19 @@
       "Bash(git add:*)",
       "Bash(npm run build)",
       "Bash(dir .github /s)",
+<<<<<<< Updated upstream
       "Bash(npx docusaurus build)"
+=======
+      "Bash(npm run start)",
+      "Bash(npx docusaurus start --port 3001)",
+      "Bash(git commit -m \"Update sidebar to include all modules and chapters\n\n- Added all 4 modules (ROS 2, Simulation, AI Brain, VLA Integration) to sidebar\n- Fixed document IDs to match actual file names\n- Now all curriculum content is visible in documentation navigation\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n\nCo-Authored-By: Claude Sonnet 4.5 <noreply@anthropic.com>\")",
+      "Bash(git push origin gh-pages)",
+      "Bash(npx docusaurus deploy)",
+      "Bash(npx docusaurus deploy -- --GIT_USER=Gulshan-koondhar)",
+      "Bash(npx docusaurus deploy -- --USE_SSH=true)",
+      "Bash(git checkout 001-physical-ai)",
+      "Bash(git stash)"
+>>>>>>> Stashed changes
     ],
     "deny": [],
     "ask": []
