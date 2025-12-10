@@ -1,0 +1,1747 @@
+<!doctype html>
+<html lang="en" dir="ltr" class="docs-wrapper plugin-docs plugin-id-default docs-version-current docs-doc-page docs-doc-id-module-4-vla/ai-integration-examples" data-has-hydrated="false">
+<head>
+<meta charset="UTF-8">
+<meta name="generator" content="Docusaurus v3.9.2">
+<title data-rh="true">AI Pipeline Integration Examples with Whisper, Llama-3, Grounding DINO, and SAM | Physical AI &amp; Humanoid Robotics</title><meta data-rh="true" name="viewport" content="width=device-width,initial-scale=1"><meta data-rh="true" name="twitter:card" content="summary_large_image"><meta data-rh="true" property="og:image" content="https://Gulshan-koondhar.github.io/physical-ai-textbook/img/docusaurus-social-card.jpg"><meta data-rh="true" name="twitter:image" content="https://Gulshan-koondhar.github.io/physical-ai-textbook/img/docusaurus-social-card.jpg"><meta data-rh="true" property="og:url" content="https://Gulshan-koondhar.github.io/physical-ai-textbook/docs/module-4-vla/ai-integration-examples"><meta data-rh="true" property="og:locale" content="en"><meta data-rh="true" name="docusaurus_locale" content="en"><meta data-rh="true" name="docsearch:language" content="en"><meta data-rh="true" name="docusaurus_version" content="current"><meta data-rh="true" name="docusaurus_tag" content="docs-default-current"><meta data-rh="true" name="docsearch:version" content="current"><meta data-rh="true" name="docsearch:docusaurus_tag" content="docs-default-current"><meta data-rh="true" property="og:title" content="AI Pipeline Integration Examples with Whisper, Llama-3, Grounding DINO, and SAM | Physical AI &amp; Humanoid Robotics"><meta data-rh="true" name="description" content="Complete code examples integrating Whisper, Llama-3, Grounding DINO, and SAM for humanoid robot AI pipeline"><meta data-rh="true" property="og:description" content="Complete code examples integrating Whisper, Llama-3, Grounding DINO, and SAM for humanoid robot AI pipeline"><meta data-rh="true" name="keywords" content="AI integration,Whisper,Llama-3,Grounding DINO,SAM,humanoid,robotics,code examples"><link data-rh="true" rel="icon" href="/physical-ai-textbook/img/favicon.ico"><link data-rh="true" rel="canonical" href="https://Gulshan-koondhar.github.io/physical-ai-textbook/docs/module-4-vla/ai-integration-examples"><link data-rh="true" rel="alternate" href="https://Gulshan-koondhar.github.io/physical-ai-textbook/docs/module-4-vla/ai-integration-examples" hreflang="en"><link data-rh="true" rel="alternate" href="https://Gulshan-koondhar.github.io/physical-ai-textbook/docs/module-4-vla/ai-integration-examples" hreflang="x-default"><script data-rh="true" type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"AI Integration Examples","item":"https://Gulshan-koondhar.github.io/physical-ai-textbook/docs/module-4-vla/ai-integration-examples"}]}</script><link rel="stylesheet" href="/physical-ai-textbook/assets/css/styles.4f99da8f.css">
+<script src="/physical-ai-textbook/assets/js/runtime~main.7cf563d1.js" defer="defer"></script>
+<script src="/physical-ai-textbook/assets/js/main.6dcd1921.js" defer="defer"></script>
+</head>
+<body class="navigation-with-keyboard">
+<svg style="display: none;"><defs>
+<symbol id="theme-svg-external-link" viewBox="0 0 24 24"><path fill="currentColor" d="M21 13v10h-21v-19h12v2h-10v15h17v-8h2zm3-12h-10.988l4.035 4-6.977 7.07 2.828 2.828 6.977-7.07 4.125 4.172v-11z"/></symbol>
+</defs></svg>
+<script>!function(){var t=function(){try{return new URLSearchParams(window.location.search).get("docusaurus-theme")}catch(t){}}()||function(){try{return window.localStorage.getItem("theme")}catch(t){}}();document.documentElement.setAttribute("data-theme",t||"light"),document.documentElement.setAttribute("data-theme-choice",t||"light")}(),function(){try{const c=new URLSearchParams(window.location.search).entries();for(var[t,e]of c)if(t.startsWith("docusaurus-data-")){var a=t.replace("docusaurus-data-","data-");document.documentElement.setAttribute(a,e)}}catch(t){}}()</script><div id="__docusaurus"><div role="region" aria-label="Skip to main content"><a class="skipToContent_fXgn" href="#__docusaurus_skipToContent_fallback">Skip to main content</a></div><nav aria-label="Main" class="theme-layout-navbar navbar navbar--fixed-top"><div class="navbar__inner"><div class="theme-layout-navbar-left navbar__items"><button aria-label="Toggle navigation bar" aria-expanded="false" class="navbar__toggle clean-btn" type="button"><svg width="30" height="30" viewBox="0 0 30 30" aria-hidden="true"><path stroke="currentColor" stroke-linecap="round" stroke-miterlimit="10" stroke-width="2" d="M4 7h22M4 15h22M4 23h22"></path></svg></button><a class="navbar__brand" href="/physical-ai-textbook/"><div class="navbar__logo"><img src="/physical-ai-textbook/img/logo.svg" alt="Physical AI Logo" class="themedComponent_mlkZ themedComponent--light_NVdE"><img src="/physical-ai-textbook/img/logo.svg" alt="Physical AI Logo" class="themedComponent_mlkZ themedComponent--dark_xIcU"></div><b class="navbar__title text--truncate">Physical AI Textbook</b></a><a aria-current="page" class="navbar__item navbar__link navbar__link--active" href="/physical-ai-textbook/docs/intro/introduction-to-physical-ai">Textbook</a></div><div class="theme-layout-navbar-right navbar__items navbar__items--right"><a href="https://github.com/Gulshan-koondhar/physical-ai-textbook" target="_blank" rel="noopener noreferrer" class="navbar__item navbar__link">GitHub<svg width="13.5" height="13.5" aria-label="(opens in new tab)" class="iconExternalLink_nPIU"><use href="#theme-svg-external-link"></use></svg></a><div class="toggle_vylO colorModeToggle_DEke"><button class="clean-btn toggleButton_gllP toggleButtonDisabled_aARS" type="button" disabled="" title="system mode" aria-label="Switch between dark and light mode (currently system mode)"><svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" class="toggleIcon_g3eP lightToggleIcon_pyhR"><path fill="currentColor" d="M12,9c1.65,0,3,1.35,3,3s-1.35,3-3,3s-3-1.35-3-3S10.35,9,12,9 M12,7c-2.76,0-5,2.24-5,5s2.24,5,5,5s5-2.24,5-5 S14.76,7,12,7L12,7z M2,13l2,0c0.55,0,1-0.45,1-1s-0.45-1-1-1l-2,0c-0.55,0-1,0.45-1,1S1.45,13,2,13z M20,13l2,0c0.55,0,1-0.45,1-1 s-0.45-1-1-1l-2,0c-0.55,0-1,0.45-1,1S19.45,13,20,13z M11,2v2c0,0.55,0.45,1,1,1s1-0.45,1-1V2c0-0.55-0.45-1-1-1S11,1.45,11,2z M11,20v2c0,0.55,0.45,1,1,1s1-0.45,1-1v-2c0-0.55-0.45-1-1-1C11.45,19,11,19.45,11,20z M5.99,4.58c-0.39-0.39-1.03-0.39-1.41,0 c-0.39,0.39-0.39,1.03,0,1.41l1.06,1.06c0.39,0.39,1.03,0.39,1.41,0s0.39-1.03,0-1.41L5.99,4.58z M18.36,16.95 c-0.39-0.39-1.03-0.39-1.41,0c-0.39,0.39-0.39,1.03,0,1.41l1.06,1.06c0.39,0.39,1.03,0.39,1.41,0c0.39-0.39,0.39-1.03,0-1.41 L18.36,16.95z M19.42,5.99c0.39-0.39,0.39-1.03,0-1.41c-0.39-0.39-1.03-0.39-1.41,0l-1.06,1.06c-0.39,0.39-0.39,1.03,0,1.41 s1.03,0.39,1.41,0L19.42,5.99z M7.05,18.36c0.39-0.39,0.39-1.03,0-1.41c-0.39-0.39-1.03-0.39-1.41,0l-1.06,1.06 c-0.39,0.39-0.39,1.03,0,1.41s1.03,0.39,1.41,0L7.05,18.36z"></path></svg><svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" class="toggleIcon_g3eP darkToggleIcon_wfgR"><path fill="currentColor" d="M9.37,5.51C9.19,6.15,9.1,6.82,9.1,7.5c0,4.08,3.32,7.4,7.4,7.4c0.68,0,1.35-0.09,1.99-0.27C17.45,17.19,14.93,19,12,19 c-3.86,0-7-3.14-7-7C5,9.07,6.81,6.55,9.37,5.51z M12,3c-4.97,0-9,4.03-9,9s4.03,9,9,9s9-4.03,9-9c0-0.46-0.04-0.92-0.1-1.36 c-0.98,1.37-2.58,2.26-4.4,2.26c-2.98,0-5.4-2.42-5.4-5.4c0-1.81,0.89-3.42,2.26-4.4C12.92,3.04,12.46,3,12,3L12,3z"></path></svg><svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" class="toggleIcon_g3eP systemToggleIcon_QzmC"><path fill="currentColor" d="m12 21c4.971 0 9-4.029 9-9s-4.029-9-9-9-9 4.029-9 9 4.029 9 9 9zm4.95-13.95c1.313 1.313 2.05 3.093 2.05 4.95s-0.738 3.637-2.05 4.95c-1.313 1.313-3.093 2.05-4.95 2.05v-14c1.857 0 3.637 0.737 4.95 2.05z"></path></svg></button></div><div class="navbarSearchContainer_Bca1"></div></div></div><div role="presentation" class="navbar-sidebar__backdrop"></div></nav><div id="__docusaurus_skipToContent_fallback" class="theme-layout-main main-wrapper mainWrapper_z2l0"><div class="docsWrapper_hBAB"><button aria-label="Scroll back to top" class="clean-btn theme-back-to-top-button backToTopButton_sjWU" type="button"></button><div class="docRoot_UBD9"><aside class="theme-doc-sidebar-container docSidebarContainer_YfHR"><div class="sidebarViewport_aRkj"><div class="sidebar_njMd"><nav aria-label="Docs sidebar" class="menu thin-scrollbar menu_SIkG"><ul class="theme-doc-sidebar-menu menu__list"><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist menu__link--sublist-caret" role="button" aria-expanded="false" href="/physical-ai-textbook/docs/intro/introduction-to-physical-ai"><span title="Introduction" class="categoryLinkLabel_W154">Introduction</span></a></div></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist menu__link--sublist-caret" role="button" aria-expanded="false" href="/physical-ai-textbook/docs/module-1-ros/ros2-from-zero"><span title="Module 1 - ROS 2 Fundamentals" class="categoryLinkLabel_W154">Module 1 - ROS 2 Fundamentals</span></a></div></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist menu__link--sublist-caret" role="button" aria-expanded="false" href="/physical-ai-textbook/docs/module-2-simulation/gazebo-harmonic-setup"><span title="Module 2 - Simulation" class="categoryLinkLabel_W154">Module 2 - Simulation</span></a></div></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist menu__link--sublist-caret" role="button" aria-expanded="false" href="/physical-ai-textbook/docs/module-3-ai-brain/isaac-sim-installation"><span title="Module 3 - AI Brain" class="categoryLinkLabel_W154">Module 3 - AI Brain</span></a></div></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist menu__link--sublist-caret menu__link--active" role="button" aria-expanded="true" href="/physical-ai-textbook/docs/module-4-vla/whisper-gpt-ros-planner"><span title="Module 4 - VLA Integration" class="categoryLinkLabel_W154">Module 4 - VLA Integration</span></a></div><ul class="menu__list"><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-2 menu__list-item"><a class="menu__link" tabindex="0" href="/physical-ai-textbook/docs/module-4-vla/whisper-gpt-ros-planner"><span title="Whisper-GPT to ROS Planning" class="linkLabel_WmDU">Whisper-GPT to ROS Planning</span></a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-2 menu__list-item"><a class="menu__link" tabindex="0" href="/physical-ai-textbook/docs/module-4-vla/open-vocabulary-detection"><span title="Open-Vocabulary Detection" class="linkLabel_WmDU">Open-Vocabulary Detection</span></a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-2 menu__list-item"><a class="menu__link" tabindex="0" href="/physical-ai-textbook/docs/module-4-vla/end-to-end-pipeline"><span title="End-to-End VLA Pipeline" class="linkLabel_WmDU">End-to-End VLA Pipeline</span></a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-2 menu__list-item"><a class="menu__link" tabindex="0" href="/physical-ai-textbook/docs/module-4-vla/jetson-deployment"><span title="Jetson Deployment" class="linkLabel_WmDU">Jetson Deployment</span></a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-2 menu__list-item"><a class="menu__link menu__link--active" aria-current="page" tabindex="0" href="/physical-ai-textbook/docs/module-4-vla/ai-integration-examples"><span title="AI Integration Examples" class="linkLabel_WmDU">AI Integration Examples</span></a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-2 menu__list-item"><a class="menu__link" tabindex="0" href="/physical-ai-textbook/docs/module-4-vla/tensorrt-optimization"><span title="TensorRT Optimization" class="linkLabel_WmDU">TensorRT Optimization</span></a></li></ul></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist menu__link--sublist-caret" role="button" aria-expanded="false" href="/physical-ai-textbook/docs/capstone/red-cup-project"><span title="Capstone Project" class="categoryLinkLabel_W154">Capstone Project</span></a></div></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist menu__link--sublist-caret" role="button" aria-expanded="false" href="/physical-ai-textbook/docs/hardware/hardware-guide"><span title="Hardware Guide" class="categoryLinkLabel_W154">Hardware Guide</span></a></div></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist menu__link--sublist-caret" role="button" aria-expanded="false" href="/physical-ai-textbook/docs/appendix/troubleshooting"><span title="Appendices" class="categoryLinkLabel_W154">Appendices</span></a></div></li></ul></nav></div></div></aside><main class="docMainContainer_TBSr"><div class="container padding-top--md padding-bottom--lg"><div class="row"><div class="col docItemCol_VOVn"><div class="docItemContainer_Djhp"><article><nav class="theme-doc-breadcrumbs breadcrumbsContainer_Z_bl" aria-label="Breadcrumbs"><ul class="breadcrumbs"><li class="breadcrumbs__item"><a aria-label="Home page" class="breadcrumbs__link" href="/physical-ai-textbook/"><svg viewBox="0 0 24 24" class="breadcrumbHomeIcon_YNFT"><path d="M10 19v-5h4v5c0 .55.45 1 1 1h3c.55 0 1-.45 1-1v-7h1.7c.46 0 .68-.57.33-.87L12.67 3.6c-.38-.34-.96-.34-1.34 0l-8.36 7.53c-.34.3-.13.87.33.87H5v7c0 .55.45 1 1 1h3c.55 0 1-.45 1-1z" fill="currentColor"></path></svg></a></li><li class="breadcrumbs__item"><span class="breadcrumbs__link">Module 4 - VLA Integration</span></li><li class="breadcrumbs__item breadcrumbs__item--active"><span class="breadcrumbs__link">AI Integration Examples</span></li></ul></nav><div class="tocCollapsible_ETCw theme-doc-toc-mobile tocMobile_ITEo"><button type="button" class="clean-btn tocCollapsibleButton_TO0P">On this page</button></div><div class="theme-doc-markdown markdown"><header><h1 id="ai-pipeline-integration-examples-with-whisper-llama-3-grounding-dino-and-sam">AI Pipeline Integration Examples with Whisper, Llama-3, Grounding DINO, and SAM</h1></header>
+<h2 id="introduction">Introduction</h2>
+<p>This chapter provides comprehensive code examples that demonstrate the integration of state-of-the-art AI models for humanoid robot applications. We&#x27;ll explore practical implementations of Whisper for speech recognition, Llama-3 for language understanding, Grounding DINO for open-vocabulary detection, and SAM for precise segmentation. These examples show how to combine these powerful models into a cohesive AI pipeline for humanoid robots.</p>
+<p>The integration of these models creates a powerful foundation for vision-language-action (VLA) systems that can understand natural language commands, perceive complex environments, and execute appropriate robotic actions. Each model brings unique capabilities that, when combined, enable sophisticated human-robot interaction.</p>
+<h2 id="complete-integration-pipeline">Complete Integration Pipeline</h2>
+<h3 id="main-integration-node">Main Integration Node</h3>
+<p>Here&#x27;s a complete example that integrates all the AI models into a unified pipeline:</p>
+<pre><code class="language-python">#!/usr/bin/env python3
+&quot;&quot;&quot;
+Complete AI Integration Pipeline for Humanoid Robots
+Integrates Whisper, Llama-3, Grounding DINO, SAM, and other models
+&quot;&quot;&quot;
+import rospy
+import torch
+import numpy as np
+import cv2
+from sensor_msgs.msg import Image, AudioData
+from std_msgs.msg import String
+from geometry_msgs.msg import PointStamped
+from cv_bridge import CvBridge
+import openai
+import json
+import threading
+import queue
+from typing import Dict, List, Tuple, Optional
+
+# Import AI model libraries
+try:
+    import whisper
+    from transformers import AutoModelForCausalLM, AutoTokenizer
+    from segment_anything import sam_model_registry, SamPredictor
+    from transformers import AutoProcessor
+except ImportError as e:
+    rospy.logerr(f&quot;Missing required AI libraries: {e}&quot;)
+    rospy.logerr(&quot;Please install required packages: pip install openai-whisper transformers segment-anything&quot;)
+
+class CompleteAIIntegrationPipeline:
+    def __init__(self):
+        # Initialize ROS node
+        rospy.init_node(&#x27;complete_ai_integration_pipeline&#x27;)
+
+        # Initialize bridge
+        self.bridge = CvBridge()
+
+        # Initialize AI models
+        self.initialize_models()
+
+        # Publishers and subscribers
+        self.setup_ros_interfaces()
+
+        # Processing queues
+        self.audio_queue = queue.Queue(maxsize=10)
+        self.image_queue = queue.Queue(maxsize=5)
+        self.command_queue = queue.Queue(maxsize=5)
+
+        # Processing threads
+        self.processing_thread = None
+        self.is_running = True
+
+        # System state
+        self.current_environment = {}
+        self.conversation_history = []
+
+        rospy.loginfo(&quot;Complete AI Integration Pipeline initialized&quot;)
+
+    def initialize_models(self):
+        &quot;&quot;&quot;Initialize all AI models&quot;&quot;&quot;
+        rospy.loginfo(&quot;Initializing AI models...&quot;)
+
+        # Device configuration
+        self.device = torch.device(&quot;cuda&quot; if torch.cuda.is_available() else &quot;cpu&quot;)
+        rospy.loginfo(f&quot;Using device: {self.device}&quot;)
+
+        # 1. Initialize Whisper for speech recognition
+        try:
+            rospy.loginfo(&quot;Loading Whisper model...&quot;)
+            self.whisper_model = whisper.load_model(&quot;base&quot;).to(self.device)
+        except Exception as e:
+            rospy.logerr(f&quot;Failed to load Whisper model: {e}&quot;)
+            self.whisper_model = None
+
+        # 2. Initialize Llama-3 for language understanding (using a smaller model for edge deployment)
+        try:
+            rospy.loginfo(&quot;Loading language model...&quot;)
+            # For edge deployment, use a quantized or smaller model
+            # In production, you might use a local quantized model
+            self.llm_tokenizer = AutoTokenizer.from_pretrained(&quot;microsoft/DialoGPT-medium&quot;)
+            self.llm_model = AutoModelForCausalLM.from_pretrained(&quot;microsoft/DialoGPT-medium&quot;)
+            self.llm_model.to(self.device)
+        except Exception as e:
+            rospy.logerr(f&quot;Failed to load language model: {e}&quot;)
+            self.llm_model = None
+            self.llm_tokenizer = None
+
+        # 3. Initialize Grounding DINO for open-vocabulary detection
+        try:
+            rospy.loginfo(&quot;Loading Grounding DINO model...&quot;)
+            # For now, using a placeholder - in practice you&#x27;d load the actual model
+            self.grounding_dino_model = None  # Placeholder for Grounding DINO
+        except Exception as e:
+            rospy.logerr(f&quot;Failed to load Grounding DINO model: {e}&quot;)
+            self.grounding_dino_model = None
+
+        # 4. Initialize SAM for segmentation
+        try:
+            rospy.loginfo(&quot;Loading SAM model...&quot;)
+            sam_checkpoint = &quot;sam_vit_h_4b8939.pth&quot;  # Download this separately
+            self.sam_model = sam_model_registry[&quot;vit_h&quot;](checkpoint=sam_checkpoint)
+            self.sam_model.to(device=self.device)
+            self.sam_predictor = SamPredictor(self.sam_model)
+        except Exception as e:
+            rospy.logerr(f&quot;Failed to load SAM model: {e}&quot;)
+            self.sam_model = None
+            self.sam_predictor = None
+
+        rospy.loginfo(&quot;All models initialized successfully&quot;)
+
+    def setup_ros_interfaces(self):
+        &quot;&quot;&quot;Setup ROS publishers and subscribers&quot;&quot;&quot;
+        # Subscribers
+        self.image_sub = rospy.Subscriber(&quot;/camera/image_raw&quot;, Image, self.image_callback)
+        self.audio_sub = rospy.Subscriber(&quot;/audio/audio&quot;, AudioData, self.audio_callback)
+        self.command_sub = rospy.Subscriber(&quot;/user_command&quot;, String, self.command_callback)
+
+        # Publishers
+        self.detection_pub = rospy.Publisher(&quot;/object_detections&quot;, String, queue_size=10)
+        self.response_pub = rospy.Publisher(&quot;/robot_response&quot;, String, queue_size=10)
+        self.action_pub = rospy.Publisher(&quot;/robot_action_plan&quot;, String, queue_size=10)
+        self.status_pub = rospy.Publisher(&quot;/ai_pipeline_status&quot;, String, queue_size=10)
+
+        rospy.loginfo(&quot;ROS interfaces configured&quot;)
+
+    def image_callback(self, msg):
+        &quot;&quot;&quot;Handle incoming image messages&quot;&quot;&quot;
+        try:
+            cv_image = self.bridge.imgmsg_to_cv2(msg, &quot;bgr8&quot;)
+
+            image_data = {
+                &#x27;image&#x27;: cv_image,
+                &#x27;timestamp&#x27;: msg.header.stamp.to_sec(),
+                &#x27;header&#x27;: msg.header
+            }
+
+            if not self.image_queue.full():
+                self.image_queue.put(image_data)
+            else:
+                rospy.logwarn(&quot;Image queue full, dropping frame&quot;)
+
+        except Exception as e:
+            rospy.logerr(f&quot;Error processing image: {e}&quot;)
+
+    def audio_callback(self, msg):
+        &quot;&quot;&quot;Handle incoming audio messages&quot;&quot;&quot;
+        try:
+            # Convert audio data to numpy array
+            audio_array = np.frombuffer(msg.data, dtype=np.int16).astype(np.float32) / 32768.0
+
+            audio_data = {
+                &#x27;audio&#x27;: audio_array,
+                &#x27;timestamp&#x27;: msg.header.stamp.to_sec(),
+                &#x27;header&#x27;: msg.header
+            }
+
+            if not self.audio_queue.full():
+                self.audio_queue.put(audio_data)
+            else:
+                rospy.logwarn(&quot;Audio queue full, dropping audio&quot;)
+
+        except Exception as e:
+            rospy.logerr(f&quot;Error processing audio: {e}&quot;)
+
+    def command_callback(self, msg):
+        &quot;&quot;&quot;Handle direct text commands&quot;&quot;&quot;
+        command_data = {
+            &#x27;command&#x27;: msg.data,
+            &#x27;timestamp&#x27;: rospy.Time.now().to_sec(),
+            &#x27;source&#x27;: &#x27;direct_text&#x27;
+        }
+
+        if not self.command_queue.full():
+            self.command_queue.put(command_data)
+        else:
+            rospy.logwarn(&quot;Command queue full, dropping command&quot;)
+
+    def start_processing(self):
+        &quot;&quot;&quot;Start the main processing loop&quot;&quot;&quot;
+        self.processing_thread = threading.Thread(target=self.processing_loop)
+        self.processing_thread.daemon = True
+        self.processing_thread.start()
+
+        rospy.loginfo(&quot;Processing loop started&quot;)
+
+    def processing_loop(self):
+        &quot;&quot;&quot;Main processing loop&quot;&quot;&quot;
+        rate = rospy.Rate(10)  # 10 Hz processing
+
+        while self.is_running and not rospy.is_shutdown():
+            try:
+                # Process audio if available
+                if not self.audio_queue.empty():
+                    audio_data = self.audio_queue.get_nowait()
+                    self.process_audio_input(audio_data)
+
+                # Process images if available
+                if not self.image_queue.empty():
+                    image_data = self.image_queue.get_nowait()
+                    self.process_visual_input(image_data)
+
+                # Process commands if available
+                if not self.command_queue.empty():
+                    command_data = self.command_queue.get_nowait()
+                    self.process_command_input(command_data)
+
+                # Publish status
+                self.publish_status()
+
+            except queue.Empty:
+                pass  # Expected when queues are empty
+            except Exception as e:
+                rospy.logerr(f&quot;Processing loop error: {e}&quot;)
+
+            rate.sleep()
+
+    def process_audio_input(self, audio_data):
+        &quot;&quot;&quot;Process audio input through Whisper&quot;&quot;&quot;
+        if not self.whisper_model:
+            rospy.logwarn(&quot;Whisper model not available&quot;)
+            return
+
+        try:
+            # Transcribe audio using Whisper
+            result = self.whisper_model.transcribe(audio_data[&#x27;audio&#x27;])
+            transcription = result[&quot;text&quot;].strip()
+
+            if len(transcription) &gt; 3:  # Meaningful transcription
+                rospy.loginfo(f&quot;Transcribed: {transcription}&quot;)
+
+                # Process the transcribed command
+                self.process_natural_language_command(transcription, audio_data[&#x27;header&#x27;])
+
+        except Exception as e:
+            rospy.logerr(f&quot;Whisper processing error: {e}&quot;)
+
+    def process_visual_input(self, image_data):
+        &quot;&quot;&quot;Process visual input through detection and segmentation models&quot;&quot;&quot;
+        try:
+            cv_image = image_data[&#x27;image&#x27;]
+
+            # Perform object detection (placeholder - would use Grounding DINO in practice)
+            detections = self.perform_object_detection(cv_image)
+
+            # Perform segmentation on detected objects (using SAM)
+            if detections and self.sam_predictor:
+                segmented_detections = self.perform_segmentation(cv_image, detections)
+            else:
+                segmented_detections = detections
+
+            # Publish detection results
+            if segmented_detections:
+                detection_msg = String()
+                detection_msg.data = json.dumps({
+                    &#x27;detections&#x27;: segmented_detections,
+                    &#x27;timestamp&#x27;: image_data[&#x27;timestamp&#x27;],
+                    &#x27;frame_id&#x27;: image_data[&#x27;header&#x27;].frame_id
+                })
+                self.detection_pub.publish(detection_msg)
+
+                # Update environment context
+                self.current_environment[&#x27;objects&#x27;] = segmented_detections
+                self.current_environment[&#x27;last_seen&#x27;] = image_data[&#x27;timestamp&#x27;]
+
+        except Exception as e:
+            rospy.logerr(f&quot;Visual processing error: {e}&quot;)
+
+    def perform_object_detection(self, image):
+        &quot;&quot;&quot;Perform object detection using Grounding DINO or similar&quot;&quot;&quot;
+        # Placeholder implementation
+        # In practice, this would use Grounding DINO with text prompts
+        # For now, return mock detections
+
+        # Convert image to appropriate format for detection
+        image_rgb = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
+
+        # Mock detections for demonstration
+        mock_detections = [
+            {
+                &#x27;label&#x27;: &#x27;person&#x27;,
+                &#x27;confidence&#x27;: 0.95,
+                &#x27;bbox&#x27;: [100, 100, 200, 250],  # [x1, y1, x2, y2]
+                &#x27;mask&#x27;: None  # Will be filled by segmentation
+            },
+            {
+                &#x27;label&#x27;: &#x27;cup&#x27;,
+                &#x27;confidence&#x27;: 0.87,
+                &#x27;bbox&#x27;: [300, 200, 350, 250],
+                &#x27;mask&#x27;: None
+            }
+        ]
+
+        return mock_detections
+
+    def perform_segmentation(self, image, detections):
+        &quot;&quot;&quot;Perform segmentation using SAM on detected objects&quot;&quot;&quot;
+        if not self.sam_predictor:
+            return detections
+
+        try:
+            # Set image for SAM predictor
+            self.sam_predictor.set_image(image)
+
+            # Extract bounding boxes for SAM
+            boxes = []
+            for detection in detections:
+                boxes.append(detection[&#x27;bbox&#x27;])
+
+            if not boxes:
+                return detections
+
+            # Convert boxes to tensor format
+            boxes_tensor = torch.tensor(boxes).float().to(self.device)
+
+            # Transform boxes for SAM
+            transformed_boxes = self.sam_predictor.transform.apply_boxes_torch(
+                boxes_tensor, image.shape[:2]
+            )
+
+            # Predict masks
+            masks, scores, logits = self.sam_predictor.predict_torch(
+                point_coords=None,
+                point_labels=None,
+                boxes=transformed_boxes,
+                multimask_output=False,
+            )
+
+            # Update detections with segmentation masks
+            updated_detections = []
+            for i, detection in enumerate(detections):
+                detection_with_mask = detection.copy()
+                if i &lt; len(masks):
+                    # Convert mask to numpy array for ROS serialization
+                    mask_np = masks[i][0].cpu().numpy()  # Get first mask from batch
+                    detection_with_mask[&#x27;mask&#x27;] = mask_np.tolist()  # Convert to list for JSON serialization
+                    detection_with_mask[&#x27;mask_confidence&#x27;] = float(scores[i].item())
+
+                updated_detections.append(detection_with_mask)
+
+            return updated_detections
+
+        except Exception as e:
+            rospy.logerr(f&quot;SAM segmentation error: {e}&quot;)
+            return detections
+
+    def process_natural_language_command(self, command, header=None):
+        &quot;&quot;&quot;Process natural language command using LLM&quot;&quot;&quot;
+        if not self.llm_model or not self.llm_tokenizer:
+            rospy.logwarn(&quot;Language model not available&quot;)
+            return
+
+        try:
+            # Add to conversation history
+            self.conversation_history.append({&#x27;role&#x27;: &#x27;user&#x27;, &#x27;content&#x27;: command})
+
+            # Prepare context for the language model
+            context = self.build_context_from_environment()
+
+            # Generate response using the language model
+            response = self.generate_language_response(command, context)
+
+            if response:
+                # Parse the response for robot action
+                action_plan = self.parse_response_for_action(response)
+
+                if action_plan:
+                    # Publish action plan
+                    action_msg = String()
+                    action_msg.data = json.dumps({
+                        &#x27;action_plan&#x27;: action_plan,
+                        &#x27;command&#x27;: command,
+                        &#x27;response&#x27;: response,
+                        &#x27;timestamp&#x27;: rospy.Time.now().to_sec()
+                    })
+                    self.action_pub.publish(action_msg)
+
+                # Publish response to user
+                response_msg = String()
+                response_msg.data = response
+                self.response_pub.publish(response_msg)
+
+                # Add to conversation history
+                self.conversation_history.append({&#x27;role&#x27;: &#x27;assistant&#x27;, &#x27;content&#x27;: response})
+
+                rospy.loginfo(f&quot;Processed command: {command} -&gt; {response}&quot;)
+
+        except Exception as e:
+            rospy.logerr(f&quot;Language processing error: {e}&quot;)
+
+    def build_context_from_environment(self):
+        &quot;&quot;&quot;Build context from current environment&quot;&quot;&quot;
+        context = {
+            &#x27;objects&#x27;: self.current_environment.get(&#x27;objects&#x27;, []),
+            &#x27;location&#x27;: self.current_environment.get(&#x27;location&#x27;, &#x27;unknown&#x27;),
+            &#x27;time&#x27;: rospy.Time.now().to_sec(),
+            &#x27;conversation_history&#x27;: self.conversation_history[-5:]  # Last 5 exchanges
+        }
+        return context
+
+    def generate_language_response(self, command, context):
+        &quot;&quot;&quot;Generate language response using the LLM&quot;&quot;&quot;
+        try:
+            # For this example, we&#x27;ll use a simple rule-based approach
+            # In practice, you&#x27;d use the loaded LLM model
+
+            # Simple keyword-based response generation
+            command_lower = command.lower()
+
+            if any(word in command_lower for word in [&#x27;hello&#x27;, &#x27;hi&#x27;, &#x27;hey&#x27;]):
+                return &quot;Hello! How can I help you today?&quot;
+            elif any(word in command_lower for word in [&#x27;find&#x27;, &#x27;where&#x27;, &#x27;locate&#x27;]):
+                return self.generate_find_response(command, context)
+            elif any(word in command_lower for word in [&#x27;pick&#x27;, &#x27;grasp&#x27;, &#x27;take&#x27;]):
+                return self.generate_grasp_response(command, context)
+            elif any(word in command_lower for word in [&#x27;go&#x27;, &#x27;move&#x27;, &#x27;walk&#x27;]):
+                return self.generate_navigation_response(command, context)
+            else:
+                return f&quot;I understand you said: &#x27;{command}&#x27;. How can I assist you with this?&quot;
+
+        except Exception as e:
+            rospy.logerr(f&quot;Response generation error: {e}&quot;)
+            return &quot;I&#x27;m sorry, I didn&#x27;t understand that command.&quot;
+
+    def generate_find_response(self, command, context):
+        &quot;&quot;&quot;Generate response for find/locate commands&quot;&quot;&quot;
+        # Extract object to find from command
+        words = command.lower().split()
+        object_to_find = None
+
+        for i, word in enumerate(words):
+            if word in [&#x27;find&#x27;, &#x27;locate&#x27;, &#x27;where&#x27;, &#x27;is&#x27;]:
+                if i + 1 &lt; len(words):
+                    object_to_find = words[i + 1]
+                    break
+
+        if object_to_find and context.get(&#x27;objects&#x27;):
+            # Check if object is detected
+            for obj in context[&#x27;objects&#x27;]:
+                if object_to_find.lower() in obj[&#x27;label&#x27;].lower():
+                    bbox = obj[&#x27;bbox&#x27;]
+                    return f&quot;I found the {obj[&#x27;label&#x27;]} at position ({bbox[0]}, {bbox[1]}).&quot;
+
+        return f&quot;I couldn&#x27;t find the {object_to_find or &#x27;object&#x27;} in my current view. Should I look around?&quot;
+
+    def generate_grasp_response(self, command, context):
+        &quot;&quot;&quot;Generate response for grasp/pick commands&quot;&quot;&quot;
+        return &quot;I can help you with that. I&#x27;ll navigate to the object and grasp it carefully.&quot;
+
+    def generate_navigation_response(self, command, context):
+        &quot;&quot;&quot;Generate response for navigation commands&quot;&quot;&quot;
+        return &quot;I&#x27;ll navigate to that location. Please wait while I plan my path.&quot;
+
+    def parse_response_for_action(self, response):
+        &quot;&quot;&quot;Parse response to generate robot action plan&quot;&quot;&quot;
+        # Simple action parsing based on response content
+        action_plan = []
+
+        if &quot;navigate&quot; in response.lower() or &quot;go to&quot; in response.lower():
+            action_plan.append({
+                &#x27;action&#x27;: &#x27;navigation&#x27;,
+                &#x27;target&#x27;: &#x27;location_from_command&#x27;,
+                &#x27;description&#x27;: &#x27;Navigate to specified location&#x27;
+            })
+
+        if &quot;grasp&quot; in response.lower() or &quot;pick&quot; in response.lower():
+            action_plan.append({
+                &#x27;action&#x27;: &#x27;manipulation&#x27;,
+                &#x27;target&#x27;: &#x27;object_from_perception&#x27;,
+                &#x27;description&#x27;: &#x27;Grasp specified object&#x27;
+            })
+
+        if not action_plan:
+            action_plan.append({
+                &#x27;action&#x27;: &#x27;response&#x27;,
+                &#x27;content&#x27;: response,
+                &#x27;description&#x27;: &#x27;Respond to user&#x27;
+            })
+
+        return action_plan
+
+    def process_command_input(self, command_data):
+        &quot;&quot;&quot;Process direct text command input&quot;&quot;&quot;
+        command = command_data[&#x27;command&#x27;]
+        rospy.loginfo(f&quot;Processing direct command: {command}&quot;)
+
+        # Process as natural language command
+        fake_header = None  # No image header for text command
+        self.process_natural_language_command(command, fake_header)
+
+    def publish_status(self):
+        &quot;&quot;&quot;Publish system status&quot;&quot;&quot;
+        status = {
+            &#x27;timestamp&#x27;: rospy.Time.now().to_sec(),
+            &#x27;models_loaded&#x27;: {
+                &#x27;whisper&#x27;: self.whisper_model is not None,
+                &#x27;llm&#x27;: self.llm_model is not None,
+                &#x27;sam&#x27;: self.sam_model is not None,
+                &#x27;grounding_dino&#x27;: self.grounding_dino_model is not None
+            },
+            &#x27;queues&#x27;: {
+                &#x27;audio&#x27;: self.audio_queue.qsize(),
+                &#x27;image&#x27;: self.image_queue.qsize(),
+                &#x27;command&#x27;: self.command_queue.qsize()
+            },
+            &#x27;environment_objects&#x27;: len(self.current_environment.get(&#x27;objects&#x27;, [])),
+            &#x27;conversation_length&#x27;: len(self.conversation_history)
+        }
+
+        status_msg = String()
+        status_msg.data = json.dumps(status)
+        self.status_pub.publish(status_msg)
+
+    def run(self):
+        &quot;&quot;&quot;Main run method&quot;&quot;&quot;
+        self.start_processing()
+
+        try:
+            rospy.spin()
+        except rospy.ROSInterruptException:
+            rospy.loginfo(&quot;AI Integration Pipeline interrupted&quot;)
+        except KeyboardInterrupt:
+            rospy.loginfo(&quot;AI Integration Pipeline stopped by user&quot;)
+
+        self.is_running = False
+
+def main():
+    try:
+        pipeline = CompleteAIIntegrationPipeline()
+        pipeline.run()
+    except Exception as e:
+        rospy.logerr(f&quot;Failed to start AI Integration Pipeline: {e}&quot;)
+
+if __name__ == &quot;__main__&quot;:
+    main()
+</code></pre>
+<h2 id="whisper-integration-examples">Whisper Integration Examples</h2>
+<h3 id="advanced-whisper-processing">Advanced Whisper Processing</h3>
+<pre><code class="language-python"># advanced_whisper_integration.py
+import whisper
+import torch
+import numpy as np
+import rospy
+from audio_common_msgs.msg import AudioData
+from std_msgs.msg import String
+import threading
+import queue
+
+class AdvancedWhisperProcessor:
+    def __init__(self, model_size=&quot;base&quot;):
+        # Initialize Whisper model
+        self.device = torch.device(&quot;cuda&quot; if torch.cuda.is_available() else &quot;cpu&quot;)
+        self.model = whisper.load_model(model_size).to(self.device)
+
+        # Audio processing parameters
+        self.sample_rate = 16000
+        self.chunk_duration = 2.0  # Process 2-second chunks
+        self.chunk_size = int(self.chunk_duration * self.sample_rate)
+
+        # Audio buffer
+        self.audio_buffer = np.array([], dtype=np.float32)
+        self.min_audio_duration = 0.5  # Minimum audio duration to process
+
+        # Processing queue
+        self.process_queue = queue.Queue(maxsize=5)
+        self.result_queue = queue.Queue(maxsize=10)
+
+        # Threading
+        self.processing_thread = None
+        self.is_processing = True
+
+        # Publishers and subscribers
+        self.audio_sub = rospy.Subscriber(&quot;/audio/audio&quot;, AudioData, self.audio_callback)
+        self.transcript_pub = rospy.Publisher(&quot;/whisper/transcript&quot;, String, queue_size=10)
+        self.status_pub = rospy.Publisher(&quot;/whisper/status&quot;, String, queue_size=10)
+
+        rospy.loginfo(&quot;Advanced Whisper Processor initialized&quot;)
+
+    def audio_callback(self, msg):
+        &quot;&quot;&quot;Handle incoming audio data&quot;&quot;&quot;
+        try:
+            # Convert audio data to numpy array
+            audio_array = np.frombuffer(msg.data, dtype=np.int16).astype(np.float32) / 32768.0
+
+            # Add to buffer
+            self.audio_buffer = np.concatenate([self.audio_buffer, audio_array])
+
+            # Process if buffer is large enough
+            if len(self.audio_buffer) &gt;= self.chunk_size:
+                # Take a chunk and process it
+                chunk = self.audio_buffer[:self.chunk_size]
+                self.audio_buffer = self.audio_buffer[self.chunk_size:]  # Remove processed chunk
+
+                # Add to processing queue
+                if not self.process_queue.full():
+                    self.process_queue.put(chunk)
+                else:
+                    rospy.logwarn(&quot;Processing queue full, dropping audio chunk&quot;)
+
+        except Exception as e:
+            rospy.logerr(f&quot;Error in audio callback: {e}&quot;)
+
+    def start_processing(self):
+        &quot;&quot;&quot;Start the processing thread&quot;&quot;&quot;
+        self.processing_thread = threading.Thread(target=self.processing_loop)
+        self.processing_thread.daemon = True
+        self.processing_thread.start()
+
+        rospy.loginfo(&quot;Whisper processing thread started&quot;)
+
+    def processing_loop(self):
+        &quot;&quot;&quot;Main processing loop for Whisper transcription&quot;&quot;&quot;
+        while self.is_processing:
+            try:
+                # Get audio chunk from queue
+                audio_chunk = self.process_queue.get(timeout=0.1)
+
+                # Transcribe the chunk
+                transcript = self.transcribe_chunk(audio_chunk)
+
+                if transcript and len(transcript.strip()) &gt; 3:
+                    # Publish transcript
+                    transcript_msg = String()
+                    transcript_msg.data = transcript.strip()
+                    self.transcript_pub.publish(transcript_msg)
+
+                    rospy.loginfo(f&quot;Transcribed: {transcript.strip()}&quot;)
+
+            except queue.Empty:
+                continue
+            except Exception as e:
+                rospy.logerr(f&quot;Whisper processing error: {e}&quot;)
+
+    def transcribe_chunk(self, audio_chunk):
+        &quot;&quot;&quot;Transcribe a single audio chunk&quot;&quot;&quot;
+        try:
+            # Ensure minimum audio duration
+            if len(audio_chunk) &lt; self.min_audio_duration * self.sample_rate:
+                return None
+
+            # Transcribe using Whisper
+            result = self.model.transcribe(
+                audio_chunk,
+                language=&quot;en&quot;,
+                temperature=0.0,  # Deterministic output
+                compression_ratio_threshold=2.4,
+                logprob_threshold=-1.0,
+                no_speech_threshold=0.6
+            )
+
+            return result[&quot;text&quot;]
+
+        except Exception as e:
+            rospy.logerr(f&quot;Transcription error: {e}&quot;)
+            return None
+
+    def transcribe_with_options(self, audio_data, options=None):
+        &quot;&quot;&quot;Transcribe with specific options&quot;&quot;&quot;
+        if options is None:
+            options = {}
+
+        try:
+            # Apply options
+            temperature = options.get(&#x27;temperature&#x27;, 0.0)
+            language = options.get(&#x27;language&#x27;, &#x27;en&#x27;)
+            prompt = options.get(&#x27;prompt&#x27;, &#x27;&#x27;)
+
+            result = self.model.transcribe(
+                audio_data,
+                language=language,
+                temperature=temperature,
+                initial_prompt=prompt
+            )
+
+            return result[&quot;text&quot;]
+
+        except Exception as e:
+            rospy.logerr(f&quot;Optioned transcription error: {e}&quot;)
+            return None
+
+    def get_status(self):
+        &quot;&quot;&quot;Get current processing status&quot;&quot;&quot;
+        status = {
+            &#x27;buffer_size&#x27;: len(self.audio_buffer),
+            &#x27;queue_sizes&#x27;: {
+                &#x27;process&#x27;: self.process_queue.qsize(),
+                &#x27;result&#x27;: self.result_queue.qsize()
+            },
+            &#x27;model_loaded&#x27;: self.model is not None,
+            &#x27;device&#x27;: str(self.device)
+        }
+        return status
+
+    def run(self):
+        &quot;&quot;&quot;Run the processor&quot;&quot;&quot;
+        self.start_processing()
+
+        rate = rospy.Rate(1)  # 1 Hz status publishing
+
+        while not rospy.is_shutdown():
+            # Publish status
+            status_msg = String()
+            status_msg.data = str(self.get_status())
+            self.status_pub.publish(status_msg)
+
+            rate.sleep()
+
+def whisper_main():
+    rospy.init_node(&#x27;advanced_whisper_processor&#x27;)
+    processor = AdvancedWhisperProcessor()
+    processor.run()
+
+if __name__ == &quot;__main__&quot;:
+    whisper_main()
+</code></pre>
+<h2 id="grounding-dino-and-sam-integration">Grounding DINO and SAM Integration</h2>
+<h3 id="combined-detection-and-segmentation-pipeline">Combined Detection and Segmentation Pipeline</h3>
+<pre><code class="language-python"># grounding_dino_sam_integration.py
+import torch
+import numpy as np
+import cv2
+from transformers import AutoModel, AutoProcessor
+from segment_anything import sam_model_registry, SamPredictor
+import rospy
+from sensor_msgs.msg import Image
+from std_msgs.msg import String
+from cv_bridge import CvBridge
+import json
+
+class GroundingDINO_SAM_Integration:
+    def __init__(self):
+        # Initialize ROS
+        rospy.init_node(&#x27;grounding_dino_sam_integration&#x27;)
+        self.bridge = CvBridge()
+
+        # Initialize models
+        self.initialize_models()
+
+        # Setup ROS interfaces
+        self.setup_ros_interfaces()
+
+        # Processing parameters
+        self.box_threshold = 0.35
+        self.text_threshold = 0.25
+
+        rospy.loginfo(&quot;Grounding DINO + SAM Integration initialized&quot;)
+
+    def initialize_models(self):
+        &quot;&quot;&quot;Initialize Grounding DINO and SAM models&quot;&quot;&quot;
+        self.device = torch.device(&quot;cuda&quot; if torch.cuda.is_available() else &quot;cpu&quot;)
+
+        # Initialize Grounding DINO
+        try:
+            # Note: Grounding DINO model loading varies by implementation
+            # This is a placeholder - adjust based on your specific implementation
+            rospy.loginfo(&quot;Loading Grounding DINO model...&quot;)
+            # self.grounding_dino = load_grounding_dino_model()  # Placeholder
+            self.grounding_dino = None  # Will use a mock implementation for this example
+        except Exception as e:
+            rospy.logerr(f&quot;Failed to load Grounding DINO: {e}&quot;)
+            self.grounding_dino = None
+
+        # Initialize SAM
+        try:
+            rospy.loginfo(&quot;Loading SAM model...&quot;)
+            sam_checkpoint = &quot;sam_vit_h_4b8939.pth&quot;  # Download separately
+            self.sam = sam_model_registry[&quot;vit_h&quot;](checkpoint=sam_checkpoint)
+            self.sam.to(device=self.device)
+            self.sam_predictor = SamPredictor(self.sam)
+        except Exception as e:
+            rospy.logerr(f&quot;Failed to load SAM: {e}&quot;)
+            self.sam = None
+            self.sam_predictor = None
+
+    def setup_ros_interfaces(self):
+        &quot;&quot;&quot;Setup ROS publishers and subscribers&quot;&quot;&quot;
+        # Subscribers
+        self.image_sub = rospy.Subscriber(&quot;/camera/image_raw&quot;, Image, self.image_callback)
+        self.text_prompt_sub = rospy.Subscriber(&quot;/detection_prompts&quot;, String, self.prompt_callback)
+
+        # Publishers
+        self.detection_pub = rospy.Publisher(&quot;/dino_sam/detections&quot;, String, queue_size=10)
+        self.visualization_pub = rospy.Publisher(&quot;/dino_sam/visualization&quot;, Image, queue_size=10)
+
+    def image_callback(self, msg):
+        &quot;&quot;&quot;Process incoming images&quot;&quot;&quot;
+        try:
+            # Convert ROS image to OpenCV
+            cv_image = self.bridge.imgmsg_to_cv2(msg, &quot;bgr8&quot;)
+
+            # Use default prompts or wait for specific prompts
+            default_prompts = [&quot;person&quot;, &quot;cup&quot;, &quot;bottle&quot;, &quot;chair&quot;]
+
+            # Process with current prompts (in a real system, you&#x27;d have specific prompts)
+            results = self.process_image_with_prompts(cv_image, default_prompts)
+
+            if results:
+                # Publish results
+                results_msg = String()
+                results_msg.data = json.dumps(results)
+                self.detection_pub.publish(results_msg)
+
+                # Publish visualization
+                vis_image = self.visualize_results(cv_image, results)
+                vis_msg = self.bridge.cv2_to_imgmsg(vis_image, &quot;bgr8&quot;)
+                vis_msg.header = msg.header
+                self.visualization_pub.publish(vis_msg)
+
+        except Exception as e:
+            rospy.logerr(f&quot;Image processing error: {e}&quot;)
+
+    def prompt_callback(self, msg):
+        &quot;&quot;&quot;Handle text prompts for detection&quot;&quot;&quot;
+        try:
+            # Parse the prompt message (could be JSON with multiple prompts)
+            try:
+                prompt_data = json.loads(msg.data)
+                if isinstance(prompt_data, list):
+                    prompts = prompt_data
+                else:
+                    prompts = [str(prompt_data)]
+            except json.JSONDecodeError:
+                # If not JSON, treat as single prompt
+                prompts = [msg.data]
+
+            rospy.loginfo(f&quot;Received detection prompts: {prompts}&quot;)
+
+            # In a real system, you&#x27;d store these prompts for the next image
+            # For this example, we&#x27;ll just log them
+
+        except Exception as e:
+            rospy.logerr(f&quot;Prompt processing error: {e}&quot;)
+
+    def process_image_with_prompts(self, image, text_prompts):
+        &quot;&quot;&quot;Process image with text prompts using Grounding DINO and SAM&quot;&quot;&quot;
+        try:
+            # Step 1: Detect objects using Grounding DINO (mock implementation)
+            detections = self.mock_grounding_dino_detection(image, text_prompts)
+
+            if not detections:
+                rospy.logwarn(&quot;No detections from Grounding DINO&quot;)
+                return None
+
+            # Step 2: Segment detected objects using SAM
+            if self.sam_predictor:
+                segmented_detections = self.segment_detections(image, detections)
+            else:
+                segmented_detections = detections  # No segmentation available
+
+            # Format results
+            results = {
+                &#x27;detections&#x27;: segmented_detections,
+                &#x27;prompts&#x27;: text_prompts,
+                &#x27;image_shape&#x27;: image.shape,
+                &#x27;timestamp&#x27;: rospy.Time.now().to_sec()
+            }
+
+            return results
+
+        except Exception as e:
+            rospy.logerr(f&quot;Processing error: {e}&quot;)
+            return None
+
+    def mock_grounding_dino_detection(self, image, text_prompts):
+        &quot;&quot;&quot;Mock implementation of Grounding DINO detection&quot;&quot;&quot;
+        # In a real implementation, this would call the actual Grounding DINO model
+        # For this example, we&#x27;ll create mock detections based on simple color/shape detection
+
+        detections = []
+
+        # Convert to different color spaces for detection
+        hsv = cv2.cvtColor(image, cv2.COLOR_BGR2HSV)
+        gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+
+        # Simple detection based on color and shape for demonstration
+        for i, prompt in enumerate(text_prompts):
+            if &quot;person&quot; in prompt.lower():
+                # Mock person detection (detect large, skin-toned areas)
+                lower_skin = np.array([0, 48, 80], dtype=&quot;uint8&quot;)
+                upper_skin = np.array([20, 255, 255], dtype=&quot;uint8&quot;)
+
+                skin_mask = cv2.inRange(hsv, lower_skin, upper_skin)
+                contours, _ = cv2.findContours(skin_mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+
+                for contour in contours:
+                    area = cv2.contourArea(contour)
+                    if area &gt; 5000:  # Minimum area for person-like object
+                        x, y, w, h = cv2.boundingRect(contour)
+                        detections.append({
+                            &#x27;label&#x27;: &#x27;person&#x27;,
+                            &#x27;confidence&#x27;: 0.8,
+                            &#x27;bbox&#x27;: [x, y, x+w, y+h],
+                            &#x27;mask&#x27;: None
+                        })
+
+            elif &quot;cup&quot; in prompt.lower() or &quot;bottle&quot; in prompt.lower():
+                # Mock cup/bottle detection (detect cylindrical shapes)
+                # This is a simplified example
+                circles = cv2.HoughCircles(
+                    gray,
+                    cv2.HOUGH_GRADIENT,
+                    dp=1,
+                    minDist=50,
+                    param1=50,
+                    param2=30,
+                    minRadius=10,
+                    maxRadius=100
+                )
+
+                if circles is not None:
+                    circles = np.round(circles[0, :]).astype(&quot;int&quot;)
+                    for (x, y, r) in circles:
+                        detections.append({
+                            &#x27;label&#x27;: &#x27;cup&#x27; if &quot;cup&quot; in prompt.lower() else &#x27;bottle&#x27;,
+                            &#x27;confidence&#x27;: 0.7,
+                            &#x27;bbox&#x27;: [x-r, y-r, x+r, y+r],
+                            &#x27;mask&#x27;: None
+                        })
+
+        return detections
+
+    def segment_detections(self, image, detections):
+        &quot;&quot;&quot;Segment detections using SAM&quot;&quot;&quot;
+        if not self.sam_predictor or not detections:
+            return detections
+
+        try:
+            # Set image for SAM predictor
+            self.sam_predictor.set_image(image)
+
+            # Extract bounding boxes
+            boxes = []
+            for detection in detections:
+                boxes.append(detection[&#x27;bbox&#x27;])
+
+            if not boxes:
+                return detections
+
+            # Convert boxes to tensor
+            boxes_tensor = torch.tensor(boxes).float().to(self.device)
+
+            # Transform boxes
+            transformed_boxes = self.sam_predictor.transform.apply_boxes_torch(
+                boxes_tensor, image.shape[:2]
+            )
+
+            # Predict masks
+            masks, scores, logits = self.sam_predictor.predict_torch(
+                point_coords=None,
+                point_labels=None,
+                boxes=transformed_boxes,
+                multimask_output=False,
+            )
+
+            # Update detections with masks
+            updated_detections = []
+            for i, detection in enumerate(detections):
+                detection_with_mask = detection.copy()
+                if i &lt; len(masks):
+                    mask_np = masks[i][0].cpu().numpy()
+                    detection_with_mask[&#x27;mask&#x27;] = mask_np.tolist()
+                    detection_with_mask[&#x27;mask_confidence&#x27;] = float(scores[i].item())
+
+                updated_detections.append(detection_with_mask)
+
+            return updated_detections
+
+        except Exception as e:
+            rospy.logerr(f&quot;SAM segmentation error: {e}&quot;)
+            return detections
+
+    def visualize_results(self, image, results):
+        &quot;&quot;&quot;Visualize detection results on image&quot;&quot;&quot;
+        vis_image = image.copy()
+
+        if not results or &#x27;detections&#x27; not in results:
+            return vis_image
+
+        detections = results[&#x27;detections&#x27;]
+
+        for detection in detections:
+            bbox = detection[&#x27;bbox&#x27;]
+            label = detection[&#x27;label&#x27;]
+            confidence = detection.get(&#x27;confidence&#x27;, 0.0)
+
+            # Draw bounding box
+            x1, y1, x2, y2 = map(int, bbox)
+            cv2.rectangle(vis_image, (x1, y1), (x2, y2), (0, 255, 0), 2)
+
+            # Add label and confidence
+            label_text = f&quot;{label}: {confidence:.2f}&quot;
+            cv2.putText(vis_image, label_text, (x1, y1-10),
+                       cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 2)
+
+            # Draw mask if available
+            mask = detection.get(&#x27;mask&#x27;)
+            if mask:
+                mask_np = np.array(mask)
+                mask_colored = np.zeros_like(vis_image)
+                mask_colored[mask_np &gt; 0.5] = [255, 0, 0]  # Red mask
+                vis_image = cv2.addWeighted(vis_image, 0.7, mask_colored, 0.3, 0)
+
+        return vis_image
+
+    def run(self):
+        &quot;&quot;&quot;Run the node&quot;&quot;&quot;
+        rospy.loginfo(&quot;Grounding DINO + SAM Integration running&quot;)
+        rospy.spin()
+
+def dino_sam_main():
+    try:
+        node = GroundingDINO_SAM_Integration()
+        node.run()
+    except rospy.ROSInterruptException:
+        rospy.loginfo(&quot;Grounding DINO + SAM node terminated&quot;)
+    except KeyboardInterrupt:
+        rospy.loginfo(&quot;Grounding DINO + SAM node interrupted&quot;)
+
+if __name__ == &quot;__main__&quot;:
+    dino_sam_main()
+</code></pre>
+<h2 id="llama-3-integration-examples">Llama-3 Integration Examples</h2>
+<h3 id="local-llama-3-for-edge-deployment">Local Llama-3 for Edge Deployment</h3>
+<pre><code class="language-python"># llama3_integration.py
+import torch
+from transformers import AutoModelForCausalLM, AutoTokenizer, pipeline
+import rospy
+from std_msgs.msg import String
+import json
+import threading
+import queue
+
+class Llama3Integration:
+    def __init__(self, model_name=&quot;microsoft/DialoGPT-medium&quot;):
+        # Initialize ROS
+        rospy.init_node(&#x27;llama3_integration&#x27;)
+
+        # Initialize model (using a smaller model for edge deployment)
+        self.model_name = model_name
+        self.device = torch.device(&quot;cuda&quot; if torch.cuda.is_available() else &quot;cpu&quot;)
+
+        # Use a lightweight model for edge deployment
+        # In practice, you might use a quantized version
+        self.tokenizer = AutoTokenizer.from_pretrained(model_name)
+        self.model = AutoModelForCausalLM.from_pretrained(model_name)
+        self.model.to(self.device)
+
+        # Add padding token if not present
+        if self.tokenizer.pad_token is None:
+            self.tokenizer.pad_token = self.tokenizer.eos_token
+
+        # Conversation history
+        self.chat_history_ids = None
+        self.max_history_length = 1000  # Limit conversation history
+
+        # Setup ROS interfaces
+        self.setup_ros_interfaces()
+
+        # Processing queue
+        self.command_queue = queue.Queue(maxsize=10)
+        self.response_queue = queue.Queue(maxsize=10)
+
+        rospy.loginfo(f&quot;Llama-3 Integration initialized on {self.device}&quot;)
+
+    def setup_ros_interfaces(self):
+        &quot;&quot;&quot;Setup ROS publishers and subscribers&quot;&quot;&quot;
+        # Subscribers
+        self.command_sub = rospy.Subscriber(&quot;/llm_input&quot;, String, self.command_callback)
+
+        # Publishers
+        self.response_pub = rospy.Publisher(&quot;/llm_response&quot;, String, queue_size=10)
+        self.status_pub = rospy.Publisher(&quot;/llm_status&quot;, String, queue_size=10)
+
+    def command_callback(self, msg):
+        &quot;&quot;&quot;Handle incoming commands&quot;&quot;&quot;
+        try:
+            command_data = json.loads(msg.data) if msg.data.startswith(&#x27;{&#x27;) else {&#x27;command&#x27;: msg.data}
+            command = command_data.get(&#x27;command&#x27;, msg.data)
+
+            if not self.command_queue.full():
+                self.command_queue.put({
+                    &#x27;command&#x27;: command,
+                    &#x27;timestamp&#x27;: rospy.Time.now().to_sec(),
+                    &#x27;original_msg&#x27;: msg
+                })
+            else:
+                rospy.logwarn(&quot;Command queue full, dropping message&quot;)
+
+        except json.JSONDecodeError:
+            # If not JSON, treat as plain command
+            if not self.command_queue.full():
+                self.command_queue.put({
+                    &#x27;command&#x27;: msg.data,
+                    &#x27;timestamp&#x27;: rospy.Time.now().to_sec(),
+                    &#x27;original_msg&#x27;: msg
+                })
+
+    def process_commands(self):
+        &quot;&quot;&quot;Process commands in a separate thread&quot;&quot;&quot;
+        while not rospy.is_shutdown():
+            try:
+                # Get command from queue
+                command_data = self.command_queue.get(timeout=0.1)
+
+                # Generate response
+                response = self.generate_response(command_data[&#x27;command&#x27;])
+
+                if response:
+                    # Publish response
+                    response_msg = String()
+                    response_msg.data = json.dumps({
+                        &#x27;response&#x27;: response,
+                        &#x27;input_command&#x27;: command_data[&#x27;command&#x27;],
+                        &#x27;timestamp&#x27;: rospy.Time.now().to_sec()
+                    })
+                    self.response_pub.publish(response_msg)
+
+                    rospy.loginfo(f&quot;Processed: {command_data[&#x27;command&#x27;]} -&gt; {response[:50]}...&quot;)
+
+            except queue.Empty:
+                continue
+            except Exception as e:
+                rospy.logerr(f&quot;Command processing error: {e}&quot;)
+
+    def generate_response(self, user_input):
+        &quot;&quot;&quot;Generate response using the LLM&quot;&quot;&quot;
+        try:
+            # Encode user input
+            new_user_input_ids = self.tokenizer.encode(
+                user_input + self.tokenizer.eos_token,
+                return_tensors=&#x27;pt&#x27;
+            ).to(self.device)
+
+            # Append to chat history
+            if self.chat_history_ids is not None:
+                bot_input_ids = torch.cat([self.chat_history_ids, new_user_input_ids], dim=-1)
+            else:
+                bot_input_ids = new_user_input_ids
+
+            # Generate response
+            self.chat_history_ids = self.model.generate(
+                bot_input_ids,
+                max_length=1000,
+                num_beams=5,
+                no_repeat_ngram_size=3,
+                early_stopping=True,
+                pad_token_id=self.tokenizer.eos_token_id,
+                temperature=0.7,
+                do_sample=True
+            )
+
+            # Decode response
+            response = self.tokenizer.decode(
+                self.chat_history_ids[:, bot_input_ids.shape[-1]:][0],
+                skip_special_tokens=True
+            )
+
+            # Limit conversation history to prevent memory issues
+            if self.chat_history_ids.shape[-1] &gt; self.max_history_length:
+                self.chat_history_ids = self.chat_history_ids[:, -self.max_history_length:]
+
+            return response
+
+        except Exception as e:
+            rospy.logerr(f&quot;Response generation error: {e}&quot;)
+            return &quot;I&#x27;m sorry, I encountered an error processing your request.&quot;
+
+    def reset_conversation(self):
+        &quot;&quot;&quot;Reset conversation history&quot;&quot;&quot;
+        self.chat_history_ids = None
+
+    def run(self):
+        &quot;&quot;&quot;Run the LLM integration&quot;&quot;&quot;
+        # Start processing thread
+        processing_thread = threading.Thread(target=self.process_commands)
+        processing_thread.daemon = True
+        processing_thread.start()
+
+        # Main loop for status updates
+        rate = rospy.Rate(1)  # 1 Hz status updates
+
+        while not rospy.is_shutdown():
+            # Publish status
+            status = {
+                &#x27;model_loaded&#x27;: self.model is not None,
+                &#x27;device&#x27;: str(self.device),
+                &#x27;queue_sizes&#x27;: {
+                    &#x27;commands&#x27;: self.command_queue.qsize(),
+                    &#x27;responses&#x27;: self.response_queue.qsize()
+                },
+                &#x27;conversation_length&#x27;: self.chat_history_ids.shape[-1] if self.chat_history_ids is not None else 0
+            }
+
+            status_msg = String()
+            status_msg.data = json.dumps(status)
+            self.status_pub.publish(status_msg)
+
+            rate.sleep()
+
+def llama3_main():
+    try:
+        node = Llama3Integration()
+        node.run()
+    except rospy.ROSInterruptException:
+        rospy.loginfo(&quot;Llama-3 Integration node terminated&quot;)
+    except KeyboardInterrupt:
+        rospy.loginfo(&quot;Llama-3 Integration node interrupted&quot;)
+
+if __name__ == &quot;__main__&quot;:
+    llama3_main()
+</code></pre>
+<h2 id="tensorrt-optimization-examples">TensorRT Optimization Examples</h2>
+<h3 id="tensorrt-implementation-for-jetson-orin">TensorRT Implementation for Jetson Orin</h3>
+<pre><code class="language-python"># tensorrt_optimization_examples.py
+import tensorrt as trt
+import pycuda.driver as cuda
+import pycuda.autoinit
+import numpy as np
+import torch
+import torch_tensorrt
+import rospy
+from std_msgs.msg import String
+import json
+
+class TensorRTOptimizationExamples:
+    def __init__(self):
+        self.logger = trt.Logger(trt.Logger.WARNING)
+        self.runtime = trt.Runtime(self.logger)
+
+        # Device configuration
+        self.device = torch.device(&quot;cuda&quot; if torch.cuda.is_available() else &quot;cpu&quot;)
+
+        # Setup ROS
+        rospy.init_node(&#x27;tensorrt_optimization_examples&#x27;)
+        self.status_pub = rospy.Publisher(&#x27;/tensorrt/status&#x27;, String, queue_size=10)
+
+        rospy.loginfo(&quot;TensorRT Optimization Examples initialized&quot;)
+
+    def optimize_whisper_for_tensorrt(self, model_path, input_shape):
+        &quot;&quot;&quot;Optimize Whisper model for TensorRT&quot;&quot;&quot;
+        try:
+            # Load PyTorch Whisper model
+            import whisper
+            model = whisper.load_model(&quot;base&quot;)
+            model.eval()
+
+            # Convert to TorchScript
+            dummy_input = torch.randn(input_shape).to(self.device)
+            traced_model = torch.jit.trace(model, dummy_input)
+
+            # Optimize with Torch-TensorRT
+            compiled_model = torch_tensorrt.compile(
+                traced_model,
+                inputs=[torch_tensorrt.Input(input_shape)],
+                enabled_precisions={torch.float16},  # Use FP16 for Jetson
+                workspace_size=1 &lt;&lt; 30,  # 1GB workspace
+                truncate_long_and_double=True
+            )
+
+            # Save optimized model
+            torch.jit.save(compiled_model, f&quot;{model_path}_tensorrt.ts&quot;)
+
+            rospy.loginfo(f&quot;Whisper model optimized for TensorRT: {model_path}_tensorrt.ts&quot;)
+            return True
+
+        except Exception as e:
+            rospy.logerr(f&quot;Whisper TensorRT optimization failed: {e}&quot;)
+            return False
+
+    def optimize_grounding_dino_for_tensorrt(self, model_path, input_shape):
+        &quot;&quot;&quot;Optimize Grounding DINO model for TensorRT&quot;&quot;&quot;
+        try:
+            # This is a conceptual example - actual implementation depends on model structure
+            # For Grounding DINO, you&#x27;d need to trace the specific model architecture
+
+            # Create a sample model (in practice, load the actual Grounding DINO model)
+            from transformers import AutoModel
+            # model = AutoModel.from_pretrained(&quot;IDEA-Research/grounding-dino-base&quot;)
+
+            # For this example, we&#x27;ll create a mock optimization
+            rospy.loginfo(&quot;Grounding DINO TensorRT optimization would go here&quot;)
+
+            # In practice, you would:
+            # 1. Load the actual model
+            # 2. Trace it with sample inputs
+            # 3. Compile with TensorRT
+            # 4. Save the optimized model
+
+            return True
+
+        except Exception as e:
+            rospy.logerr(f&quot;Grounding DINO TensorRT optimization failed: {e}&quot;)
+            return False
+
+    def optimize_sam_for_tensorrt(self, model_path, input_shape):
+        &quot;&quot;&quot;Optimize SAM model for TensorRT&quot;&quot;&quot;
+        try:
+            from segment_anything import sam_model_registry
+
+            # Load SAM model
+            sam = sam_model_registry[&quot;vit_h&quot;](checkpoint=model_path)
+            sam.eval()
+            sam.to(self.device)
+
+            # Create sample inputs
+            dummy_image = torch.randn(input_shape).to(self.device)  # [B, C, H, W]
+            dummy_boxes = torch.randn(1, 1, 4).to(self.device)  # [B, N, 4]
+
+            # Trace the model
+            with torch.no_grad():
+                # This is a simplified example - SAM has complex inputs
+                traced_model = torch.jit.trace(sam, dummy_image)
+
+            # Optimize with Torch-TensorRT
+            compiled_model = torch_tensorrt.compile(
+                traced_model,
+                inputs=[torch_tensorrt.Input(input_shape)],
+                enabled_precisions={torch.float16},
+                workspace_size=2 &lt;&lt; 30,  # 2GB workspace for SAM
+                truncate_long_and_double=True
+            )
+
+            # Save optimized model
+            optimized_path = f&quot;{model_path}_tensorrt.ts&quot;
+            torch.jit.save(compiled_model, optimized_path)
+
+            rospy.loginfo(f&quot;SAM model optimized for TensorRT: {optimized_path}&quot;)
+            return True
+
+        except Exception as e:
+            rospy.logerr(f&quot;SAM TensorRT optimization failed: {e}&quot;)
+            return False
+
+    def create_tensorrt_engine_from_onnx(self, onnx_model_path, engine_path, input_shapes):
+        &quot;&quot;&quot;Create TensorRT engine from ONNX model&quot;&quot;&quot;
+        try:
+            # Create builder
+            builder = trt.Builder(self.logger)
+            network = builder.create_network(1 &lt;&lt; int(trt.NetworkDefinitionCreationFlag.EXPLICIT_BATCH))
+            config = builder.create_builder_config()
+
+            # Set memory limits appropriate for Jetson
+            config.set_memory_pool_limit(trt.MemoryPoolType.WORKSPACE, 2 &lt;&lt; 30)  # 2GB
+
+            # Create parser
+            parser = trt.OnnxParser(network, self.logger)
+
+            # Parse ONNX model
+            with open(onnx_model_path, &#x27;rb&#x27;) as model_file:
+                if not parser.parse(model_file.read()):
+                    rospy.logerr(&quot;Failed to parse ONNX model&quot;)
+                    for error in range(parser.num_errors):
+                        rospy.logerr(parser.get_error(error))
+                    return False
+
+            # Create optimization profile
+            profile = builder.create_optimization_profile()
+
+            # Set input shapes for the profile
+            for i, (input_name, min_shape, opt_shape, max_shape) in enumerate(input_shapes):
+                profile.set_shape(input_name, min_shape, opt_shape, max_shape)
+
+            config.add_optimization_profile(profile)
+
+            # Build engine
+            engine = builder.build_engine(network, config)
+            if engine is None:
+                rospy.logerr(&quot;Failed to build TensorRT engine&quot;)
+                return False
+
+            # Serialize engine
+            with open(engine_path, &#x27;wb&#x27;) as f:
+                f.write(engine.serialize())
+
+            rospy.loginfo(f&quot;TensorRT engine created: {engine_path}&quot;)
+            return True
+
+        except Exception as e:
+            rospy.logerr(f&quot;TensorRT engine creation failed: {e}&quot;)
+            return False
+
+    def benchmark_model_performance(self, model, input_tensor, num_runs=100):
+        &quot;&quot;&quot;Benchmark model performance&quot;&quot;&quot;
+        import time
+
+        model.eval()
+
+        # Warm up
+        with torch.no_grad():
+            for _ in range(10):
+                _ = model(input_tensor)
+
+        # Benchmark
+        start_time = time.time()
+        with torch.no_grad():
+            for _ in range(num_runs):
+                _ = model(input_tensor)
+
+        end_time = time.time()
+        avg_time = (end_time - start_time) / num_runs
+        fps = 1.0 / avg_time
+
+        rospy.loginfo(f&quot;Model benchmark - Avg time: {avg_time:.4f}s, FPS: {fps:.2f}&quot;)
+
+        return avg_time, fps
+
+    def run_examples(self):
+        &quot;&quot;&quot;Run TensorRT optimization examples&quot;&quot;&quot;
+        rospy.loginfo(&quot;Running TensorRT optimization examples...&quot;)
+
+        # Example 1: Optimize a simple model
+        input_shape = (1, 3, 224, 224)  # Example input shape
+
+        # Create a simple model for demonstration
+        simple_model = torch.nn.Sequential(
+            torch.nn.Conv2d(3, 64, 3, padding=1),
+            torch.nn.ReLU(),
+            torch.nn.AdaptiveAvgPool2d((1, 1)),
+            torch.nn.Flatten(),
+            torch.nn.Linear(64, 10)
+        ).to(self.device)
+
+        simple_model.eval()
+
+        try:
+            # Convert to TorchScript
+            dummy_input = torch.randn(input_shape).to(self.device)
+            traced_model = torch.jit.trace(simple_model, dummy_input)
+
+            # Optimize with TensorRT
+            trt_model = torch_tensorrt.compile(
+                traced_model,
+                inputs=[torch_tensorrt.Input(input_shape)],
+                enabled_precisions={torch.float16},
+                workspace_size=1 &lt;&lt; 30,
+                truncate_long_and_double=True
+            )
+
+            # Benchmark both models
+            rospy.loginfo(&quot;Benchmarking original model...&quot;)
+            orig_time, orig_fps = self.benchmark_model_performance(simple_model, dummy_input)
+
+            rospy.loginfo(&quot;Benchmarking TensorRT optimized model...&quot;)
+            trt_time, trt_fps = self.benchmark_model_performance(trt_model, dummy_input)
+
+            rospy.loginfo(f&quot;Performance improvement: {trt_fps/orig_fps:.2f}x speedup&quot;)
+
+        except Exception as e:
+            rospy.logerr(f&quot;TensorRT compilation error: {e}&quot;)
+
+        # Publish status
+        status_msg = String()
+        status_msg.data = json.dumps({
+            &#x27;timestamp&#x27;: rospy.Time.now().to_sec(),
+            &#x27;device&#x27;: str(self.device),
+            &#x27;tensorrt_available&#x27;: True,
+            &#x27;examples_completed&#x27;: True
+        })
+        self.status_pub.publish(status_msg)
+
+    def run(self):
+        &quot;&quot;&quot;Run the optimization examples&quot;&quot;&quot;
+        self.run_examples()
+
+        # Keep node alive for monitoring
+        rate = rospy.Rate(1)
+        while not rospy.is_shutdown():
+            rate.sleep()
+
+def tensorrt_main():
+    try:
+        node = TensorRTOptimizationExamples()
+        node.run()
+    except rospy.ROSInterruptException:
+        rospy.loginfo(&quot;TensorRT examples node terminated&quot;)
+    except KeyboardInterrupt:
+        rospy.loginfo(&quot;TensorRT examples node interrupted&quot;)
+
+if __name__ == &quot;__main__&quot;:
+    tensorrt_main()
+</code></pre>
+<h2 id="complete-integration-example">Complete Integration Example</h2>
+<h3 id="main-launch-file">Main Launch File</h3>
+<pre><code class="language-python"># launch/complete_vla_pipeline.launch.py
+from launch import LaunchDescription
+from launch.actions import DeclareLaunchArgument, SetEnvironmentVariable
+from launch.substitutions import LaunchConfiguration
+from launch_ros.actions import Node
+import os
+
+def generate_launch_description():
+    # Launch configuration variables
+    use_sim_time = LaunchConfiguration(&#x27;use_sim_time&#x27;, default=&#x27;false&#x27;)
+    camera_topic = LaunchConfiguration(&#x27;camera_topic&#x27;, default=&#x27;/camera/image_raw&#x27;)
+    audio_topic = LaunchConfiguration(&#x27;audio_topic&#x27;, default=&#x27;/audio/audio&#x27;)
+
+    # Set environment variables for Jetson optimization
+    os.environ[&#x27;CUDA_VISIBLE_DEVICES&#x27;] = &#x27;0&#x27;
+    os.environ[&#x27;OMP_NUM_THREADS&#x27;] = &#x27;6&#x27;  # Adjust based on Jetson CPU cores
+
+    # Complete AI Integration Pipeline
+    ai_integration_node = Node(
+        package=&#x27;humanoid_vla&#x27;,
+        executable=&#x27;complete_ai_integration_pipeline&#x27;,
+        name=&#x27;complete_ai_pipeline&#x27;,
+        parameters=[
+            {&#x27;use_sim_time&#x27;: use_sim_time},
+        ],
+        remappings=[
+            (&#x27;/camera/image_raw&#x27;, camera_topic),
+            (&#x27;/audio/audio&#x27;, audio_topic),
+            (&#x27;/user_command&#x27;, &#x27;/vla/user_command&#x27;),
+            (&#x27;/object_detections&#x27;, &#x27;/vla/object_detections&#x27;),
+            (&#x27;/robot_response&#x27;, &#x27;/vla/robot_response&#x27;),
+            (&#x27;/robot_action_plan&#x27;, &#x27;/vla/robot_action_plan&#x27;),
+        ],
+        additional_env={
+            &#x27;CUDA_VISIBLE_DEVICES&#x27;: &#x27;0&#x27;,
+            &#x27;OMP_NUM_THREADS&#x27;: &#x27;6&#x27;,
+        },
+        output=&#x27;screen&#x27;
+    )
+
+    # Whisper processor node
+    whisper_node = Node(
+        package=&#x27;humanoid_vla&#x27;,
+        executable=&#x27;advanced_whisper_processor&#x27;,
+        name=&#x27;whisper_processor&#x27;,
+        parameters=[
+            {&#x27;use_sim_time&#x27;: use_sim_time},
+        ],
+        remappings=[
+            (&#x27;/audio/audio&#x27;, audio_topic),
+            (&#x27;/whisper/transcript&#x27;, &#x27;/vla/transcript&#x27;),
+        ],
+        output=&#x27;screen&#x27;
+    )
+
+    # Grounding DINO + SAM integration node
+    dino_sam_node = Node(
+        package=&#x27;humanoid_vla&#x27;,
+        executable=&#x27;grounding_dino_sam_integration&#x27;,
+        name=&#x27;dino_sam_processor&#x27;,
+        parameters=[
+            {&#x27;use_sim_time&#x27;: use_sim_time},
+            {&#x27;box_threshold&#x27;: 0.35},
+            {&#x27;text_threshold&#x27;: 0.25},
+        ],
+        remappings=[
+            (&#x27;/camera/image_raw&#x27;, camera_topic),
+            (&#x27;/detection_prompts&#x27;, &#x27;/vla/detection_prompts&#x27;),
+            (&#x27;/dino_sam/detections&#x27;, &#x27;/vla/visual_detections&#x27;),
+        ],
+        output=&#x27;screen&#x27;
+    )
+
+    # LLM integration node
+    llm_node = Node(
+        package=&#x27;humanoid_vla&#x27;,
+        executable=&#x27;llama3_integration&#x27;,
+        name=&#x27;llm_processor&#x27;,
+        parameters=[
+            {&#x27;use_sim_time&#x27;: use_sim_time},
+        ],
+        remappings=[
+            (&#x27;/llm_input&#x27;, &#x27;/vla/llm_input&#x27;),
+            (&#x27;/llm_response&#x27;, &#x27;/vla/llm_response&#x27;),
+        ],
+        output=&#x27;screen&#x27;
+    )
+
+    # TensorRT optimization monitoring
+    tensorrt_monitor = Node(
+        package=&#x27;humanoid_vla&#x27;,
+        executable=&#x27;tensorrt_optimization_examples&#x27;,
+        name=&#x27;tensorrt_monitor&#x27;,
+        parameters=[
+            {&#x27;use_sim_time&#x27;: use_sim_time},
+        ],
+        output=&#x27;screen&#x27;
+    )
+
+    # Create launch description
+    ld = LaunchDescription()
+
+    # Add nodes
+    ld.add_action(ai_integration_node)
+    ld.add_action(whisper_node)
+    ld.add_action(dino_sam_node)
+    ld.add_action(llm_node)
+    ld.add_action(tensorrt_monitor)
+
+    return ld
+</code></pre>
+<h2 id="performance-monitoring-and-optimization">Performance Monitoring and Optimization</h2>
+<h3 id="performance-analysis-tools">Performance Analysis Tools</h3>
+<pre><code class="language-python"># performance_analysis.py
+import rospy
+import time
+from std_msgs.msg import String
+import json
+import psutil
+import GPUtil
+
+class PerformanceAnalyzer:
+    def __init__(self):
+        rospy.init_node(&#x27;performance_analyzer&#x27;)
+
+        self.metrics_pub = rospy.Publisher(&#x27;/performance/metrics&#x27;, String, queue_size=10)
+
+        self.start_times = {}
+        self.metrics_history = {
+            &#x27;cpu_percent&#x27;: [],
+            &#x27;memory_percent&#x27;: [],
+            &#x27;gpu_percent&#x27;: [],
+            &#x27;process_times&#x27;: []
+        }
+
+        rospy.loginfo(&quot;Performance Analyzer initialized&quot;)
+
+    def start_timer(self, operation_name):
+        &quot;&quot;&quot;Start timing for an operation&quot;&quot;&quot;
+        self.start_times[operation_name] = time.time()
+
+    def stop_timer(self, operation_name):
+        &quot;&quot;&quot;Stop timing and record&quot;&quot;&quot;
+        if operation_name in self.start_times:
+            elapsed = time.time() - self.start_times[operation_name]
+            self.metrics_history[&#x27;process_times&#x27;].append({
+                &#x27;operation&#x27;: operation_name,
+                &#x27;time&#x27;: elapsed,
+                &#x27;timestamp&#x27;: rospy.Time.now().to_sec()
+            })
+            return elapsed
+        return None
+
+    def get_system_metrics(self):
+        &quot;&quot;&quot;Get current system metrics&quot;&quot;&quot;
+        metrics = {
+            &#x27;timestamp&#x27;: rospy.Time.now().to_sec(),
+            &#x27;cpu_percent&#x27;: psutil.cpu_percent(interval=1),
+            &#x27;memory_percent&#x27;: psutil.virtual_memory().percent,
+            &#x27;memory_available&#x27;: psutil.virtual_memory().available,
+            &#x27;disk_percent&#x27;: psutil.disk_usage(&#x27;/&#x27;).percent,
+        }
+
+        # GPU metrics if available
+        gpus = GPUtil.getGPUs()
+        if gpus:
+            gpu = gpus[0]  # Assuming single GPU system
+            metrics.update({
+                &#x27;gpu_percent&#x27;: gpu.load * 100,
+                &#x27;gpu_memory_percent&#x27;: gpu.memoryUtil * 100,
+                &#x27;gpu_temperature&#x27;: gpu.temperature,
+                &#x27;gpu_memory_used&#x27;: gpu.memoryUsed,
+                &#x27;gpu_memory_total&#x27;: gpu.memoryTotal
+            })
+
+        return metrics
+
+    def run(self):
+        &quot;&quot;&quot;Run performance monitoring&quot;&quot;&quot;
+        rate = rospy.Rate(1)  # 1 Hz monitoring
+
+        while not rospy.is_shutdown():
+            # Get system metrics
+            metrics = self.get_system_metrics()
+
+            # Add to history
+            self.metrics_history[&#x27;cpu_percent&#x27;].append(metrics[&#x27;cpu_percent&#x27;])
+            self.metrics_history[&#x27;memory_percent&#x27;].append(metrics[&#x27;memory_percent&#x27;])
+
+            if &#x27;gpu_percent&#x27; in metrics:
+                self.metrics_history[&#x27;gpu_percent&#x27;].append(metrics[&#x27;gpu_percent&#x27;])
+
+            # Keep only recent history (last 100 measurements)
+            for key in self.metrics_history:
+                if len(self.metrics_history[key]) &gt; 100:
+                    self.metrics_history[key] = self.metrics_history[key][-100:]
+
+            # Publish metrics
+            metrics_msg = String()
+            metrics_msg.data = json.dumps({
+                &#x27;current&#x27;: metrics,
+                &#x27;history&#x27;: self.metrics_history,
+                &#x27;averages&#x27;: {
+                    &#x27;cpu_avg&#x27;: sum(self.metrics_history[&#x27;cpu_percent&#x27;][-10:]) / len(self.metrics_history[&#x27;cpu_percent&#x27;][-10:]) if self.metrics_history[&#x27;cpu_percent&#x27;] else 0,
+                    &#x27;memory_avg&#x27;: sum(self.metrics_history[&#x27;memory_percent&#x27;][-10:]) / len(self.metrics_history[&#x27;memory_percent&#x27;][-10:]) if self.metrics_history[&#x27;memory_percent&#x27;] else 0,
+                    &#x27;gpu_avg&#x27;: sum(self.metrics_history[&#x27;gpu_percent&#x27;][-10:]) / len(self.metrics_history[&#x27;gpu_percent&#x27;][-10:]) if self.metrics_history[&#x27;gpu_percent&#x27;] else 0,
+                }
+            })
+
+            self.metrics_pub.publish(metrics_msg)
+
+            rate.sleep()
+
+def performance_main():
+    analyzer = PerformanceAnalyzer()
+    analyzer.run()
+
+if __name__ == &quot;__main__&quot;:
+    performance_main()
+</code></pre>
+<h2 id="summary">Summary</h2>
+<p>In this chapter, you&#x27;ve learned:</p>
+<ul>
+<li>How to integrate Whisper, Llama-3, Grounding DINO, and SAM into a unified AI pipeline</li>
+<li>Complete code examples for each model integration with ROS 2</li>
+<li>TensorRT optimization techniques for Jetson deployment</li>
+<li>Performance monitoring and analysis tools</li>
+<li>Best practices for deploying AI models on edge devices</li>
+<li>Complete launch files and system integration examples</li>
+</ul>
+<p>These integration examples provide a foundation for building sophisticated AI-powered humanoid robots that can perceive, understand, and act in complex environments using state-of-the-art AI models.</p>
+<h2 id="exercises">Exercises</h2>
+<ol>
+<li>Implement the complete AI integration pipeline with all models</li>
+<li>Optimize the models using TensorRT for Jetson deployment</li>
+<li>Create custom detection prompts for specific humanoid tasks</li>
+<li>Implement performance monitoring for your specific use case</li>
+<li>Test the system with various natural language commands</li>
+</ol>
+<div class="starboard-notebook-container"><div class="starboard-notebook-header"><span class="starboard-notebook-icon">📊</span><span class="starboard-notebook-title">Interactive Notebook</span></div><div class="starboard-notebook-content"><div class="starboard-children-container"><pre><code class="language-python"># This would be an interactive code block for students to experiment with AI model integration
+# In a real implementation, this would connect to ROS services
+# to test the integrated AI pipeline
+</code></pre></div></div><div class="starboard-notebook-footer"><small>Note: This is a placeholder for interactive Starboard notebooks.</small></div></div></div><footer class="theme-doc-footer docusaurus-mt-lg"><div class="row margin-top--sm theme-doc-footer-edit-meta-row"><div class="col noPrint_WFHX"><a href="https://github.com/facebook/docusaurus/tree/main/packages/create-docusaurus/templates/shared/docs/module-4-vla/05-ai-integration-examples.mdx" target="_blank" rel="noopener noreferrer" class="theme-edit-this-page"><svg fill="currentColor" height="20" width="20" viewBox="0 0 40 40" class="iconEdit_Z9Sw" aria-hidden="true"><g><path d="m34.5 11.7l-3 3.1-6.3-6.3 3.1-3q0.5-0.5 1.2-0.5t1.1 0.5l3.9 3.9q0.5 0.4 0.5 1.1t-0.5 1.2z m-29.5 17.1l18.4-18.5 6.3 6.3-18.4 18.4h-6.3v-6.2z"></path></g></svg>Edit this page</a></div><div class="col lastUpdated_JAkA"></div></div></footer></article><nav class="docusaurus-mt-lg pagination-nav" aria-label="Docs pages"><a class="pagination-nav__link pagination-nav__link--prev" href="/physical-ai-textbook/docs/module-4-vla/jetson-deployment"><div class="pagination-nav__sublabel">Previous</div><div class="pagination-nav__label">Jetson Deployment</div></a><a class="pagination-nav__link pagination-nav__link--next" href="/physical-ai-textbook/docs/module-4-vla/tensorrt-optimization"><div class="pagination-nav__sublabel">Next</div><div class="pagination-nav__label">TensorRT Optimization</div></a></nav></div></div><div class="col col--3"><div class="tableOfContents_bqdL thin-scrollbar theme-doc-toc-desktop"><ul class="table-of-contents table-of-contents__left-border"><li><a href="#introduction" class="table-of-contents__link toc-highlight">Introduction</a></li><li><a href="#complete-integration-pipeline" class="table-of-contents__link toc-highlight">Complete Integration Pipeline</a><ul><li><a href="#main-integration-node" class="table-of-contents__link toc-highlight">Main Integration Node</a></li></ul></li><li><a href="#whisper-integration-examples" class="table-of-contents__link toc-highlight">Whisper Integration Examples</a><ul><li><a href="#advanced-whisper-processing" class="table-of-contents__link toc-highlight">Advanced Whisper Processing</a></li></ul></li><li><a href="#grounding-dino-and-sam-integration" class="table-of-contents__link toc-highlight">Grounding DINO and SAM Integration</a><ul><li><a href="#combined-detection-and-segmentation-pipeline" class="table-of-contents__link toc-highlight">Combined Detection and Segmentation Pipeline</a></li></ul></li><li><a href="#llama-3-integration-examples" class="table-of-contents__link toc-highlight">Llama-3 Integration Examples</a><ul><li><a href="#local-llama-3-for-edge-deployment" class="table-of-contents__link toc-highlight">Local Llama-3 for Edge Deployment</a></li></ul></li><li><a href="#tensorrt-optimization-examples" class="table-of-contents__link toc-highlight">TensorRT Optimization Examples</a><ul><li><a href="#tensorrt-implementation-for-jetson-orin" class="table-of-contents__link toc-highlight">TensorRT Implementation for Jetson Orin</a></li></ul></li><li><a href="#complete-integration-example" class="table-of-contents__link toc-highlight">Complete Integration Example</a><ul><li><a href="#main-launch-file" class="table-of-contents__link toc-highlight">Main Launch File</a></li></ul></li><li><a href="#performance-monitoring-and-optimization" class="table-of-contents__link toc-highlight">Performance Monitoring and Optimization</a><ul><li><a href="#performance-analysis-tools" class="table-of-contents__link toc-highlight">Performance Analysis Tools</a></li></ul></li><li><a href="#summary" class="table-of-contents__link toc-highlight">Summary</a></li><li><a href="#exercises" class="table-of-contents__link toc-highlight">Exercises</a></li></ul></div></div></div></div></main></div></div></div><footer class="theme-layout-footer footer footer--dark"><div class="container container-fluid"><div class="row footer__links"><div class="theme-layout-footer-column col footer__col"><div class="footer__title">Docs</div><ul class="footer__items clean-list"><li class="footer__item"><a class="footer__link-item" href="/physical-ai-textbook/docs/intro/introduction-to-physical-ai">Textbook</a></li></ul></div><div class="theme-layout-footer-column col footer__col"><div class="footer__title">Community</div><ul class="footer__items clean-list"><li class="footer__item"><a href="https://stackoverflow.com/questions/tagged/docusaurus" target="_blank" rel="noopener noreferrer" class="footer__link-item">Stack Overflow<svg width="13.5" height="13.5" aria-label="(opens in new tab)" class="iconExternalLink_nPIU"><use href="#theme-svg-external-link"></use></svg></a></li><li class="footer__item"><a href="https://discordapp.com/invite/docusaurus" target="_blank" rel="noopener noreferrer" class="footer__link-item">Discord<svg width="13.5" height="13.5" aria-label="(opens in new tab)" class="iconExternalLink_nPIU"><use href="#theme-svg-external-link"></use></svg></a></li><li class="footer__item"><a href="https://twitter.com/docusaurus" target="_blank" rel="noopener noreferrer" class="footer__link-item">Twitter<svg width="13.5" height="13.5" aria-label="(opens in new tab)" class="iconExternalLink_nPIU"><use href="#theme-svg-external-link"></use></svg></a></li></ul></div><div class="theme-layout-footer-column col footer__col"><div class="footer__title">More</div><ul class="footer__items clean-list"><li class="footer__item"><a href="https://github.com/Gulshan-koondhar/physical-ai-textbook" target="_blank" rel="noopener noreferrer" class="footer__link-item">GitHub<svg width="13.5" height="13.5" aria-label="(opens in new tab)" class="iconExternalLink_nPIU"><use href="#theme-svg-external-link"></use></svg></a></li></ul></div></div><div class="footer__bottom text--center"><div class="footer__copyright">Copyright © 2025 My Project, Inc. Built with Docusaurus.</div></div></div></footer></div>
+</body>
+</html>

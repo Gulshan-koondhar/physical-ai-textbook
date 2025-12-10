@@ -1,0 +1,783 @@
+<!doctype html>
+<html lang="en" dir="ltr" class="docs-wrapper plugin-docs plugin-id-default docs-version-current docs-doc-page docs-doc-id-module-2-simulation/simulating-humanoid" data-has-hydrated="false">
+<head>
+<meta charset="UTF-8">
+<meta name="generator" content="Docusaurus v3.9.2">
+<title data-rh="true">Simulating Humanoid Robots in Gazebo | Physical AI &amp; Humanoid Robotics</title><meta data-rh="true" name="viewport" content="width=device-width,initial-scale=1"><meta data-rh="true" name="twitter:card" content="summary_large_image"><meta data-rh="true" property="og:image" content="https://Gulshan-koondhar.github.io/physical-ai-textbook/img/docusaurus-social-card.jpg"><meta data-rh="true" name="twitter:image" content="https://Gulshan-koondhar.github.io/physical-ai-textbook/img/docusaurus-social-card.jpg"><meta data-rh="true" property="og:url" content="https://Gulshan-koondhar.github.io/physical-ai-textbook/docs/module-2-simulation/simulating-humanoid"><meta data-rh="true" property="og:locale" content="en"><meta data-rh="true" name="docusaurus_locale" content="en"><meta data-rh="true" name="docsearch:language" content="en"><meta data-rh="true" name="docusaurus_version" content="current"><meta data-rh="true" name="docusaurus_tag" content="docs-default-current"><meta data-rh="true" name="docsearch:version" content="current"><meta data-rh="true" name="docsearch:docusaurus_tag" content="docs-default-current"><meta data-rh="true" property="og:title" content="Simulating Humanoid Robots in Gazebo | Physical AI &amp; Humanoid Robotics"><meta data-rh="true" name="description" content="Learn to simulate complex humanoid robots in Gazebo with physics, sensors, and realistic control"><meta data-rh="true" property="og:description" content="Learn to simulate complex humanoid robots in Gazebo with physics, sensors, and realistic control"><meta data-rh="true" name="keywords" content="Gazebo,simulation,humanoid,physics,control,ROS 2"><link data-rh="true" rel="icon" href="/physical-ai-textbook/img/favicon.ico"><link data-rh="true" rel="canonical" href="https://Gulshan-koondhar.github.io/physical-ai-textbook/docs/module-2-simulation/simulating-humanoid"><link data-rh="true" rel="alternate" href="https://Gulshan-koondhar.github.io/physical-ai-textbook/docs/module-2-simulation/simulating-humanoid" hreflang="en"><link data-rh="true" rel="alternate" href="https://Gulshan-koondhar.github.io/physical-ai-textbook/docs/module-2-simulation/simulating-humanoid" hreflang="x-default"><script data-rh="true" type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Simulating Humanoid in Gazebo","item":"https://Gulshan-koondhar.github.io/physical-ai-textbook/docs/module-2-simulation/simulating-humanoid"}]}</script><link rel="stylesheet" href="/physical-ai-textbook/assets/css/styles.4f99da8f.css">
+<script src="/physical-ai-textbook/assets/js/runtime~main.7cf563d1.js" defer="defer"></script>
+<script src="/physical-ai-textbook/assets/js/main.6dcd1921.js" defer="defer"></script>
+</head>
+<body class="navigation-with-keyboard">
+<svg style="display: none;"><defs>
+<symbol id="theme-svg-external-link" viewBox="0 0 24 24"><path fill="currentColor" d="M21 13v10h-21v-19h12v2h-10v15h17v-8h2zm3-12h-10.988l4.035 4-6.977 7.07 2.828 2.828 6.977-7.07 4.125 4.172v-11z"/></symbol>
+</defs></svg>
+<script>!function(){var t=function(){try{return new URLSearchParams(window.location.search).get("docusaurus-theme")}catch(t){}}()||function(){try{return window.localStorage.getItem("theme")}catch(t){}}();document.documentElement.setAttribute("data-theme",t||"light"),document.documentElement.setAttribute("data-theme-choice",t||"light")}(),function(){try{const c=new URLSearchParams(window.location.search).entries();for(var[t,e]of c)if(t.startsWith("docusaurus-data-")){var a=t.replace("docusaurus-data-","data-");document.documentElement.setAttribute(a,e)}}catch(t){}}()</script><div id="__docusaurus"><div role="region" aria-label="Skip to main content"><a class="skipToContent_fXgn" href="#__docusaurus_skipToContent_fallback">Skip to main content</a></div><nav aria-label="Main" class="theme-layout-navbar navbar navbar--fixed-top"><div class="navbar__inner"><div class="theme-layout-navbar-left navbar__items"><button aria-label="Toggle navigation bar" aria-expanded="false" class="navbar__toggle clean-btn" type="button"><svg width="30" height="30" viewBox="0 0 30 30" aria-hidden="true"><path stroke="currentColor" stroke-linecap="round" stroke-miterlimit="10" stroke-width="2" d="M4 7h22M4 15h22M4 23h22"></path></svg></button><a class="navbar__brand" href="/physical-ai-textbook/"><div class="navbar__logo"><img src="/physical-ai-textbook/img/logo.svg" alt="Physical AI Logo" class="themedComponent_mlkZ themedComponent--light_NVdE"><img src="/physical-ai-textbook/img/logo.svg" alt="Physical AI Logo" class="themedComponent_mlkZ themedComponent--dark_xIcU"></div><b class="navbar__title text--truncate">Physical AI Textbook</b></a><a aria-current="page" class="navbar__item navbar__link navbar__link--active" href="/physical-ai-textbook/docs/intro/introduction-to-physical-ai">Textbook</a></div><div class="theme-layout-navbar-right navbar__items navbar__items--right"><a href="https://github.com/Gulshan-koondhar/physical-ai-textbook" target="_blank" rel="noopener noreferrer" class="navbar__item navbar__link">GitHub<svg width="13.5" height="13.5" aria-label="(opens in new tab)" class="iconExternalLink_nPIU"><use href="#theme-svg-external-link"></use></svg></a><div class="toggle_vylO colorModeToggle_DEke"><button class="clean-btn toggleButton_gllP toggleButtonDisabled_aARS" type="button" disabled="" title="system mode" aria-label="Switch between dark and light mode (currently system mode)"><svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" class="toggleIcon_g3eP lightToggleIcon_pyhR"><path fill="currentColor" d="M12,9c1.65,0,3,1.35,3,3s-1.35,3-3,3s-3-1.35-3-3S10.35,9,12,9 M12,7c-2.76,0-5,2.24-5,5s2.24,5,5,5s5-2.24,5-5 S14.76,7,12,7L12,7z M2,13l2,0c0.55,0,1-0.45,1-1s-0.45-1-1-1l-2,0c-0.55,0-1,0.45-1,1S1.45,13,2,13z M20,13l2,0c0.55,0,1-0.45,1-1 s-0.45-1-1-1l-2,0c-0.55,0-1,0.45-1,1S19.45,13,20,13z M11,2v2c0,0.55,0.45,1,1,1s1-0.45,1-1V2c0-0.55-0.45-1-1-1S11,1.45,11,2z M11,20v2c0,0.55,0.45,1,1,1s1-0.45,1-1v-2c0-0.55-0.45-1-1-1C11.45,19,11,19.45,11,20z M5.99,4.58c-0.39-0.39-1.03-0.39-1.41,0 c-0.39,0.39-0.39,1.03,0,1.41l1.06,1.06c0.39,0.39,1.03,0.39,1.41,0s0.39-1.03,0-1.41L5.99,4.58z M18.36,16.95 c-0.39-0.39-1.03-0.39-1.41,0c-0.39,0.39-0.39,1.03,0,1.41l1.06,1.06c0.39,0.39,1.03,0.39,1.41,0c0.39-0.39,0.39-1.03,0-1.41 L18.36,16.95z M19.42,5.99c0.39-0.39,0.39-1.03,0-1.41c-0.39-0.39-1.03-0.39-1.41,0l-1.06,1.06c-0.39,0.39-0.39,1.03,0,1.41 s1.03,0.39,1.41,0L19.42,5.99z M7.05,18.36c0.39-0.39,0.39-1.03,0-1.41c-0.39-0.39-1.03-0.39-1.41,0l-1.06,1.06 c-0.39,0.39-0.39,1.03,0,1.41s1.03,0.39,1.41,0L7.05,18.36z"></path></svg><svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" class="toggleIcon_g3eP darkToggleIcon_wfgR"><path fill="currentColor" d="M9.37,5.51C9.19,6.15,9.1,6.82,9.1,7.5c0,4.08,3.32,7.4,7.4,7.4c0.68,0,1.35-0.09,1.99-0.27C17.45,17.19,14.93,19,12,19 c-3.86,0-7-3.14-7-7C5,9.07,6.81,6.55,9.37,5.51z M12,3c-4.97,0-9,4.03-9,9s4.03,9,9,9s9-4.03,9-9c0-0.46-0.04-0.92-0.1-1.36 c-0.98,1.37-2.58,2.26-4.4,2.26c-2.98,0-5.4-2.42-5.4-5.4c0-1.81,0.89-3.42,2.26-4.4C12.92,3.04,12.46,3,12,3L12,3z"></path></svg><svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" class="toggleIcon_g3eP systemToggleIcon_QzmC"><path fill="currentColor" d="m12 21c4.971 0 9-4.029 9-9s-4.029-9-9-9-9 4.029-9 9 4.029 9 9 9zm4.95-13.95c1.313 1.313 2.05 3.093 2.05 4.95s-0.738 3.637-2.05 4.95c-1.313 1.313-3.093 2.05-4.95 2.05v-14c1.857 0 3.637 0.737 4.95 2.05z"></path></svg></button></div><div class="navbarSearchContainer_Bca1"></div></div></div><div role="presentation" class="navbar-sidebar__backdrop"></div></nav><div id="__docusaurus_skipToContent_fallback" class="theme-layout-main main-wrapper mainWrapper_z2l0"><div class="docsWrapper_hBAB"><button aria-label="Scroll back to top" class="clean-btn theme-back-to-top-button backToTopButton_sjWU" type="button"></button><div class="docRoot_UBD9"><aside class="theme-doc-sidebar-container docSidebarContainer_YfHR"><div class="sidebarViewport_aRkj"><div class="sidebar_njMd"><nav aria-label="Docs sidebar" class="menu thin-scrollbar menu_SIkG"><ul class="theme-doc-sidebar-menu menu__list"><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist menu__link--sublist-caret" role="button" aria-expanded="false" href="/physical-ai-textbook/docs/intro/introduction-to-physical-ai"><span title="Introduction" class="categoryLinkLabel_W154">Introduction</span></a></div></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist menu__link--sublist-caret" role="button" aria-expanded="false" href="/physical-ai-textbook/docs/module-1-ros/ros2-from-zero"><span title="Module 1 - ROS 2 Fundamentals" class="categoryLinkLabel_W154">Module 1 - ROS 2 Fundamentals</span></a></div></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist menu__link--sublist-caret menu__link--active" role="button" aria-expanded="true" href="/physical-ai-textbook/docs/module-2-simulation/gazebo-harmonic-setup"><span title="Module 2 - Simulation" class="categoryLinkLabel_W154">Module 2 - Simulation</span></a></div><ul class="menu__list"><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-2 menu__list-item"><a class="menu__link" tabindex="0" href="/physical-ai-textbook/docs/module-2-simulation/gazebo-harmonic-setup"><span title="Gazebo Harmonic Setup" class="linkLabel_WmDU">Gazebo Harmonic Setup</span></a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-2 menu__list-item"><a class="menu__link menu__link--active" aria-current="page" tabindex="0" href="/physical-ai-textbook/docs/module-2-simulation/simulating-humanoid"><span title="Simulating Humanoid in Gazebo" class="linkLabel_WmDU">Simulating Humanoid in Gazebo</span></a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-2 menu__list-item"><a class="menu__link" tabindex="0" href="/physical-ai-textbook/docs/module-2-simulation/unity-rendering"><span title="Unity Rendering" class="linkLabel_WmDU">Unity Rendering</span></a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-2 menu__list-item"><a class="menu__link" tabindex="0" href="/physical-ai-textbook/docs/module-2-simulation/sensor-plugin-configuration"><span title="Sensor Plugin Configuration" class="linkLabel_WmDU">Sensor Plugin Configuration</span></a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-2 menu__list-item"><a class="menu__link" tabindex="0" href="/physical-ai-textbook/docs/module-2-simulation/sensor-configurations"><span title="Sensor Configurations" class="linkLabel_WmDU">Sensor Configurations</span></a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-2 menu__list-item"><a class="menu__link" tabindex="0" href="/physical-ai-textbook/docs/module-2-simulation/ros-tcp-connector"><span title="ROS TCP Connector Bridge" class="linkLabel_WmDU">ROS TCP Connector Bridge</span></a></li></ul></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist menu__link--sublist-caret" role="button" aria-expanded="false" href="/physical-ai-textbook/docs/module-3-ai-brain/isaac-sim-installation"><span title="Module 3 - AI Brain" class="categoryLinkLabel_W154">Module 3 - AI Brain</span></a></div></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist menu__link--sublist-caret" role="button" aria-expanded="false" href="/physical-ai-textbook/docs/module-4-vla/whisper-gpt-ros-planner"><span title="Module 4 - VLA Integration" class="categoryLinkLabel_W154">Module 4 - VLA Integration</span></a></div></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist menu__link--sublist-caret" role="button" aria-expanded="false" href="/physical-ai-textbook/docs/capstone/red-cup-project"><span title="Capstone Project" class="categoryLinkLabel_W154">Capstone Project</span></a></div></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist menu__link--sublist-caret" role="button" aria-expanded="false" href="/physical-ai-textbook/docs/hardware/hardware-guide"><span title="Hardware Guide" class="categoryLinkLabel_W154">Hardware Guide</span></a></div></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist menu__link--sublist-caret" role="button" aria-expanded="false" href="/physical-ai-textbook/docs/appendix/troubleshooting"><span title="Appendices" class="categoryLinkLabel_W154">Appendices</span></a></div></li></ul></nav></div></div></aside><main class="docMainContainer_TBSr"><div class="container padding-top--md padding-bottom--lg"><div class="row"><div class="col docItemCol_VOVn"><div class="docItemContainer_Djhp"><article><nav class="theme-doc-breadcrumbs breadcrumbsContainer_Z_bl" aria-label="Breadcrumbs"><ul class="breadcrumbs"><li class="breadcrumbs__item"><a aria-label="Home page" class="breadcrumbs__link" href="/physical-ai-textbook/"><svg viewBox="0 0 24 24" class="breadcrumbHomeIcon_YNFT"><path d="M10 19v-5h4v5c0 .55.45 1 1 1h3c.55 0 1-.45 1-1v-7h1.7c.46 0 .68-.57.33-.87L12.67 3.6c-.38-.34-.96-.34-1.34 0l-8.36 7.53c-.34.3-.13.87.33.87H5v7c0 .55.45 1 1 1h3c.55 0 1-.45 1-1z" fill="currentColor"></path></svg></a></li><li class="breadcrumbs__item"><span class="breadcrumbs__link">Module 2 - Simulation</span></li><li class="breadcrumbs__item breadcrumbs__item--active"><span class="breadcrumbs__link">Simulating Humanoid in Gazebo</span></li></ul></nav><div class="tocCollapsible_ETCw theme-doc-toc-mobile tocMobile_ITEo"><button type="button" class="clean-btn tocCollapsibleButton_TO0P">On this page</button></div><div class="theme-doc-markdown markdown"><header><h1 id="simulating-humanoid-robots-in-gazebo">Simulating Humanoid Robots in Gazebo</h1></header>
+<h2 id="introduction">Introduction</h2>
+<p>Simulating humanoid robots in Gazebo requires careful consideration of physics, control systems, and sensor integration. Unlike simpler wheeled robots, humanoid robots have complex kinematics, many degrees of freedom, and require sophisticated control algorithms to maintain balance and execute tasks. This chapter covers the essential techniques for creating realistic and stable humanoid robot simulations in Gazebo.</p>
+<h2 id="understanding-humanoid-simulation-challenges">Understanding Humanoid Simulation Challenges</h2>
+<h3 id="balance-and-stability">Balance and Stability</h3>
+<p>Humanoid robots face unique challenges in simulation:</p>
+<ol>
+<li><strong>Center of Mass Management</strong>: The robot must maintain its center of mass within its support polygon</li>
+<li><strong>Dynamic Balance</strong>: Unlike static structures, humanoid robots must actively balance during movement</li>
+<li><strong>Contact Dynamics</strong>: Foot-ground interaction is critical for stable locomotion</li>
+<li><strong>Control Frequency</strong>: High-frequency control is needed for stable balance</li>
+</ol>
+<h3 id="physics-complexity">Physics Complexity</h3>
+<p>Humanoid simulation involves complex physics interactions:</p>
+<ul>
+<li>Multiple simultaneous contacts (feet, hands during manipulation)</li>
+<li>Complex joint constraints</li>
+<li>High degrees of freedom requiring precise control</li>
+<li>Sensitivity to small parameter changes</li>
+</ul>
+<h2 id="creating-a-stable-humanoid-model">Creating a Stable Humanoid Model</h2>
+<h3 id="proper-mass-distribution">Proper Mass Distribution</h3>
+<p>For stable simulation, ensure proper mass distribution:</p>
+<pre><code class="language-xml">&lt;!-- Example: Properly configured humanoid link with mass properties --&gt;
+&lt;link name=&quot;torso_link&quot;&gt;
+  &lt;inertial&gt;
+    &lt;!-- Mass should reflect real-world values --&gt;
+    &lt;mass value=&quot;5.0&quot;/&gt;
+    &lt;!-- Inertia tensor should match the physical shape --&gt;
+    &lt;inertia
+      ixx=&quot;0.1&quot; ixy=&quot;0.0&quot; ixz=&quot;0.0&quot;
+      iyy=&quot;0.1&quot; iyz=&quot;0.0&quot;
+      izz=&quot;0.05&quot;/&gt;
+  &lt;/inertial&gt;
+
+  &lt;visual&gt;
+    &lt;geometry&gt;
+      &lt;box size=&quot;0.2 0.15 0.4&quot;/&gt;
+    &lt;/geometry&gt;
+    &lt;material name=&quot;white&quot;/&gt;
+  &lt;/visual&gt;
+
+  &lt;collision&gt;
+    &lt;geometry&gt;
+      &lt;box size=&quot;0.2 0.15 0.4&quot;/&gt;
+    &lt;/geometry&gt;
+  &lt;/collision&gt;
+&lt;/link&gt;
+</code></pre>
+<h3 id="joint-configuration-for-stability">Joint Configuration for Stability</h3>
+<p>Configure joints with appropriate limits and dynamics:</p>
+<pre><code class="language-xml">&lt;joint name=&quot;left_knee_joint&quot; type=&quot;revolute&quot;&gt;
+  &lt;parent link=&quot;left_thigh_link&quot;/&gt;
+  &lt;child link=&quot;left_shin_link&quot;/&gt;
+  &lt;origin xyz=&quot;0 0 -0.4&quot; rpy=&quot;0 0 0&quot;/&gt;
+  &lt;axis xyz=&quot;0 1 0&quot;/&gt;
+  &lt;limit lower=&quot;0.0&quot; upper=&quot;2.356&quot; effort=&quot;15.0&quot; velocity=&quot;5.0&quot;/&gt;
+  &lt;dynamics damping=&quot;0.5&quot; friction=&quot;0.1&quot;/&gt;
+&lt;/joint&gt;
+
+&lt;!-- Gazebo-specific joint configuration --&gt;
+&lt;gazebo reference=&quot;left_knee_joint&quot;&gt;
+  &lt;implicit_spring_damper&gt;1&lt;/implicit_spring_damper&gt;
+  &lt;provide_feedback&gt;1&lt;/provide_feedback&gt;
+  &lt;joint_properties&gt;
+    &lt;ode&gt;
+      &lt;damping&gt;0.5&lt;/damping&gt;
+      &lt;friction&gt;0.1&lt;/friction&gt;
+      &lt;limit&gt;
+        &lt;cfm&gt;0.0&lt;/cfm&gt;
+        &lt;erp&gt;0.2&lt;/erp&gt;
+      &lt;/limit&gt;
+    &lt;/ode&gt;
+  &lt;/joint_properties&gt;
+&lt;/gazebo&gt;
+</code></pre>
+<h2 id="sensor-integration-for-humanoid-robots">Sensor Integration for Humanoid Robots</h2>
+<h3 id="imu-sensors">IMU Sensors</h3>
+<p>IMU sensors are crucial for humanoid balance and orientation:</p>
+<pre><code class="language-xml">&lt;!-- IMU sensor on the torso for balance control --&gt;
+&lt;gazebo reference=&quot;torso_link&quot;&gt;
+  &lt;sensor name=&quot;torso_imu&quot; type=&quot;imu&quot;&gt;
+    &lt;always_on&gt;true&lt;/always_on&gt;
+    &lt;update_rate&gt;100&lt;/update_rate&gt;
+    &lt;visualize&gt;false&lt;/visualize&gt;
+    &lt;imu&gt;
+      &lt;angular_velocity&gt;
+        &lt;x&gt;
+          &lt;noise type=&quot;gaussian&quot;&gt;
+            &lt;mean&gt;0.0&lt;/mean&gt;
+            &lt;stddev&gt;2e-4&lt;/stddev&gt;
+            &lt;bias_mean&gt;0.0000075&lt;/bias_mean&gt;
+            &lt;bias_stddev&gt;0.0000008&lt;/bias_stddev&gt;
+          &lt;/noise&gt;
+        &lt;/x&gt;
+        &lt;y&gt;
+          &lt;noise type=&quot;gaussian&quot;&gt;
+            &lt;mean&gt;0.0&lt;/mean&gt;
+            &lt;stddev&gt;2e-4&lt;/stddev&gt;
+            &lt;bias_mean&gt;0.0000075&lt;/bias_mean&gt;
+            &lt;bias_stddev&gt;0.0000008&lt;/bias_stddev&gt;
+          &lt;/noise&gt;
+        &lt;/y&gt;
+        &lt;z&gt;
+          &lt;noise type=&quot;gaussian&quot;&gt;
+            &lt;mean&gt;0.0&lt;/mean&gt;
+            &lt;stddev&gt;2e-4&lt;/stddev&gt;
+            &lt;bias_mean&gt;0.0000075&lt;/bias_mean&gt;
+            &lt;bias_stddev&gt;0.0000008&lt;/bias_stddev&gt;
+          &lt;/noise&gt;
+        &lt;/z&gt;
+      &lt;/angular_velocity&gt;
+      &lt;linear_acceleration&gt;
+        &lt;x&gt;
+          &lt;noise type=&quot;gaussian&quot;&gt;
+            &lt;mean&gt;0.0&lt;/mean&gt;
+            &lt;stddev&gt;1.7e-2&lt;/stddev&gt;
+            &lt;bias_mean&gt;0.1&lt;/bias_mean&gt;
+            &lt;bias_stddev&gt;0.001&lt;/bias_stddev&gt;
+          &lt;/noise&gt;
+        &lt;/x&gt;
+        &lt;y&gt;
+          &lt;noise type=&quot;gaussian&quot;&gt;
+            &lt;mean&gt;0.0&lt;/mean&gt;
+            &lt;stddev&gt;1.7e-2&lt;/stddev&gt;
+            &lt;bias_mean&gt;0.1&lt;/bias_mean&gt;
+            &lt;bias_stddev&gt;0.001&lt;/bias_stddev&gt;
+          &lt;/noise&gt;
+        &lt;/y&gt;
+        &lt;z&gt;
+          &lt;noise type=&quot;gaussian&quot;&gt;
+            &lt;mean&gt;0.0&lt;/mean&gt;
+            &lt;stddev&gt;1.7e-2&lt;/stddev&gt;
+            &lt;bias_mean&gt;0.1&lt;/bias_mean&gt;
+            &lt;bias_stddev&gt;0.001&lt;/bias_stddev&gt;
+          &lt;/noise&gt;
+        &lt;/z&gt;
+      &lt;/linear_acceleration&gt;
+    &lt;/imu&gt;
+  &lt;/sensor&gt;
+&lt;/gazebo&gt;
+</code></pre>
+<h3 id="forcetorque-sensors">Force/Torque Sensors</h3>
+<p>For contact detection and manipulation:</p>
+<pre><code class="language-xml">&lt;!-- Force/Torque sensor in the foot for contact detection --&gt;
+&lt;gazebo reference=&quot;left_foot_link&quot;&gt;
+  &lt;sensor name=&quot;left_foot_ft_sensor&quot; type=&quot;force_torque&quot;&gt;
+    &lt;always_on&gt;true&lt;/always_on&gt;
+    &lt;update_rate&gt;100&lt;/update_rate&gt;
+    &lt;force_torque&gt;
+      &lt;frame&gt;child&lt;/frame&gt;
+      &lt;measure_direction&gt;child_to_parent&lt;/measure_direction&gt;
+    &lt;/force_torque&gt;
+  &lt;/sensor&gt;
+&lt;/gazebo&gt;
+</code></pre>
+<h3 id="camera-and-depth-sensors">Camera and Depth Sensors</h3>
+<p>For perception and navigation:</p>
+<pre><code class="language-xml">&lt;!-- Head-mounted RGB-D camera --&gt;
+&lt;gazebo reference=&quot;head_camera_link&quot;&gt;
+  &lt;sensor name=&quot;head_camera&quot; type=&quot;camera&quot;&gt;
+    &lt;always_on&gt;true&lt;/always_on&gt;
+    &lt;update_rate&gt;30&lt;/update_rate&gt;
+    &lt;camera&gt;
+      &lt;horizontal_fov&gt;1.047&lt;/horizontal_fov&gt;
+      &lt;image&gt;
+        &lt;width&gt;640&lt;/width&gt;
+        &lt;height&gt;480&lt;/height&gt;
+        &lt;format&gt;R8G8B8&lt;/format&gt;
+      &lt;/image&gt;
+      &lt;clip&gt;
+        &lt;near&gt;0.1&lt;/near&gt;
+        &lt;far&gt;10.0&lt;/far&gt;
+      &lt;/clip&gt;
+    &lt;/camera&gt;
+    &lt;plugin name=&quot;camera_controller&quot; filename=&quot;libgazebo_ros_camera.so&quot;&gt;
+      &lt;frame_name&gt;head_camera_optical_frame&lt;/frame_name&gt;
+      &lt;min_depth&gt;0.1&lt;/min_depth&gt;
+      &lt;max_depth&gt;10.0&lt;/max_depth&gt;
+    &lt;/plugin&gt;
+  &lt;/sensor&gt;
+&lt;/gazebo&gt;
+</code></pre>
+<h2 id="control-system-integration">Control System Integration</h2>
+<h3 id="ros2_control-configuration">ros2_control Configuration</h3>
+<p>Set up ros2_control for your humanoid robot:</p>
+<pre><code class="language-yaml"># config/humanoid_control.yaml
+controller_manager:
+  ros__parameters:
+    update_rate: 1000  # Hz
+
+    joint_state_broadcaster:
+      type: joint_state_broadcaster/JointStateBroadcaster
+
+    # Position controllers for each joint group
+    left_leg_controller:
+      type: position_controllers/JointGroupPositionController
+
+    right_leg_controller:
+      type: position_controllers/JointGroupPositionController
+
+    left_arm_controller:
+      type: position_controllers/JointGroupPositionController
+
+    right_arm_controller:
+      type: position_controllers/JointGroupPositionController
+
+    torso_controller:
+      type: position_controllers/JointGroupPositionController
+
+# Left leg controller configuration
+left_leg_controller:
+  ros__parameters:
+    joints:
+      - left_hip_yaw
+      - left_hip_pitch
+      - left_hip_roll
+      - left_knee
+      - left_ankle_pitch
+      - left_ankle_roll
+
+# Right leg controller configuration
+right_leg_controller:
+  ros__parameters:
+    joints:
+      - right_hip_yaw
+      - right_hip_pitch
+      - right_hip_roll
+      - right_knee
+      - right_ankle_pitch
+      - right_ankle_roll
+
+# Left arm controller configuration
+left_arm_controller:
+  ros__parameters:
+    joints:
+      - left_shoulder_pitch
+      - left_shoulder_yaw
+      - left_shoulder_roll
+      - left_elbow
+      - left_wrist_pitch
+      - left_wrist_yaw
+
+# Right arm controller configuration
+right_arm_controller:
+  ros__parameters:
+    joints:
+      - right_shoulder_pitch
+      - right_shoulder_yaw
+      - right_shoulder_roll
+      - right_elbow
+      - right_wrist_pitch
+      - right_wrist_yaw
+
+# Torso controller configuration
+torso_controller:
+  ros__parameters:
+    joints:
+      - waist_yaw
+      - waist_pitch
+      - chest_yaw
+      - chest_pitch
+</code></pre>
+<h3 id="joint-transmission-configuration">Joint Transmission Configuration</h3>
+<p>Properly configure transmissions for accurate control:</p>
+<pre><code class="language-xml">&lt;!-- Transmission for a single joint --&gt;
+&lt;transmission name=&quot;left_hip_yaw_trans&quot;&gt;
+  &lt;type&gt;transmission_interface/SimpleTransmission&lt;/type&gt;
+  &lt;joint name=&quot;left_hip_yaw&quot;&gt;
+    &lt;hardwareInterface&gt;hardware_interface/EffortJointInterface&lt;/hardwareInterface&gt;
+  &lt;/joint&gt;
+  &lt;actuator name=&quot;left_hip_yaw_motor&quot;&gt;
+    &lt;mechanicalReduction&gt;1&lt;/mechanicalReduction&gt;
+    &lt;hardwareInterface&gt;hardware_interface/EffortJointInterface&lt;/hardwareInterface&gt;
+  &lt;/actuator&gt;
+&lt;/transmission&gt;
+
+&lt;!-- For more complex transmissions --&gt;
+&lt;transmission name=&quot;left_knee_trans&quot;&gt;
+  &lt;type&gt;transmission_interface/SimpleTransmission&lt;/type&gt;
+  &lt;joint name=&quot;left_knee&quot;&gt;
+    &lt;hardwareInterface&gt;hardware_interface/EffortJointInterface&lt;/hardwareInterface&gt;
+    &lt;role&gt;joint1&lt;/role&gt;
+  &lt;/joint&gt;
+  &lt;actuator name=&quot;left_knee_motor&quot;&gt;
+    &lt;mechanicalReduction&gt;100&lt;/mechanicalReduction&gt;  &lt;!-- Example gear ratio --&gt;
+    &lt;hardwareInterface&gt;hardware_interface/EffortJointInterface&lt;/hardwareInterface&gt;
+  &lt;/actuator&gt;
+&lt;/transmission&gt;
+</code></pre>
+<h2 id="balance-control-in-simulation">Balance Control in Simulation</h2>
+<h3 id="center-of-mass-considerations">Center of Mass Considerations</h3>
+<p>For stable balance in simulation:</p>
+<pre><code class="language-python"># Example: Balance controller (simplified)
+import rclpy
+from rclpy.node import Node
+from sensor_msgs.msg import Imu, JointState
+from geometry_msgs.msg import Vector3
+import numpy as np
+
+class BalanceController(Node):
+    def __init__(self):
+        super().__init__(&#x27;balance_controller&#x27;)
+
+        # Subscriptions
+        self.imu_sub = self.create_subscription(
+            Imu, &#x27;/imu/data&#x27;, self.imu_callback, 10)
+
+        self.joint_state_sub = self.create_subscription(
+            JointState, &#x27;/joint_states&#x27;, self.joint_state_callback, 10)
+
+        # Publishers
+        self.joint_cmd_pub = self.create_publisher(
+            JointState, &#x27;/joint_commands&#x27;, 10)
+
+        # Timer for control loop (1000 Hz for fast response)
+        self.control_timer = self.create_timer(0.001, self.balance_control)
+
+        # Internal state
+        self.current_imu = Imu()
+        self.current_joints = JointState()
+        self.balance_active = True
+
+        # Balance control parameters
+        self.roll_pid = {&#x27;kp&#x27;: 10.0, &#x27;ki&#x27;: 0.1, &#x27;kd&#x27;: 0.5}
+        self.pitch_pid = {&#x27;kp&#x27;: 10.0, &#x27;ki&#x27;: 0.1, &#x27;kd&#x27;: 0.5}
+
+    def imu_callback(self, msg):
+        &quot;&quot;&quot;Handle IMU data for balance feedback&quot;&quot;&quot;
+        self.current_imu = msg
+
+    def joint_state_callback(self, msg):
+        &quot;&quot;&quot;Handle current joint states&quot;&quot;&quot;
+        self.current_joints = msg
+
+    def balance_control(self):
+        &quot;&quot;&quot;Main balance control algorithm&quot;&quot;&quot;
+        if not self.balance_active:
+            return
+
+        # Get current orientation from IMU
+        orientation = self.current_imu.orientation
+        roll, pitch, yaw = self.quaternion_to_rpy(orientation)
+
+        # Calculate balance errors
+        roll_error = 0.0 - roll  # Target roll = 0
+        pitch_error = 0.0 - pitch  # Target pitch = 0
+
+        # Simple PID control for balance correction
+        roll_correction = (self.roll_pid[&#x27;kp&#x27;] * roll_error +
+                          self.roll_pid[&#x27;ki&#x27;] * self.integrated_roll_error +
+                          self.roll_pid[&#x27;kd&#x27;] * self.derived_roll_error)
+
+        pitch_correction = (self.pitch_pid[&#x27;kp&#x27;] * pitch_error +
+                           self.pitch_pid[&#x27;ki&#x27;] * self.integrated_pitch_error +
+                           self.pitch_pid[&#x27;kd&#x27;] * self.derived_pitch_error)
+
+        # Apply corrections to ankle joints
+        self.apply_balance_correction(roll_correction, pitch_correction)
+
+    def quaternion_to_rpy(self, quaternion):
+        &quot;&quot;&quot;Convert quaternion to roll-pitch-yaw&quot;&quot;&quot;
+        import math
+        q = quaternion
+        sinr_cosp = 2 * (q.w * q.x + q.y * q.z)
+        cosr_cosp = 1 - 2 * (q.x * q.x + q.y * q.y)
+        roll = math.atan2(sinr_cosp, cosr_cosp)
+
+        sinp = 2 * (q.w * q.y - q.z * q.x)
+        pitch = math.asin(sinp)
+
+        siny_cosp = 2 * (q.w * q.z + q.x * q.y)
+        cosy_cosp = 1 - 2 * (q.y * q.y + q.z * q.z)
+        yaw = math.atan2(siny_cosp, cosy_cosp)
+
+        return roll, pitch, yaw
+
+    def apply_balance_correction(self, roll_correction, pitch_correction):
+        &quot;&quot;&quot;Apply balance corrections to ankle joints&quot;&quot;&quot;
+        cmd_msg = JointState()
+        cmd_msg.header.stamp = self.get_clock().now().to_msg()
+
+        # Add balance corrections to ankle joints
+        cmd_msg.name = [&#x27;left_ankle_pitch&#x27;, &#x27;left_ankle_roll&#x27;,
+                       &#x27;right_ankle_pitch&#x27;, &#x27;right_ankle_roll&#x27;]
+        cmd_msg.position = [pitch_correction, roll_correction,
+                           pitch_correction, roll_correction]
+
+        self.joint_cmd_pub.publish(cmd_msg)
+
+def main(args=None):
+    rclpy.init(args=args)
+    balance_controller = BalanceController()
+
+    try:
+        rclpy.spin(balance_controller)
+    except KeyboardInterrupt:
+        pass
+    finally:
+        balance_controller.destroy_node()
+        rclpy.shutdown()
+
+if __name__ == &#x27;__main__&#x27;:
+    main()
+</code></pre>
+<h2 id="walking-pattern-generation">Walking Pattern Generation</h2>
+<h3 id="inverse-kinematics-for-walking">Inverse Kinematics for Walking</h3>
+<p>Implement walking patterns with inverse kinematics:</p>
+<pre><code class="language-python"># Example: Simple walking pattern generator
+import numpy as np
+import math
+
+class WalkingPatternGenerator:
+    def __init__(self):
+        # Walking parameters
+        self.step_height = 0.1  # Height of foot lift
+        self.step_length = 0.3  # Distance per step
+        self.step_duration = 1.0  # Time per step
+        self.zmp_margin = 0.05  # Zero Moment Point safety margin
+
+    def generate_step_trajectory(self, time, leg_side, step_phase):
+        &quot;&quot;&quot;
+        Generate foot trajectory for walking
+        leg_side: &#x27;left&#x27; or &#x27;right&#x27;
+        step_phase: 0.0 to 1.0 (0 = start of step, 1 = end of step)
+        &quot;&quot;&quot;
+        # Calculate foot position based on step phase
+        x = self.step_length * step_phase
+        y = 0.0  # Lateral position (depends on gait)
+
+        # Foot lift trajectory (cycloid or similar)
+        if step_phase &lt; 0.5:
+            # Rising phase
+            z = self.step_height * (1 - math.cos(math.pi * step_phase * 2)) / 2
+        else:
+            # Falling phase
+            z = self.step_height * (1 - math.cos(math.pi * (step_phase * 2 - 1))) / 2
+
+        # Adjust for leg side
+        if leg_side == &#x27;left&#x27;:
+            y = 0.1  # Left leg offset
+        else:
+            y = -0.1  # Right leg offset
+
+        return x, y, z
+
+    def generate_com_trajectory(self, time):
+        &quot;&quot;&quot;Generate Center of Mass trajectory for balance&quot;&quot;&quot;
+        # Simple CoM trajectory for walking
+        com_x = self.step_length * time / self.step_duration
+        com_y = 0.0  # Keep CoM centered laterally
+        com_z = 0.8  # Maintain constant height
+
+        return com_x, com_y, com_z
+</code></pre>
+<h2 id="advanced-simulation-techniques">Advanced Simulation Techniques</h2>
+<h3 id="multi-robot-simulation">Multi-Robot Simulation</h3>
+<p>Simulating multiple humanoid robots:</p>
+<pre><code class="language-xml">&lt;!-- World file with multiple humanoid robots --&gt;
+&lt;?xml version=&quot;1.0&quot; ?&gt;
+&lt;sdf version=&quot;1.7&quot;&gt;
+  &lt;world name=&quot;multi_humanoid_world&quot;&gt;
+    &lt;!-- Physics --&gt;
+    &lt;physics type=&quot;ode&quot;&gt;
+      &lt;gravity&gt;0 0 -9.8&lt;/gravity&gt;
+      &lt;max_step_size&gt;0.001&lt;/max_step_size&gt;
+    &lt;/physics&gt;
+
+    &lt;!-- First humanoid robot --&gt;
+    &lt;include&gt;
+      &lt;name&gt;humanoid_1&lt;/name&gt;
+      &lt;uri&gt;model://humanoid_robot&lt;/uri&gt;
+      &lt;pose&gt;0 0 1 0 0 0&lt;/pose&gt;
+    &lt;/include&gt;
+
+    &lt;!-- Second humanoid robot --&gt;
+    &lt;include&gt;
+      &lt;name&gt;humanoid_2&lt;/name&gt;
+      &lt;uri&gt;model://humanoid_robot&lt;/uri&gt;
+      &lt;pose&gt;2 0 1 0 0 0&lt;/pose&gt;
+    &lt;/include&gt;
+
+    &lt;!-- Environment --&gt;
+    &lt;include&gt;
+      &lt;uri&gt;model://ground_plane&lt;/uri&gt;
+    &lt;/include&gt;
+  &lt;/world&gt;
+&lt;/sdf&gt;
+</code></pre>
+<h3 id="sensor-fusion-simulation">Sensor Fusion Simulation</h3>
+<p>Combine multiple sensors for better perception:</p>
+<pre><code class="language-python"># Example: Sensor fusion for humanoid navigation
+class SensorFusionNode(Node):
+    def __init__(self):
+        super().__init__(&#x27;sensor_fusion&#x27;)
+
+        # Multiple sensor subscriptions
+        self.imu_sub = self.create_subscription(Imu, &#x27;/imu/data&#x27;, self.imu_callback, 10)
+        self.odom_sub = self.create_subscription(Odometry, &#x27;/odom&#x27;, self.odom_callback, 10)
+        self.laser_sub = self.create_subscription(LaserScan, &#x27;/scan&#x27;, self.laser_callback, 10)
+
+        # Fused output
+        self.fused_pose_pub = self.create_publisher(PoseWithCovarianceStamped, &#x27;/fused_pose&#x27;, 10)
+
+        # Kalman filter for sensor fusion
+        self.kalman_filter = self.initialize_kalman_filter()
+
+    def initialize_kalman_filter(self):
+        &quot;&quot;&quot;Initialize Kalman filter for sensor fusion&quot;&quot;&quot;
+        # State: [x, y, z, vx, vy, vz, roll, pitch, yaw]
+        # Measurement: [x, y, z, roll, pitch, yaw] from different sensors
+        # Implementation details depend on specific requirements
+        pass
+</code></pre>
+<h2 id="performance-optimization">Performance Optimization</h2>
+<h3 id="reducing-simulation-load">Reducing Simulation Load</h3>
+<p>For complex humanoid simulations:</p>
+<ol>
+<li><strong>Simplify Collision Geometries</strong>: Use boxes and cylinders instead of complex meshes</li>
+<li><strong>Adjust Update Rates</strong>: Reduce sensor update rates where possible</li>
+<li><strong>Use Efficient Physics</strong>: Choose appropriate physics parameters</li>
+<li><strong>Limit Visual Complexity</strong>: Reduce rendering quality during computation-intensive tasks</li>
+</ol>
+<h3 id="multi-threaded-simulation">Multi-Threaded Simulation</h3>
+<p>Configure Gazebo for better performance:</p>
+<pre><code class="language-xml">&lt;!-- World file with performance settings --&gt;
+&lt;world name=&quot;optimized_humanoid_world&quot;&gt;
+  &lt;physics type=&quot;ode&quot;&gt;
+    &lt;max_step_size&gt;0.001&lt;/max_step_size&gt;
+    &lt;real_time_factor&gt;1.0&lt;/real_time_factor&gt;
+    &lt;real_time_update_rate&gt;1000&lt;/real_time_update_rate&gt;
+    &lt;threads&gt;4&lt;/threads&gt;  &lt;!-- Use multiple threads --&gt;
+    &lt;ode&gt;
+      &lt;solver&gt;
+        &lt;type&gt;quick&lt;/type&gt;
+        &lt;iters&gt;100&lt;/iters&gt;  &lt;!-- Balance between accuracy and speed --&gt;
+        &lt;sor&gt;1.3&lt;/sor&gt;
+      &lt;/solver&gt;
+    &lt;/ode&gt;
+  &lt;/physics&gt;
+
+  &lt;!-- Disable unnecessary features --&gt;
+  &lt;scene&gt;
+    &lt;shadows&gt;false&lt;/shadows&gt;  &lt;!-- Disable shadows for performance --&gt;
+  &lt;/scene&gt;
+&lt;/world&gt;
+</code></pre>
+<h2 id="debugging-humanoid-simulation">Debugging Humanoid Simulation</h2>
+<h3 id="common-issues-and-solutions">Common Issues and Solutions</h3>
+<h4 id="1-robot-falls-over-immediately">1. Robot Falls Over Immediately</h4>
+<ul>
+<li>Check mass distribution and center of mass</li>
+<li>Verify joint limits and initial positions</li>
+<li>Check ground contact parameters</li>
+<li>Ensure proper controller initialization</li>
+</ul>
+<h4 id="2-oscillatory-behavior">2. Oscillatory Behavior</h4>
+<ul>
+<li>Reduce controller gains</li>
+<li>Check sensor noise levels</li>
+<li>Verify physics parameters (CFM, ERP)</li>
+<li>Check timing and update rates</li>
+</ul>
+<h4 id="3-joint-limit-violations">3. Joint Limit Violations</h4>
+<ul>
+<li>Verify joint limits in URDF</li>
+<li>Check controller position bounds</li>
+<li>Ensure trajectory generators respect limits</li>
+<li>Add soft limits in controllers</li>
+</ul>
+<h4 id="4-high-cpu-usage">4. High CPU Usage</h4>
+<ul>
+<li>Simplify collision geometries</li>
+<li>Reduce physics iterations</li>
+<li>Lower sensor update rates</li>
+<li>Use efficient controllers</li>
+</ul>
+<h3 id="debugging-tools">Debugging Tools</h3>
+<h4 id="tf-tree-analysis">TF Tree Analysis</h4>
+<pre><code class="language-bash"># Check TF tree for humanoid robot
+ros2 run tf2_tools view_frames
+
+# Echo specific transforms
+ros2 run tf2_ros tf2_echo base_link left_foot_link
+</code></pre>
+<h4 id="sensor-data-validation">Sensor Data Validation</h4>
+<pre><code class="language-bash"># Monitor sensor data
+ros2 topic echo /imu/data --field orientation
+ros2 topic echo /joint_states --field position
+</code></pre>
+<h4 id="controller-status">Controller Status</h4>
+<pre><code class="language-bash"># Check controller status
+ros2 control list_controllers
+ros2 control list_hardware_interfaces
+</code></pre>
+<h2 id="integration-with-navigation-and-manipulation">Integration with Navigation and Manipulation</h2>
+<h3 id="navigation-stack-integration">Navigation Stack Integration</h3>
+<p>For humanoid navigation in simulation:</p>
+<pre><code class="language-yaml"># Navigation configuration for humanoid
+amcl:
+  ros__parameters:
+    use_sim_time: True
+    alpha1: 0.2
+    alpha2: 0.2
+    alpha3: 0.2
+    alpha4: 0.2
+    alpha5: 0.2
+    base_frame_id: &quot;base_link&quot;
+    beam_count: 60
+    initial_pose.x: 0.0
+    initial_pose.y: 0.0
+    initial_pose.z: 0.0
+    initial_pose.yaw: 0.0
+    lambda_short: 0.1
+    max_beams: 60
+    max_particles: 2000
+    min_particles: 500
+    set_initial_pose: True
+    theta_discretization: 210
+    transform_tolerance: 1.0
+    update_min_a: 0.2
+    update_min_d: 0.1
+
+bt_navigator:
+  ros__parameters:
+    use_sim_time: True
+    global_frame: map
+    robot_base_frame: base_link
+    odom_topic: /odom
+    bt_loop_duration: 10
+    default_server_timeout: 20
+    enable_groot_monitoring: True
+    groot_zmq_publisher_port: 1666
+    groot_zmq_server_port: 1667
+    # Specify the path to the BT xml file
+    # default_nav_through_poses_bt_xml: &quot;path/to/navigate_through_poses_w_replanning_and_recovery.xml&quot;
+    # default_nav_to_pose_bt_xml: &quot;path/to/navigate_to_pose_w_replanning_and_recovery.xml&quot;
+    plugin_lib_names:
+    - nav2_compute_path_to_pose_action_bt_node
+    - nav2_compute_path_through_poses_action_bt_node
+    - nav2_smooth_path_action_bt_node
+    - nav2_follow_path_action_bt_node
+    - nav2_spin_action_bt_node
+    - nav2_wait_action_bt_node
+    - nav2_assisted_teleop_action_bt_node
+    - nav2_back_up_action_bt_node
+    - nav2_drive_on_heading_bt_node
+    - nav2_clear_costmap_service_bt_node
+    - nav2_is_stuck_condition_bt_node
+    - nav2_goal_reached_condition_bt_node
+    - nav2_goal_updated_condition_bt_node
+    - nav2_globally_updated_goal_condition_bt_node
+    - nav2_is_path_valid_condition_bt_node
+    - nav2_initial_pose_received_condition_bt_node
+    - nav2_reinitialize_global_localization_service_bt_node
+    - nav2_rate_controller_bt_node
+    - nav2_distance_controller_bt_node
+    - nav2_speed_controller_bt_node
+    - nav2_truncate_path_action_bt_node
+    - nav2_truncate_path_local_action_bt_node
+    - nav2_goal_updater_node_bt_node
+    - nav2_recovery_node_bt_node
+    - nav2_pipeline_sequence_bt_node
+    - nav2_round_robin_node_bt_node
+    - nav2_transform_available_condition_bt_node
+    - nav2_time_expired_condition_bt_node
+    - nav2_path_expiring_timer_condition
+    - nav2_distance_traveled_condition_bt_node
+    - nav2_single_trigger_bt_node
+    - nav2_is_battery_low_condition_bt_node
+    - nav2_navigate_through_poses_action_bt_node
+    - nav2_navigate_to_pose_action_bt_node
+    - nav2_remove_passed_goals_action_bt_node
+    - nav2_planner_selector_bt_node
+    - nav2_controller_selector_bt_node
+    - nav2_goal_checker_selector_bt_node
+    - nav2_controller_cancel_bt_node
+    - nav2_path_longer_on_approach_bt_node
+    - nav2_wait_cancel_bt_node
+    - nav2_spin_cancel_bt_node
+    - nav2_back_up_cancel_bt_node
+    - nav2_assisted_teleop_cancel_bt_node
+    - nav2_drive_on_heading_cancel_bt_node
+</code></pre>
+<h3 id="manipulation-integration">Manipulation Integration</h3>
+<p>For humanoid manipulation in simulation:</p>
+<pre><code class="language-python"># Example: Simple manipulation controller
+class ManipulationController(Node):
+    def __init__(self):
+        super().__init__(&#x27;manipulation_controller&#x27;)
+
+        # Arm control interfaces
+        self.left_arm_controller = self.create_publisher(
+            JointTrajectory, &#x27;/left_arm_controller/joint_trajectory&#x27;, 10)
+
+        self.right_arm_controller = self.create_publisher(
+            JointTrajectory, &#x27;/right_arm_controller/joint_trajectory&#x27;, 10)
+
+        # Object detection
+        self.object_sub = self.create_subscription(
+            ObjectDetectionArray, &#x27;/object_detections&#x27;, self.object_callback, 10)
+
+    def move_arm_to_object(self, arm_side, object_pose):
+        &quot;&quot;&quot;Move specified arm to reach an object&quot;&quot;&quot;
+        # Calculate inverse kinematics
+        joint_trajectory = self.calculate_ik_solution(arm_side, object_pose)
+
+        # Publish trajectory
+        if arm_side == &#x27;left&#x27;:
+            self.left_arm_controller.publish(joint_trajectory)
+        else:
+            self.right_arm_controller.publish(joint_trajectory)
+</code></pre>
+<h2 id="best-practices-for-humanoid-simulation">Best Practices for Humanoid Simulation</h2>
+<h3 id="1-iterative-development">1. Iterative Development</h3>
+<ul>
+<li>Start with simple models and basic movements</li>
+<li>Gradually add complexity (sensors, controllers, environment)</li>
+<li>Test each component individually before integration</li>
+<li>Validate against real-world data when available</li>
+</ul>
+<h3 id="2-realistic-parameters">2. Realistic Parameters</h3>
+<ul>
+<li>Use realistic mass and inertia values</li>
+<li>Include sensor noise and limitations</li>
+<li>Model actuator limitations (torque, speed, resolution)</li>
+<li>Consider environmental factors (friction, terrain)</li>
+</ul>
+<h3 id="3-comprehensive-testing">3. Comprehensive Testing</h3>
+<ul>
+<li>Test in various environments</li>
+<li>Validate stability under disturbances</li>
+<li>Test sensor fusion algorithms</li>
+<li>Verify controller performance limits</li>
+</ul>
+<h3 id="4-performance-monitoring">4. Performance Monitoring</h3>
+<ul>
+<li>Monitor real-time factor consistently</li>
+<li>Track resource usage (CPU, memory)</li>
+<li>Measure control loop timing</li>
+<li>Validate physics accuracy vs. performance trade-offs</li>
+</ul>
+<h2 id="summary">Summary</h2>
+<p>In this chapter, you&#x27;ve learned:</p>
+<ul>
+<li>How to create stable humanoid models with proper mass distribution</li>
+<li>Essential sensor integration for humanoid robots (IMU, force/torque, cameras)</li>
+<li>Control system setup using ros2_control</li>
+<li>Balance control algorithms for humanoid stability</li>
+<li>Walking pattern generation and inverse kinematics</li>
+<li>Advanced simulation techniques for multi-robot and sensor fusion</li>
+<li>Performance optimization strategies</li>
+<li>Debugging techniques for common humanoid simulation issues</li>
+<li>Integration with navigation and manipulation systems</li>
+</ul>
+<p>Creating realistic and stable humanoid simulations requires attention to physics, control systems, and sensor integration. The techniques covered in this chapter provide a foundation for developing sophisticated humanoid robot simulations in Gazebo.</p>
+<h2 id="exercises">Exercises</h2>
+<ol>
+<li>Create a complete humanoid model with all necessary sensors and controllers</li>
+<li>Implement a basic balance controller using IMU feedback</li>
+<li>Generate simple walking patterns and test in simulation</li>
+<li>Integrate navigation stack with your humanoid robot in simulation</li>
+<li>Create a multi-humanoid simulation with interaction scenarios</li>
+</ol>
+<div class="starboard-notebook-container"><div class="starboard-notebook-header"><span class="starboard-notebook-icon">📊</span><span class="starboard-notebook-title">Interactive Notebook</span></div><div class="starboard-notebook-content"><div class="starboard-children-container"><pre><code class="language-python"># This would be an interactive code block for students to experiment with humanoid simulation
+# In a real implementation, this would connect to ROS 2 services
+# to interact with the Gazebo simulation
+</code></pre></div></div><div class="starboard-notebook-footer"><small>Note: This is a placeholder for interactive Starboard notebooks.</small></div></div></div><footer class="theme-doc-footer docusaurus-mt-lg"><div class="row margin-top--sm theme-doc-footer-edit-meta-row"><div class="col noPrint_WFHX"><a href="https://github.com/facebook/docusaurus/tree/main/packages/create-docusaurus/templates/shared/docs/module-2-simulation/02-simulating-humanoid.mdx" target="_blank" rel="noopener noreferrer" class="theme-edit-this-page"><svg fill="currentColor" height="20" width="20" viewBox="0 0 40 40" class="iconEdit_Z9Sw" aria-hidden="true"><g><path d="m34.5 11.7l-3 3.1-6.3-6.3 3.1-3q0.5-0.5 1.2-0.5t1.1 0.5l3.9 3.9q0.5 0.4 0.5 1.1t-0.5 1.2z m-29.5 17.1l18.4-18.5 6.3 6.3-18.4 18.4h-6.3v-6.2z"></path></g></svg>Edit this page</a></div><div class="col lastUpdated_JAkA"></div></div></footer></article><nav class="docusaurus-mt-lg pagination-nav" aria-label="Docs pages"><a class="pagination-nav__link pagination-nav__link--prev" href="/physical-ai-textbook/docs/module-2-simulation/gazebo-harmonic-setup"><div class="pagination-nav__sublabel">Previous</div><div class="pagination-nav__label">Gazebo Harmonic Setup</div></a><a class="pagination-nav__link pagination-nav__link--next" href="/physical-ai-textbook/docs/module-2-simulation/unity-rendering"><div class="pagination-nav__sublabel">Next</div><div class="pagination-nav__label">Unity Rendering</div></a></nav></div></div><div class="col col--3"><div class="tableOfContents_bqdL thin-scrollbar theme-doc-toc-desktop"><ul class="table-of-contents table-of-contents__left-border"><li><a href="#introduction" class="table-of-contents__link toc-highlight">Introduction</a></li><li><a href="#understanding-humanoid-simulation-challenges" class="table-of-contents__link toc-highlight">Understanding Humanoid Simulation Challenges</a><ul><li><a href="#balance-and-stability" class="table-of-contents__link toc-highlight">Balance and Stability</a></li><li><a href="#physics-complexity" class="table-of-contents__link toc-highlight">Physics Complexity</a></li></ul></li><li><a href="#creating-a-stable-humanoid-model" class="table-of-contents__link toc-highlight">Creating a Stable Humanoid Model</a><ul><li><a href="#proper-mass-distribution" class="table-of-contents__link toc-highlight">Proper Mass Distribution</a></li><li><a href="#joint-configuration-for-stability" class="table-of-contents__link toc-highlight">Joint Configuration for Stability</a></li></ul></li><li><a href="#sensor-integration-for-humanoid-robots" class="table-of-contents__link toc-highlight">Sensor Integration for Humanoid Robots</a><ul><li><a href="#imu-sensors" class="table-of-contents__link toc-highlight">IMU Sensors</a></li><li><a href="#forcetorque-sensors" class="table-of-contents__link toc-highlight">Force/Torque Sensors</a></li><li><a href="#camera-and-depth-sensors" class="table-of-contents__link toc-highlight">Camera and Depth Sensors</a></li></ul></li><li><a href="#control-system-integration" class="table-of-contents__link toc-highlight">Control System Integration</a><ul><li><a href="#ros2_control-configuration" class="table-of-contents__link toc-highlight">ros2_control Configuration</a></li><li><a href="#joint-transmission-configuration" class="table-of-contents__link toc-highlight">Joint Transmission Configuration</a></li></ul></li><li><a href="#balance-control-in-simulation" class="table-of-contents__link toc-highlight">Balance Control in Simulation</a><ul><li><a href="#center-of-mass-considerations" class="table-of-contents__link toc-highlight">Center of Mass Considerations</a></li></ul></li><li><a href="#walking-pattern-generation" class="table-of-contents__link toc-highlight">Walking Pattern Generation</a><ul><li><a href="#inverse-kinematics-for-walking" class="table-of-contents__link toc-highlight">Inverse Kinematics for Walking</a></li></ul></li><li><a href="#advanced-simulation-techniques" class="table-of-contents__link toc-highlight">Advanced Simulation Techniques</a><ul><li><a href="#multi-robot-simulation" class="table-of-contents__link toc-highlight">Multi-Robot Simulation</a></li><li><a href="#sensor-fusion-simulation" class="table-of-contents__link toc-highlight">Sensor Fusion Simulation</a></li></ul></li><li><a href="#performance-optimization" class="table-of-contents__link toc-highlight">Performance Optimization</a><ul><li><a href="#reducing-simulation-load" class="table-of-contents__link toc-highlight">Reducing Simulation Load</a></li><li><a href="#multi-threaded-simulation" class="table-of-contents__link toc-highlight">Multi-Threaded Simulation</a></li></ul></li><li><a href="#debugging-humanoid-simulation" class="table-of-contents__link toc-highlight">Debugging Humanoid Simulation</a><ul><li><a href="#common-issues-and-solutions" class="table-of-contents__link toc-highlight">Common Issues and Solutions</a></li><li><a href="#debugging-tools" class="table-of-contents__link toc-highlight">Debugging Tools</a></li></ul></li><li><a href="#integration-with-navigation-and-manipulation" class="table-of-contents__link toc-highlight">Integration with Navigation and Manipulation</a><ul><li><a href="#navigation-stack-integration" class="table-of-contents__link toc-highlight">Navigation Stack Integration</a></li><li><a href="#manipulation-integration" class="table-of-contents__link toc-highlight">Manipulation Integration</a></li></ul></li><li><a href="#best-practices-for-humanoid-simulation" class="table-of-contents__link toc-highlight">Best Practices for Humanoid Simulation</a><ul><li><a href="#1-iterative-development" class="table-of-contents__link toc-highlight">1. Iterative Development</a></li><li><a href="#2-realistic-parameters" class="table-of-contents__link toc-highlight">2. Realistic Parameters</a></li><li><a href="#3-comprehensive-testing" class="table-of-contents__link toc-highlight">3. Comprehensive Testing</a></li><li><a href="#4-performance-monitoring" class="table-of-contents__link toc-highlight">4. Performance Monitoring</a></li></ul></li><li><a href="#summary" class="table-of-contents__link toc-highlight">Summary</a></li><li><a href="#exercises" class="table-of-contents__link toc-highlight">Exercises</a></li></ul></div></div></div></div></main></div></div></div><footer class="theme-layout-footer footer footer--dark"><div class="container container-fluid"><div class="row footer__links"><div class="theme-layout-footer-column col footer__col"><div class="footer__title">Docs</div><ul class="footer__items clean-list"><li class="footer__item"><a class="footer__link-item" href="/physical-ai-textbook/docs/intro/introduction-to-physical-ai">Textbook</a></li></ul></div><div class="theme-layout-footer-column col footer__col"><div class="footer__title">Community</div><ul class="footer__items clean-list"><li class="footer__item"><a href="https://stackoverflow.com/questions/tagged/docusaurus" target="_blank" rel="noopener noreferrer" class="footer__link-item">Stack Overflow<svg width="13.5" height="13.5" aria-label="(opens in new tab)" class="iconExternalLink_nPIU"><use href="#theme-svg-external-link"></use></svg></a></li><li class="footer__item"><a href="https://discordapp.com/invite/docusaurus" target="_blank" rel="noopener noreferrer" class="footer__link-item">Discord<svg width="13.5" height="13.5" aria-label="(opens in new tab)" class="iconExternalLink_nPIU"><use href="#theme-svg-external-link"></use></svg></a></li><li class="footer__item"><a href="https://twitter.com/docusaurus" target="_blank" rel="noopener noreferrer" class="footer__link-item">Twitter<svg width="13.5" height="13.5" aria-label="(opens in new tab)" class="iconExternalLink_nPIU"><use href="#theme-svg-external-link"></use></svg></a></li></ul></div><div class="theme-layout-footer-column col footer__col"><div class="footer__title">More</div><ul class="footer__items clean-list"><li class="footer__item"><a href="https://github.com/Gulshan-koondhar/physical-ai-textbook" target="_blank" rel="noopener noreferrer" class="footer__link-item">GitHub<svg width="13.5" height="13.5" aria-label="(opens in new tab)" class="iconExternalLink_nPIU"><use href="#theme-svg-external-link"></use></svg></a></li></ul></div></div><div class="footer__bottom text--center"><div class="footer__copyright">Copyright © 2025 My Project, Inc. Built with Docusaurus.</div></div></div></footer></div>
+</body>
+</html>

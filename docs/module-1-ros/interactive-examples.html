@@ -1,0 +1,586 @@
+<!doctype html>
+<html lang="en" dir="ltr" class="docs-wrapper plugin-docs plugin-id-default docs-version-current docs-doc-page docs-doc-id-module-1-ros/interactive-examples" data-has-hydrated="false">
+<head>
+<meta charset="UTF-8">
+<meta name="generator" content="Docusaurus v3.9.2">
+<title data-rh="true">Interactive ROS 2 Code Examples | Physical AI &amp; Humanoid Robotics</title><meta data-rh="true" name="viewport" content="width=device-width,initial-scale=1"><meta data-rh="true" name="twitter:card" content="summary_large_image"><meta data-rh="true" property="og:image" content="https://Gulshan-koondhar.github.io/physical-ai-textbook/img/docusaurus-social-card.jpg"><meta data-rh="true" name="twitter:image" content="https://Gulshan-koondhar.github.io/physical-ai-textbook/img/docusaurus-social-card.jpg"><meta data-rh="true" property="og:url" content="https://Gulshan-koondhar.github.io/physical-ai-textbook/docs/module-1-ros/interactive-examples"><meta data-rh="true" property="og:locale" content="en"><meta data-rh="true" name="docusaurus_locale" content="en"><meta data-rh="true" name="docsearch:language" content="en"><meta data-rh="true" name="docusaurus_version" content="current"><meta data-rh="true" name="docusaurus_tag" content="docs-default-current"><meta data-rh="true" name="docsearch:version" content="current"><meta data-rh="true" name="docsearch:docusaurus_tag" content="docs-default-current"><meta data-rh="true" property="og:title" content="Interactive ROS 2 Code Examples | Physical AI &amp; Humanoid Robotics"><meta data-rh="true" name="description" content="Interactive code examples for ROS 2 concepts in humanoid robotics"><meta data-rh="true" property="og:description" content="Interactive code examples for ROS 2 concepts in humanoid robotics"><meta data-rh="true" name="keywords" content="ROS 2,interactive,code examples,humanoid,simulation"><link data-rh="true" rel="icon" href="/physical-ai-textbook/img/favicon.ico"><link data-rh="true" rel="canonical" href="https://Gulshan-koondhar.github.io/physical-ai-textbook/docs/module-1-ros/interactive-examples"><link data-rh="true" rel="alternate" href="https://Gulshan-koondhar.github.io/physical-ai-textbook/docs/module-1-ros/interactive-examples" hreflang="en"><link data-rh="true" rel="alternate" href="https://Gulshan-koondhar.github.io/physical-ai-textbook/docs/module-1-ros/interactive-examples" hreflang="x-default"><script data-rh="true" type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Interactive ROS 2 Examples","item":"https://Gulshan-koondhar.github.io/physical-ai-textbook/docs/module-1-ros/interactive-examples"}]}</script><link rel="stylesheet" href="/physical-ai-textbook/assets/css/styles.4f99da8f.css">
+<script src="/physical-ai-textbook/assets/js/runtime~main.7cf563d1.js" defer="defer"></script>
+<script src="/physical-ai-textbook/assets/js/main.6dcd1921.js" defer="defer"></script>
+</head>
+<body class="navigation-with-keyboard">
+<svg style="display: none;"><defs>
+<symbol id="theme-svg-external-link" viewBox="0 0 24 24"><path fill="currentColor" d="M21 13v10h-21v-19h12v2h-10v15h17v-8h2zm3-12h-10.988l4.035 4-6.977 7.07 2.828 2.828 6.977-7.07 4.125 4.172v-11z"/></symbol>
+</defs></svg>
+<script>!function(){var t=function(){try{return new URLSearchParams(window.location.search).get("docusaurus-theme")}catch(t){}}()||function(){try{return window.localStorage.getItem("theme")}catch(t){}}();document.documentElement.setAttribute("data-theme",t||"light"),document.documentElement.setAttribute("data-theme-choice",t||"light")}(),function(){try{const c=new URLSearchParams(window.location.search).entries();for(var[t,e]of c)if(t.startsWith("docusaurus-data-")){var a=t.replace("docusaurus-data-","data-");document.documentElement.setAttribute(a,e)}}catch(t){}}()</script><div id="__docusaurus"><div role="region" aria-label="Skip to main content"><a class="skipToContent_fXgn" href="#__docusaurus_skipToContent_fallback">Skip to main content</a></div><nav aria-label="Main" class="theme-layout-navbar navbar navbar--fixed-top"><div class="navbar__inner"><div class="theme-layout-navbar-left navbar__items"><button aria-label="Toggle navigation bar" aria-expanded="false" class="navbar__toggle clean-btn" type="button"><svg width="30" height="30" viewBox="0 0 30 30" aria-hidden="true"><path stroke="currentColor" stroke-linecap="round" stroke-miterlimit="10" stroke-width="2" d="M4 7h22M4 15h22M4 23h22"></path></svg></button><a class="navbar__brand" href="/physical-ai-textbook/"><div class="navbar__logo"><img src="/physical-ai-textbook/img/logo.svg" alt="Physical AI Logo" class="themedComponent_mlkZ themedComponent--light_NVdE"><img src="/physical-ai-textbook/img/logo.svg" alt="Physical AI Logo" class="themedComponent_mlkZ themedComponent--dark_xIcU"></div><b class="navbar__title text--truncate">Physical AI Textbook</b></a><a aria-current="page" class="navbar__item navbar__link navbar__link--active" href="/physical-ai-textbook/docs/intro/introduction-to-physical-ai">Textbook</a></div><div class="theme-layout-navbar-right navbar__items navbar__items--right"><a href="https://github.com/Gulshan-koondhar/physical-ai-textbook" target="_blank" rel="noopener noreferrer" class="navbar__item navbar__link">GitHub<svg width="13.5" height="13.5" aria-label="(opens in new tab)" class="iconExternalLink_nPIU"><use href="#theme-svg-external-link"></use></svg></a><div class="toggle_vylO colorModeToggle_DEke"><button class="clean-btn toggleButton_gllP toggleButtonDisabled_aARS" type="button" disabled="" title="system mode" aria-label="Switch between dark and light mode (currently system mode)"><svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" class="toggleIcon_g3eP lightToggleIcon_pyhR"><path fill="currentColor" d="M12,9c1.65,0,3,1.35,3,3s-1.35,3-3,3s-3-1.35-3-3S10.35,9,12,9 M12,7c-2.76,0-5,2.24-5,5s2.24,5,5,5s5-2.24,5-5 S14.76,7,12,7L12,7z M2,13l2,0c0.55,0,1-0.45,1-1s-0.45-1-1-1l-2,0c-0.55,0-1,0.45-1,1S1.45,13,2,13z M20,13l2,0c0.55,0,1-0.45,1-1 s-0.45-1-1-1l-2,0c-0.55,0-1,0.45-1,1S19.45,13,20,13z M11,2v2c0,0.55,0.45,1,1,1s1-0.45,1-1V2c0-0.55-0.45-1-1-1S11,1.45,11,2z M11,20v2c0,0.55,0.45,1,1,1s1-0.45,1-1v-2c0-0.55-0.45-1-1-1C11.45,19,11,19.45,11,20z M5.99,4.58c-0.39-0.39-1.03-0.39-1.41,0 c-0.39,0.39-0.39,1.03,0,1.41l1.06,1.06c0.39,0.39,1.03,0.39,1.41,0s0.39-1.03,0-1.41L5.99,4.58z M18.36,16.95 c-0.39-0.39-1.03-0.39-1.41,0c-0.39,0.39-0.39,1.03,0,1.41l1.06,1.06c0.39,0.39,1.03,0.39,1.41,0c0.39-0.39,0.39-1.03,0-1.41 L18.36,16.95z M19.42,5.99c0.39-0.39,0.39-1.03,0-1.41c-0.39-0.39-1.03-0.39-1.41,0l-1.06,1.06c-0.39,0.39-0.39,1.03,0,1.41 s1.03,0.39,1.41,0L19.42,5.99z M7.05,18.36c0.39-0.39,0.39-1.03,0-1.41c-0.39-0.39-1.03-0.39-1.41,0l-1.06,1.06 c-0.39,0.39-0.39,1.03,0,1.41s1.03,0.39,1.41,0L7.05,18.36z"></path></svg><svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" class="toggleIcon_g3eP darkToggleIcon_wfgR"><path fill="currentColor" d="M9.37,5.51C9.19,6.15,9.1,6.82,9.1,7.5c0,4.08,3.32,7.4,7.4,7.4c0.68,0,1.35-0.09,1.99-0.27C17.45,17.19,14.93,19,12,19 c-3.86,0-7-3.14-7-7C5,9.07,6.81,6.55,9.37,5.51z M12,3c-4.97,0-9,4.03-9,9s4.03,9,9,9s9-4.03,9-9c0-0.46-0.04-0.92-0.1-1.36 c-0.98,1.37-2.58,2.26-4.4,2.26c-2.98,0-5.4-2.42-5.4-5.4c0-1.81,0.89-3.42,2.26-4.4C12.92,3.04,12.46,3,12,3L12,3z"></path></svg><svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" class="toggleIcon_g3eP systemToggleIcon_QzmC"><path fill="currentColor" d="m12 21c4.971 0 9-4.029 9-9s-4.029-9-9-9-9 4.029-9 9 4.029 9 9 9zm4.95-13.95c1.313 1.313 2.05 3.093 2.05 4.95s-0.738 3.637-2.05 4.95c-1.313 1.313-3.093 2.05-4.95 2.05v-14c1.857 0 3.637 0.737 4.95 2.05z"></path></svg></button></div><div class="navbarSearchContainer_Bca1"></div></div></div><div role="presentation" class="navbar-sidebar__backdrop"></div></nav><div id="__docusaurus_skipToContent_fallback" class="theme-layout-main main-wrapper mainWrapper_z2l0"><div class="docsWrapper_hBAB"><button aria-label="Scroll back to top" class="clean-btn theme-back-to-top-button backToTopButton_sjWU" type="button"></button><div class="docRoot_UBD9"><aside class="theme-doc-sidebar-container docSidebarContainer_YfHR"><div class="sidebarViewport_aRkj"><div class="sidebar_njMd"><nav aria-label="Docs sidebar" class="menu thin-scrollbar menu_SIkG"><ul class="theme-doc-sidebar-menu menu__list"><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist menu__link--sublist-caret" role="button" aria-expanded="false" href="/physical-ai-textbook/docs/intro/introduction-to-physical-ai"><span title="Introduction" class="categoryLinkLabel_W154">Introduction</span></a></div></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist menu__link--sublist-caret menu__link--active" role="button" aria-expanded="true" href="/physical-ai-textbook/docs/module-1-ros/ros2-from-zero"><span title="Module 1 - ROS 2 Fundamentals" class="categoryLinkLabel_W154">Module 1 - ROS 2 Fundamentals</span></a></div><ul class="menu__list"><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-2 menu__list-item"><a class="menu__link" tabindex="0" href="/physical-ai-textbook/docs/module-1-ros/ros2-from-zero"><span title="ROS 2 from Zero" class="linkLabel_WmDU">ROS 2 from Zero</span></a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-2 menu__list-item"><a class="menu__link" tabindex="0" href="/physical-ai-textbook/docs/module-1-ros/urdf-xacro-mastery"><span title="URDF/Xacro Mastery" class="linkLabel_WmDU">URDF/Xacro Mastery</span></a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-2 menu__list-item"><a class="menu__link" tabindex="0" href="/physical-ai-textbook/docs/module-1-ros/nodes-topics-services"><span title="Nodes, Topics, Services" class="linkLabel_WmDU">Nodes, Topics, Services</span></a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-2 menu__list-item"><a class="menu__link" tabindex="0" href="/physical-ai-textbook/docs/module-1-ros/rviz-configuration"><span title="RViz2 Configuration" class="linkLabel_WmDU">RViz2 Configuration</span></a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-2 menu__list-item"><a class="menu__link" tabindex="0" href="/physical-ai-textbook/docs/module-1-ros/ros2-bag-foxglove"><span title="ROS 2 Bag and Foxglove" class="linkLabel_WmDU">ROS 2 Bag and Foxglove</span></a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-2 menu__list-item"><a class="menu__link menu__link--active" aria-current="page" tabindex="0" href="/physical-ai-textbook/docs/module-1-ros/interactive-examples"><span title="Interactive ROS 2 Examples" class="linkLabel_WmDU">Interactive ROS 2 Examples</span></a></li></ul></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist menu__link--sublist-caret" role="button" aria-expanded="false" href="/physical-ai-textbook/docs/module-2-simulation/gazebo-harmonic-setup"><span title="Module 2 - Simulation" class="categoryLinkLabel_W154">Module 2 - Simulation</span></a></div></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist menu__link--sublist-caret" role="button" aria-expanded="false" href="/physical-ai-textbook/docs/module-3-ai-brain/isaac-sim-installation"><span title="Module 3 - AI Brain" class="categoryLinkLabel_W154">Module 3 - AI Brain</span></a></div></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist menu__link--sublist-caret" role="button" aria-expanded="false" href="/physical-ai-textbook/docs/module-4-vla/whisper-gpt-ros-planner"><span title="Module 4 - VLA Integration" class="categoryLinkLabel_W154">Module 4 - VLA Integration</span></a></div></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist menu__link--sublist-caret" role="button" aria-expanded="false" href="/physical-ai-textbook/docs/capstone/red-cup-project"><span title="Capstone Project" class="categoryLinkLabel_W154">Capstone Project</span></a></div></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist menu__link--sublist-caret" role="button" aria-expanded="false" href="/physical-ai-textbook/docs/hardware/hardware-guide"><span title="Hardware Guide" class="categoryLinkLabel_W154">Hardware Guide</span></a></div></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist menu__link--sublist-caret" role="button" aria-expanded="false" href="/physical-ai-textbook/docs/appendix/troubleshooting"><span title="Appendices" class="categoryLinkLabel_W154">Appendices</span></a></div></li></ul></nav></div></div></aside><main class="docMainContainer_TBSr"><div class="container padding-top--md padding-bottom--lg"><div class="row"><div class="col docItemCol_VOVn"><div class="docItemContainer_Djhp"><article><nav class="theme-doc-breadcrumbs breadcrumbsContainer_Z_bl" aria-label="Breadcrumbs"><ul class="breadcrumbs"><li class="breadcrumbs__item"><a aria-label="Home page" class="breadcrumbs__link" href="/physical-ai-textbook/"><svg viewBox="0 0 24 24" class="breadcrumbHomeIcon_YNFT"><path d="M10 19v-5h4v5c0 .55.45 1 1 1h3c.55 0 1-.45 1-1v-7h1.7c.46 0 .68-.57.33-.87L12.67 3.6c-.38-.34-.96-.34-1.34 0l-8.36 7.53c-.34.3-.13.87.33.87H5v7c0 .55.45 1 1 1h3c.55 0 1-.45 1-1z" fill="currentColor"></path></svg></a></li><li class="breadcrumbs__item"><span class="breadcrumbs__link">Module 1 - ROS 2 Fundamentals</span></li><li class="breadcrumbs__item breadcrumbs__item--active"><span class="breadcrumbs__link">Interactive ROS 2 Examples</span></li></ul></nav><div class="tocCollapsible_ETCw theme-doc-toc-mobile tocMobile_ITEo"><button type="button" class="clean-btn tocCollapsibleButton_TO0P">On this page</button></div><div class="theme-doc-markdown markdown"><header><h1 id="interactive-ros-2-code-examples">Interactive ROS 2 Code Examples</h1></header>
+<h2 id="introduction">Introduction</h2>
+<p>This chapter provides interactive code examples that demonstrate key ROS 2 concepts for humanoid robotics. These examples are designed to be run in the Starboard environment, allowing you to experiment with ROS 2 concepts directly in your browser.</p>
+<h2 id="example-1-simple-publishersubscriber">Example 1: Simple Publisher/Subscriber</h2>
+<p>Let&#x27;s start with a basic publisher and subscriber example that demonstrates the fundamental ROS 2 communication pattern:</p>
+<pre><code class="language-python"># publisher_subscriber_example.py
+import rclpy
+from rclpy.node import Node
+from std_msgs.msg import String
+
+class Talker(Node):
+    def __init__(self):
+        super().__init__(&#x27;talker&#x27;)
+        self.publisher = self.create_publisher(String, &#x27;chatter&#x27;, 10)
+        timer_period = 0.5  # seconds
+        self.timer = self.create_timer(timer_period, self.timer_callback)
+        self.i = 0
+
+    def timer_callback(self):
+        msg = String()
+        msg.data = f&#x27;Hello World: {self.i}&#x27;
+        self.publisher.publish(msg)
+        self.get_logger().info(f&#x27;Publishing: &quot;{msg.data}&quot;&#x27;)
+        self.i += 1
+
+class Listener(Node):
+    def __init__(self):
+        super().__init__(&#x27;listener&#x27;)
+        self.subscription = self.create_subscription(
+            String,
+            &#x27;chatter&#x27;,
+            self.listener_callback,
+            10)
+        self.subscription  # prevent unused variable warning
+
+    def listener_callback(self, msg):
+        self.get_logger().info(f&#x27;I heard: &quot;{msg.data}&quot;&#x27;)
+
+def run_publisher_subscriber():
+    &quot;&quot;&quot;Run a simple publisher and subscriber example&quot;&quot;&quot;
+    rclpy.init()
+
+    # Create nodes
+    talker = Talker()
+    listener = Listener()
+
+    # Run for a few iterations
+    for i in range(5):
+        rclpy.spin_once(talker, timeout_sec=0.1)
+        rclpy.spin_once(listener, timeout_sec=0.1)
+
+    # Cleanup
+    talker.destroy_node()
+    listener.destroy_node()
+    rclpy.shutdown()
+
+    return &quot;Publisher/subscriber example completed&quot;
+
+# Run the example
+run_publisher_subscriber()
+</code></pre>
+<h2 id="example-2-joint-state-publisher-for-humanoid-robot">Example 2: Joint State Publisher for Humanoid Robot</h2>
+<p>This example demonstrates how to publish joint states for a humanoid robot:</p>
+<pre><code class="language-python"># joint_state_publisher_example.py
+import rclpy
+from rclpy.node import Node
+from sensor_msgs.msg import JointState
+from std_msgs.msg import Header
+import math
+
+class HumanoidJointStatePublisher(Node):
+    def __init__(self):
+        super().__init__(&#x27;humanoid_joint_publisher&#x27;)
+        self.publisher = self.create_publisher(JointState, &#x27;joint_states&#x27;, 10)
+        timer_period = 0.02  # 50 Hz
+        self.timer = self.create_timer(timer_period, self.timer_callback)
+
+        # Define humanoid joint names
+        self.joint_names = [
+            &#x27;left_hip_yaw&#x27;, &#x27;left_hip_pitch&#x27;, &#x27;left_hip_roll&#x27;,
+            &#x27;left_knee&#x27;, &#x27;left_ankle_pitch&#x27;, &#x27;left_ankle_roll&#x27;,
+            &#x27;right_hip_yaw&#x27;, &#x27;right_hip_pitch&#x27;, &#x27;right_hip_roll&#x27;,
+            &#x27;right_knee&#x27;, &#x27;right_ankle_pitch&#x27;, &#x27;right_ankle_roll&#x27;,
+            &#x27;left_shoulder_pitch&#x27;, &#x27;left_shoulder_yaw&#x27;, &#x27;left_shoulder_roll&#x27;,
+            &#x27;left_elbow&#x27;, &#x27;left_wrist_pitch&#x27;, &#x27;left_wrist_yaw&#x27;,
+            &#x27;right_shoulder_pitch&#x27;, &#x27;right_shoulder_yaw&#x27;, &#x27;right_shoulder_roll&#x27;,
+            &#x27;right_elbow&#x27;, &#x27;right_wrist_pitch&#x27;, &#x27;right_wrist_yaw&#x27;
+        ]
+
+        self.time_step = 0
+
+    def timer_callback(self):
+        msg = JointState()
+        msg.header = Header()
+        msg.header.stamp = self.get_clock().now().to_msg()
+        msg.name = self.joint_names
+        msg.position = []
+
+        # Generate oscillating joint positions
+        for i, _ in enumerate(self.joint_names):
+            position = math.sin(self.time_step * 0.01 + i * 0.2) * 0.3
+            msg.position.append(position)
+
+        self.publisher.publish(msg)
+        self.time_step += 1
+
+        if self.time_step % 50 == 0:  # Log every second
+            self.get_logger().info(f&#x27;Published joint states for {len(msg.name)} joints&#x27;)
+
+def run_joint_publisher():
+    &quot;&quot;&quot;Run the humanoid joint state publisher&quot;&quot;&quot;
+    rclpy.init()
+    publisher = HumanoidJointStatePublisher()
+
+    # Run for a few iterations to demonstrate
+    for i in range(100):  # Run for 2 seconds at 50Hz
+        rclpy.spin_once(publisher, timeout_sec=0.02)
+
+    publisher.destroy_node()
+    rclpy.shutdown()
+
+    return &quot;Joint state publisher example completed&quot;
+
+# Run the joint publisher example
+run_joint_publisher()
+</code></pre>
+<h2 id="example-3-service-server-and-client">Example 3: Service Server and Client</h2>
+<p>This example demonstrates how to create and use ROS 2 services:</p>
+<pre><code class="language-python"># service_example.py
+import rclpy
+from rclpy.node import Node
+from example_interfaces.srv import AddTwoInts
+
+class ServiceServer(Node):
+    def __init__(self):
+        super().__init__(&#x27;service_server&#x27;)
+        self.srv = self.create_service(AddTwoInts, &#x27;add_two_ints&#x27;, self.add_callback)
+
+    def add_callback(self, request, response):
+        response.sum = request.a + request.b
+        self.get_logger().info(f&#x27;{request.a} + {request.b} = {response.sum}&#x27;)
+        return response
+
+class ServiceClient(Node):
+    def __init__(self):
+        super().__init__(&#x27;service_client&#x27;)
+        self.cli = self.create_client(AddTwoInts, &#x27;add_two_ints&#x27;)
+        while not self.cli.wait_for_service(timeout_sec=1.0):
+            self.get_logger().info(&#x27;Service not available, waiting again...&#x27;)
+
+    def send_request(self, a, b):
+        request = AddTwoInts.Request()
+        request.a = a
+        request.b = b
+        future = self.cli.call_async(request)
+        rclpy.spin_until_future_complete(self, future)
+        return future.result()
+
+def run_service_example():
+    &quot;&quot;&quot;Run the service server and client example&quot;&quot;&quot;
+    rclpy.init()
+
+    # Start server
+    server = ServiceServer()
+
+    # Start client and make a request
+    client = ServiceClient()
+    response = client.send_request(2, 3)
+
+    result = f&quot;Service call result: {response.sum}&quot; if response else &quot;Service call failed&quot;
+
+    server.destroy_node()
+    client.destroy_node()
+    rclpy.shutdown()
+
+    return result
+
+# Run the service example
+run_service_example()
+</code></pre>
+<h2 id="example-4-action-server-and-client">Example 4: Action Server and Client</h2>
+<p>This example demonstrates ROS 2 actions for long-running tasks:</p>
+<pre><code class="language-python"># action_example.py
+import rclpy
+from rclpy.action import ActionServer, ActionClient
+from rclpy.node import Node
+from rclpy.callback_groups import ReentrantCallbackGroup
+from example_interfaces.action import Fibonacci
+
+class FibonacciActionServer(Node):
+    def __init__(self):
+        super().__init__(&#x27;fibonacci_action_server&#x27;)
+        self._action_server = ActionServer(
+            self,
+            Fibonacci,
+            &#x27;fibonacci&#x27;,
+            self.execute_callback)
+
+    def execute_callback(self, goal_handle):
+        self.get_logger().info(&#x27;Executing goal...&#x27;)
+
+        feedback_msg = Fibonacci.Feedback()
+        feedback_msg.sequence = [0, 1]
+
+        for i in range(1, goal_handle.request.order):
+            if goal_handle.is_cancel_requested:
+                goal_handle.canceled()
+                self.get_logger().info(&#x27;Goal canceled&#x27;)
+                return Fibonacci.Result()
+
+            feedback_msg.sequence.append(
+                feedback_msg.sequence[i] + feedback_msg.sequence[i-1])
+
+            goal_handle.publish_feedback(feedback_msg)
+            self.get_logger().info(f&#x27;Feedback: {feedback_msg.sequence}&#x27;)
+
+        goal_handle.succeed()
+        result = Fibonacci.Result()
+        result.sequence = feedback_msg.sequence
+        return result
+
+class FibonacciActionClient(Node):
+    def __init__(self):
+        super().__init__(&#x27;fibonacci_action_client&#x27;)
+        self._action_client = ActionClient(self, Fibonacci, &#x27;fibonacci&#x27;)
+
+    def send_goal(self, order):
+        goal_msg = Fibonacci.Goal()
+        goal_msg.order = order
+
+        self._action_client.wait_for_server()
+        self._send_goal_future = self._action_client.send_goal_async(
+            goal_msg,
+            feedback_callback=self.feedback_callback)
+
+        self._send_goal_future.add_done_callback(self.goal_response_callback)
+
+    def goal_response_callback(self, future):
+        goal_handle = future.result()
+        if not goal_handle.accepted:
+            self.get_logger().info(&#x27;Goal rejected :(&#x27;)
+            return
+
+        self.get_logger().info(&#x27;Goal accepted :)&#x27;)
+        self._get_result_future = goal_handle.get_result_async()
+        self._get_result_future.add_done_callback(self.get_result_callback)
+
+    def feedback_callback(self, feedback_msg):
+        feedback = feedback_msg.feedback
+        self.get_logger().info(f&#x27;Received feedback: {feedback.sequence}&#x27;)
+
+    def get_result_callback(self, future):
+        result = future.result().result
+        self.get_logger().info(f&#x27;Result: {result.sequence}&#x27;)
+
+def run_action_example():
+    &quot;&quot;&quot;Run the action server and client example&quot;&quot;&quot;
+    rclpy.init()
+
+    # Start server
+    server = FibonacciActionServer()
+
+    # Start client and send goal
+    client = FibonacciActionClient()
+    client.send_goal(5)
+
+    # Run both nodes briefly
+    for i in range(50):  # Run for a few iterations
+        rclpy.spin_once(server, timeout_sec=0.1)
+        rclpy.spin_once(client, timeout_sec=0.1)
+
+    server.destroy_node()
+    client.destroy_node()
+    rclpy.shutdown()
+
+    return &quot;Action server/client example completed&quot;
+
+# Run the action example
+run_action_example()
+</code></pre>
+<h2 id="example-5-humanoid-robot-control-node">Example 5: Humanoid Robot Control Node</h2>
+<p>This example demonstrates a more complex node that could control a humanoid robot:</p>
+<pre><code class="language-python"># humanoid_control_example.py
+import rclpy
+from rclpy.node import Node
+from sensor_msgs.msg import JointState
+from geometry_msgs.msg import Twist
+from std_msgs.msg import Float64MultiArray
+import time
+
+class HumanoidController(Node):
+    def __init__(self):
+        super().__init__(&#x27;humanoid_controller&#x27;)
+
+        # Subscriptions
+        self.joint_state_sub = self.create_subscription(
+            JointState, &#x27;joint_states&#x27;, self.joint_state_callback, 10)
+
+        self.cmd_vel_sub = self.create_subscription(
+            Twist, &#x27;cmd_vel&#x27;, self.cmd_vel_callback, 10)
+
+        # Publishers
+        self.joint_cmd_pub = self.create_publisher(
+            Float64MultiArray, &#x27;joint_commands&#x27;, 10)
+
+        self.status_pub = self.create_publisher(
+            Float64MultiArray, &#x27;robot_status&#x27;, 10)
+
+        # Timer for control loop
+        self.control_timer = self.create_timer(0.05, self.control_loop)
+
+        # Internal state
+        self.current_joint_states = JointState()
+        self.desired_velocity = Twist()
+        self.is_active = True
+
+        self.get_logger().info(&#x27;Humanoid controller initialized&#x27;)
+
+    def joint_state_callback(self, msg):
+        &quot;&quot;&quot;Handle incoming joint state messages&quot;&quot;&quot;
+        self.current_joint_states = msg
+        self.get_logger().debug(f&#x27;Received joint states for {len(msg.name)} joints&#x27;)
+
+    def cmd_vel_callback(self, msg):
+        &quot;&quot;&quot;Handle incoming velocity commands&quot;&quot;&quot;
+        self.desired_velocity = msg
+        self.get_logger().info(f&#x27;Received velocity command: linear={msg.linear.x}, angular={msg.angular.z}&#x27;)
+
+    def control_loop(self):
+        &quot;&quot;&quot;Main control loop for the humanoid robot&quot;&quot;&quot;
+        if not self.is_active:
+            return
+
+        # Simple control logic - in real implementation this would be much more complex
+        cmd_msg = Float64MultiArray()
+
+        # Generate some example joint commands based on desired velocity
+        if self.desired_velocity.linear.x &gt; 0 or self.desired_velocity.angular.z != 0:
+            # Walking pattern
+            cmd_msg.data = [0.1, -0.1, 0.05, -0.05] * 6  # Simplified walking pattern
+        else:
+            # Standing position
+            cmd_msg.data = [0.0] * 24  # 24 joints in our example humanoid
+
+        self.joint_cmd_pub.publish(cmd_msg)
+
+        # Publish status
+        status_msg = Float64MultiArray()
+        status_msg.data = [1.0, 0.0, 0.0, 1.0]  # [is_active, battery_level, cpu_usage, memory_usage]
+        self.status_pub.publish(status_msg)
+
+def run_humanoid_controller():
+    &quot;&quot;&quot;Run the humanoid controller example&quot;&quot;&quot;
+    rclpy.init()
+
+    controller = HumanoidController()
+
+    # Run for a few seconds to demonstrate
+    for i in range(20):  # 20 iterations at 20Hz = 1 second
+        rclpy.spin_once(controller, timeout_sec=0.05)
+        time.sleep(0.05)  # Small delay to simulate real-time control
+
+    controller.destroy_node()
+    rclpy.shutdown()
+
+    return &quot;Humanoid controller example completed&quot;
+
+# Run the humanoid controller example
+run_humanoid_controller()
+</code></pre>
+<h2 id="example-6-launch-file-configuration">Example 6: Launch File Configuration</h2>
+<p>This example shows how to create a launch file that brings up multiple nodes for humanoid control:</p>
+<pre><code class="language-python"># humanoid_launch_example.py
+from launch import LaunchDescription
+from launch.actions import DeclareLaunchArgument
+from launch.substitutions import LaunchConfiguration
+from launch_ros.actions import Node
+
+def generate_launch_description():
+    &quot;&quot;&quot;
+    Launch file for humanoid robot control nodes.
+    This would typically be saved as a .launch.py file.
+    &quot;&quot;&quot;
+    return LaunchDescription([
+        # Declare launch arguments
+        DeclareLaunchArgument(
+            &#x27;use_sim_time&#x27;,
+            default_value=&#x27;false&#x27;,
+            description=&#x27;Use simulation (Gazebo) clock if true&#x27;),
+
+        # Joint state publisher node
+        Node(
+            package=&#x27;joint_state_publisher&#x27;,
+            executable=&#x27;joint_state_publisher&#x27;,
+            name=&#x27;joint_state_publisher&#x27;,
+            parameters=[{
+                &#x27;use_sim_time&#x27;: LaunchConfiguration(&#x27;use_sim_time&#x27;),
+                &#x27;rate&#x27;: 50.0
+            }],
+            output=&#x27;screen&#x27;
+        ),
+
+        # Robot state publisher node
+        Node(
+            package=&#x27;robot_state_publisher&#x27;,
+            executable=&#x27;robot_state_publisher&#x27;,
+            name=&#x27;robot_state_publisher&#x27;,
+            parameters=[{
+                &#x27;use_sim_time&#x27;: LaunchConfiguration(&#x27;use_sim_time&#x27;),
+                &#x27;publish_frequency&#x27;: 50.0
+            }],
+            output=&#x27;screen&#x27;
+        ),
+
+        # Humanoid controller node
+        Node(
+            package=&#x27;your_robot_package&#x27;,
+            executable=&#x27;humanoid_controller&#x27;,
+            name=&#x27;humanoid_controller&#x27;,
+            parameters=[{
+                &#x27;use_sim_time&#x27;: LaunchConfiguration(&#x27;use_sim_time&#x27;),
+                &#x27;control_frequency&#x27;: 20.0
+            }],
+            output=&#x27;screen&#x27;
+        )
+    ])
+
+# This would be the content of humanoid_robot.launch.py
+launch_description = generate_launch_description()
+print(&quot;Launch file example created successfully&quot;)
+</code></pre>
+<h2 id="best-practices-for-ros-2-code">Best Practices for ROS 2 Code</h2>
+<h3 id="1-proper-node-lifecycle-management">1. Proper Node Lifecycle Management</h3>
+<pre><code class="language-python">class BestPracticeNode(Node):
+    def __init__(self):
+        super().__init__(&#x27;best_practice_node&#x27;)
+        # Initialize components
+        self.publisher = self.create_publisher(String, &#x27;topic&#x27;, 10)
+        self.timer = self.create_timer(0.1, self.timer_callback)
+        self.get_logger().info(&#x27;Node initialized successfully&#x27;)
+
+    def timer_callback(self):
+        # Add error handling
+        try:
+            msg = String()
+            msg.data = &#x27;Hello&#x27;
+            self.publisher.publish(msg)
+        except Exception as e:
+            self.get_logger().error(f&#x27;Error in timer callback: {e}&#x27;)
+
+    def destroy_node(self):
+        # Cleanup resources
+        self.get_logger().info(&#x27;Cleaning up node resources&#x27;)
+        super().destroy_node()
+</code></pre>
+<h3 id="2-using-parameters-for-configuration">2. Using Parameters for Configuration</h3>
+<pre><code class="language-python">class ParameterizedNode(Node):
+    def __init__(self):
+        super().__init__(&#x27;parameterized_node&#x27;)
+
+        # Declare parameters with defaults
+        self.declare_parameter(&#x27;publish_rate&#x27;, 10.0)
+        self.declare_parameter(&#x27;robot_name&#x27;, &#x27;humanoid_robot&#x27;)
+
+        # Get parameter values
+        self.rate = self.get_parameter(&#x27;publish_rate&#x27;).value
+        self.robot_name = self.get_parameter(&#x27;robot_name&#x27;).value
+
+        # Use parameters to configure behavior
+        self.timer = self.create_timer(1.0/self.rate, self.timer_callback)
+</code></pre>
+<h3 id="3-error-handling-and-logging">3. Error Handling and Logging</h3>
+<pre><code class="language-python">def safe_message_processing(self, msg):
+    try:
+        # Validate message
+        if not msg or not hasattr(msg, &#x27;data&#x27;):
+            self.get_logger().warn(&#x27;Invalid message received&#x27;)
+            return
+
+        # Process message
+        result = self.process_data(msg.data)
+
+        # Log success
+        self.get_logger().info(f&#x27;Message processed successfully: {result}&#x27;)
+
+    except ValueError as e:
+        self.get_logger().error(f&#x27;Value error in message processing: {e}&#x27;)
+    except Exception as e:
+        self.get_logger().error(f&#x27;Unexpected error: {e}&#x27;)
+        # Implement fallback behavior
+        self.fallback_behavior()
+</code></pre>
+<h2 id="summary">Summary</h2>
+<p>This chapter provided interactive code examples for key ROS 2 concepts in humanoid robotics:</p>
+<ul>
+<li>Basic publisher/subscriber patterns</li>
+<li>Joint state management for humanoid robots</li>
+<li>Service-based communication</li>
+<li>Action-based long-running tasks</li>
+<li>Complex humanoid controller implementation</li>
+<li>Launch file configuration</li>
+</ul>
+<p>These examples serve as a foundation for building more complex humanoid robot systems. The interactive nature allows you to experiment with different parameters and see how ROS 2 components interact.</p>
+<h2 id="exercises">Exercises</h2>
+<ol>
+<li>Modify the joint state publisher to simulate a walking gait pattern</li>
+<li>Create a service that accepts a target pose and generates a walking plan</li>
+<li>Implement an action that controls the robot&#x27;s walking speed with feedback</li>
+<li>Add parameter configuration to control the behavior of the humanoid controller</li>
+</ol>
+<div class="starboard-notebook-container"><div class="starboard-notebook-header"><span class="starboard-notebook-icon">📊</span><span class="starboard-notebook-title">Interactive Notebook</span></div><div class="starboard-notebook-content"><div class="starboard-children-container"><pre><code class="language-python"># Complete interactive example combining multiple concepts
+import rclpy
+from rclpy.node import Node
+from sensor_msgs.msg import JointState
+from std_msgs.msg import String
+from geometry_msgs.msg import Twist
+import math
+
+class InteractiveHumanoidNode(Node):
+    def __init__(self):
+        super().__init__(&#x27;interactive_humanoid&#x27;)
+
+        # Publishers
+        self.joint_pub = self.create_publisher(JointState, &#x27;joint_states&#x27;, 10)
+        self.status_pub = self.create_publisher(String, &#x27;status&#x27;, 10)
+
+        # Timer
+        self.timer = self.create_timer(0.05, self.update_robot_state)
+
+        # Internal state
+        self.time = 0
+        self.moving = True
+
+        self.get_logger().info(&quot;Interactive humanoid node started&quot;)
+
+    def update_robot_state(self):
+        # Create joint state message
+        msg = JointState()
+        msg.name = [&#x27;joint1&#x27;, &#x27;joint2&#x27;, &#x27;joint3&#x27;, &#x27;joint4&#x27;]
+        msg.position = [
+            math.sin(self.time * 0.1),
+            math.cos(self.time * 0.1),
+            math.sin(self.time * 0.05),
+            math.cos(self.time * 0.05)
+        ]
+
+        self.joint_pub.publish(msg)
+
+        # Publish status
+        status_msg = String()
+        status_msg.data = f&quot;Time: {self.time}, Moving: {self.moving}&quot;
+        self.status_pub.publish(status_msg)
+
+        self.time += 1
+
+def run_interactive_demo():
+    rclpy.init()
+    node = InteractiveHumanoidNode()
+
+    # Run for a few iterations
+    for i in range(20):
+        rclpy.spin_once(node, timeout_sec=0.05)
+
+    node.destroy_node()
+    rclpy.shutdown()
+    return &quot;Interactive demo completed successfully&quot;
+
+# Run the interactive demo
+result = run_interactive_demo()
+print(result)
+</code></pre></div></div><div class="starboard-notebook-footer"><small>Note: This is a placeholder for interactive Starboard notebooks.</small></div></div></div><footer class="theme-doc-footer docusaurus-mt-lg"><div class="row margin-top--sm theme-doc-footer-edit-meta-row"><div class="col noPrint_WFHX"><a href="https://github.com/facebook/docusaurus/tree/main/packages/create-docusaurus/templates/shared/docs/module-1-ros/interactive-examples.mdx" target="_blank" rel="noopener noreferrer" class="theme-edit-this-page"><svg fill="currentColor" height="20" width="20" viewBox="0 0 40 40" class="iconEdit_Z9Sw" aria-hidden="true"><g><path d="m34.5 11.7l-3 3.1-6.3-6.3 3.1-3q0.5-0.5 1.2-0.5t1.1 0.5l3.9 3.9q0.5 0.4 0.5 1.1t-0.5 1.2z m-29.5 17.1l18.4-18.5 6.3 6.3-18.4 18.4h-6.3v-6.2z"></path></g></svg>Edit this page</a></div><div class="col lastUpdated_JAkA"></div></div></footer></article><nav class="docusaurus-mt-lg pagination-nav" aria-label="Docs pages"><a class="pagination-nav__link pagination-nav__link--prev" href="/physical-ai-textbook/docs/module-1-ros/ros2-bag-foxglove"><div class="pagination-nav__sublabel">Previous</div><div class="pagination-nav__label">ROS 2 Bag and Foxglove</div></a><a class="pagination-nav__link pagination-nav__link--next" href="/physical-ai-textbook/docs/module-2-simulation/gazebo-harmonic-setup"><div class="pagination-nav__sublabel">Next</div><div class="pagination-nav__label">Gazebo Harmonic Setup</div></a></nav></div></div><div class="col col--3"><div class="tableOfContents_bqdL thin-scrollbar theme-doc-toc-desktop"><ul class="table-of-contents table-of-contents__left-border"><li><a href="#introduction" class="table-of-contents__link toc-highlight">Introduction</a></li><li><a href="#example-1-simple-publishersubscriber" class="table-of-contents__link toc-highlight">Example 1: Simple Publisher/Subscriber</a></li><li><a href="#example-2-joint-state-publisher-for-humanoid-robot" class="table-of-contents__link toc-highlight">Example 2: Joint State Publisher for Humanoid Robot</a></li><li><a href="#example-3-service-server-and-client" class="table-of-contents__link toc-highlight">Example 3: Service Server and Client</a></li><li><a href="#example-4-action-server-and-client" class="table-of-contents__link toc-highlight">Example 4: Action Server and Client</a></li><li><a href="#example-5-humanoid-robot-control-node" class="table-of-contents__link toc-highlight">Example 5: Humanoid Robot Control Node</a></li><li><a href="#example-6-launch-file-configuration" class="table-of-contents__link toc-highlight">Example 6: Launch File Configuration</a></li><li><a href="#best-practices-for-ros-2-code" class="table-of-contents__link toc-highlight">Best Practices for ROS 2 Code</a><ul><li><a href="#1-proper-node-lifecycle-management" class="table-of-contents__link toc-highlight">1. Proper Node Lifecycle Management</a></li><li><a href="#2-using-parameters-for-configuration" class="table-of-contents__link toc-highlight">2. Using Parameters for Configuration</a></li><li><a href="#3-error-handling-and-logging" class="table-of-contents__link toc-highlight">3. Error Handling and Logging</a></li></ul></li><li><a href="#summary" class="table-of-contents__link toc-highlight">Summary</a></li><li><a href="#exercises" class="table-of-contents__link toc-highlight">Exercises</a></li></ul></div></div></div></div></main></div></div></div><footer class="theme-layout-footer footer footer--dark"><div class="container container-fluid"><div class="row footer__links"><div class="theme-layout-footer-column col footer__col"><div class="footer__title">Docs</div><ul class="footer__items clean-list"><li class="footer__item"><a class="footer__link-item" href="/physical-ai-textbook/docs/intro/introduction-to-physical-ai">Textbook</a></li></ul></div><div class="theme-layout-footer-column col footer__col"><div class="footer__title">Community</div><ul class="footer__items clean-list"><li class="footer__item"><a href="https://stackoverflow.com/questions/tagged/docusaurus" target="_blank" rel="noopener noreferrer" class="footer__link-item">Stack Overflow<svg width="13.5" height="13.5" aria-label="(opens in new tab)" class="iconExternalLink_nPIU"><use href="#theme-svg-external-link"></use></svg></a></li><li class="footer__item"><a href="https://discordapp.com/invite/docusaurus" target="_blank" rel="noopener noreferrer" class="footer__link-item">Discord<svg width="13.5" height="13.5" aria-label="(opens in new tab)" class="iconExternalLink_nPIU"><use href="#theme-svg-external-link"></use></svg></a></li><li class="footer__item"><a href="https://twitter.com/docusaurus" target="_blank" rel="noopener noreferrer" class="footer__link-item">Twitter<svg width="13.5" height="13.5" aria-label="(opens in new tab)" class="iconExternalLink_nPIU"><use href="#theme-svg-external-link"></use></svg></a></li></ul></div><div class="theme-layout-footer-column col footer__col"><div class="footer__title">More</div><ul class="footer__items clean-list"><li class="footer__item"><a href="https://github.com/Gulshan-koondhar/physical-ai-textbook" target="_blank" rel="noopener noreferrer" class="footer__link-item">GitHub<svg width="13.5" height="13.5" aria-label="(opens in new tab)" class="iconExternalLink_nPIU"><use href="#theme-svg-external-link"></use></svg></a></li></ul></div></div><div class="footer__bottom text--center"><div class="footer__copyright">Copyright © 2025 My Project, Inc. Built with Docusaurus.</div></div></div></footer></div>
+</body>
+</html>

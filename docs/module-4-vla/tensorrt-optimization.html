@@ -1,0 +1,1570 @@
+<!doctype html>
+<html lang="en" dir="ltr" class="docs-wrapper plugin-docs plugin-id-default docs-version-current docs-doc-page docs-doc-id-module-4-vla/tensorrt-optimization" data-has-hydrated="false">
+<head>
+<meta charset="UTF-8">
+<meta name="generator" content="Docusaurus v3.9.2">
+<title data-rh="true">TensorRT Optimization Examples for Jetson Orin | Physical AI &amp; Humanoid Robotics</title><meta data-rh="true" name="viewport" content="width=device-width,initial-scale=1"><meta data-rh="true" name="twitter:card" content="summary_large_image"><meta data-rh="true" property="og:image" content="https://Gulshan-koondhar.github.io/physical-ai-textbook/img/docusaurus-social-card.jpg"><meta data-rh="true" name="twitter:image" content="https://Gulshan-koondhar.github.io/physical-ai-textbook/img/docusaurus-social-card.jpg"><meta data-rh="true" property="og:url" content="https://Gulshan-koondhar.github.io/physical-ai-textbook/docs/module-4-vla/tensorrt-optimization"><meta data-rh="true" property="og:locale" content="en"><meta data-rh="true" name="docusaurus_locale" content="en"><meta data-rh="true" name="docsearch:language" content="en"><meta data-rh="true" name="docusaurus_version" content="current"><meta data-rh="true" name="docusaurus_tag" content="docs-default-current"><meta data-rh="true" name="docsearch:version" content="current"><meta data-rh="true" name="docsearch:docusaurus_tag" content="docs-default-current"><meta data-rh="true" property="og:title" content="TensorRT Optimization Examples for Jetson Orin | Physical AI &amp; Humanoid Robotics"><meta data-rh="true" name="description" content="Comprehensive examples for optimizing AI models with TensorRT for Jetson Orin deployment in humanoid robotics"><meta data-rh="true" property="og:description" content="Comprehensive examples for optimizing AI models with TensorRT for Jetson Orin deployment in humanoid robotics"><meta data-rh="true" name="keywords" content="TensorRT,optimization,Jetson Orin,AI,deployment,robotics,NVIDIA,edge computing"><link data-rh="true" rel="icon" href="/physical-ai-textbook/img/favicon.ico"><link data-rh="true" rel="canonical" href="https://Gulshan-koondhar.github.io/physical-ai-textbook/docs/module-4-vla/tensorrt-optimization"><link data-rh="true" rel="alternate" href="https://Gulshan-koondhar.github.io/physical-ai-textbook/docs/module-4-vla/tensorrt-optimization" hreflang="en"><link data-rh="true" rel="alternate" href="https://Gulshan-koondhar.github.io/physical-ai-textbook/docs/module-4-vla/tensorrt-optimization" hreflang="x-default"><script data-rh="true" type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"TensorRT Optimization","item":"https://Gulshan-koondhar.github.io/physical-ai-textbook/docs/module-4-vla/tensorrt-optimization"}]}</script><link rel="stylesheet" href="/physical-ai-textbook/assets/css/styles.4f99da8f.css">
+<script src="/physical-ai-textbook/assets/js/runtime~main.7cf563d1.js" defer="defer"></script>
+<script src="/physical-ai-textbook/assets/js/main.6dcd1921.js" defer="defer"></script>
+</head>
+<body class="navigation-with-keyboard">
+<svg style="display: none;"><defs>
+<symbol id="theme-svg-external-link" viewBox="0 0 24 24"><path fill="currentColor" d="M21 13v10h-21v-19h12v2h-10v15h17v-8h2zm3-12h-10.988l4.035 4-6.977 7.07 2.828 2.828 6.977-7.07 4.125 4.172v-11z"/></symbol>
+</defs></svg>
+<script>!function(){var t=function(){try{return new URLSearchParams(window.location.search).get("docusaurus-theme")}catch(t){}}()||function(){try{return window.localStorage.getItem("theme")}catch(t){}}();document.documentElement.setAttribute("data-theme",t||"light"),document.documentElement.setAttribute("data-theme-choice",t||"light")}(),function(){try{const c=new URLSearchParams(window.location.search).entries();for(var[t,e]of c)if(t.startsWith("docusaurus-data-")){var a=t.replace("docusaurus-data-","data-");document.documentElement.setAttribute(a,e)}}catch(t){}}()</script><div id="__docusaurus"><div role="region" aria-label="Skip to main content"><a class="skipToContent_fXgn" href="#__docusaurus_skipToContent_fallback">Skip to main content</a></div><nav aria-label="Main" class="theme-layout-navbar navbar navbar--fixed-top"><div class="navbar__inner"><div class="theme-layout-navbar-left navbar__items"><button aria-label="Toggle navigation bar" aria-expanded="false" class="navbar__toggle clean-btn" type="button"><svg width="30" height="30" viewBox="0 0 30 30" aria-hidden="true"><path stroke="currentColor" stroke-linecap="round" stroke-miterlimit="10" stroke-width="2" d="M4 7h22M4 15h22M4 23h22"></path></svg></button><a class="navbar__brand" href="/physical-ai-textbook/"><div class="navbar__logo"><img src="/physical-ai-textbook/img/logo.svg" alt="Physical AI Logo" class="themedComponent_mlkZ themedComponent--light_NVdE"><img src="/physical-ai-textbook/img/logo.svg" alt="Physical AI Logo" class="themedComponent_mlkZ themedComponent--dark_xIcU"></div><b class="navbar__title text--truncate">Physical AI Textbook</b></a><a aria-current="page" class="navbar__item navbar__link navbar__link--active" href="/physical-ai-textbook/docs/intro/introduction-to-physical-ai">Textbook</a></div><div class="theme-layout-navbar-right navbar__items navbar__items--right"><a href="https://github.com/Gulshan-koondhar/physical-ai-textbook" target="_blank" rel="noopener noreferrer" class="navbar__item navbar__link">GitHub<svg width="13.5" height="13.5" aria-label="(opens in new tab)" class="iconExternalLink_nPIU"><use href="#theme-svg-external-link"></use></svg></a><div class="toggle_vylO colorModeToggle_DEke"><button class="clean-btn toggleButton_gllP toggleButtonDisabled_aARS" type="button" disabled="" title="system mode" aria-label="Switch between dark and light mode (currently system mode)"><svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" class="toggleIcon_g3eP lightToggleIcon_pyhR"><path fill="currentColor" d="M12,9c1.65,0,3,1.35,3,3s-1.35,3-3,3s-3-1.35-3-3S10.35,9,12,9 M12,7c-2.76,0-5,2.24-5,5s2.24,5,5,5s5-2.24,5-5 S14.76,7,12,7L12,7z M2,13l2,0c0.55,0,1-0.45,1-1s-0.45-1-1-1l-2,0c-0.55,0-1,0.45-1,1S1.45,13,2,13z M20,13l2,0c0.55,0,1-0.45,1-1 s-0.45-1-1-1l-2,0c-0.55,0-1,0.45-1,1S19.45,13,20,13z M11,2v2c0,0.55,0.45,1,1,1s1-0.45,1-1V2c0-0.55-0.45-1-1-1S11,1.45,11,2z M11,20v2c0,0.55,0.45,1,1,1s1-0.45,1-1v-2c0-0.55-0.45-1-1-1C11.45,19,11,19.45,11,20z M5.99,4.58c-0.39-0.39-1.03-0.39-1.41,0 c-0.39,0.39-0.39,1.03,0,1.41l1.06,1.06c0.39,0.39,1.03,0.39,1.41,0s0.39-1.03,0-1.41L5.99,4.58z M18.36,16.95 c-0.39-0.39-1.03-0.39-1.41,0c-0.39,0.39-0.39,1.03,0,1.41l1.06,1.06c0.39,0.39,1.03,0.39,1.41,0c0.39-0.39,0.39-1.03,0-1.41 L18.36,16.95z M19.42,5.99c0.39-0.39,0.39-1.03,0-1.41c-0.39-0.39-1.03-0.39-1.41,0l-1.06,1.06c-0.39,0.39-0.39,1.03,0,1.41 s1.03,0.39,1.41,0L19.42,5.99z M7.05,18.36c0.39-0.39,0.39-1.03,0-1.41c-0.39-0.39-1.03-0.39-1.41,0l-1.06,1.06 c-0.39,0.39-0.39,1.03,0,1.41s1.03,0.39,1.41,0L7.05,18.36z"></path></svg><svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" class="toggleIcon_g3eP darkToggleIcon_wfgR"><path fill="currentColor" d="M9.37,5.51C9.19,6.15,9.1,6.82,9.1,7.5c0,4.08,3.32,7.4,7.4,7.4c0.68,0,1.35-0.09,1.99-0.27C17.45,17.19,14.93,19,12,19 c-3.86,0-7-3.14-7-7C5,9.07,6.81,6.55,9.37,5.51z M12,3c-4.97,0-9,4.03-9,9s4.03,9,9,9s9-4.03,9-9c0-0.46-0.04-0.92-0.1-1.36 c-0.98,1.37-2.58,2.26-4.4,2.26c-2.98,0-5.4-2.42-5.4-5.4c0-1.81,0.89-3.42,2.26-4.4C12.92,3.04,12.46,3,12,3L12,3z"></path></svg><svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" class="toggleIcon_g3eP systemToggleIcon_QzmC"><path fill="currentColor" d="m12 21c4.971 0 9-4.029 9-9s-4.029-9-9-9-9 4.029-9 9 4.029 9 9 9zm4.95-13.95c1.313 1.313 2.05 3.093 2.05 4.95s-0.738 3.637-2.05 4.95c-1.313 1.313-3.093 2.05-4.95 2.05v-14c1.857 0 3.637 0.737 4.95 2.05z"></path></svg></button></div><div class="navbarSearchContainer_Bca1"></div></div></div><div role="presentation" class="navbar-sidebar__backdrop"></div></nav><div id="__docusaurus_skipToContent_fallback" class="theme-layout-main main-wrapper mainWrapper_z2l0"><div class="docsWrapper_hBAB"><button aria-label="Scroll back to top" class="clean-btn theme-back-to-top-button backToTopButton_sjWU" type="button"></button><div class="docRoot_UBD9"><aside class="theme-doc-sidebar-container docSidebarContainer_YfHR"><div class="sidebarViewport_aRkj"><div class="sidebar_njMd"><nav aria-label="Docs sidebar" class="menu thin-scrollbar menu_SIkG"><ul class="theme-doc-sidebar-menu menu__list"><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist menu__link--sublist-caret" role="button" aria-expanded="false" href="/physical-ai-textbook/docs/intro/introduction-to-physical-ai"><span title="Introduction" class="categoryLinkLabel_W154">Introduction</span></a></div></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist menu__link--sublist-caret" role="button" aria-expanded="false" href="/physical-ai-textbook/docs/module-1-ros/ros2-from-zero"><span title="Module 1 - ROS 2 Fundamentals" class="categoryLinkLabel_W154">Module 1 - ROS 2 Fundamentals</span></a></div></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist menu__link--sublist-caret" role="button" aria-expanded="false" href="/physical-ai-textbook/docs/module-2-simulation/gazebo-harmonic-setup"><span title="Module 2 - Simulation" class="categoryLinkLabel_W154">Module 2 - Simulation</span></a></div></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist menu__link--sublist-caret" role="button" aria-expanded="false" href="/physical-ai-textbook/docs/module-3-ai-brain/isaac-sim-installation"><span title="Module 3 - AI Brain" class="categoryLinkLabel_W154">Module 3 - AI Brain</span></a></div></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist menu__link--sublist-caret menu__link--active" role="button" aria-expanded="true" href="/physical-ai-textbook/docs/module-4-vla/whisper-gpt-ros-planner"><span title="Module 4 - VLA Integration" class="categoryLinkLabel_W154">Module 4 - VLA Integration</span></a></div><ul class="menu__list"><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-2 menu__list-item"><a class="menu__link" tabindex="0" href="/physical-ai-textbook/docs/module-4-vla/whisper-gpt-ros-planner"><span title="Whisper-GPT to ROS Planning" class="linkLabel_WmDU">Whisper-GPT to ROS Planning</span></a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-2 menu__list-item"><a class="menu__link" tabindex="0" href="/physical-ai-textbook/docs/module-4-vla/open-vocabulary-detection"><span title="Open-Vocabulary Detection" class="linkLabel_WmDU">Open-Vocabulary Detection</span></a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-2 menu__list-item"><a class="menu__link" tabindex="0" href="/physical-ai-textbook/docs/module-4-vla/end-to-end-pipeline"><span title="End-to-End VLA Pipeline" class="linkLabel_WmDU">End-to-End VLA Pipeline</span></a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-2 menu__list-item"><a class="menu__link" tabindex="0" href="/physical-ai-textbook/docs/module-4-vla/jetson-deployment"><span title="Jetson Deployment" class="linkLabel_WmDU">Jetson Deployment</span></a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-2 menu__list-item"><a class="menu__link" tabindex="0" href="/physical-ai-textbook/docs/module-4-vla/ai-integration-examples"><span title="AI Integration Examples" class="linkLabel_WmDU">AI Integration Examples</span></a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-2 menu__list-item"><a class="menu__link menu__link--active" aria-current="page" tabindex="0" href="/physical-ai-textbook/docs/module-4-vla/tensorrt-optimization"><span title="TensorRT Optimization" class="linkLabel_WmDU">TensorRT Optimization</span></a></li></ul></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist menu__link--sublist-caret" role="button" aria-expanded="false" href="/physical-ai-textbook/docs/capstone/red-cup-project"><span title="Capstone Project" class="categoryLinkLabel_W154">Capstone Project</span></a></div></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist menu__link--sublist-caret" role="button" aria-expanded="false" href="/physical-ai-textbook/docs/hardware/hardware-guide"><span title="Hardware Guide" class="categoryLinkLabel_W154">Hardware Guide</span></a></div></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist menu__link--sublist-caret" role="button" aria-expanded="false" href="/physical-ai-textbook/docs/appendix/troubleshooting"><span title="Appendices" class="categoryLinkLabel_W154">Appendices</span></a></div></li></ul></nav></div></div></aside><main class="docMainContainer_TBSr"><div class="container padding-top--md padding-bottom--lg"><div class="row"><div class="col docItemCol_VOVn"><div class="docItemContainer_Djhp"><article><nav class="theme-doc-breadcrumbs breadcrumbsContainer_Z_bl" aria-label="Breadcrumbs"><ul class="breadcrumbs"><li class="breadcrumbs__item"><a aria-label="Home page" class="breadcrumbs__link" href="/physical-ai-textbook/"><svg viewBox="0 0 24 24" class="breadcrumbHomeIcon_YNFT"><path d="M10 19v-5h4v5c0 .55.45 1 1 1h3c.55 0 1-.45 1-1v-7h1.7c.46 0 .68-.57.33-.87L12.67 3.6c-.38-.34-.96-.34-1.34 0l-8.36 7.53c-.34.3-.13.87.33.87H5v7c0 .55.45 1 1 1h3c.55 0 1-.45 1-1z" fill="currentColor"></path></svg></a></li><li class="breadcrumbs__item"><span class="breadcrumbs__link">Module 4 - VLA Integration</span></li><li class="breadcrumbs__item breadcrumbs__item--active"><span class="breadcrumbs__link">TensorRT Optimization</span></li></ul></nav><div class="tocCollapsible_ETCw theme-doc-toc-mobile tocMobile_ITEo"><button type="button" class="clean-btn tocCollapsibleButton_TO0P">On this page</button></div><div class="theme-doc-markdown markdown"><header><h1 id="tensorrt-optimization-examples-for-jetson-orin">TensorRT Optimization Examples for Jetson Orin</h1></header>
+<h2 id="introduction">Introduction</h2>
+<p>NVIDIA TensorRT is a high-performance deep learning inference optimizer and runtime that delivers low latency and high throughput for AI applications. For humanoid robots deployed on NVIDIA Jetson Orin platforms, TensorRT optimization is crucial for achieving real-time performance while maintaining energy efficiency. This chapter provides comprehensive examples and best practices for optimizing AI models using TensorRT specifically for Jetson Orin deployment.</p>
+<p>The Jetson AGX Orin platform features powerful AI accelerators including the Deep Learning Accelerator (DLA) and programmable vision accelerators (PVA), which can be leveraged through TensorRT optimization to achieve optimal performance for humanoid robot applications.</p>
+<h2 id="understanding-tensorrt-architecture">Understanding TensorRT Architecture</h2>
+<h3 id="tensorrt-components">TensorRT Components</h3>
+<p>TensorRT consists of several key components:</p>
+<ol>
+<li><strong>Parser</strong>: Converts trained models from various frameworks (ONNX, TensorFlow, PyTorch)</li>
+<li><strong>Builder</strong>: Creates optimized inference engines</li>
+<li><strong>Runtime</strong>: Executes inference using optimized engines</li>
+<li><strong>Optimizer</strong>: Applies various optimization techniques</li>
+</ol>
+<h3 id="optimization-techniques">Optimization Techniques</h3>
+<p>TensorRT applies several optimization techniques:</p>
+<ul>
+<li><strong>Kernel Fusion</strong>: Combines operations to reduce memory access</li>
+<li><strong>Precision Calibration</strong>: Supports INT8 and FP16 precision</li>
+<li><strong>Layer Fusion</strong>: Fuses compatible layers</li>
+<li><strong>Memory Optimization</strong>: Optimizes memory allocation</li>
+<li><strong>Dynamic Tensor Memory</strong>: Efficiently manages temporary tensors</li>
+</ul>
+<h2 id="tensorrt-installation-and-setup">TensorRT Installation and Setup</h2>
+<h3 id="installing-tensorrt-on-jetson-orin">Installing TensorRT on Jetson Orin</h3>
+<p>TensorRT is pre-installed on Jetson Orin with JetPack, but you can install additional components:</p>
+<pre><code class="language-bash"># Check TensorRT version
+dpkg -l | grep tensorrt
+
+# Install Python bindings (if not already installed)
+sudo apt update
+sudo apt install python3-libnvinfer-dev
+
+# Install additional Python packages
+pip3 install tensorrt pycuda
+</code></pre>
+<h3 id="environment-setup">Environment Setup</h3>
+<p>Set up the environment for optimal TensorRT performance:</p>
+<pre><code class="language-bash"># Set environment variables for TensorRT
+export TENSORRT_ROOT=/usr/src/tensorrt
+export LD_LIBRARY_PATH=/usr/lib/aarch64-linux-gnu:$LD_LIBRARY_PATH
+export CUDA_HOME=/usr/local/cuda
+
+# Set optimization flags
+export CUDA_CACHE_MAXSIZE=2147483648  # 2GB cache
+export CUDA_CACHE_PATH=~/.nv/ComputeCache
+</code></pre>
+<h2 id="basic-tensorrt-optimization-example">Basic TensorRT Optimization Example</h2>
+<h3 id="simple-model-optimization">Simple Model Optimization</h3>
+<pre><code class="language-python"># basic_tensorrt_optimization.py
+import tensorrt as trt
+import pycuda.driver as cuda
+import pycuda.autoinit
+import numpy as np
+import torch
+import torch.nn as nn
+
+class SimpleModel(nn.Module):
+    def __init__(self):
+        super(SimpleModel, self).__init__()
+        self.conv1 = nn.Conv2d(3, 64, 3, padding=1)
+        self.relu = nn.ReLU()
+        self.pool = nn.MaxPool2d(2)
+        self.conv2 = nn.Conv2d(64, 128, 3, padding=1)
+        self.fc1 = nn.Linear(128 * 14 * 14, 256)  # Assuming 28x28 input
+        self.fc2 = nn.Linear(256, 10)
+
+    def forward(self, x):
+        x = self.relu(self.conv1(x))
+        x = self.pool(x)
+        x = self.relu(self.conv2(x))
+        x = self.pool(x)
+        x = x.view(x.size(0), -1)
+        x = self.relu(self.fc1(x))
+        x = self.fc2(x)
+        return x
+
+def create_tensorrt_engine(model, input_shape, precision=&quot;fp16&quot;):
+    &quot;&quot;&quot;
+    Create TensorRT engine from PyTorch model
+
+    Args:
+        model: PyTorch model
+        input_shape: Input tensor shape [batch, channels, height, width]
+        precision: Precision mode (&quot;fp32&quot;, &quot;fp16&quot;, &quot;int8&quot;)
+
+    Returns:
+        TensorRT engine
+    &quot;&quot;&quot;
+    logger = trt.Logger(trt.Logger.WARNING)
+
+    # Create builder
+    builder = trt.Builder(logger)
+
+    # Create network
+    network_flags = 1 &lt;&lt; int(trt.NetworkDefinitionCreationFlag.EXPLICIT_BATCH)
+    network = builder.create_network(flags=network_flags)
+
+    # Create config
+    config = builder.create_builder_config()
+
+    # Set memory limits appropriate for Jetson
+    config.set_memory_pool_limit(trt.MemoryPoolType.WORKSPACE, 2 &lt;&lt; 30)  # 2GB
+
+    # Create optimization profile
+    profile = builder.create_optimization_profile()
+
+    # Define input dimensions
+    input_name = &quot;input&quot;
+    input_dims = trt.Dims4(input_shape)  # [N, C, H, W]
+
+    # Set profile shapes (min, opt, max)
+    profile.set_shape(input_name,
+                     min=(1, input_shape[1], input_shape[2], input_shape[3]),  # Min batch
+                     opt=(1, input_shape[1], input_shape[2], input_shape[3]),  # Optimal batch
+                     max=(4, input_shape[1], input_shape[2], input_shape[3]))  # Max batch
+    config.add_optimization_profile(profile)
+
+    # Convert PyTorch model to ONNX first
+    dummy_input = torch.randn(input_shape)
+    onnx_path = &quot;temp_model.onnx&quot;
+
+    torch.onnx.export(
+        model,
+        dummy_input,
+        onnx_path,
+        export_params=True,
+        opset_version=11,
+        do_constant_folding=True,
+        input_names=[input_name],
+        output_names=[&quot;output&quot;],
+        dynamic_axes={
+            input_name: {0: &quot;batch_size&quot;},
+            &quot;output&quot;: {0: &quot;batch_size&quot;}
+        }
+    )
+
+    # Parse ONNX model
+    parser = trt.OnnxParser(network, logger)
+    with open(onnx_path, &#x27;rb&#x27;) as model_file:
+        if not parser.parse(model_file.read()):
+            print(&quot;ERROR: Failed to parse the ONNX file.&quot;)
+            for error in range(parser.num_errors):
+                print(parser.get_error(error))
+            return None
+
+    # Set precision
+    if precision == &quot;fp16&quot;:
+        if builder.platform_has_fast_fp16:
+            config.set_flag(trt.BuilderFlag.FP16)
+        else:
+            print(&quot;FP16 not supported on this platform&quot;)
+
+    elif precision == &quot;int8&quot;:
+        if builder.platform_has_fast_int8:
+            config.set_flag(trt.BuilderFlag.INT8)
+            # For INT8, you need calibration data
+            # config.int8_calibrator = create_calibrator(calibration_data)
+        else:
+            print(&quot;INT8 not supported on this platform&quot;)
+
+    # Build engine
+    print(&quot;Building TensorRT engine...&quot;)
+    engine = builder.build_engine(network, config)
+
+    if engine is None:
+        print(&quot;Failed to build engine&quot;)
+        return None
+
+    print(f&quot;Engine built successfully with precision: {precision}&quot;)
+    return engine
+
+def run_inference_with_engine(engine, input_data):
+    &quot;&quot;&quot;Run inference using TensorRT engine&quot;&quot;&quot;
+    # Create runtime
+    runtime = trt.Runtime(trt.Logger(trt.Logger.WARNING))
+
+    # Deserialize engine if needed
+    if isinstance(engine, bytes):
+        engine = runtime.deserialize_cuda_engine(engine)
+
+    # Create execution context
+    context = engine.create_execution_context()
+
+    # Allocate buffers
+    inputs, outputs, bindings, stream = allocate_buffers(engine, input_data.shape)
+
+    # Copy input data to GPU
+    np.copyto(inputs[0][&#x27;host&#x27;], input_data.ravel())
+    cuda.memcpy_htod(inputs[0][&#x27;device&#x27;], inputs[0][&#x27;host&#x27;])
+
+    # Run inference
+    context.execute_async_v2(bindings=bindings, stream_handle=stream.handle)
+
+    # Copy output data back to CPU
+    cuda.memcpy_dtoh(outputs[0][&#x27;host&#x27;], outputs[0][&#x27;device&#x27;])
+
+    # Synchronize stream
+    stream.synchronize()
+
+    return outputs[0][&#x27;host&#x27;]
+
+def allocate_buffers(engine, input_shape):
+    &quot;&quot;&quot;Allocate input and output buffers for inference&quot;&quot;&quot;
+    inputs = []
+    outputs = []
+    bindings = []
+    stream = cuda.Stream()
+
+    for idx in range(engine.num_bindings):
+        binding_name = engine.get_binding_name(idx)
+        binding_shape = engine.get_binding_shape(idx)
+
+        if binding_shape[0] == -1:  # Dynamic batch dimension
+            binding_shape = tuple([input_shape[0]] + list(binding_shape[1:]))
+
+        size = trt.volume(binding_shape)
+        dtype = trt.nptype(engine.get_binding_dtype(idx))
+
+        # Allocate host and device buffers
+        host_mem = cuda.pagelocked_empty(size, dtype)
+        device_mem = cuda.mem_alloc(host_mem.nbytes)
+
+        bindings.append(int(device_mem))
+
+        if engine.binding_is_input(idx):
+            inputs.append({&#x27;host&#x27;: host_mem, &#x27;device&#x27;: device_mem})
+        else:
+            outputs.append({&#x27;host&#x27;: host_mem, &#x27;device&#x27;: device_mem})
+
+    return inputs, outputs, bindings, stream
+
+def main():
+    # Create and prepare model
+    model = SimpleModel()
+    model.eval()
+
+    # Input shape: [batch, channels, height, width]
+    input_shape = (1, 3, 28, 28)
+
+    # Create TensorRT engine
+    engine = create_tensorrt_engine(model, input_shape, precision=&quot;fp16&quot;)
+
+    if engine is None:
+        print(&quot;Failed to create TensorRT engine&quot;)
+        return
+
+    # Create sample input data
+    input_data = np.random.rand(*input_shape).astype(np.float32)
+
+    # Run inference
+    output = run_inference_with_engine(engine, input_data)
+
+    print(f&quot;Inference output shape: {output.shape}&quot;)
+    print(f&quot;Sample output values: {output[:5]}&quot;)  # First 5 values
+
+    # Save engine for later use
+    with open(&quot;optimized_model.trt&quot;, &#x27;wb&#x27;) as f:
+        f.write(engine.serialize())
+
+    print(&quot;Engine saved to optimized_model.trt&quot;)
+
+if __name__ == &quot;__main__&quot;:
+    main()
+</code></pre>
+<h2 id="advanced-tensorrt-optimization-for-jetson-orin">Advanced TensorRT Optimization for Jetson Orin</h2>
+<h3 id="multi-stream-inference">Multi-Stream Inference</h3>
+<p>For humanoid robots requiring high-throughput inference, implement multi-stream processing:</p>
+<pre><code class="language-python"># multi_stream_inference.py
+import tensorrt as trt
+import pycuda.driver as cuda
+import pycuda.autoinit
+import numpy as np
+import threading
+import queue
+from concurrent.futures import ThreadPoolExecutor
+import time
+
+class MultiStreamTensorRTEngine:
+    def __init__(self, engine_path, max_streams=4):
+        self.engine = self.load_engine(engine_path)
+        self.max_streams = max_streams
+
+        # Create multiple execution contexts and streams
+        self.contexts = []
+        self.streams = []
+        self.bindings = []
+
+        for i in range(max_streams):
+            context = self.engine.create_execution_context()
+            stream = cuda.Stream()
+
+            self.contexts.append(context)
+            self.streams.append(stream)
+
+            # Allocate buffers for each stream
+            inputs, outputs, bindings, _ = self.allocate_buffers_for_stream(self.engine)
+            self.bindings.append(bindings)
+
+        self.available_streams = queue.Queue()
+        for i in range(max_streams):
+            self.available_streams.put(i)
+
+        # Performance metrics
+        self.inference_times = []
+        self.throughput = 0
+
+        print(f&quot;Initialized multi-stream engine with {max_streams} streams&quot;)
+
+    def load_engine(self, engine_path):
+        &quot;&quot;&quot;Load TensorRT engine from file&quot;&quot;&quot;
+        with open(engine_path, &#x27;rb&#x27;) as f:
+            engine_data = f.read()
+
+        runtime = trt.Runtime(trt.Logger(trt.Logger.WARNING))
+        engine = runtime.deserialize_cuda_engine(engine_data)
+
+        return engine
+
+    def allocate_buffers_for_stream(self, engine):
+        &quot;&quot;&quot;Allocate buffers for a specific stream&quot;&quot;&quot;
+        inputs = []
+        outputs = []
+        bindings = []
+        stream = cuda.Stream()  # Temp stream for allocation
+
+        for idx in range(engine.num_bindings):
+            binding_shape = engine.get_binding_shape(idx)
+            size = trt.volume(binding_shape)
+            dtype = trt.nptype(engine.get_binding_dtype(idx))
+
+            host_mem = cuda.pagelocked_empty(size, dtype)
+            device_mem = cuda.mem_alloc(host_mem.nbytes)
+
+            bindings.append(int(device_mem))
+
+            if engine.binding_is_input(idx):
+                inputs.append({&#x27;host&#x27;: host_mem, &#x27;device&#x27;: device_mem})
+            else:
+                outputs.append({&#x27;host&#x27;: host_mem, &#x27;device&#x27;: device_mem})
+
+        return inputs, outputs, bindings, stream
+
+    def async_inference(self, input_data, stream_id):
+        &quot;&quot;&quot;Perform asynchronous inference on specified stream&quot;&quot;&quot;
+        start_time = time.time()
+
+        context = self.contexts[stream_id]
+        stream = self.streams[stream_id]
+        bindings = self.bindings[stream_id]
+
+        # Get input/output bindings
+        input_idx = 0  # Assuming first binding is input
+        output_idx = 1  # Assuming second binding is output
+
+        # Copy input to GPU
+        np.copyto(
+            np.ctypeslib.as_array(self.contexts[stream_id]._get_binding_host(0),
+                                 shape=(input_data.size,)).reshape(input_data.shape),
+            input_data.ravel()
+        )
+
+        # Actually, we need to access the proper buffer
+        # This is a simplified version - in practice you&#x27;d use the allocated buffers
+        cuda.memcpy_htod_async(self.bindings[stream_id][0], input_data.ravel(), stream)
+
+        # Execute inference
+        context.execute_async_v2(bindings=bindings, stream_handle=stream.handle)
+
+        # Copy output back
+        output = np.empty(trt.volume(self.engine.get_binding_shape(1)),
+                         dtype=trt.nptype(self.engine.get_binding_dtype(1)))
+        cuda.memcpy_dtoh_async(output, self.bindings[stream_id][1], stream)
+
+        # Synchronize stream
+        stream.synchronize()
+
+        inference_time = time.time() - start_time
+        self.inference_times.append(inference_time)
+
+        return output, inference_time
+
+    def run_parallel_inference(self, input_batch, num_parallel=4):
+        &quot;&quot;&quot;Run parallel inference across multiple streams&quot;&quot;&quot;
+        futures = []
+
+        with ThreadPoolExecutor(max_workers=num_parallel) as executor:
+            for i in range(min(len(input_batch), num_parallel)):
+                stream_id = self.available_streams.get()
+
+                future = executor.submit(
+                    self.async_inference,
+                    input_batch[i],
+                    stream_id
+                )
+
+                futures.append((future, stream_id))
+
+        # Collect results
+        results = []
+        for future, stream_id in futures:
+            output, time_taken = future.result()
+            results.append((output, time_taken))
+
+            # Return stream to available queue
+            self.available_streams.put(stream_id)
+
+        return results
+
+    def get_performance_metrics(self):
+        &quot;&quot;&quot;Get current performance metrics&quot;&quot;&quot;
+        if not self.inference_times:
+            return {&quot;avg_time&quot;: 0.0, &quot;throughput&quot;: 0.0, &quot;latency&quot;: 0.0}
+
+        avg_time = sum(self.inference_times[-100:]) / len(self.inference_times[-100:])
+        throughput = len(self.inference_times[-100:]) / sum(self.inference_times[-100:])
+        latency = avg_time
+
+        return {
+            &quot;avg_time&quot;: avg_time,
+            &quot;throughput&quot;: throughput,
+            &quot;latency&quot;: latency,
+            &quot;total_inferences&quot;: len(self.inference_times)
+        }
+
+def optimize_model_for_multi_stream(model_path, input_shape):
+    &quot;&quot;&quot;Optimize model specifically for multi-stream inference&quot;&quot;&quot;
+    logger = trt.Logger(trt.Logger.WARNING)
+    builder = trt.Builder(logger)
+
+    # Create network with explicit batch
+    network_flags = 1 &lt;&lt; int(trt.NetworkDefinitionCreationFlag.EXPLICIT_BATCH)
+    network = builder.create_network(flags=network_flags)
+
+    # Parse model (assuming ONNX)
+    parser = trt.OnnxParser(network, logger)
+    with open(model_path, &#x27;rb&#x27;) as model_file:
+        if not parser.parse(model_file.read()):
+            print(&quot;Failed to parse model&quot;)
+            return None
+
+    # Create config
+    config = builder.create_builder_config()
+
+    # Set workspace size (larger for multi-stream)
+    config.set_memory_pool_limit(trt.MemoryPoolType.WORKSPACE, 4 &lt;&lt; 30)  # 4GB
+
+    # Create optimization profile
+    profile = builder.create_optimization_profile()
+    profile.set_shape(&quot;input&quot;,
+                     min=(1, input_shape[1], input_shape[2], input_shape[3]),
+                     opt=(2, input_shape[1], input_shape[2], input_shape[3]),  # Higher opt batch
+                     max=(8, input_shape[1], input_shape[2], input_shape[3]))  # Higher max batch
+    config.add_optimization_profile(profile)
+
+    # Enable FP16 if supported
+    if builder.platform_has_fast_fp16:
+        config.set_flag(trt.BuilderFlag.FP16)
+
+    # Build engine
+    engine = builder.build_engine(network, config)
+
+    return engine
+
+def main():
+    # Example usage
+    print(&quot;Multi-Stream TensorRT Engine Demo&quot;)
+
+    # Load or create engine
+    # engine = optimize_model_for_multi_stream(&quot;model.onnx&quot;, (1, 3, 224, 224))
+
+    # For this example, we&#x27;ll use a dummy engine
+    # In practice, you&#x27;d load your optimized engine
+
+    # Create multi-stream engine
+    # multi_engine = MultiStreamTensorRTEngine(&quot;optimized_model.trt&quot;, max_streams=4)
+
+    # Generate sample input batch
+    batch_size = 4
+    input_shape = (3, 224, 224)
+    input_batch = [np.random.rand(1, *input_shape).astype(np.float32)
+                   for _ in range(batch_size)]
+
+    # Run parallel inference
+    # results = multi_engine.run_parallel_inference(input_batch, num_parallel=4)
+
+    print(f&quot;Completed inference on batch of {batch_size} samples&quot;)
+
+    # Print performance metrics
+    # metrics = multi_engine.get_performance_metrics()
+    # print(f&quot;Performance: {metrics}&quot;)
+
+if __name__ == &quot;__main__&quot;:
+    main()
+</code></pre>
+<h2 id="optimizing-specific-ai-models-for-humanoid-robots">Optimizing Specific AI Models for Humanoid Robots</h2>
+<h3 id="optimizing-vision-models-grounding-dino-sam">Optimizing Vision Models (Grounding DINO, SAM)</h3>
+<pre><code class="language-python"># optimize_vision_models.py
+import tensorrt as trt
+import pycuda.driver as cuda
+import numpy as np
+import torch
+import onnx
+
+class VisionModelOptimizer:
+    def __init__(self):
+        self.logger = trt.Logger(trt.Logger.WARNING)
+
+    def optimize_grounding_dino(self, model_path, input_shapes):
+        &quot;&quot;&quot;
+        Optimize Grounding DINO model for TensorRT
+
+        Args:
+            model_path: Path to ONNX model
+            input_shapes: List of tuples (name, min_shape, opt_shape, max_shape)
+        &quot;&quot;&quot;
+        builder = trt.Builder(self.logger)
+        network = builder.create_network(1 &lt;&lt; int(trt.NetworkDefinitionCreationFlag.EXPLICIT_BATCH))
+        config = builder.create_builder_config()
+
+        # Parse ONNX model
+        parser = trt.OnnxParser(network, self.logger)
+        with open(model_path, &#x27;rb&#x27;) as model_file:
+            if not parser.parse(model_file.read()):
+                print(&quot;ERROR: Failed to parse the ONNX file.&quot;)
+                for error in range(parser.num_errors):
+                    print(parser.get_error(error))
+                return None
+
+        # Set workspace size appropriate for vision models
+        config.set_memory_pool_limit(trt.MemoryPoolType.WORKSPACE, 4 &lt;&lt; 30)  # 4GB
+
+        # Create optimization profile
+        profile = builder.create_optimization_profile()
+
+        for name, min_shape, opt_shape, max_shape in input_shapes:
+            profile.set_shape(name, min_shape, opt_shape, max_shape)
+
+        config.add_optimization_profile(profile)
+
+        # Enable FP16 for vision models
+        if builder.platform_has_fast_fp16:
+            config.set_flag(trt.BuilderFlag.FP16)
+
+        # Build engine
+        print(&quot;Building Grounding DINO TensorRT engine...&quot;)
+        engine = builder.build_engine(network, config)
+
+        if engine is None:
+            print(&quot;Failed to build Grounding DINO engine&quot;)
+            return None
+
+        print(&quot;Grounding DINO engine built successfully&quot;)
+        return engine
+
+    def optimize_sam(self, model_path, encoder_input_shape, decoder_input_shapes):
+        &quot;&quot;&quot;
+        Optimize SAM (Segment Anything Model) for TensorRT
+
+        Args:
+            model_path: Path to ONNX model
+            encoder_input_shape: Shape for image encoder input
+            decoder_input_shapes: Shapes for mask decoder inputs
+        &quot;&quot;&quot;
+        builder = trt.Builder(self.logger)
+        network = builder.create_network(1 &lt;&lt; int(trt.NetworkDefinitionCreationFlag.EXPLICIT_BATCH))
+        config = builder.create_builder_config()
+
+        # Parse ONNX model
+        parser = trt.OnnxParser(network, self.logger)
+        with open(model_path, &#x27;rb&#x27;) as model_file:
+            if not parser.parse(model_file.read()):
+                print(&quot;ERROR: Failed to parse the ONNX file.&quot;)
+                for error in range(parser.num_errors):
+                    print(parser.get_error(error))
+                return None
+
+        # Set workspace size (SAM requires significant memory)
+        config.set_memory_pool_limit(trt.MemoryPoolType.WORKSPACE, 6 &lt;&lt; 30)  # 6GB
+
+        # Create optimization profile
+        profile = builder.create_optimization_profile()
+
+        # Set shapes for SAM components
+        profile.set_shape(&quot;image_encoder_input&quot;,
+                         min=encoder_input_shape[0],
+                         opt=encoder_input_shape[1],
+                         max=encoder_input_shape[2])
+
+        # Add other input shapes for mask decoder
+        for input_name, shapes in decoder_input_shapes.items():
+            profile.set_shape(input_name,
+                             min=shapes[&#x27;min&#x27;],
+                             opt=shapes[&#x27;opt&#x27;],
+                             max=shapes[&#x27;max&#x27;])
+
+        config.add_optimization_profile(profile)
+
+        # Enable FP16 for SAM
+        if builder.platform_has_fast_fp16:
+            config.set_flag(trt.BuilderFlag.FP16)
+
+        # Build engine
+        print(&quot;Building SAM TensorRT engine...&quot;)
+        engine = builder.build_engine(network, config)
+
+        if engine is None:
+            print(&quot;Failed to build SAM engine&quot;)
+            return None
+
+        print(&quot;SAM engine built successfully&quot;)
+        return engine
+
+    def optimize_open_vocabulary_detection_pipeline(self,
+                                                   grounding_dino_path,
+                                                   sam_path,
+                                                   input_resolution=(640, 640)):
+        &quot;&quot;&quot;
+        Optimize the complete open-vocabulary detection pipeline
+        &quot;&quot;&quot;
+        print(&quot;Optimizing complete open-vocabulary detection pipeline...&quot;)
+
+        # Optimize Grounding DINO
+        dino_input_shapes = [
+            (&quot;image&quot;, (1, 3, 640, 640), (1, 3, 640, 640), (4, 3, 640, 640)),
+            (&quot;text&quot;, (1, 256), (1, 256), (4, 256))  # Adjust based on actual text input
+        ]
+
+        dino_engine = self.optimize_grounding_dino(grounding_dino_path, dino_input_shapes)
+
+        if dino_engine is None:
+            print(&quot;Failed to optimize Grounding DINO&quot;)
+            return None, None
+
+        # Save optimized engines
+        with open(&quot;grounding_dino_optimized.trt&quot;, &#x27;wb&#x27;) as f:
+            f.write(dino_engine.serialize())
+
+        print(&quot;Grounding DINO optimized and saved&quot;)
+
+        # For SAM, you&#x27;d typically have separate encoders
+        # This is a simplified example
+        sam_encoder_input = [(1, 3, 1024, 1024), (1, 3, 1024, 1024), (1, 3, 1024, 1024)]
+        sam_decoder_inputs = {
+            &quot;image_embeddings&quot;: {
+                &quot;min&quot;: (1, 256, 64, 64),
+                &quot;opt&quot;: (1, 256, 64, 64),
+                &quot;max&quot;: (4, 256, 64, 64)
+            },
+            &quot;point_coords&quot;: {
+                &quot;min&quot;: (1, 2, 2),
+                &quot;opt&quot;: (1, 2, 2),
+                &quot;max&quot;: (4, 100, 2)  # Support up to 100 points
+            }
+        }
+
+        # SAM optimization would go here
+        # sam_engine = self.optimize_sam(sam_path, sam_encoder_input, sam_decoder_inputs)
+
+        return dino_engine  # , sam_engine
+
+def convert_pytorch_to_onnx_for_optimization(model, sample_input, onnx_path, opset_version=11):
+    &quot;&quot;&quot;Convert PyTorch model to ONNX format for TensorRT optimization&quot;&quot;&quot;
+    model.eval()
+
+    torch.onnx.export(
+        model,
+        sample_input,
+        onnx_path,
+        export_params=True,
+        opset_version=opset_version,
+        do_constant_folding=True,
+        input_names=[&#x27;input&#x27;],
+        output_names=[&#x27;output&#x27;],
+        dynamic_axes={
+            &#x27;input&#x27;: {0: &#x27;batch_size&#x27;},
+            &#x27;output&#x27;: {0: &#x27;batch_size&#x27;}
+        }
+    )
+
+    print(f&quot;Model converted to ONNX: {onnx_path}&quot;)
+
+def main():
+    optimizer = VisionModelOptimizer()
+
+    # Example usage (paths would need to be actual model files)
+    # dino_engine, sam_engine = optimizer.optimize_open_vocabulary_detection_pipeline(
+    #     &quot;grounding_dino.onnx&quot;,
+    #     &quot;sam.onnx&quot;
+    # )
+
+    print(&quot;Vision model optimization completed&quot;)
+
+if __name__ == &quot;__main__&quot;:
+    main()
+</code></pre>
+<h2 id="optimizing-language-models-whisper-llama-3">Optimizing Language Models (Whisper, Llama-3)</h2>
+<h3 id="whisper-optimization-for-real-time-processing">Whisper Optimization for Real-time Processing</h3>
+<pre><code class="language-python"># optimize_whisper.py
+import tensorrt as trt
+import pycuda.driver as cuda
+import numpy as np
+import torch
+import librosa
+
+class WhisperOptimizer:
+    def __init__(self):
+        self.logger = trt.Logger(trt.Logger.WARNING)
+
+    def optimize_whisper_encoder(self, model_path, input_shape):
+        &quot;&quot;&quot;
+        Optimize Whisper encoder for TensorRT
+
+        Args:
+            model_path: Path to Whisper encoder ONNX model
+            input_shape: Shape of mel spectrogram input [batch, features, time]
+        &quot;&quot;&quot;
+        builder = trt.Builder(self.logger)
+        network = builder.create_network(1 &lt;&lt; int(trt.NetworkDefinitionCreationFlag.EXPLICIT_BATCH))
+        config = builder.create_builder_config()
+
+        # Parse ONNX model
+        parser = trt.OnnxParser(network, self.logger)
+        with open(model_path, &#x27;rb&#x27;) as model_file:
+            if not parser.parse(model_file.read()):
+                print(&quot;ERROR: Failed to parse the ONNX file.&quot;)
+                for error in range(parser.num_errors):
+                    print(parser.get_error(error))
+                return None
+
+        # Set workspace size for transformer models
+        config.set_memory_pool_limit(trt.MemoryPoolType.WORKSPACE, 3 &lt;&lt; 30)  # 3GB
+
+        # Create optimization profile
+        profile = builder.create_optimization_profile()
+        profile.set_shape(&quot;mel_input&quot;,
+                         min=(1, input_shape[1], 1),      # Min: 1 frame
+                         opt=(1, input_shape[1], 3000),   # Opt: 30 sec at 100Hz
+                         max=(1, input_shape[1], 6000))   # Max: 60 sec at 100Hz
+        config.add_optimization_profile(profile)
+
+        # Enable FP16 for better performance/accuracy trade-off
+        if builder.platform_has_fast_fp16:
+            config.set_flag(trt.BuilderFlag.FP16)
+
+        # Build engine
+        print(&quot;Building Whisper encoder TensorRT engine...&quot;)
+        engine = builder.build_engine(network, config)
+
+        if engine is None:
+            print(&quot;Failed to build Whisper encoder engine&quot;)
+            return None
+
+        print(&quot;Whisper encoder engine built successfully&quot;)
+        return engine
+
+    def optimize_whisper_decoder(self, model_path, input_shapes):
+        &quot;&quot;&quot;
+        Optimize Whisper decoder for TensorRT
+
+        Args:
+            model_path: Path to Whisper decoder ONNX model
+            input_shapes: Dictionary with input shapes
+        &quot;&quot;&quot;
+        builder = trt.Builder(self.logger)
+        network = builder.create_network(1 &lt;&lt; int(trt.NetworkDefinitionCreationFlag.EXPLICIT_BATCH))
+        config = builder.create_builder_config()
+
+        # Parse ONNX model
+        parser = trt.OnnxParser(network, self.logger)
+        with open(model_path, &#x27;rb&#x27;) as model_file:
+            if not parser.parse(model_file.read()):
+                print(&quot;ERROR: Failed to parse the ONNX file.&quot;)
+                for error in range(parser.num_errors):
+                    print(parser.get_error(error))
+                return None
+
+        # Set workspace size (decoder can be memory intensive)
+        config.set_memory_pool_limit(trt.MemoryPoolType.WORKSPACE, 4 &lt;&lt; 30)  # 4GB
+
+        # Create optimization profile
+        profile = builder.create_optimization_profile()
+
+        for input_name, (min_shape, opt_shape, max_shape) in input_shapes.items():
+            profile.set_shape(input_name, min_shape, opt_shape, max_shape)
+
+        config.add_optimization_profile(profile)
+
+        # Enable FP16
+        if builder.platform_has_fast_fp16:
+            config.set_flag(trt.BuilderFlag.FP16)
+
+        # Build engine
+        print(&quot;Building Whisper decoder TensorRT engine...&quot;)
+        engine = builder.build_engine(network, config)
+
+        if engine is None:
+            print(&quot;Failed to build Whisper decoder engine&quot;)
+            return None
+
+        print(&quot;Whisper decoder engine built successfully&quot;)
+        return engine
+
+    def create_real_time_whisper_pipeline(self, encoder_path, decoder_path):
+        &quot;&quot;&quot;Create optimized real-time Whisper pipeline&quot;&quot;&quot;
+        # Optimize encoder
+        encoder_input_shape = (1, 80, 3000)  # [batch, mel_features, time]
+        encoder_engine = self.optimize_whisper_encoder(encoder_path, encoder_input_shape)
+
+        if encoder_engine is None:
+            print(&quot;Failed to optimize Whisper encoder&quot;)
+            return None
+
+        # Optimize decoder
+        decoder_input_shapes = {
+            &quot;encoder_output&quot;: (
+                (1, 1500, 512),    # Min: [1, time, features]
+                (1, 1500, 512),    # Opt: [1, time, features]
+                (1, 3000, 512)     # Max: [1, time, features]
+            ),
+            &quot;decoder_input_ids&quot;: (
+                (1, 1),            # Min: [1, 1] (start token)
+                (1, 50),           # Opt: [1, 50] (typical sequence)
+                (1, 250)           # Max: [1, 250] (max sequence)
+            )
+        }
+
+        decoder_engine = self.optimize_whisper_decoder(decoder_path, decoder_input_shapes)
+
+        if decoder_engine is None:
+            print(&quot;Failed to optimize Whisper decoder&quot;)
+            return encoder_engine, None
+
+        # Save engines
+        with open(&quot;whisper_encoder_optimized.trt&quot;, &#x27;wb&#x27;) as f:
+            f.write(encoder_engine.serialize())
+
+        with open(&quot;whisper_decoder_optimized.trt&quot;, &#x27;wb&#x27;) as f:
+            f.write(decoder_engine.serialize())
+
+        print(&quot;Real-time Whisper pipeline optimized and saved&quot;)
+
+        return encoder_engine, decoder_engine
+
+def preprocess_audio_for_whisper(audio_file_path, sample_rate=16000):
+    &quot;&quot;&quot;Preprocess audio for Whisper model&quot;&quot;&quot;
+    # Load audio
+    audio, sr = librosa.load(audio_file_path, sr=sample_rate)
+
+    # Pad or trim to exactly 30 seconds as required by Whisper
+    n_samples = sample_rate * 30  # 30 seconds
+    if len(audio) &gt; n_samples:
+        audio = audio[:n_samples]
+    else:
+        audio = np.pad(audio, (0, n_samples - len(audio)))
+
+    # Convert to log-Mel spectrogram (simplified)
+    # In practice, use the exact preprocessing from Whisper
+    mel = librosa.feature.mfcc(audio, sr=sr, n_mels=80)
+
+    return mel.astype(np.float32)
+
+def main():
+    optimizer = WhisperOptimizer()
+
+    # Example usage (with actual model paths)
+    # encoder_engine, decoder_engine = optimizer.create_real_time_whisper_pipeline(
+    #     &quot;whisper_encoder.onnx&quot;,
+    #     &quot;whisper_decoder.onnx&quot;
+    # )
+
+    print(&quot;Whisper optimization completed&quot;)
+
+if __name__ == &quot;__main__&quot;:
+    main()
+</code></pre>
+<h2 id="quantization-and-precision-optimization">Quantization and Precision Optimization</h2>
+<h3 id="int8-calibration-for-jetson-orin">INT8 Calibration for Jetson Orin</h3>
+<pre><code class="language-python"># int8_calibration.py
+import tensorrt as trt
+import pycuda.driver as cuda
+import pycuda.autoinit
+import numpy as np
+import torch
+from torch.utils.data import DataLoader, Dataset
+
+class Int8Calibrator(trt.IInt8MinMaxCalibrator):
+    def __init__(self, calibration_dataset, batch_size=1, algorithm=trt.CalibrationAlgoType.MINMAX_CALIBRATION):
+        trt.IInt8MinMaxCalibrator.__init__(self)
+
+        self.dataset = calibration_dataset
+        self.batch_size = batch_size
+        self.current_index = 0
+
+        # Allocate device memory for calibration batches
+        self.device_input = cuda.mem_alloc(self.dataset[0].nbytes)
+
+        self.algorithm = algorithm
+
+    def get_batch_size(self):
+        return self.batch_size
+
+    def get_batch(self, names):
+        if self.current_index + self.batch_size &gt; len(self.dataset):
+            return None
+
+        batch = self.dataset[self.current_index:self.current_index + self.batch_size]
+        batch = np.ascontiguousarray(batch)
+
+        cuda.memcpy_htod(self.device_input, batch)
+
+        self.current_index += self.batch_size
+
+        return [int(self.device_input)]
+
+    def read_calibration_cache(self):
+        # Try to read calibration cache if it exists
+        try:
+            with open(&quot;calibration.cache&quot;, &quot;rb&quot;) as f:
+                return f.read()
+        except FileNotFoundError:
+            print(&quot;Calibration cache not found, will calibrate from scratch&quot;)
+            return None
+
+    def write_calibration_cache(self, cache):
+        # Write calibration cache to file
+        with open(&quot;calibration.cache&quot;, &quot;wb&quot;) as f:
+            f.write(cache)
+
+class CalibrationDataset(Dataset):
+    def __init__(self, data_samples):
+        self.data = data_samples
+
+    def __len__(self):
+        return len(self.data)
+
+    def __getitem__(self, idx):
+        return self.data[idx]
+
+def create_calibration_data(model_type, num_samples=100):
+    &quot;&quot;&quot;Create calibration data for INT8 quantization&quot;&quot;&quot;
+    if model_type == &quot;vision&quot;:
+        # Create vision calibration data (normalized images)
+        calibration_data = []
+        for _ in range(num_samples):
+            # Sample image data normalized to [0, 1] then scaled to [-1, 1] or [0, 1]
+            img = np.random.rand(1, 3, 224, 224).astype(np.float32)
+            calibration_data.append(img)
+
+    elif model_type == &quot;audio&quot;:
+        # Create audio calibration data (mel spectrograms)
+        calibration_data = []
+        for _ in range(num_samples):
+            # Sample mel spectrogram
+            mel = np.random.rand(1, 80, 3000).astype(np.float32)  # Whisper format
+            calibration_data.append(mel)
+
+    elif model_type == &quot;language&quot;:
+        # Create language calibration data (token embeddings)
+        calibration_data = []
+        for _ in range(num_samples):
+            # Sample token embeddings
+            tokens = np.random.randint(0, 50257, size=(1, 128)).astype(np.int32)  # GPT-2 vocab size
+            calibration_data.append(tokens)
+
+    return np.concatenate(calibration_data, axis=0)
+
+def optimize_with_int8_quantization(onnx_model_path, input_shape, model_type=&quot;vision&quot;):
+    &quot;&quot;&quot;Optimize model with INT8 quantization&quot;&quot;&quot;
+    logger = trt.Logger(trt.Logger.WARNING)
+    builder = trt.Builder(logger)
+
+    # Create network
+    network_flags = 1 &lt;&lt; int(trt.NetworkDefinitionCreationFlag.EXPLICIT_BATCH)
+    network = builder.create_network(flags=network_flags)
+
+    # Parse ONNX
+    parser = trt.OnnxParser(network, logger)
+    with open(onnx_model_path, &#x27;rb&#x27;) as model_file:
+        if not parser.parse(model_file.read()):
+            print(&quot;Failed to parse ONNX model&quot;)
+            return None
+
+    # Create config
+    config = builder.create_builder_config()
+
+    # Enable INT8
+    if builder.platform_has_fast_int8:
+        config.set_flag(trt.BuilderFlag.INT8)
+
+        # Create calibration data
+        calibration_data = create_calibration_data(model_type, num_samples=100)
+        calibration_dataset = CalibrationDataset(calibration_data)
+
+        # Create calibrator
+        calibrator = Int8Calibrator(calibration_dataset)
+        config.int8_calibrator = calibrator
+    else:
+        print(&quot;INT8 not supported on this platform&quot;)
+        return None
+
+    # Set workspace size
+    config.set_memory_pool_limit(trt.MemoryPoolType.WORKSPACE, 2 &lt;&lt; 30)  # 2GB
+
+    # Create optimization profile
+    profile = builder.create_optimization_profile()
+    profile.set_shape(&quot;input&quot;,
+                     min=input_shape[0],
+                     opt=input_shape[1],
+                     max=input_shape[2])
+    config.add_optimization_profile(profile)
+
+    # Build engine
+    print(&quot;Building INT8 optimized engine...&quot;)
+    engine = builder.build_engine(network, config)
+
+    if engine is None:
+        print(&quot;Failed to build INT8 engine&quot;)
+        return None
+
+    print(&quot;INT8 engine built successfully&quot;)
+    return engine
+
+def benchmark_precision_comparison(engine_fp32, engine_fp16, engine_int8, input_data):
+    &quot;&quot;&quot;Benchmark different precision modes&quot;&quot;&quot;
+    import time
+
+    def benchmark_engine(engine, input_data, num_runs=10):
+        times = []
+
+        for _ in range(num_runs):
+            start = time.time()
+
+            # Run inference (simplified)
+            # In practice, you&#x27;d use the proper inference code
+
+            end = time.time()
+            times.append(end - start)
+
+        avg_time = sum(times) / len(times)
+        return avg_time
+
+    # Benchmark each precision
+    fp32_time = benchmark_engine(engine_fp32, input_data)
+    fp16_time = benchmark_engine(engine_fp16, input_data) if engine_fp16 else None
+    int8_time = benchmark_engine(engine_int8, input_data) if engine_int8 else None
+
+    print(f&quot;Performance comparison:&quot;)
+    print(f&quot;FP32: {fp32_time:.4f}s&quot;)
+    if fp16_time:
+        print(f&quot;FP16: {fp16_time:.4f}s ({fp32_time/fp16_time:.2f}x faster)&quot;)
+    if int8_time:
+        print(f&quot;INT8: {int8_time:.4f}s ({fp32_time/int8_time:.2f}x faster)&quot;)
+
+def main():
+    print(&quot;INT8 Calibration and Optimization&quot;)
+
+    # Example usage
+    # input_shape = [(1, 3, 224, 224), (1, 3, 224, 224), (4, 3, 224, 224)]  # min, opt, max
+    # engine = optimize_with_int8_quantization(&quot;model.onnx&quot;, input_shape, &quot;vision&quot;)
+
+    print(&quot;INT8 optimization completed&quot;)
+
+if __name__ == &quot;__main__&quot;:
+    main()
+</code></pre>
+<h2 id="jetson-orin-specific-optimizations">Jetson Orin-Specific Optimizations</h2>
+<h3 id="dla-deep-learning-accelerator-configuration">DLA (Deep Learning Accelerator) Configuration</h3>
+<pre><code class="language-python"># dla_optimization.py
+import tensorrt as trt
+
+def configure_for_dla(builder, network, dla_core=0):
+    &quot;&quot;&quot;
+    Configure TensorRT engine to use DLA (Deep Learning Accelerator) on Jetson
+
+    Args:
+        builder: TensorRT builder
+        network: TensorRT network
+        dla_core: DLA core to use (0 or 1 on Jetson AGX Orin)
+    &quot;&quot;&quot;
+    # Check if DLA is available
+    if builder.get_device_type() == trt.DeviceType.DLA:
+        print(f&quot;DLA {dla_core} is available&quot;)
+    else:
+        print(&quot;DLA not available on this device&quot;)
+        return False
+
+    # Set DLA usage
+    if builder.platform_has_dla:
+        # Mark layers that should run on DLA
+        # This is typically done by examining the network and marking compatible layers
+        for layer in network:
+            if is_layer_compatible_with_dla(layer):
+                layer.precision = trt.DataType.INT8  # DLA works best with INT8
+                layer.device_type = trt.DeviceType.DLA
+                layer.epilogue = trt.Epilogue.NONE
+
+    return True
+
+def is_layer_compatible_with_dla(layer):
+    &quot;&quot;&quot;
+    Check if a layer is compatible with DLA
+    DLA supports a subset of operations
+    &quot;&quot;&quot;
+    # DLA supports:
+    # - Convolution (with certain constraints)
+    # - Fully Connected
+    # - Activation functions (ReLU, Sigmoid, Tanh)
+    # - Pooling operations
+    # - Element-wise operations
+
+    supported_layers = [
+        trt.LayerType.CONVOLUTION,
+        trt.LayerType.FULLY_CONNECTED,
+        trt.LayerType.ACTIVATION,
+        trt.LayerType.POOLING,
+        trt.LayerType.ELEMENTWISE
+    ]
+
+    return layer.type in supported_layers
+
+def optimize_for_jetson_hardware(model_path, input_shape, use_dla=False):
+    &quot;&quot;&quot;
+    Optimize model specifically for Jetson Orin hardware capabilities
+    &quot;&quot;&quot;
+    logger = trt.Logger(trt.Logger.WARNING)
+    builder = trt.Builder(logger)
+
+    # Create network
+    network_flags = 1 &lt;&lt; int(trt.NetworkDefinitionCreationFlag.EXPLICIT_BATCH)
+    network = builder.create_network(flags=network_flags)
+
+    # Parse model
+    parser = trt.OnnxParser(network, logger)
+    with open(model_path, &#x27;rb&#x27;) as model_file:
+        if not parser.parse(model_file.read()):
+            print(&quot;Failed to parse model&quot;)
+            return None
+
+    # Create config
+    config = builder.create_builder_config()
+
+    # Set workspace appropriately for Jetson
+    config.set_memory_pool_limit(trt.MemoryPoolType.WORKSPACE, 2 &lt;&lt; 30)  # 2GB
+
+    # Configure for Jetson-specific features
+    if use_dla and builder.platform_has_dla:
+        print(&quot;Configuring for DLA acceleration...&quot;)
+        configure_for_dla(builder, network, dla_core=0)
+
+    # Enable Jetson-optimized precisions
+    if builder.platform_has_fast_fp16:
+        config.set_flag(trt.BuilderFlag.FP16)
+        print(&quot;Enabled FP16 optimization&quot;)
+
+    if builder.platform_has_fast_int8:
+        config.set_flag(trt.BuilderFlag.INT8)
+        print(&quot;Enabled INT8 optimization&quot;)
+
+    # Create optimization profile
+    profile = builder.create_optimization_profile()
+    profile.set_shape(&quot;input&quot;,
+                     min=input_shape[0],
+                     opt=input_shape[1],
+                     max=input_shape[2])
+    config.add_optimization_profile(profile)
+
+    # Build engine
+    print(&quot;Building Jetson-optimized engine...&quot;)
+    engine = builder.build_engine(network, config)
+
+    if engine is None:
+        print(&quot;Failed to build Jetson-optimized engine&quot;)
+        return None
+
+    print(&quot;Jetson-optimized engine built successfully&quot;)
+    return engine
+
+def get_jetson_performance_recommendations():
+    &quot;&quot;&quot;
+    Get performance recommendations for Jetson Orin deployment
+    &quot;&quot;&quot;
+    recommendations = {
+        &quot;precision&quot;: {
+            &quot;vision_models&quot;: &quot;Use FP16 for best balance of accuracy and performance&quot;,
+            &quot;language_models&quot;: &quot;Consider INT8 for large language models to fit in memory&quot;,
+            &quot;audio_models&quot;: &quot;FP16 typically provides good results for audio processing&quot;
+        },
+        &quot;batch_size&quot;: {
+            &quot;real_time&quot;: &quot;Use batch_size=1 for real-time applications&quot;,
+            &quot;throughput&quot;: &quot;Increase batch size up to 4-8 for better throughput&quot;
+        },
+        &quot;memory_management&quot;: {
+            &quot;workspace&quot;: &quot;Allocate 2-4GB workspace depending on model complexity&quot;,
+            &quot;streaming&quot;: &quot;Use multiple streams for parallel processing&quot;
+        },
+        &quot;hardware_acceleration&quot;: {
+            &quot;dla&quot;: &quot;Use DLA for INT8 inference of compatible layers&quot;,
+            &quot;pva&quot;: &quot;Consider PVA for vision preprocessing tasks&quot;,
+            &quot;cuda&quot;: &quot;Use CUDA cores for unsupported operations&quot;
+        }
+    }
+
+    return recommendations
+
+def main():
+    print(&quot;Jetson Orin Hardware Optimization&quot;)
+
+    # Get recommendations
+    recs = get_jetson_performance_recommendations()
+    print(&quot;\nPerformance Recommendations:&quot;)
+    for category, items in recs.items():
+        print(f&quot;\n{category.upper()}:&quot;)
+        for key, value in items.items():
+            print(f&quot;  {key}: {value}&quot;)
+
+    # Example optimization
+    # input_shape = [(1, 3, 224, 224), (1, 3, 224, 224), (4, 3, 224, 224)]
+    # engine = optimize_for_jetson_hardware(&quot;model.onnx&quot;, input_shape, use_dla=True)
+
+    print(&quot;\nJetson Orin optimization completed&quot;)
+
+if __name__ == &quot;__main__&quot;:
+    main()
+</code></pre>
+<h2 id="performance-monitoring-and-profiling">Performance Monitoring and Profiling</h2>
+<h3 id="tensorrt-profiling-tools">TensorRT Profiling Tools</h3>
+<pre><code class="language-python"># tensorrt_profiling.py
+import tensorrt as trt
+import pycuda.driver as cuda
+import pycuda.autoinit
+import numpy as np
+import time
+from collections import defaultdict
+
+class TensorRTProfiler:
+    def __init__(self):
+        self.profiler = trt.Profiler()
+        self.layer_times = defaultdict(list)
+        self.total_times = []
+
+    def profile_inference(self, engine, input_data, num_runs=100):
+        &quot;&quot;&quot;Profile inference performance&quot;&quot;&quot;
+        # Create context with profiler
+        context = engine.create_execution_context()
+        context.profiler = self.profiler
+
+        # Allocate buffers
+        inputs, outputs, bindings, stream = self.allocate_buffers(engine, input_data.shape)
+
+        # Warm up
+        for _ in range(10):
+            self.run_single_inference(context, input_data, bindings, stream)
+
+        print(f&quot;Profiling {num_runs} inference runs...&quot;)
+
+        # Profile runs
+        for run in range(num_runs):
+            start_time = time.time()
+
+            output = self.run_single_inference(context, input_data, bindings, stream)
+
+            end_time = time.time()
+            total_time = end_time - start_time
+            self.total_times.append(total_time)
+
+            if run % 20 == 0:  # Print progress
+                print(f&quot;Run {run}/{num_runs} completed&quot;)
+
+        print(f&quot;Profiling completed for {num_runs} runs&quot;)
+        return self.get_performance_summary()
+
+    def run_single_inference(self, context, input_data, bindings, stream):
+        &quot;&quot;&quot;Run a single inference with profiling&quot;&quot;&quot;
+        # Copy input
+        np.copyto(inputs[0][&#x27;host&#x27;], input_data.ravel())
+        cuda.memcpy_htod_async(inputs[0][&#x27;device&#x27;], inputs[0][&#x27;host&#x27;], stream)
+
+        # Execute
+        context.execute_async_v2(bindings=bindings, stream_handle=stream.handle)
+
+        # Copy output
+        cuda.memcpy_dtoh_async(outputs[0][&#x27;host&#x27;], outputs[0][&#x27;device&#x27;], stream)
+        stream.synchronize()
+
+        return outputs[0][&#x27;host&#x27;]
+
+    def get_performance_summary(self):
+        &quot;&quot;&quot;Get performance summary from profiling&quot;&quot;&quot;
+        if not self.total_times:
+            return None
+
+        avg_total_time = sum(self.total_times) / len(self.total_times)
+        throughput = len(self.total_times) / sum(self.total_times)
+
+        summary = {
+            &#x27;average_inference_time_ms&#x27;: avg_total_time * 1000,
+            &#x27;throughput_fps&#x27;: throughput,
+            &#x27;total_runs&#x27;: len(self.total_times),
+            &#x27;min_time_ms&#x27;: min(self.total_times) * 1000,
+            &#x27;max_time_ms&#x27;: max(self.total_times) * 1000,
+            &#x27;percentile_95_ms&#x27;: np.percentile(self.total_times, 95) * 1000,
+            &#x27;percentile_99_ms&#x27;: np.percentile(self.total_times, 99) * 1000
+        }
+
+        return summary
+
+    def compare_engines(self, engine1, engine2, input_data, engine_names=(&quot;Engine1&quot;, &quot;Engine2&quot;)):
+        &quot;&quot;&quot;Compare performance of two different engines&quot;&quot;&quot;
+        print(f&quot;Comparing {engine_names[0]} vs {engine_names[1]}&quot;)
+
+        results = {}
+
+        for engine, name in zip([engine1, engine2], engine_names):
+            print(f&quot;\nProfiling {name}...&quot;)
+            # Profile this engine (simplified for this example)
+            # In practice, you&#x27;d run the full profiling routine
+
+        return results
+
+def optimize_based_on_profile(engine, profile_data):
+    &quot;&quot;&quot;Optimize engine further based on profiling data&quot;&quot;&quot;
+    # Analyze bottlenecks
+    # Suggest further optimizations
+    # This would involve examining layer-by-layer performance
+    pass
+
+def main():
+    profiler = TensorRTProfiler()
+
+    print(&quot;TensorRT Performance Profiling&quot;)
+
+    # Example usage would go here
+    # You would load an engine and profile it
+    # profile_results = profiler.profile_inference(engine, sample_input, num_runs=100)
+
+    print(&quot;Profiling completed&quot;)
+
+if __name__ == &quot;__main__&quot;:
+    main()
+</code></pre>
+<h2 id="deployment-best-practices">Deployment Best Practices</h2>
+<h3 id="production-deployment-script">Production Deployment Script</h3>
+<pre><code class="language-bash">#!/bin/bash
+# deploy_tensorrt_models.sh - Production deployment script for TensorRT models on Jetson
+
+set -e  # Exit on any error
+
+echo &quot;Starting TensorRT model deployment for Jetson Orin...&quot;
+
+# Check if running on Jetson
+if ! [ -f /etc/nv_tegra_release ]; then
+    echo &quot;Error: This script should run on a Jetson device&quot;
+    exit 1
+fi
+
+# Check for TensorRT
+if ! python3 -c &quot;import tensorrt as trt; print(f&#x27;TensorRT version: {trt.__version__}&#x27;)&quot; &gt; /dev/null 2&gt;&amp;1; then
+    echo &quot;Error: TensorRT not found&quot;
+    exit 1
+fi
+
+# Configuration
+MODEL_DIR=&quot;/workspace/models&quot;
+ENGINE_DIR=&quot;/workspace/engines&quot;
+LOG_DIR=&quot;/workspace/logs&quot;
+
+# Create directories
+mkdir -p $MODEL_DIR $ENGINE_DIR $LOG_DIR
+
+# Function to optimize a model
+optimize_model() {
+    local model_path=$1
+    local engine_path=$2
+    local input_shape=$3
+    local precision=$4
+
+    echo &quot;Optimizing $model_path -&gt; $engine_path (Precision: $precision)&quot;
+
+    # Use Python script to optimize (this would call the Python optimization code)
+    python3 -c &quot;
+import sys
+sys.path.append(&#x27;.&#x27;)
+from basic_tensorrt_optimization import create_tensorrt_engine
+import torch
+
+# Load model (simplified - in practice you&#x27;d load the specific model)
+model = torch.nn.Sequential(
+    torch.nn.Conv2d(3, 64, 3, padding=1),
+    torch.nn.ReLU(),
+    torch.nn.AdaptiveAvgPool2d((1, 1)),
+    torch.nn.Flatten(),
+    torch.nn.Linear(64, 10)
+)
+
+input_shape = [int(x) for x in &#x27;$input_shape&#x27;.split(&#x27;,&#x27;)]
+engine = create_tensorrt_engine(model, input_shape, precision=&#x27;$precision&#x27;)
+
+if engine:
+    with open(&#x27;$engine_path&#x27;, &#x27;wb&#x27;) as f:
+        f.write(engine.serialize())
+    print(&#x27;Engine saved successfully&#x27;)
+else:
+    print(&#x27;Failed to create engine&#x27;)
+    exit(1)
+&quot;
+}
+
+# Optimize different models for the humanoid robot pipeline
+echo &quot;Optimizing vision model...&quot;
+optimize_model &quot;$MODEL_DIR/vision_model.onnx&quot; &quot;$ENGINE_DIR/vision_model.trt&quot; &quot;1,3,224,224&quot; &quot;fp16&quot;
+
+echo &quot;Optimizing language model...&quot;
+optimize_model &quot;$MODEL_DIR/language_model.onnx&quot; &quot;$ENGINE_DIR/language_model.trt&quot; &quot;1,512&quot; &quot;fp16&quot;
+
+echo &quot;Optimizing audio model...&quot;
+optimize_model &quot;$MODEL_DIR/audio_model.onnx&quot; &quot;$ENGINE_DIR/audio_model.trt&quot; &quot;1,80,3000&quot; &quot;fp16&quot;
+
+# Set up performance monitoring
+echo &quot;Setting up performance monitoring...&quot;
+cat &lt;&lt; &#x27;EOF&#x27; &gt; /workspace/monitor_performance.py
+import tensorrt as trt
+import pycuda.driver as cuda
+import pycuda.autoinit
+import numpy as np
+import time
+import json
+import os
+
+def monitor_engine_performance(engine_path):
+    &quot;&quot;&quot;Monitor TensorRT engine performance&quot;&quot;&quot;
+    with open(engine_path, &#x27;rb&#x27;) as f:
+        engine_data = f.read()
+
+    runtime = trt.Runtime(trt.Logger(trt.Logger.WARNING))
+    engine = runtime.deserialize_cuda_engine(engine_data)
+
+    context = engine.create_execution_context()
+
+    # Allocate dummy buffers for monitoring
+    # In practice, you&#x27;d use actual model inputs
+    input_shape = engine.get_binding_shape(0)
+    input_size = abs(trt.volume(input_shape))
+
+    # Monitor for 1 minute
+    start_time = time.time()
+    inference_count = 0
+    times = []
+
+    while time.time() - start_time &lt; 60:  # Monitor for 1 minute
+        iter_start = time.time()
+
+        # Run dummy inference
+        # (Actual inference code would go here)
+
+        iter_time = time.time() - iter_start
+        times.append(iter_time)
+        inference_count += 1
+
+    # Calculate metrics
+    avg_time = sum(times) / len(times) if times else 0
+    throughput = inference_count / 60  # Per minute
+
+    metrics = {
+        &#x27;timestamp&#x27;: time.time(),
+        &#x27;average_inference_time_ms&#x27;: avg_time * 1000,
+        &#x27;throughput_per_minute&#x27;: throughput,
+        &#x27;total_inferences&#x27;: inference_count,
+        &#x27;engine_path&#x27;: engine_path
+    }
+
+    return metrics
+
+if __name__ == &quot;__main__&quot;:
+    import sys
+    if len(sys.argv) &gt; 1:
+        engine_path = sys.argv[1]
+        metrics = monitor_engine_performance(engine_path)
+        print(json.dumps(metrics, indent=2))
+    else:
+        print(&quot;Usage: python3 monitor_performance.py &lt;engine_path&gt;&quot;)
+EOF
+
+# Set up systemd service for monitoring
+cat &lt;&lt; &#x27;EOF&#x27; | sudo tee /etc/systemd/system/tensorrt-monitor.service
+[Unit]
+Description=TensorRT Performance Monitor
+After=network.target
+
+[Service]
+Type=simple
+User=jetson
+ExecStart=/usr/bin/python3 /workspace/monitor_performance.py /workspace/engines/vision_model.trt
+Restart=always
+RestartSec=10
+StandardOutput=journal
+StandardError=journal
+
+[Install]
+WantedBy=multi-user.target
+EOF
+
+sudo systemctl daemon-reload
+sudo systemctl enable tensorrt-monitor.service
+
+# Set up log rotation
+cat &lt;&lt; &#x27;EOF&#x27; | sudo tee /etc/logrotate.d/tensorrt-models
+/workspace/logs/*.log {
+    daily
+    missingok
+    rotate 30
+    compress
+    delaycompress
+    notifempty
+    copytruncate
+}
+EOF
+
+# Performance tuning for Jetson
+echo &quot;Applying Jetson-specific performance tuning...&quot;
+# Enable maximum performance mode
+sudo nvpmodel -m 0
+sudo jetson_clocks
+
+# Set up thermal management
+echo &#x27;sudo /usr/bin/jetson_clocks&#x27; &gt;&gt; /etc/rc.local
+
+echo &quot;TensorRT deployment completed successfully!&quot;
+echo &quot;Optimized engines are in: $ENGINE_DIR&quot;
+echo &quot;Logs are in: $LOG_DIR&quot;
+echo &quot;Performance monitoring service: tensorrt-monitor.service&quot;
+</code></pre>
+<h2 id="summary">Summary</h2>
+<p>In this chapter, you&#x27;ve learned:</p>
+<ul>
+<li>How to install and set up TensorRT on Jetson Orin platforms</li>
+<li>Basic and advanced optimization techniques for AI models</li>
+<li>How to optimize specific models for humanoid robot applications (vision, language, audio)</li>
+<li>INT8 quantization and calibration techniques</li>
+<li>Jetson-specific optimizations using DLA and other hardware accelerators</li>
+<li>Performance profiling and monitoring tools</li>
+<li>Production deployment strategies and best practices</li>
+</ul>
+<p>TensorRT optimization is crucial for achieving real-time performance on Jetson platforms, especially for complex humanoid robot applications that require simultaneous processing of multiple AI models.</p>
+<h2 id="exercises">Exercises</h2>
+<ol>
+<li>Optimize a vision model (like Grounding DINO) for TensorRT on Jetson</li>
+<li>Implement INT8 quantization for a language model</li>
+<li>Create a multi-stream inference pipeline for real-time processing</li>
+<li>Profile and optimize a complete humanoid robot AI pipeline</li>
+<li>Deploy optimized models in a production environment</li>
+</ol>
+<div class="starboard-notebook-container"><div class="starboard-notebook-header"><span class="starboard-notebook-icon">📊</span><span class="starboard-notebook-title">Interactive Notebook</span></div><div class="starboard-notebook-content"><div class="starboard-children-container"><pre><code class="language-python"># This would be an interactive code block for students to experiment with TensorRT optimization
+# In a real implementation, this would connect to TensorRT services
+# to test model optimization and performance
+</code></pre></div></div><div class="starboard-notebook-footer"><small>Note: This is a placeholder for interactive Starboard notebooks.</small></div></div></div><footer class="theme-doc-footer docusaurus-mt-lg"><div class="row margin-top--sm theme-doc-footer-edit-meta-row"><div class="col noPrint_WFHX"><a href="https://github.com/facebook/docusaurus/tree/main/packages/create-docusaurus/templates/shared/docs/module-4-vla/06-tensorrt-optimization.mdx" target="_blank" rel="noopener noreferrer" class="theme-edit-this-page"><svg fill="currentColor" height="20" width="20" viewBox="0 0 40 40" class="iconEdit_Z9Sw" aria-hidden="true"><g><path d="m34.5 11.7l-3 3.1-6.3-6.3 3.1-3q0.5-0.5 1.2-0.5t1.1 0.5l3.9 3.9q0.5 0.4 0.5 1.1t-0.5 1.2z m-29.5 17.1l18.4-18.5 6.3 6.3-18.4 18.4h-6.3v-6.2z"></path></g></svg>Edit this page</a></div><div class="col lastUpdated_JAkA"></div></div></footer></article><nav class="docusaurus-mt-lg pagination-nav" aria-label="Docs pages"><a class="pagination-nav__link pagination-nav__link--prev" href="/physical-ai-textbook/docs/module-4-vla/ai-integration-examples"><div class="pagination-nav__sublabel">Previous</div><div class="pagination-nav__label">AI Integration Examples</div></a><a class="pagination-nav__link pagination-nav__link--next" href="/physical-ai-textbook/docs/capstone/red-cup-project"><div class="pagination-nav__sublabel">Next</div><div class="pagination-nav__label">Capstone Project: Red Cup Detection and Retrieval</div></a></nav></div></div><div class="col col--3"><div class="tableOfContents_bqdL thin-scrollbar theme-doc-toc-desktop"><ul class="table-of-contents table-of-contents__left-border"><li><a href="#introduction" class="table-of-contents__link toc-highlight">Introduction</a></li><li><a href="#understanding-tensorrt-architecture" class="table-of-contents__link toc-highlight">Understanding TensorRT Architecture</a><ul><li><a href="#tensorrt-components" class="table-of-contents__link toc-highlight">TensorRT Components</a></li><li><a href="#optimization-techniques" class="table-of-contents__link toc-highlight">Optimization Techniques</a></li></ul></li><li><a href="#tensorrt-installation-and-setup" class="table-of-contents__link toc-highlight">TensorRT Installation and Setup</a><ul><li><a href="#installing-tensorrt-on-jetson-orin" class="table-of-contents__link toc-highlight">Installing TensorRT on Jetson Orin</a></li><li><a href="#environment-setup" class="table-of-contents__link toc-highlight">Environment Setup</a></li></ul></li><li><a href="#basic-tensorrt-optimization-example" class="table-of-contents__link toc-highlight">Basic TensorRT Optimization Example</a><ul><li><a href="#simple-model-optimization" class="table-of-contents__link toc-highlight">Simple Model Optimization</a></li></ul></li><li><a href="#advanced-tensorrt-optimization-for-jetson-orin" class="table-of-contents__link toc-highlight">Advanced TensorRT Optimization for Jetson Orin</a><ul><li><a href="#multi-stream-inference" class="table-of-contents__link toc-highlight">Multi-Stream Inference</a></li></ul></li><li><a href="#optimizing-specific-ai-models-for-humanoid-robots" class="table-of-contents__link toc-highlight">Optimizing Specific AI Models for Humanoid Robots</a><ul><li><a href="#optimizing-vision-models-grounding-dino-sam" class="table-of-contents__link toc-highlight">Optimizing Vision Models (Grounding DINO, SAM)</a></li></ul></li><li><a href="#optimizing-language-models-whisper-llama-3" class="table-of-contents__link toc-highlight">Optimizing Language Models (Whisper, Llama-3)</a><ul><li><a href="#whisper-optimization-for-real-time-processing" class="table-of-contents__link toc-highlight">Whisper Optimization for Real-time Processing</a></li></ul></li><li><a href="#quantization-and-precision-optimization" class="table-of-contents__link toc-highlight">Quantization and Precision Optimization</a><ul><li><a href="#int8-calibration-for-jetson-orin" class="table-of-contents__link toc-highlight">INT8 Calibration for Jetson Orin</a></li></ul></li><li><a href="#jetson-orin-specific-optimizations" class="table-of-contents__link toc-highlight">Jetson Orin-Specific Optimizations</a><ul><li><a href="#dla-deep-learning-accelerator-configuration" class="table-of-contents__link toc-highlight">DLA (Deep Learning Accelerator) Configuration</a></li></ul></li><li><a href="#performance-monitoring-and-profiling" class="table-of-contents__link toc-highlight">Performance Monitoring and Profiling</a><ul><li><a href="#tensorrt-profiling-tools" class="table-of-contents__link toc-highlight">TensorRT Profiling Tools</a></li></ul></li><li><a href="#deployment-best-practices" class="table-of-contents__link toc-highlight">Deployment Best Practices</a><ul><li><a href="#production-deployment-script" class="table-of-contents__link toc-highlight">Production Deployment Script</a></li></ul></li><li><a href="#summary" class="table-of-contents__link toc-highlight">Summary</a></li><li><a href="#exercises" class="table-of-contents__link toc-highlight">Exercises</a></li></ul></div></div></div></div></main></div></div></div><footer class="theme-layout-footer footer footer--dark"><div class="container container-fluid"><div class="row footer__links"><div class="theme-layout-footer-column col footer__col"><div class="footer__title">Docs</div><ul class="footer__items clean-list"><li class="footer__item"><a class="footer__link-item" href="/physical-ai-textbook/docs/intro/introduction-to-physical-ai">Textbook</a></li></ul></div><div class="theme-layout-footer-column col footer__col"><div class="footer__title">Community</div><ul class="footer__items clean-list"><li class="footer__item"><a href="https://stackoverflow.com/questions/tagged/docusaurus" target="_blank" rel="noopener noreferrer" class="footer__link-item">Stack Overflow<svg width="13.5" height="13.5" aria-label="(opens in new tab)" class="iconExternalLink_nPIU"><use href="#theme-svg-external-link"></use></svg></a></li><li class="footer__item"><a href="https://discordapp.com/invite/docusaurus" target="_blank" rel="noopener noreferrer" class="footer__link-item">Discord<svg width="13.5" height="13.5" aria-label="(opens in new tab)" class="iconExternalLink_nPIU"><use href="#theme-svg-external-link"></use></svg></a></li><li class="footer__item"><a href="https://twitter.com/docusaurus" target="_blank" rel="noopener noreferrer" class="footer__link-item">Twitter<svg width="13.5" height="13.5" aria-label="(opens in new tab)" class="iconExternalLink_nPIU"><use href="#theme-svg-external-link"></use></svg></a></li></ul></div><div class="theme-layout-footer-column col footer__col"><div class="footer__title">More</div><ul class="footer__items clean-list"><li class="footer__item"><a href="https://github.com/Gulshan-koondhar/physical-ai-textbook" target="_blank" rel="noopener noreferrer" class="footer__link-item">GitHub<svg width="13.5" height="13.5" aria-label="(opens in new tab)" class="iconExternalLink_nPIU"><use href="#theme-svg-external-link"></use></svg></a></li></ul></div></div><div class="footer__bottom text--center"><div class="footer__copyright">Copyright © 2025 My Project, Inc. Built with Docusaurus.</div></div></div></footer></div>
+</body>
+</html>

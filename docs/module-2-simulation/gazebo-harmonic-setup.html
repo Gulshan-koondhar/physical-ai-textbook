@@ -1,0 +1,763 @@
+<!doctype html>
+<html lang="en" dir="ltr" class="docs-wrapper plugin-docs plugin-id-default docs-version-current docs-doc-page docs-doc-id-module-2-simulation/gazebo-harmonic-setup" data-has-hydrated="false">
+<head>
+<meta charset="UTF-8">
+<meta name="generator" content="Docusaurus v3.9.2">
+<title data-rh="true">Gazebo Harmonic Setup for Humanoid Simulation | Physical AI &amp; Humanoid Robotics</title><meta data-rh="true" name="viewport" content="width=device-width,initial-scale=1"><meta data-rh="true" name="twitter:card" content="summary_large_image"><meta data-rh="true" property="og:image" content="https://Gulshan-koondhar.github.io/physical-ai-textbook/img/docusaurus-social-card.jpg"><meta data-rh="true" name="twitter:image" content="https://Gulshan-koondhar.github.io/physical-ai-textbook/img/docusaurus-social-card.jpg"><meta data-rh="true" property="og:url" content="https://Gulshan-koondhar.github.io/physical-ai-textbook/docs/module-2-simulation/gazebo-harmonic-setup"><meta data-rh="true" property="og:locale" content="en"><meta data-rh="true" name="docusaurus_locale" content="en"><meta data-rh="true" name="docsearch:language" content="en"><meta data-rh="true" name="docusaurus_version" content="current"><meta data-rh="true" name="docusaurus_tag" content="docs-default-current"><meta data-rh="true" name="docsearch:version" content="current"><meta data-rh="true" name="docsearch:docusaurus_tag" content="docs-default-current"><meta data-rh="true" property="og:title" content="Gazebo Harmonic Setup for Humanoid Simulation | Physical AI &amp; Humanoid Robotics"><meta data-rh="true" name="description" content="Set up Gazebo Harmonic for realistic humanoid robot simulation with physics, sensors, and control"><meta data-rh="true" property="og:description" content="Set up Gazebo Harmonic for realistic humanoid robot simulation with physics, sensors, and control"><meta data-rh="true" name="keywords" content="Gazebo,Harmonic,simulation,humanoid,physics,ROS 2"><link data-rh="true" rel="icon" href="/physical-ai-textbook/img/favicon.ico"><link data-rh="true" rel="canonical" href="https://Gulshan-koondhar.github.io/physical-ai-textbook/docs/module-2-simulation/gazebo-harmonic-setup"><link data-rh="true" rel="alternate" href="https://Gulshan-koondhar.github.io/physical-ai-textbook/docs/module-2-simulation/gazebo-harmonic-setup" hreflang="en"><link data-rh="true" rel="alternate" href="https://Gulshan-koondhar.github.io/physical-ai-textbook/docs/module-2-simulation/gazebo-harmonic-setup" hreflang="x-default"><script data-rh="true" type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Gazebo Harmonic Setup","item":"https://Gulshan-koondhar.github.io/physical-ai-textbook/docs/module-2-simulation/gazebo-harmonic-setup"}]}</script><link rel="stylesheet" href="/physical-ai-textbook/assets/css/styles.4f99da8f.css">
+<script src="/physical-ai-textbook/assets/js/runtime~main.7cf563d1.js" defer="defer"></script>
+<script src="/physical-ai-textbook/assets/js/main.6dcd1921.js" defer="defer"></script>
+</head>
+<body class="navigation-with-keyboard">
+<svg style="display: none;"><defs>
+<symbol id="theme-svg-external-link" viewBox="0 0 24 24"><path fill="currentColor" d="M21 13v10h-21v-19h12v2h-10v15h17v-8h2zm3-12h-10.988l4.035 4-6.977 7.07 2.828 2.828 6.977-7.07 4.125 4.172v-11z"/></symbol>
+</defs></svg>
+<script>!function(){var t=function(){try{return new URLSearchParams(window.location.search).get("docusaurus-theme")}catch(t){}}()||function(){try{return window.localStorage.getItem("theme")}catch(t){}}();document.documentElement.setAttribute("data-theme",t||"light"),document.documentElement.setAttribute("data-theme-choice",t||"light")}(),function(){try{const c=new URLSearchParams(window.location.search).entries();for(var[t,e]of c)if(t.startsWith("docusaurus-data-")){var a=t.replace("docusaurus-data-","data-");document.documentElement.setAttribute(a,e)}}catch(t){}}()</script><div id="__docusaurus"><div role="region" aria-label="Skip to main content"><a class="skipToContent_fXgn" href="#__docusaurus_skipToContent_fallback">Skip to main content</a></div><nav aria-label="Main" class="theme-layout-navbar navbar navbar--fixed-top"><div class="navbar__inner"><div class="theme-layout-navbar-left navbar__items"><button aria-label="Toggle navigation bar" aria-expanded="false" class="navbar__toggle clean-btn" type="button"><svg width="30" height="30" viewBox="0 0 30 30" aria-hidden="true"><path stroke="currentColor" stroke-linecap="round" stroke-miterlimit="10" stroke-width="2" d="M4 7h22M4 15h22M4 23h22"></path></svg></button><a class="navbar__brand" href="/physical-ai-textbook/"><div class="navbar__logo"><img src="/physical-ai-textbook/img/logo.svg" alt="Physical AI Logo" class="themedComponent_mlkZ themedComponent--light_NVdE"><img src="/physical-ai-textbook/img/logo.svg" alt="Physical AI Logo" class="themedComponent_mlkZ themedComponent--dark_xIcU"></div><b class="navbar__title text--truncate">Physical AI Textbook</b></a><a aria-current="page" class="navbar__item navbar__link navbar__link--active" href="/physical-ai-textbook/docs/intro/introduction-to-physical-ai">Textbook</a></div><div class="theme-layout-navbar-right navbar__items navbar__items--right"><a href="https://github.com/Gulshan-koondhar/physical-ai-textbook" target="_blank" rel="noopener noreferrer" class="navbar__item navbar__link">GitHub<svg width="13.5" height="13.5" aria-label="(opens in new tab)" class="iconExternalLink_nPIU"><use href="#theme-svg-external-link"></use></svg></a><div class="toggle_vylO colorModeToggle_DEke"><button class="clean-btn toggleButton_gllP toggleButtonDisabled_aARS" type="button" disabled="" title="system mode" aria-label="Switch between dark and light mode (currently system mode)"><svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" class="toggleIcon_g3eP lightToggleIcon_pyhR"><path fill="currentColor" d="M12,9c1.65,0,3,1.35,3,3s-1.35,3-3,3s-3-1.35-3-3S10.35,9,12,9 M12,7c-2.76,0-5,2.24-5,5s2.24,5,5,5s5-2.24,5-5 S14.76,7,12,7L12,7z M2,13l2,0c0.55,0,1-0.45,1-1s-0.45-1-1-1l-2,0c-0.55,0-1,0.45-1,1S1.45,13,2,13z M20,13l2,0c0.55,0,1-0.45,1-1 s-0.45-1-1-1l-2,0c-0.55,0-1,0.45-1,1S19.45,13,20,13z M11,2v2c0,0.55,0.45,1,1,1s1-0.45,1-1V2c0-0.55-0.45-1-1-1S11,1.45,11,2z M11,20v2c0,0.55,0.45,1,1,1s1-0.45,1-1v-2c0-0.55-0.45-1-1-1C11.45,19,11,19.45,11,20z M5.99,4.58c-0.39-0.39-1.03-0.39-1.41,0 c-0.39,0.39-0.39,1.03,0,1.41l1.06,1.06c0.39,0.39,1.03,0.39,1.41,0s0.39-1.03,0-1.41L5.99,4.58z M18.36,16.95 c-0.39-0.39-1.03-0.39-1.41,0c-0.39,0.39-0.39,1.03,0,1.41l1.06,1.06c0.39,0.39,1.03,0.39,1.41,0c0.39-0.39,0.39-1.03,0-1.41 L18.36,16.95z M19.42,5.99c0.39-0.39,0.39-1.03,0-1.41c-0.39-0.39-1.03-0.39-1.41,0l-1.06,1.06c-0.39,0.39-0.39,1.03,0,1.41 s1.03,0.39,1.41,0L19.42,5.99z M7.05,18.36c0.39-0.39,0.39-1.03,0-1.41c-0.39-0.39-1.03-0.39-1.41,0l-1.06,1.06 c-0.39,0.39-0.39,1.03,0,1.41s1.03,0.39,1.41,0L7.05,18.36z"></path></svg><svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" class="toggleIcon_g3eP darkToggleIcon_wfgR"><path fill="currentColor" d="M9.37,5.51C9.19,6.15,9.1,6.82,9.1,7.5c0,4.08,3.32,7.4,7.4,7.4c0.68,0,1.35-0.09,1.99-0.27C17.45,17.19,14.93,19,12,19 c-3.86,0-7-3.14-7-7C5,9.07,6.81,6.55,9.37,5.51z M12,3c-4.97,0-9,4.03-9,9s4.03,9,9,9s9-4.03,9-9c0-0.46-0.04-0.92-0.1-1.36 c-0.98,1.37-2.58,2.26-4.4,2.26c-2.98,0-5.4-2.42-5.4-5.4c0-1.81,0.89-3.42,2.26-4.4C12.92,3.04,12.46,3,12,3L12,3z"></path></svg><svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" class="toggleIcon_g3eP systemToggleIcon_QzmC"><path fill="currentColor" d="m12 21c4.971 0 9-4.029 9-9s-4.029-9-9-9-9 4.029-9 9 4.029 9 9 9zm4.95-13.95c1.313 1.313 2.05 3.093 2.05 4.95s-0.738 3.637-2.05 4.95c-1.313 1.313-3.093 2.05-4.95 2.05v-14c1.857 0 3.637 0.737 4.95 2.05z"></path></svg></button></div><div class="navbarSearchContainer_Bca1"></div></div></div><div role="presentation" class="navbar-sidebar__backdrop"></div></nav><div id="__docusaurus_skipToContent_fallback" class="theme-layout-main main-wrapper mainWrapper_z2l0"><div class="docsWrapper_hBAB"><button aria-label="Scroll back to top" class="clean-btn theme-back-to-top-button backToTopButton_sjWU" type="button"></button><div class="docRoot_UBD9"><aside class="theme-doc-sidebar-container docSidebarContainer_YfHR"><div class="sidebarViewport_aRkj"><div class="sidebar_njMd"><nav aria-label="Docs sidebar" class="menu thin-scrollbar menu_SIkG"><ul class="theme-doc-sidebar-menu menu__list"><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist menu__link--sublist-caret" role="button" aria-expanded="false" href="/physical-ai-textbook/docs/intro/introduction-to-physical-ai"><span title="Introduction" class="categoryLinkLabel_W154">Introduction</span></a></div></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist menu__link--sublist-caret" role="button" aria-expanded="false" href="/physical-ai-textbook/docs/module-1-ros/ros2-from-zero"><span title="Module 1 - ROS 2 Fundamentals" class="categoryLinkLabel_W154">Module 1 - ROS 2 Fundamentals</span></a></div></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist menu__link--sublist-caret menu__link--active" role="button" aria-expanded="true" href="/physical-ai-textbook/docs/module-2-simulation/gazebo-harmonic-setup"><span title="Module 2 - Simulation" class="categoryLinkLabel_W154">Module 2 - Simulation</span></a></div><ul class="menu__list"><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-2 menu__list-item"><a class="menu__link menu__link--active" aria-current="page" tabindex="0" href="/physical-ai-textbook/docs/module-2-simulation/gazebo-harmonic-setup"><span title="Gazebo Harmonic Setup" class="linkLabel_WmDU">Gazebo Harmonic Setup</span></a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-2 menu__list-item"><a class="menu__link" tabindex="0" href="/physical-ai-textbook/docs/module-2-simulation/simulating-humanoid"><span title="Simulating Humanoid in Gazebo" class="linkLabel_WmDU">Simulating Humanoid in Gazebo</span></a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-2 menu__list-item"><a class="menu__link" tabindex="0" href="/physical-ai-textbook/docs/module-2-simulation/unity-rendering"><span title="Unity Rendering" class="linkLabel_WmDU">Unity Rendering</span></a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-2 menu__list-item"><a class="menu__link" tabindex="0" href="/physical-ai-textbook/docs/module-2-simulation/sensor-plugin-configuration"><span title="Sensor Plugin Configuration" class="linkLabel_WmDU">Sensor Plugin Configuration</span></a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-2 menu__list-item"><a class="menu__link" tabindex="0" href="/physical-ai-textbook/docs/module-2-simulation/sensor-configurations"><span title="Sensor Configurations" class="linkLabel_WmDU">Sensor Configurations</span></a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-2 menu__list-item"><a class="menu__link" tabindex="0" href="/physical-ai-textbook/docs/module-2-simulation/ros-tcp-connector"><span title="ROS TCP Connector Bridge" class="linkLabel_WmDU">ROS TCP Connector Bridge</span></a></li></ul></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist menu__link--sublist-caret" role="button" aria-expanded="false" href="/physical-ai-textbook/docs/module-3-ai-brain/isaac-sim-installation"><span title="Module 3 - AI Brain" class="categoryLinkLabel_W154">Module 3 - AI Brain</span></a></div></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist menu__link--sublist-caret" role="button" aria-expanded="false" href="/physical-ai-textbook/docs/module-4-vla/whisper-gpt-ros-planner"><span title="Module 4 - VLA Integration" class="categoryLinkLabel_W154">Module 4 - VLA Integration</span></a></div></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist menu__link--sublist-caret" role="button" aria-expanded="false" href="/physical-ai-textbook/docs/capstone/red-cup-project"><span title="Capstone Project" class="categoryLinkLabel_W154">Capstone Project</span></a></div></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist menu__link--sublist-caret" role="button" aria-expanded="false" href="/physical-ai-textbook/docs/hardware/hardware-guide"><span title="Hardware Guide" class="categoryLinkLabel_W154">Hardware Guide</span></a></div></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist menu__link--sublist-caret" role="button" aria-expanded="false" href="/physical-ai-textbook/docs/appendix/troubleshooting"><span title="Appendices" class="categoryLinkLabel_W154">Appendices</span></a></div></li></ul></nav></div></div></aside><main class="docMainContainer_TBSr"><div class="container padding-top--md padding-bottom--lg"><div class="row"><div class="col docItemCol_VOVn"><div class="docItemContainer_Djhp"><article><nav class="theme-doc-breadcrumbs breadcrumbsContainer_Z_bl" aria-label="Breadcrumbs"><ul class="breadcrumbs"><li class="breadcrumbs__item"><a aria-label="Home page" class="breadcrumbs__link" href="/physical-ai-textbook/"><svg viewBox="0 0 24 24" class="breadcrumbHomeIcon_YNFT"><path d="M10 19v-5h4v5c0 .55.45 1 1 1h3c.55 0 1-.45 1-1v-7h1.7c.46 0 .68-.57.33-.87L12.67 3.6c-.38-.34-.96-.34-1.34 0l-8.36 7.53c-.34.3-.13.87.33.87H5v7c0 .55.45 1 1 1h3c.55 0 1-.45 1-1z" fill="currentColor"></path></svg></a></li><li class="breadcrumbs__item"><span class="breadcrumbs__link">Module 2 - Simulation</span></li><li class="breadcrumbs__item breadcrumbs__item--active"><span class="breadcrumbs__link">Gazebo Harmonic Setup</span></li></ul></nav><div class="tocCollapsible_ETCw theme-doc-toc-mobile tocMobile_ITEo"><button type="button" class="clean-btn tocCollapsibleButton_TO0P">On this page</button></div><div class="theme-doc-markdown markdown"><header><h1 id="gazebo-harmonic-setup-for-humanoid-simulation">Gazebo Harmonic Setup for Humanoid Simulation</h1></header>
+<h2 id="introduction">Introduction</h2>
+<p>Gazebo is a powerful 3D simulation environment that provides realistic physics, high-quality graphics, and convenient programmatic interfaces. For humanoid robotics development, Gazebo provides an essential platform for testing control algorithms, validating sensor integration, and developing complex behaviors in a safe, repeatable environment before deployment on real hardware.</p>
+<p>Gazebo Harmonic (the latest version at the time of writing) offers enhanced physics simulation, improved rendering, and better integration with ROS 2. In this chapter, you&#x27;ll learn how to set up Gazebo Harmonic for humanoid robot simulation, including installation, configuration, and integration with ROS 2.</p>
+<h2 id="understanding-gazebo-harmonic">Understanding Gazebo Harmonic</h2>
+<h3 id="key-features">Key Features</h3>
+<p>Gazebo Harmonic provides several features essential for humanoid simulation:</p>
+<ol>
+<li><strong>Realistic Physics</strong>: Accurate simulation of rigid body dynamics, collisions, and contacts</li>
+<li><strong>Sensor Simulation</strong>: Support for cameras, LiDAR, IMU, force/torque sensors, and more</li>
+<li><strong>ROS 2 Integration</strong>: Native support for ROS 2 message types and services</li>
+<li><strong>Plugin Architecture</strong>: Extensible through C++ and Python plugins</li>
+<li><strong>High-Quality Graphics</strong>: Realistic rendering with support for various lighting conditions</li>
+<li><strong>World Building</strong>: Tools for creating complex simulation environments</li>
+</ol>
+<h3 id="physics-engine-options">Physics Engine Options</h3>
+<p>Gazebo Harmonic supports multiple physics engines:</p>
+<ul>
+<li><strong>ODE (Open Dynamics Engine)</strong>: Default, good balance of speed and accuracy</li>
+<li><strong>Bullet</strong>: Good for complex collision detection</li>
+<li><strong>DART</strong>: Advanced for articulated bodies and contacts</li>
+<li><strong>Simbody</strong>: High-fidelity simulation for biomechanical applications</li>
+</ul>
+<h2 id="installing-gazebo-harmonic">Installing Gazebo Harmonic</h2>
+<h3 id="prerequisites">Prerequisites</h3>
+<p>Before installing Gazebo Harmonic, ensure you have:</p>
+<ul>
+<li>Ubuntu 22.04 LTS or compatible system</li>
+<li>ROS 2 Humble Hawksbill installed</li>
+<li>Sufficient hardware resources (recommended: 8+ GB RAM, dedicated GPU)</li>
+</ul>
+<h3 id="installation-methods">Installation Methods</h3>
+<h4 id="method-1-binary-installation-recommended">Method 1: Binary Installation (Recommended)</h4>
+<p>For Ubuntu 22.04 with ROS 2 Humble:</p>
+<pre><code class="language-bash"># Add Gazebo repository
+sudo apt update &amp;&amp; sudo apt install wget
+sudo wget https://packages.osrfoundation.org/gazebo.gpg -O /usr/share/keyrings/gazebo-archive-keyring.gpg
+
+# Add the repository to your sources list
+echo &quot;deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/gazebo-archive-keyring.gpg] http://packages.osrfoundation.org/gazebo/ubuntu-stable $(lsb_release -cs) main&quot; | sudo tee /etc/apt/sources.list.d/gazebo-stable.list &gt; /dev/null
+
+# Update package list and install Gazebo
+sudo apt update
+sudo apt install gz-harmonic
+</code></pre>
+<h4 id="method-2-ros-2-integration">Method 2: ROS 2 Integration</h4>
+<p>Install Gazebo with ROS 2 packages:</p>
+<pre><code class="language-bash">sudo apt update
+sudo apt install ros-humble-gazebo-ros-pkgs ros-humble-gazebo-plugins ros-humble-gazebo-dev
+</code></pre>
+<h3 id="verification">Verification</h3>
+<p>Test the installation:</p>
+<pre><code class="language-bash">gz sim
+</code></pre>
+<p>This should open the Gazebo GUI with a default empty world.</p>
+<h2 id="basic-gazebo-concepts">Basic Gazebo Concepts</h2>
+<h3 id="worlds">Worlds</h3>
+<p>World files define the simulation environment, including:</p>
+<ul>
+<li>Physics properties (gravity, magnetic field)</li>
+<li>Models and their initial positions</li>
+<li>Lighting and atmospheric conditions</li>
+<li>Plugins and system configurations</li>
+</ul>
+<p>Example world file structure:</p>
+<pre><code class="language-xml">&lt;?xml version=&quot;1.0&quot; ?&gt;
+&lt;sdf version=&quot;1.7&quot;&gt;
+  &lt;world name=&quot;humanoid_world&quot;&gt;
+    &lt;!-- Physics properties --&gt;
+    &lt;physics type=&quot;ode&quot;&gt;
+      &lt;gravity&gt;0 0 -9.8&lt;/gravity&gt;
+      &lt;max_step_size&gt;0.001&lt;/max_step_size&gt;
+      &lt;real_time_factor&gt;1.0&lt;/real_time_factor&gt;
+      &lt;real_time_update_rate&gt;1000&lt;/real_time_update_rate&gt;
+    &lt;/physics&gt;
+
+    &lt;!-- Lighting --&gt;
+    &lt;light name=&quot;sun&quot; type=&quot;directional&quot;&gt;
+      &lt;cast_shadows&gt;true&lt;/cast_shadows&gt;
+      &lt;pose&gt;0 0 10 0 0 0&lt;/pose&gt;
+      &lt;diffuse&gt;0.8 0.8 0.8 1&lt;/diffuse&gt;
+      &lt;specular&gt;0.2 0.2 0.2 1&lt;/specular&gt;
+      &lt;attenuation&gt;
+        &lt;range&gt;1000&lt;/range&gt;
+        &lt;constant&gt;0.9&lt;/constant&gt;
+        &lt;linear&gt;0.01&lt;/linear&gt;
+        &lt;quadratic&gt;0.001&lt;/quadratic&gt;
+      &lt;/attenuation&gt;
+      &lt;direction&gt;-0.3 0.1 -0.9&lt;/direction&gt;
+    &lt;/light&gt;
+
+    &lt;!-- Ground plane --&gt;
+    &lt;model name=&quot;ground_plane&quot;&gt;
+      &lt;static&gt;true&lt;/static&gt;
+      &lt;link name=&quot;link&quot;&gt;
+        &lt;collision name=&quot;collision&quot;&gt;
+          &lt;geometry&gt;
+            &lt;plane&gt;
+              &lt;normal&gt;0 0 1&lt;/normal&gt;
+              &lt;size&gt;100 100&lt;/size&gt;
+            &lt;/plane&gt;
+          &lt;/geometry&gt;
+        &lt;/collision&gt;
+        &lt;visual name=&quot;visual&quot;&gt;
+          &lt;geometry&gt;
+            &lt;plane&gt;
+              &lt;normal&gt;0 0 1&lt;/normal&gt;
+              &lt;size&gt;100 100&lt;/size&gt;
+            &lt;/plane&gt;
+          &lt;/geometry&gt;
+          &lt;material&gt;
+            &lt;ambient&gt;0.8 0.8 0.8 1&lt;/ambient&gt;
+            &lt;diffuse&gt;0.8 0.8 0.8 1&lt;/diffuse&gt;
+            &lt;specular&gt;0.1 0.1 0.1 1&lt;/specular&gt;
+          &lt;/material&gt;
+        &lt;/visual&gt;
+      &lt;/link&gt;
+    &lt;/model&gt;
+
+    &lt;!-- Include models --&gt;
+    &lt;include&gt;
+      &lt;uri&gt;model://sun&lt;/uri&gt;
+    &lt;/include&gt;
+  &lt;/world&gt;
+&lt;/sdf&gt;
+</code></pre>
+<h3 id="models">Models</h3>
+<p>Models represent objects in the simulation, including:</p>
+<ul>
+<li>Robot models (with URDF/Xacro converted to SDF)</li>
+<li>Environment objects</li>
+<li>Sensors and actuators</li>
+<li>Static and dynamic objects</li>
+</ul>
+<h2 id="setting-up-humanoid-robot-in-gazebo">Setting up Humanoid Robot in Gazebo</h2>
+<h3 id="converting-urdf-to-sdf">Converting URDF to SDF</h3>
+<p>Gazebo uses SDF (Simulation Description Format) natively, but you can use URDF models with the <code>libgazebo_ros_factory.so</code> plugin. However, for complex humanoid robots, converting to SDF can provide better performance and features.</p>
+<p>To convert URDF to SDF:</p>
+<pre><code class="language-bash">gz sdf -p your_robot.urdf.xacro &gt; your_robot.sdf
+</code></pre>
+<h3 id="creating-a-gazebo-ready-urdf">Creating a Gazebo-Ready URDF</h3>
+<p>For direct use in Gazebo, your URDF needs specific Gazebo extensions:</p>
+<pre><code class="language-xml">&lt;?xml version=&quot;1.0&quot;?&gt;
+&lt;robot xmlns:xacro=&quot;http://www.ros.org/wiki/xacro&quot; name=&quot;humanoid_robot&quot;&gt;
+
+  &lt;!-- Include gazebo plugins --&gt;
+  &lt;gazebo&gt;
+    &lt;plugin filename=&quot;libgazebo_ros2_control.so&quot; name=&quot;gazebo_ros2_control&quot;&gt;
+      &lt;parameters&gt;$(find your_robot_description)/config/robot_control.yaml&lt;/parameters&gt;
+    &lt;/plugin&gt;
+  &lt;/gazebo&gt;
+
+  &lt;!-- Include your robot model here --&gt;
+  &lt;!-- ... your existing URDF content ... --&gt;
+
+  &lt;!-- Joint transmissions for control --&gt;
+  &lt;transmission name=&quot;left_hip_yaw_trans&quot;&gt;
+    &lt;type&gt;transmission_interface/SimpleTransmission&lt;/type&gt;
+    &lt;joint name=&quot;left_hip_yaw&quot;&gt;
+      &lt;hardwareInterface&gt;hardware_interface/EffortJointInterface&lt;/hardwareInterface&gt;
+    &lt;/joint&gt;
+    &lt;actuator name=&quot;left_hip_yaw_motor&quot;&gt;
+      &lt;mechanicalReduction&gt;1&lt;/mechanicalReduction&gt;
+    &lt;/actuator&gt;
+  &lt;/transmission&gt;
+
+  &lt;!-- Add similar transmissions for all joints --&gt;
+  &lt;!-- ... --&gt;
+
+  &lt;!-- Gazebo materials --&gt;
+  &lt;gazebo reference=&quot;base_link&quot;&gt;
+    &lt;material&gt;Gazebo/Blue&lt;/material&gt;
+    &lt;mu1&gt;0.2&lt;/mu1&gt;
+    &lt;mu2&gt;0.2&lt;/mu2&gt;
+    &lt;kp&gt;1000000.0&lt;/kp&gt;
+    &lt;kd&gt;1.0&lt;/kd&gt;
+  &lt;/gazebo&gt;
+
+&lt;/robot&gt;
+</code></pre>
+<h3 id="physics-parameters-for-humanoid-robots">Physics Parameters for Humanoid Robots</h3>
+<p>Humanoid robots require careful tuning of physics parameters:</p>
+<pre><code class="language-xml">&lt;gazebo reference=&quot;left_foot_link&quot;&gt;
+  &lt;collision&gt;
+    &lt;surface&gt;
+      &lt;friction&gt;
+        &lt;ode&gt;
+          &lt;mu&gt;0.8&lt;/mu&gt;  &lt;!-- High friction for stable standing --&gt;
+          &lt;mu2&gt;0.8&lt;/mu2&gt;
+          &lt;slip1&gt;0.0&lt;/slip1&gt;
+          &lt;slip2&gt;0.0&lt;/slip2&gt;
+        &lt;/ode&gt;
+      &lt;/friction&gt;
+      &lt;contact&gt;
+        &lt;ode&gt;
+          &lt;max_vel&gt;100.0&lt;/max_vel&gt;
+          &lt;min_depth&gt;0.001&lt;/min_depth&gt;
+        &lt;/ode&gt;
+      &lt;/contact&gt;
+    &lt;/surface&gt;
+  &lt;/collision&gt;
+&lt;/gazebo&gt;
+</code></pre>
+<h2 id="essential-gazebo-plugins-for-humanoid-robots">Essential Gazebo Plugins for Humanoid Robots</h2>
+<h3 id="1-ros2_control-plugin">1. ros2_control Plugin</h3>
+<p>The <code>libgazebo_ros2_control.so</code> plugin provides ROS 2 control interface:</p>
+<pre><code class="language-xml">&lt;gazebo&gt;
+  &lt;plugin filename=&quot;libgazebo_ros2_control.so&quot; name=&quot;gazebo_ros2_control&quot;&gt;
+    &lt;parameters&gt;$(find your_robot_description)/config/robot_control.yaml&lt;/parameters&gt;
+    &lt;robot_param&gt;robot_description&lt;/robot_param&gt;
+    &lt;robot_param_node&gt;robot_state_publisher&lt;/robot_param_node&gt;
+    &lt;period&gt;0.001&lt;/period&gt;  &lt;!-- 1ms control period --&gt;
+  &lt;/plugin&gt;
+&lt;/gazebo&gt;
+</code></pre>
+<h3 id="2-joint-state-publisher-plugin">2. Joint State Publisher Plugin</h3>
+<p>Publishes joint states to ROS 2:</p>
+<pre><code class="language-xml">&lt;gazebo&gt;
+  &lt;plugin filename=&quot;libgazebo_ros_joint_state_publisher.so&quot; name=&quot;joint_state_publisher&quot;&gt;
+    &lt;robot_param&gt;robot_description&lt;/robot_param&gt;
+    &lt;update_rate&gt;50&lt;/update_rate&gt;
+    &lt;joint_name&gt;left_hip_yaw&lt;/joint_name&gt;
+    &lt;joint_name&gt;left_hip_pitch&lt;/joint_name&gt;
+    &lt;!-- Add all joints to publish --&gt;
+  &lt;/plugin&gt;
+&lt;/gazebo&gt;
+</code></pre>
+<h3 id="3-imu-sensor-plugin">3. IMU Sensor Plugin</h3>
+<p>Simulates IMU data:</p>
+<pre><code class="language-xml">&lt;gazebo reference=&quot;imu_link&quot;&gt;
+  &lt;sensor name=&quot;imu_sensor&quot; type=&quot;imu&quot;&gt;
+    &lt;always_on&gt;true&lt;/always_on&gt;
+    &lt;update_rate&gt;100&lt;/update_rate&gt;
+    &lt;visualize&gt;true&lt;/visualize&gt;
+    &lt;imu&gt;
+      &lt;angular_velocity&gt;
+        &lt;x&gt;
+          &lt;noise type=&quot;gaussian&quot;&gt;
+            &lt;mean&gt;0.0&lt;/mean&gt;
+            &lt;stddev&gt;2e-4&lt;/stddev&gt;
+          &lt;/noise&gt;
+        &lt;/x&gt;
+        &lt;y&gt;
+          &lt;noise type=&quot;gaussian&quot;&gt;
+            &lt;mean&gt;0.0&lt;/mean&gt;
+            &lt;stddev&gt;2e-4&lt;/stddev&gt;
+          &lt;/noise&gt;
+        &lt;/y&gt;
+        &lt;z&gt;
+          &lt;noise type=&quot;gaussian&quot;&gt;
+            &lt;mean&gt;0.0&lt;/mean&gt;
+            &lt;stddev&gt;2e-4&lt;/stddev&gt;
+          &lt;/noise&gt;
+        &lt;/z&gt;
+      &lt;/angular_velocity&gt;
+      &lt;linear_acceleration&gt;
+        &lt;x&gt;
+          &lt;noise type=&quot;gaussian&quot;&gt;
+            &lt;mean&gt;0.0&lt;/mean&gt;
+            &lt;stddev&gt;1.7e-2&lt;/stddev&gt;
+          &lt;/noise&gt;
+        &lt;/x&gt;
+        &lt;y&gt;
+          &lt;noise type=&quot;gaussian&quot;&gt;
+            &lt;mean&gt;0.0&lt;/mean&gt;
+            &lt;stddev&gt;1.7e-2&lt;/stddev&gt;
+          &lt;/noise&gt;
+        &lt;/y&gt;
+        &lt;z&gt;
+          &lt;noise type=&quot;gaussian&quot;&gt;
+            &lt;mean&gt;0.0&lt;/mean&gt;
+            &lt;stddev&gt;1.7e-2&lt;/stddev&gt;
+          &lt;/noise&gt;
+        &lt;/z&gt;
+      &lt;/linear_acceleration&gt;
+    &lt;/imu&gt;
+  &lt;/sensor&gt;
+&lt;/gazebo&gt;
+</code></pre>
+<h2 id="launch-files-for-gazebo-integration">Launch Files for Gazebo Integration</h2>
+<h3 id="basic-launch-file">Basic Launch File</h3>
+<p>Create a launch file to start Gazebo with your humanoid robot:</p>
+<pre><code class="language-python"># launch/gazebo_humanoid.launch.py
+import os
+from launch import LaunchDescription
+from launch.actions import DeclareLaunchArgument, IncludeLaunchDescription, ExecuteProcess
+from launch.conditions import IfCondition
+from launch.launch_description_sources import PythonLaunchDescriptionSource
+from launch.substitutions import LaunchConfiguration, PathJoinSubstitution
+from launch_ros.actions import Node
+from launch_ros.substitutions import FindPackageShare
+
+def generate_launch_description():
+    # Launch configuration variables
+    use_sim_time = LaunchConfiguration(&#x27;use_sim_time&#x27;, default=&#x27;true&#x27;)
+    use_rviz = LaunchConfiguration(&#x27;use_rviz&#x27;, default=&#x27;true&#x27;)
+    robot_name = LaunchConfiguration(&#x27;robot_name&#x27;, default=&#x27;humanoid_robot&#x27;)
+    world = LaunchConfiguration(&#x27;world&#x27;, default=&#x27;empty.sdf&#x27;)
+
+    # Package names
+    pkg_gazebo_ros = FindPackageShare(&#x27;gazebo_ros&#x27;)
+    pkg_robot_description = FindPackageShare(&#x27;your_robot_description&#x27;)
+
+    # Paths
+    robot_description_path = PathJoinSubstitution([
+        pkg_robot_description,
+        &#x27;urdf&#x27;,
+        &#x27;humanoid.urdf.xacro&#x27;
+    ])
+
+    # Launch arguments
+    declare_use_sim_time_cmd = DeclareLaunchArgument(
+        &#x27;use_sim_time&#x27;,
+        default_value=&#x27;true&#x27;,
+        description=&#x27;Use simulation (Gazebo) clock if true&#x27;)
+
+    declare_use_rviz_cmd = DeclareLaunchArgument(
+        &#x27;use_rviz&#x27;,
+        default_value=&#x27;true&#x27;,
+        description=&#x27;Whether to start RViz&#x27;)
+
+    declare_world_cmd = DeclareLaunchArgument(
+        &#x27;world&#x27;,
+        default_value=&#x27;empty.sdf&#x27;,
+        description=&#x27;Choose one of the world files from `/gazebo_ros/worlds`&#x27;)
+
+    # Start Gazebo server and client
+    gzserver_cmd = IncludeLaunchDescription(
+        PythonLaunchDescriptionSource(
+            os.path.join(pkg_gazebo_ros, &#x27;launch&#x27;, &#x27;gzserver.launch.py&#x27;)
+        ),
+        launch_arguments={&#x27;world&#x27;: world}.items()
+    )
+
+    gzclient_cmd = IncludeLaunchDescription(
+        PythonLaunchDescriptionSource(
+            os.path.join(pkg_gazebo_ros, &#x27;launch&#x27;, &#x27;gzclient.launch.py&#x27;)
+        )
+    )
+
+    # Publish robot state
+    robot_state_publisher = Node(
+        package=&#x27;robot_state_publisher&#x27;,
+        executable=&#x27;robot_state_publisher&#x27;,
+        name=&#x27;robot_state_publisher&#x27;,
+        output=&#x27;both&#x27;,
+        parameters=[{&#x27;use_sim_time&#x27;: use_sim_time,
+                   &#x27;robot_description&#x27;: PathJoinSubstitution([
+                       FindPackageShare(&#x27;your_robot_description&#x27;),
+                       &#x27;urdf&#x27;,
+                       &#x27;humanoid.urdf.xacro&#x27;
+                   ])}]
+    )
+
+    # Spawn the robot in Gazebo
+    spawn_entity = Node(
+        package=&#x27;gazebo_ros&#x27;,
+        executable=&#x27;spawn_entity.py&#x27;,
+        arguments=[
+            &#x27;-topic&#x27;, &#x27;robot_description&#x27;,
+            &#x27;-entity&#x27;, robot_name,
+            &#x27;-x&#x27;, &#x27;0.0&#x27;,
+            &#x27;-y&#x27;, &#x27;0.0&#x27;,
+            &#x27;-z&#x27;, &#x27;1.0&#x27;  # Start slightly above ground
+        ],
+        output=&#x27;screen&#x27;
+    )
+
+    # RViz
+    rviz = Node(
+        condition=IfCondition(use_rviz),
+        package=&#x27;rviz2&#x27;,
+        executable=&#x27;rviz2&#x27;,
+        name=&#x27;rviz2&#x27;,
+        output=&#x27;log&#x27;
+    )
+
+    # Create launch description
+    ld = LaunchDescription()
+
+    # Add launch arguments
+    ld.add_action(declare_use_sim_time_cmd)
+    ld.add_action(declare_use_rviz_cmd)
+    ld.add_action(declare_world_cmd)
+
+    # Add launch actions
+    ld.add_action(gzserver_cmd)
+    ld.add_action(gzclient_cmd)
+    ld.add_action(robot_state_publisher)
+    ld.add_action(spawn_entity)
+    ld.add_action(rviz)
+
+    return ld
+</code></pre>
+<h3 id="advanced-launch-file-with-controllers">Advanced Launch File with Controllers</h3>
+<pre><code class="language-python"># launch/gazebo_humanoid_with_controllers.launch.py
+import os
+from launch import LaunchDescription
+from launch.actions import DeclareLaunchArgument, IncludeLaunchDescription, RegisterEventHandler
+from launch.event_handlers import OnProcessStart
+from launch.launch_description_sources import PythonLaunchDescriptionSource
+from launch.substitutions import LaunchConfiguration, PathJoinSubstitution
+from launch_ros.actions import Node
+from launch_ros.substitutions import FindPackageShare
+
+def generate_launch_description():
+    # Launch configuration variables
+    use_sim_time = LaunchConfiguration(&#x27;use_sim_time&#x27;, default=&#x27;true&#x27;)
+
+    # Package names
+    pkg_gazebo_ros = FindPackageShare(&#x27;gazebo_ros&#x27;)
+    pkg_robot_description = FindPackageShare(&#x27;your_robot_description&#x27;)
+    pkg_controller_manager = FindPackageShare(&#x27;controller_manager&#x27;)
+
+    # Launch Gazebo
+    gazebo = IncludeLaunchDescription(
+        PythonLaunchDescriptionSource(
+            os.path.join(pkg_gazebo_ros, &#x27;launch&#x27;, &#x27;gzserver.launch.py&#x27;)
+        )
+    )
+
+    # Robot State Publisher
+    robot_state_publisher = Node(
+        package=&#x27;robot_state_publisher&#x27;,
+        executable=&#x27;robot_state_publisher&#x27;,
+        name=&#x27;robot_state_publisher&#x27;,
+        output=&#x27;both&#x27;,
+        parameters=[{&#x27;use_sim_time&#x27;: use_sim_time,
+                   &#x27;robot_description&#x27;: PathJoinSubstitution([
+                       FindPackageShare(&#x27;your_robot_description&#x27;),
+                       &#x27;urdf&#x27;,
+                       &#x27;humanoid.urdf.xacro&#x27;
+                   ])}]
+    )
+
+    # Spawn robot
+    spawn_robot = Node(
+        package=&#x27;gazebo_ros&#x27;,
+        executable=&#x27;spawn_entity.py&#x27;,
+        arguments=[
+            &#x27;-topic&#x27;, &#x27;robot_description&#x27;,
+            &#x27;-entity&#x27;, &#x27;humanoid_robot&#x27;,
+            &#x27;-x&#x27;, &#x27;0.0&#x27;,
+            &#x27;-y&#x27;, &#x27;0.0&#x27;,
+            &#x27;-z&#x27;, &#x27;1.0&#x27;
+        ],
+        output=&#x27;screen&#x27;
+    )
+
+    # Load and start controllers
+    joint_state_broadcaster_spawner = Node(
+        package=&#x27;controller_manager&#x27;,
+        executable=&#x27;spawner&#x27;,
+        arguments=[&#x27;joint_state_broadcaster&#x27;],
+        parameters=[{&#x27;use_sim_time&#x27;: use_sim_time}],
+    )
+
+    robot_controller_spawner = Node(
+        package=&#x27;controller_manager&#x27;,
+        executable=&#x27;spawner&#x27;,
+        arguments=[&#x27;forward_position_controller&#x27;],
+        parameters=[{&#x27;use_sim_time&#x27;: use_sim_time}],
+    )
+
+    # Delay start of joint_state_broadcaster after robot is spawned
+    delay_joint_broadcaster_after_spawn = RegisterEventHandler(
+        event_handler=OnProcessStart(
+            target_action=spawn_robot,
+            on_start=[
+                joint_state_broadcaster_spawner,
+            ],
+        )
+    )
+
+    # Delay start of robot controller after joint_state_broadcaster
+    delay_robot_controller_after_joint_broadcaster = RegisterEventHandler(
+        event_handler=OnProcessStart(
+            target_action=joint_state_broadcaster_spawner,
+            on_start=[
+                robot_controller_spawner,
+            ],
+        )
+    )
+
+    return LaunchDescription([
+        gazebo,
+        robot_state_publisher,
+        spawn_robot,
+        delay_joint_broadcaster_after_spawn,
+        delay_robot_controller_after_joint_broadcaster,
+    ])
+</code></pre>
+<h2 id="physics-configuration-for-humanoid-stability">Physics Configuration for Humanoid Stability</h2>
+<h3 id="time-step-configuration">Time Step Configuration</h3>
+<p>For stable humanoid simulation, configure appropriate time steps:</p>
+<pre><code class="language-xml">&lt;physics type=&quot;ode&quot;&gt;
+  &lt;max_step_size&gt;0.001&lt;/max_step_size&gt;  &lt;!-- 1ms time step --&gt;
+  &lt;real_time_factor&gt;1.0&lt;/real_time_factor&gt;
+  &lt;real_time_update_rate&gt;1000&lt;/real_time_update_rate&gt;
+  &lt;ode&gt;
+    &lt;solver&gt;
+      &lt;type&gt;quick&lt;/type&gt;
+      &lt;iters&gt;1000&lt;/iters&gt;  &lt;!-- Increase iterations for stability --&gt;
+      &lt;sor&gt;1.3&lt;/sor&gt;
+    &lt;/solver&gt;
+    &lt;constraints&gt;
+      &lt;cfm&gt;0.0&lt;/cfm&gt;
+      &lt;erp&gt;0.2&lt;/erp&gt;  &lt;!-- Error reduction parameter --&gt;
+      &lt;contact_max_correcting_vel&gt;100.0&lt;/contact_max_correcting_vel&gt;
+      &lt;contact_surface_layer&gt;0.001&lt;/contact_surface_layer&gt;
+    &lt;/constraints&gt;
+  &lt;/ode&gt;
+&lt;/physics&gt;
+</code></pre>
+<h3 id="joint-configuration-for-stability">Joint Configuration for Stability</h3>
+<p>Configure joints with appropriate damping and stiffness:</p>
+<pre><code class="language-xml">&lt;gazebo reference=&quot;left_knee&quot;&gt;
+  &lt;joint name=&quot;left_knee&quot; type=&quot;revolute&quot;&gt;
+    &lt;physics&gt;
+      &lt;ode&gt;
+        &lt;damping&gt;0.1&lt;/damping&gt;
+        &lt;friction&gt;0.0&lt;/friction&gt;
+        &lt;limit&gt;
+          &lt;cfm&gt;0.0&lt;/cfm&gt;
+          &lt;erp&gt;0.2&lt;/erp&gt;
+        &lt;/limit&gt;
+      &lt;/ode&gt;
+    &lt;/physics&gt;
+  &lt;/joint&gt;
+&lt;/gazebo&gt;
+</code></pre>
+<h2 id="creating-simulation-worlds">Creating Simulation Worlds</h2>
+<h3 id="indoor-environment">Indoor Environment</h3>
+<p>For humanoid robot testing, create worlds with:</p>
+<pre><code class="language-xml">&lt;?xml version=&quot;1.0&quot; ?&gt;
+&lt;sdf version=&quot;1.7&quot;&gt;
+  &lt;world name=&quot;indoor_humanoid_world&quot;&gt;
+    &lt;!-- Physics --&gt;
+    &lt;physics type=&quot;ode&quot;&gt;
+      &lt;gravity&gt;0 0 -9.8&lt;/gravity&gt;
+      &lt;max_step_size&gt;0.001&lt;/max_step_size&gt;
+      &lt;real_time_factor&gt;1.0&lt;/real_time_factor&gt;
+    &lt;/physics&gt;
+
+    &lt;!-- Lighting --&gt;
+    &lt;light name=&quot;ceiling_light&quot; type=&quot;point&quot;&gt;
+      &lt;pose&gt;0 0 3 0 0 0&lt;/pose&gt;
+      &lt;diffuse&gt;0.8 0.8 0.8 1&lt;/diffuse&gt;
+      &lt;specular&gt;0.2 0.2 0.2 1&lt;/specular&gt;
+    &lt;/light&gt;
+
+    &lt;!-- Ground plane --&gt;
+    &lt;include&gt;
+      &lt;uri&gt;model://ground_plane&lt;/uri&gt;
+    &lt;/include&gt;
+
+    &lt;!-- Walls --&gt;
+    &lt;model name=&quot;wall_1&quot;&gt;
+      &lt;pose&gt;-5 0 2.5 0 0 0&lt;/pose&gt;
+      &lt;link name=&quot;link&quot;&gt;
+        &lt;collision name=&quot;collision&quot;&gt;
+          &lt;geometry&gt;
+            &lt;box&gt;
+              &lt;size&gt;0.2 10 5&lt;/size&gt;
+            &lt;/box&gt;
+          &lt;/geometry&gt;
+        &lt;/collision&gt;
+        &lt;visual name=&quot;visual&quot;&gt;
+          &lt;geometry&gt;
+            &lt;box&gt;
+              &lt;size&gt;0.2 10 5&lt;/size&gt;
+            &lt;/box&gt;
+          &lt;/geometry&gt;
+          &lt;material&gt;
+            &lt;ambient&gt;0.7 0.7 0.7 1&lt;/ambient&gt;
+            &lt;diffuse&gt;0.7 0.7 0.7 1&lt;/diffuse&gt;
+          &lt;/material&gt;
+        &lt;/visual&gt;
+      &lt;/link&gt;
+    &lt;/model&gt;
+
+    &lt;!-- Furniture for navigation testing --&gt;
+    &lt;include&gt;
+      &lt;uri&gt;model://table&lt;/uri&gt;
+      &lt;pose&gt;2 1 0 0 0 0&lt;/pose&gt;
+    &lt;/include&gt;
+
+    &lt;include&gt;
+      &lt;uri&gt;model://chair&lt;/uri&gt;
+      &lt;pose&gt;2 0 0 0 0 1.57&lt;/pose&gt;
+    &lt;/include&gt;
+  &lt;/world&gt;
+&lt;/sdf&gt;
+</code></pre>
+<h3 id="outdoor-environment">Outdoor Environment</h3>
+<p>For walking and navigation testing:</p>
+<pre><code class="language-xml">&lt;?xml version=&quot;1.0&quot; ?&gt;
+&lt;sdf version=&quot;1.7&quot;&gt;
+  &lt;world name=&quot;outdoor_humanoid_world&quot;&gt;
+    &lt;!-- Physics --&gt;
+    &lt;physics type=&quot;ode&quot;&gt;
+      &lt;gravity&gt;0 0 -9.8&lt;/gravity&gt;
+      &lt;max_step_size&gt;0.001&lt;/max_step_size&gt;
+    &lt;/physics&gt;
+
+    &lt;!-- Atmosphere --&gt;
+    &lt;atmosphere type=&quot;adiabatic&quot;&gt;
+      &lt;temperature&gt;287.15&lt;/temperature&gt;
+      &lt;pressure&gt;101325.0&lt;/pressure&gt;
+    &lt;/atmosphere&gt;
+
+    &lt;!-- Ground with terrain --&gt;
+    &lt;model name=&quot;uneven_ground&quot;&gt;
+      &lt;static&gt;true&lt;/static&gt;
+      &lt;link name=&quot;link&quot;&gt;
+        &lt;collision name=&quot;collision&quot;&gt;
+          &lt;geometry&gt;
+            &lt;heightmap&gt;
+              &lt;uri&gt;file://ground_heightmap.png&lt;/uri&gt;
+              &lt;size&gt;20 20 2&lt;/size&gt;
+              &lt;pos&gt;0 0 0&lt;/pos&gt;
+            &lt;/heightmap&gt;
+          &lt;/geometry&gt;
+        &lt;/collision&gt;
+        &lt;visual name=&quot;visual&quot;&gt;
+          &lt;geometry&gt;
+            &lt;heightmap&gt;
+              &lt;uri&gt;file://ground_texture.png&lt;/uri&gt;
+              &lt;size&gt;20 20 2&lt;/size&gt;
+            &lt;/heightmap&gt;
+          &lt;/geometry&gt;
+        &lt;/visual&gt;
+      &lt;/link&gt;
+    &lt;/model&gt;
+
+    &lt;!-- Obstacles --&gt;
+    &lt;model name=&quot;obstacle_1&quot;&gt;
+      &lt;pose&gt;5 0 0.5 0 0 0&lt;/pose&gt;
+      &lt;link name=&quot;link&quot;&gt;
+        &lt;collision name=&quot;collision&quot;&gt;
+          &lt;geometry&gt;
+            &lt;box&gt;
+              &lt;size&gt;1 1 1&lt;/size&gt;
+            &lt;/box&gt;
+          &lt;/geometry&gt;
+        &lt;/collision&gt;
+        &lt;visual name=&quot;visual&quot;&gt;
+          &lt;geometry&gt;
+            &lt;box&gt;
+              &lt;size&gt;1 1 1&lt;/size&gt;
+            &lt;/box&gt;
+          &lt;/geometry&gt;
+        &lt;/visual&gt;
+      &lt;/link&gt;
+    &lt;/model&gt;
+  &lt;/world&gt;
+&lt;/sdf&gt;
+</code></pre>
+<h2 id="troubleshooting-common-issues">Troubleshooting Common Issues</h2>
+<h3 id="1-robot-falls-through-ground">1. Robot Falls Through Ground</h3>
+<p>Common causes and solutions:</p>
+<ul>
+<li>Check collision geometry in URDF</li>
+<li>Verify physics parameters (CFM, ERP)</li>
+<li>Ensure proper mass distribution</li>
+<li>Check for overlapping collision geometries</li>
+</ul>
+<h3 id="2-joint-instability">2. Joint Instability</h3>
+<p>Solutions:</p>
+<ul>
+<li>Increase physics iterations</li>
+<li>Adjust ERP and CFM values</li>
+<li>Add joint damping</li>
+<li>Verify transmission configurations</li>
+</ul>
+<h3 id="3-performance-issues">3. Performance Issues</h3>
+<p>Optimizations:</p>
+<ul>
+<li>Reduce visual complexity</li>
+<li>Use simpler collision geometries</li>
+<li>Increase time step (with caution)</li>
+<li>Limit update rates for non-critical sensors</li>
+</ul>
+<h3 id="4-controller-issues">4. Controller Issues</h3>
+<p>For ros2_control problems:</p>
+<ul>
+<li>Verify transmission configurations</li>
+<li>Check controller configuration files</li>
+<li>Ensure proper timing (1ms control period)</li>
+<li>Validate joint limits and ranges</li>
+</ul>
+<h2 id="best-practices-for-humanoid-simulation">Best Practices for Humanoid Simulation</h2>
+<h3 id="1-gradual-complexity">1. Gradual Complexity</h3>
+<p>Start with simple models and gradually add complexity:</p>
+<ul>
+<li>Begin with basic walking</li>
+<li>Add sensors one by one</li>
+<li>Introduce complex environments gradually</li>
+<li>Test control algorithms incrementally</li>
+</ul>
+<h3 id="2-validation-against-real-robot">2. Validation Against Real Robot</h3>
+<p>Regularly validate simulation against real robot:</p>
+<ul>
+<li>Compare sensor data patterns</li>
+<li>Validate control responses</li>
+<li>Test identical trajectories</li>
+<li>Monitor timing differences</li>
+</ul>
+<h3 id="3-performance-monitoring">3. Performance Monitoring</h3>
+<p>Monitor simulation performance:</p>
+<ul>
+<li>Real-time factor should stay close to 1.0</li>
+<li>Check for dropped messages</li>
+<li>Monitor CPU and GPU usage</li>
+<li>Track physics update rates</li>
+</ul>
+<h3 id="4-reproducible-results">4. Reproducible Results</h3>
+<p>Ensure reproducible simulations:</p>
+<ul>
+<li>Fixed random seeds</li>
+<li>Consistent initial conditions</li>
+<li>Version-controlled world files</li>
+<li>Documented simulation parameters</li>
+</ul>
+<h2 id="summary">Summary</h2>
+<p>In this chapter, you&#x27;ve learned:</p>
+<ul>
+<li>How to install and set up Gazebo Harmonic for humanoid robotics</li>
+<li>Essential concepts including worlds, models, and plugins</li>
+<li>How to configure your humanoid robot for Gazebo simulation</li>
+<li>Best practices for physics configuration and stability</li>
+<li>How to create custom simulation environments</li>
+<li>Troubleshooting techniques for common issues</li>
+<li>Best practices for effective humanoid simulation</li>
+</ul>
+<p>Gazebo Harmonic provides a powerful platform for humanoid robot development, enabling safe testing of complex behaviors before deployment on real hardware.</p>
+<h2 id="exercises">Exercises</h2>
+<ol>
+<li>Install Gazebo Harmonic and test with a simple model</li>
+<li>Create a URDF model of a simple humanoid robot with at least 6 DOF</li>
+<li>Set up a basic simulation world with ground plane and obstacles</li>
+<li>Configure ros2_control for your robot model</li>
+<li>Create a launch file that starts Gazebo with your robot and controllers</li>
+</ol>
+<div class="starboard-notebook-container"><div class="starboard-notebook-header"><span class="starboard-notebook-icon">📊</span><span class="starboard-notebook-title">Interactive Notebook</span></div><div class="starboard-notebook-content"><div class="starboard-children-container"><pre><code class="language-python"># This would be an interactive code block for students to experiment with Gazebo
+# In a real implementation, this would connect to ROS 2 services
+# to interact with the Gazebo simulation
+</code></pre></div></div><div class="starboard-notebook-footer"><small>Note: This is a placeholder for interactive Starboard notebooks.</small></div></div></div><footer class="theme-doc-footer docusaurus-mt-lg"><div class="row margin-top--sm theme-doc-footer-edit-meta-row"><div class="col noPrint_WFHX"><a href="https://github.com/facebook/docusaurus/tree/main/packages/create-docusaurus/templates/shared/docs/module-2-simulation/01-gazebo-harmonic-setup.mdx" target="_blank" rel="noopener noreferrer" class="theme-edit-this-page"><svg fill="currentColor" height="20" width="20" viewBox="0 0 40 40" class="iconEdit_Z9Sw" aria-hidden="true"><g><path d="m34.5 11.7l-3 3.1-6.3-6.3 3.1-3q0.5-0.5 1.2-0.5t1.1 0.5l3.9 3.9q0.5 0.4 0.5 1.1t-0.5 1.2z m-29.5 17.1l18.4-18.5 6.3 6.3-18.4 18.4h-6.3v-6.2z"></path></g></svg>Edit this page</a></div><div class="col lastUpdated_JAkA"></div></div></footer></article><nav class="docusaurus-mt-lg pagination-nav" aria-label="Docs pages"><a class="pagination-nav__link pagination-nav__link--prev" href="/physical-ai-textbook/docs/module-1-ros/interactive-examples"><div class="pagination-nav__sublabel">Previous</div><div class="pagination-nav__label">Interactive ROS 2 Examples</div></a><a class="pagination-nav__link pagination-nav__link--next" href="/physical-ai-textbook/docs/module-2-simulation/simulating-humanoid"><div class="pagination-nav__sublabel">Next</div><div class="pagination-nav__label">Simulating Humanoid in Gazebo</div></a></nav></div></div><div class="col col--3"><div class="tableOfContents_bqdL thin-scrollbar theme-doc-toc-desktop"><ul class="table-of-contents table-of-contents__left-border"><li><a href="#introduction" class="table-of-contents__link toc-highlight">Introduction</a></li><li><a href="#understanding-gazebo-harmonic" class="table-of-contents__link toc-highlight">Understanding Gazebo Harmonic</a><ul><li><a href="#key-features" class="table-of-contents__link toc-highlight">Key Features</a></li><li><a href="#physics-engine-options" class="table-of-contents__link toc-highlight">Physics Engine Options</a></li></ul></li><li><a href="#installing-gazebo-harmonic" class="table-of-contents__link toc-highlight">Installing Gazebo Harmonic</a><ul><li><a href="#prerequisites" class="table-of-contents__link toc-highlight">Prerequisites</a></li><li><a href="#installation-methods" class="table-of-contents__link toc-highlight">Installation Methods</a></li><li><a href="#verification" class="table-of-contents__link toc-highlight">Verification</a></li></ul></li><li><a href="#basic-gazebo-concepts" class="table-of-contents__link toc-highlight">Basic Gazebo Concepts</a><ul><li><a href="#worlds" class="table-of-contents__link toc-highlight">Worlds</a></li><li><a href="#models" class="table-of-contents__link toc-highlight">Models</a></li></ul></li><li><a href="#setting-up-humanoid-robot-in-gazebo" class="table-of-contents__link toc-highlight">Setting up Humanoid Robot in Gazebo</a><ul><li><a href="#converting-urdf-to-sdf" class="table-of-contents__link toc-highlight">Converting URDF to SDF</a></li><li><a href="#creating-a-gazebo-ready-urdf" class="table-of-contents__link toc-highlight">Creating a Gazebo-Ready URDF</a></li><li><a href="#physics-parameters-for-humanoid-robots" class="table-of-contents__link toc-highlight">Physics Parameters for Humanoid Robots</a></li></ul></li><li><a href="#essential-gazebo-plugins-for-humanoid-robots" class="table-of-contents__link toc-highlight">Essential Gazebo Plugins for Humanoid Robots</a><ul><li><a href="#1-ros2_control-plugin" class="table-of-contents__link toc-highlight">1. ros2_control Plugin</a></li><li><a href="#2-joint-state-publisher-plugin" class="table-of-contents__link toc-highlight">2. Joint State Publisher Plugin</a></li><li><a href="#3-imu-sensor-plugin" class="table-of-contents__link toc-highlight">3. IMU Sensor Plugin</a></li></ul></li><li><a href="#launch-files-for-gazebo-integration" class="table-of-contents__link toc-highlight">Launch Files for Gazebo Integration</a><ul><li><a href="#basic-launch-file" class="table-of-contents__link toc-highlight">Basic Launch File</a></li><li><a href="#advanced-launch-file-with-controllers" class="table-of-contents__link toc-highlight">Advanced Launch File with Controllers</a></li></ul></li><li><a href="#physics-configuration-for-humanoid-stability" class="table-of-contents__link toc-highlight">Physics Configuration for Humanoid Stability</a><ul><li><a href="#time-step-configuration" class="table-of-contents__link toc-highlight">Time Step Configuration</a></li><li><a href="#joint-configuration-for-stability" class="table-of-contents__link toc-highlight">Joint Configuration for Stability</a></li></ul></li><li><a href="#creating-simulation-worlds" class="table-of-contents__link toc-highlight">Creating Simulation Worlds</a><ul><li><a href="#indoor-environment" class="table-of-contents__link toc-highlight">Indoor Environment</a></li><li><a href="#outdoor-environment" class="table-of-contents__link toc-highlight">Outdoor Environment</a></li></ul></li><li><a href="#troubleshooting-common-issues" class="table-of-contents__link toc-highlight">Troubleshooting Common Issues</a><ul><li><a href="#1-robot-falls-through-ground" class="table-of-contents__link toc-highlight">1. Robot Falls Through Ground</a></li><li><a href="#2-joint-instability" class="table-of-contents__link toc-highlight">2. Joint Instability</a></li><li><a href="#3-performance-issues" class="table-of-contents__link toc-highlight">3. Performance Issues</a></li><li><a href="#4-controller-issues" class="table-of-contents__link toc-highlight">4. Controller Issues</a></li></ul></li><li><a href="#best-practices-for-humanoid-simulation" class="table-of-contents__link toc-highlight">Best Practices for Humanoid Simulation</a><ul><li><a href="#1-gradual-complexity" class="table-of-contents__link toc-highlight">1. Gradual Complexity</a></li><li><a href="#2-validation-against-real-robot" class="table-of-contents__link toc-highlight">2. Validation Against Real Robot</a></li><li><a href="#3-performance-monitoring" class="table-of-contents__link toc-highlight">3. Performance Monitoring</a></li><li><a href="#4-reproducible-results" class="table-of-contents__link toc-highlight">4. Reproducible Results</a></li></ul></li><li><a href="#summary" class="table-of-contents__link toc-highlight">Summary</a></li><li><a href="#exercises" class="table-of-contents__link toc-highlight">Exercises</a></li></ul></div></div></div></div></main></div></div></div><footer class="theme-layout-footer footer footer--dark"><div class="container container-fluid"><div class="row footer__links"><div class="theme-layout-footer-column col footer__col"><div class="footer__title">Docs</div><ul class="footer__items clean-list"><li class="footer__item"><a class="footer__link-item" href="/physical-ai-textbook/docs/intro/introduction-to-physical-ai">Textbook</a></li></ul></div><div class="theme-layout-footer-column col footer__col"><div class="footer__title">Community</div><ul class="footer__items clean-list"><li class="footer__item"><a href="https://stackoverflow.com/questions/tagged/docusaurus" target="_blank" rel="noopener noreferrer" class="footer__link-item">Stack Overflow<svg width="13.5" height="13.5" aria-label="(opens in new tab)" class="iconExternalLink_nPIU"><use href="#theme-svg-external-link"></use></svg></a></li><li class="footer__item"><a href="https://discordapp.com/invite/docusaurus" target="_blank" rel="noopener noreferrer" class="footer__link-item">Discord<svg width="13.5" height="13.5" aria-label="(opens in new tab)" class="iconExternalLink_nPIU"><use href="#theme-svg-external-link"></use></svg></a></li><li class="footer__item"><a href="https://twitter.com/docusaurus" target="_blank" rel="noopener noreferrer" class="footer__link-item">Twitter<svg width="13.5" height="13.5" aria-label="(opens in new tab)" class="iconExternalLink_nPIU"><use href="#theme-svg-external-link"></use></svg></a></li></ul></div><div class="theme-layout-footer-column col footer__col"><div class="footer__title">More</div><ul class="footer__items clean-list"><li class="footer__item"><a href="https://github.com/Gulshan-koondhar/physical-ai-textbook" target="_blank" rel="noopener noreferrer" class="footer__link-item">GitHub<svg width="13.5" height="13.5" aria-label="(opens in new tab)" class="iconExternalLink_nPIU"><use href="#theme-svg-external-link"></use></svg></a></li></ul></div></div><div class="footer__bottom text--center"><div class="footer__copyright">Copyright © 2025 My Project, Inc. Built with Docusaurus.</div></div></div></footer></div>
+</body>
+</html>

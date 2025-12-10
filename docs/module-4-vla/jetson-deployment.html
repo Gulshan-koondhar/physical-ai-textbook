@@ -1,0 +1,1389 @@
+<!doctype html>
+<html lang="en" dir="ltr" class="docs-wrapper plugin-docs plugin-id-default docs-version-current docs-doc-page docs-doc-id-module-4-vla/jetson-deployment" data-has-hydrated="false">
+<head>
+<meta charset="UTF-8">
+<meta name="generator" content="Docusaurus v3.9.2">
+<title data-rh="true">Jetson Deployment for AI-Powered Humanoid Robots | Physical AI &amp; Humanoid Robotics</title><meta data-rh="true" name="viewport" content="width=device-width,initial-scale=1"><meta data-rh="true" name="twitter:card" content="summary_large_image"><meta data-rh="true" property="og:image" content="https://Gulshan-koondhar.github.io/physical-ai-textbook/img/docusaurus-social-card.jpg"><meta data-rh="true" name="twitter:image" content="https://Gulshan-koondhar.github.io/physical-ai-textbook/img/docusaurus-social-card.jpg"><meta data-rh="true" property="og:url" content="https://Gulshan-koondhar.github.io/physical-ai-textbook/docs/module-4-vla/jetson-deployment"><meta data-rh="true" property="og:locale" content="en"><meta data-rh="true" name="docusaurus_locale" content="en"><meta data-rh="true" name="docsearch:language" content="en"><meta data-rh="true" name="docusaurus_version" content="current"><meta data-rh="true" name="docusaurus_tag" content="docs-default-current"><meta data-rh="true" name="docsearch:version" content="current"><meta data-rh="true" name="docsearch:docusaurus_tag" content="docs-default-current"><meta data-rh="true" property="og:title" content="Jetson Deployment for AI-Powered Humanoid Robots | Physical AI &amp; Humanoid Robotics"><meta data-rh="true" name="description" content="Deploy AI models and robotics applications on NVIDIA Jetson platforms for humanoid robot control"><meta data-rh="true" property="og:description" content="Deploy AI models and robotics applications on NVIDIA Jetson platforms for humanoid robot control"><meta data-rh="true" name="keywords" content="Jetson,deployment,AI,robotics,NVIDIA,Orin,Xavier,AGX,embedded"><link data-rh="true" rel="icon" href="/physical-ai-textbook/img/favicon.ico"><link data-rh="true" rel="canonical" href="https://Gulshan-koondhar.github.io/physical-ai-textbook/docs/module-4-vla/jetson-deployment"><link data-rh="true" rel="alternate" href="https://Gulshan-koondhar.github.io/physical-ai-textbook/docs/module-4-vla/jetson-deployment" hreflang="en"><link data-rh="true" rel="alternate" href="https://Gulshan-koondhar.github.io/physical-ai-textbook/docs/module-4-vla/jetson-deployment" hreflang="x-default"><script data-rh="true" type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Jetson Deployment","item":"https://Gulshan-koondhar.github.io/physical-ai-textbook/docs/module-4-vla/jetson-deployment"}]}</script><link rel="stylesheet" href="/physical-ai-textbook/assets/css/styles.4f99da8f.css">
+<script src="/physical-ai-textbook/assets/js/runtime~main.7cf563d1.js" defer="defer"></script>
+<script src="/physical-ai-textbook/assets/js/main.6dcd1921.js" defer="defer"></script>
+</head>
+<body class="navigation-with-keyboard">
+<svg style="display: none;"><defs>
+<symbol id="theme-svg-external-link" viewBox="0 0 24 24"><path fill="currentColor" d="M21 13v10h-21v-19h12v2h-10v15h17v-8h2zm3-12h-10.988l4.035 4-6.977 7.07 2.828 2.828 6.977-7.07 4.125 4.172v-11z"/></symbol>
+</defs></svg>
+<script>!function(){var t=function(){try{return new URLSearchParams(window.location.search).get("docusaurus-theme")}catch(t){}}()||function(){try{return window.localStorage.getItem("theme")}catch(t){}}();document.documentElement.setAttribute("data-theme",t||"light"),document.documentElement.setAttribute("data-theme-choice",t||"light")}(),function(){try{const c=new URLSearchParams(window.location.search).entries();for(var[t,e]of c)if(t.startsWith("docusaurus-data-")){var a=t.replace("docusaurus-data-","data-");document.documentElement.setAttribute(a,e)}}catch(t){}}()</script><div id="__docusaurus"><div role="region" aria-label="Skip to main content"><a class="skipToContent_fXgn" href="#__docusaurus_skipToContent_fallback">Skip to main content</a></div><nav aria-label="Main" class="theme-layout-navbar navbar navbar--fixed-top"><div class="navbar__inner"><div class="theme-layout-navbar-left navbar__items"><button aria-label="Toggle navigation bar" aria-expanded="false" class="navbar__toggle clean-btn" type="button"><svg width="30" height="30" viewBox="0 0 30 30" aria-hidden="true"><path stroke="currentColor" stroke-linecap="round" stroke-miterlimit="10" stroke-width="2" d="M4 7h22M4 15h22M4 23h22"></path></svg></button><a class="navbar__brand" href="/physical-ai-textbook/"><div class="navbar__logo"><img src="/physical-ai-textbook/img/logo.svg" alt="Physical AI Logo" class="themedComponent_mlkZ themedComponent--light_NVdE"><img src="/physical-ai-textbook/img/logo.svg" alt="Physical AI Logo" class="themedComponent_mlkZ themedComponent--dark_xIcU"></div><b class="navbar__title text--truncate">Physical AI Textbook</b></a><a aria-current="page" class="navbar__item navbar__link navbar__link--active" href="/physical-ai-textbook/docs/intro/introduction-to-physical-ai">Textbook</a></div><div class="theme-layout-navbar-right navbar__items navbar__items--right"><a href="https://github.com/Gulshan-koondhar/physical-ai-textbook" target="_blank" rel="noopener noreferrer" class="navbar__item navbar__link">GitHub<svg width="13.5" height="13.5" aria-label="(opens in new tab)" class="iconExternalLink_nPIU"><use href="#theme-svg-external-link"></use></svg></a><div class="toggle_vylO colorModeToggle_DEke"><button class="clean-btn toggleButton_gllP toggleButtonDisabled_aARS" type="button" disabled="" title="system mode" aria-label="Switch between dark and light mode (currently system mode)"><svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" class="toggleIcon_g3eP lightToggleIcon_pyhR"><path fill="currentColor" d="M12,9c1.65,0,3,1.35,3,3s-1.35,3-3,3s-3-1.35-3-3S10.35,9,12,9 M12,7c-2.76,0-5,2.24-5,5s2.24,5,5,5s5-2.24,5-5 S14.76,7,12,7L12,7z M2,13l2,0c0.55,0,1-0.45,1-1s-0.45-1-1-1l-2,0c-0.55,0-1,0.45-1,1S1.45,13,2,13z M20,13l2,0c0.55,0,1-0.45,1-1 s-0.45-1-1-1l-2,0c-0.55,0-1,0.45-1,1S19.45,13,20,13z M11,2v2c0,0.55,0.45,1,1,1s1-0.45,1-1V2c0-0.55-0.45-1-1-1S11,1.45,11,2z M11,20v2c0,0.55,0.45,1,1,1s1-0.45,1-1v-2c0-0.55-0.45-1-1-1C11.45,19,11,19.45,11,20z M5.99,4.58c-0.39-0.39-1.03-0.39-1.41,0 c-0.39,0.39-0.39,1.03,0,1.41l1.06,1.06c0.39,0.39,1.03,0.39,1.41,0s0.39-1.03,0-1.41L5.99,4.58z M18.36,16.95 c-0.39-0.39-1.03-0.39-1.41,0c-0.39,0.39-0.39,1.03,0,1.41l1.06,1.06c0.39,0.39,1.03,0.39,1.41,0c0.39-0.39,0.39-1.03,0-1.41 L18.36,16.95z M19.42,5.99c0.39-0.39,0.39-1.03,0-1.41c-0.39-0.39-1.03-0.39-1.41,0l-1.06,1.06c-0.39,0.39-0.39,1.03,0,1.41 s1.03,0.39,1.41,0L19.42,5.99z M7.05,18.36c0.39-0.39,0.39-1.03,0-1.41c-0.39-0.39-1.03-0.39-1.41,0l-1.06,1.06 c-0.39,0.39-0.39,1.03,0,1.41s1.03,0.39,1.41,0L7.05,18.36z"></path></svg><svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" class="toggleIcon_g3eP darkToggleIcon_wfgR"><path fill="currentColor" d="M9.37,5.51C9.19,6.15,9.1,6.82,9.1,7.5c0,4.08,3.32,7.4,7.4,7.4c0.68,0,1.35-0.09,1.99-0.27C17.45,17.19,14.93,19,12,19 c-3.86,0-7-3.14-7-7C5,9.07,6.81,6.55,9.37,5.51z M12,3c-4.97,0-9,4.03-9,9s4.03,9,9,9s9-4.03,9-9c0-0.46-0.04-0.92-0.1-1.36 c-0.98,1.37-2.58,2.26-4.4,2.26c-2.98,0-5.4-2.42-5.4-5.4c0-1.81,0.89-3.42,2.26-4.4C12.92,3.04,12.46,3,12,3L12,3z"></path></svg><svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" class="toggleIcon_g3eP systemToggleIcon_QzmC"><path fill="currentColor" d="m12 21c4.971 0 9-4.029 9-9s-4.029-9-9-9-9 4.029-9 9 4.029 9 9 9zm4.95-13.95c1.313 1.313 2.05 3.093 2.05 4.95s-0.738 3.637-2.05 4.95c-1.313 1.313-3.093 2.05-4.95 2.05v-14c1.857 0 3.637 0.737 4.95 2.05z"></path></svg></button></div><div class="navbarSearchContainer_Bca1"></div></div></div><div role="presentation" class="navbar-sidebar__backdrop"></div></nav><div id="__docusaurus_skipToContent_fallback" class="theme-layout-main main-wrapper mainWrapper_z2l0"><div class="docsWrapper_hBAB"><button aria-label="Scroll back to top" class="clean-btn theme-back-to-top-button backToTopButton_sjWU" type="button"></button><div class="docRoot_UBD9"><aside class="theme-doc-sidebar-container docSidebarContainer_YfHR"><div class="sidebarViewport_aRkj"><div class="sidebar_njMd"><nav aria-label="Docs sidebar" class="menu thin-scrollbar menu_SIkG"><ul class="theme-doc-sidebar-menu menu__list"><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist menu__link--sublist-caret" role="button" aria-expanded="false" href="/physical-ai-textbook/docs/intro/introduction-to-physical-ai"><span title="Introduction" class="categoryLinkLabel_W154">Introduction</span></a></div></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist menu__link--sublist-caret" role="button" aria-expanded="false" href="/physical-ai-textbook/docs/module-1-ros/ros2-from-zero"><span title="Module 1 - ROS 2 Fundamentals" class="categoryLinkLabel_W154">Module 1 - ROS 2 Fundamentals</span></a></div></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist menu__link--sublist-caret" role="button" aria-expanded="false" href="/physical-ai-textbook/docs/module-2-simulation/gazebo-harmonic-setup"><span title="Module 2 - Simulation" class="categoryLinkLabel_W154">Module 2 - Simulation</span></a></div></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist menu__link--sublist-caret" role="button" aria-expanded="false" href="/physical-ai-textbook/docs/module-3-ai-brain/isaac-sim-installation"><span title="Module 3 - AI Brain" class="categoryLinkLabel_W154">Module 3 - AI Brain</span></a></div></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist menu__link--sublist-caret menu__link--active" role="button" aria-expanded="true" href="/physical-ai-textbook/docs/module-4-vla/whisper-gpt-ros-planner"><span title="Module 4 - VLA Integration" class="categoryLinkLabel_W154">Module 4 - VLA Integration</span></a></div><ul class="menu__list"><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-2 menu__list-item"><a class="menu__link" tabindex="0" href="/physical-ai-textbook/docs/module-4-vla/whisper-gpt-ros-planner"><span title="Whisper-GPT to ROS Planning" class="linkLabel_WmDU">Whisper-GPT to ROS Planning</span></a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-2 menu__list-item"><a class="menu__link" tabindex="0" href="/physical-ai-textbook/docs/module-4-vla/open-vocabulary-detection"><span title="Open-Vocabulary Detection" class="linkLabel_WmDU">Open-Vocabulary Detection</span></a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-2 menu__list-item"><a class="menu__link" tabindex="0" href="/physical-ai-textbook/docs/module-4-vla/end-to-end-pipeline"><span title="End-to-End VLA Pipeline" class="linkLabel_WmDU">End-to-End VLA Pipeline</span></a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-2 menu__list-item"><a class="menu__link menu__link--active" aria-current="page" tabindex="0" href="/physical-ai-textbook/docs/module-4-vla/jetson-deployment"><span title="Jetson Deployment" class="linkLabel_WmDU">Jetson Deployment</span></a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-2 menu__list-item"><a class="menu__link" tabindex="0" href="/physical-ai-textbook/docs/module-4-vla/ai-integration-examples"><span title="AI Integration Examples" class="linkLabel_WmDU">AI Integration Examples</span></a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-2 menu__list-item"><a class="menu__link" tabindex="0" href="/physical-ai-textbook/docs/module-4-vla/tensorrt-optimization"><span title="TensorRT Optimization" class="linkLabel_WmDU">TensorRT Optimization</span></a></li></ul></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist menu__link--sublist-caret" role="button" aria-expanded="false" href="/physical-ai-textbook/docs/capstone/red-cup-project"><span title="Capstone Project" class="categoryLinkLabel_W154">Capstone Project</span></a></div></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist menu__link--sublist-caret" role="button" aria-expanded="false" href="/physical-ai-textbook/docs/hardware/hardware-guide"><span title="Hardware Guide" class="categoryLinkLabel_W154">Hardware Guide</span></a></div></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist menu__link--sublist-caret" role="button" aria-expanded="false" href="/physical-ai-textbook/docs/appendix/troubleshooting"><span title="Appendices" class="categoryLinkLabel_W154">Appendices</span></a></div></li></ul></nav></div></div></aside><main class="docMainContainer_TBSr"><div class="container padding-top--md padding-bottom--lg"><div class="row"><div class="col docItemCol_VOVn"><div class="docItemContainer_Djhp"><article><nav class="theme-doc-breadcrumbs breadcrumbsContainer_Z_bl" aria-label="Breadcrumbs"><ul class="breadcrumbs"><li class="breadcrumbs__item"><a aria-label="Home page" class="breadcrumbs__link" href="/physical-ai-textbook/"><svg viewBox="0 0 24 24" class="breadcrumbHomeIcon_YNFT"><path d="M10 19v-5h4v5c0 .55.45 1 1 1h3c.55 0 1-.45 1-1v-7h1.7c.46 0 .68-.57.33-.87L12.67 3.6c-.38-.34-.96-.34-1.34 0l-8.36 7.53c-.34.3-.13.87.33.87H5v7c0 .55.45 1 1 1h3c.55 0 1-.45 1-1z" fill="currentColor"></path></svg></a></li><li class="breadcrumbs__item"><span class="breadcrumbs__link">Module 4 - VLA Integration</span></li><li class="breadcrumbs__item breadcrumbs__item--active"><span class="breadcrumbs__link">Jetson Deployment</span></li></ul></nav><div class="tocCollapsible_ETCw theme-doc-toc-mobile tocMobile_ITEo"><button type="button" class="clean-btn tocCollapsibleButton_TO0P">On this page</button></div><div class="theme-doc-markdown markdown"><header><h1 id="jetson-deployment-for-ai-powered-humanoid-robots">Jetson Deployment for AI-Powered Humanoid Robots</h1></header>
+<h2 id="introduction">Introduction</h2>
+<p>NVIDIA Jetson platforms provide powerful, energy-efficient computing solutions ideal for AI-powered humanoid robots. These embedded systems offer the computational power needed for real-time AI inference while maintaining the power efficiency and compact form factor required for mobile humanoid platforms. This chapter covers the deployment of AI models and robotics applications on various Jetson platforms, focusing on optimization techniques and best practices for humanoid robot applications.</p>
+<p>Jetson platforms, including the Jetson AGX Orin, Jetson Xavier NX, and Jetson Nano, provide different levels of computational power suitable for various humanoid robot applications. The choice of platform depends on the complexity of AI models, real-time requirements, and power constraints of the specific humanoid robot system.</p>
+<h2 id="jetson-platform-overview">Jetson Platform Overview</h2>
+<h3 id="jetson-agx-orin">Jetson AGX Orin</h3>
+<p>The Jetson AGX Orin is the most powerful Jetson platform, featuring:</p>
+<ul>
+<li><strong>GPU</strong>: 2048-core NVIDIA Ampere architecture GPU</li>
+<li><strong>CPU</strong>: 12-core ARM v8.4 64-bit CPU</li>
+<li><strong>Memory</strong>: 64GB LPDDR5 memory</li>
+<li><strong>AI Performance</strong>: Up to 275 TOPS for INT8 inference</li>
+<li><strong>Power</strong>: 15W to 60W configurable TDP</li>
+<li><strong>Use Case</strong>: Complex AI models, simultaneous perception and planning</li>
+</ul>
+<h3 id="jetson-xavier-nx">Jetson Xavier NX</h3>
+<p>The Jetson Xavier NX provides a balance of performance and power:</p>
+<ul>
+<li><strong>GPU</strong>: 384-core NVIDIA Volta architecture GPU with Tensor Cores</li>
+<li><strong>CPU</strong>: 6-core NVIDIA Carmel ARM v8.2 64-bit CPU</li>
+<li><strong>Memory</strong>: 8GB LPDDR4x memory</li>
+<li><strong>AI Performance</strong>: Up to 21 TOPS for INT8 inference</li>
+<li><strong>Power</strong>: 10W to 15W configurable TDP</li>
+<li><strong>Use Case</strong>: Moderate AI workloads, multi-sensor fusion</li>
+</ul>
+<h3 id="jetson-nano">Jetson Nano</h3>
+<p>The Jetson Nano offers entry-level AI capabilities:</p>
+<ul>
+<li><strong>GPU</strong>: 128-core NVIDIA Maxwell architecture GPU</li>
+<li><strong>CPU</strong>: Quad-core ARM A57 CPU</li>
+<li><strong>Memory</strong>: 4GB LPDDR4 memory</li>
+<li><strong>AI Performance</strong>: Up to 0.5 TOPS for INT8 inference</li>
+<li><strong>Power</strong>: 5W to 10W configurable TDP</li>
+<li><strong>Use Case</strong>: Basic AI tasks, sensor processing</li>
+</ul>
+<h2 id="jetson-setup-and-configuration">Jetson Setup and Configuration</h2>
+<h3 id="initial-setup">Initial Setup</h3>
+<h4 id="flashing-jetson-os">Flashing Jetson OS</h4>
+<p>For Jetson AGX Orin, the recommended approach is using NVIDIA&#x27;s SDK Manager:</p>
+<pre><code class="language-bash"># Download and install NVIDIA SDK Manager
+# Available at: https://developer.nvidia.com/nvidia-sdk-manager
+
+# Run SDK Manager GUI
+./sdkmanager
+
+# Or use command line (if available)
+sdkmanager --cli install --targetos &quot;Linux&quot; --host --target JETSON_AGX_ORIN
+</code></pre>
+<h4 id="basic-system-configuration">Basic System Configuration</h4>
+<p>After flashing, configure the system for optimal performance:</p>
+<pre><code class="language-bash"># Update system packages
+sudo apt update &amp;&amp; sudo apt upgrade -y
+
+# Install essential packages for robotics
+sudo apt install -y \
+  build-essential \
+  cmake \
+  git \
+  python3-dev \
+  python3-pip \
+  python3-venv \
+  libeigen3-dev \
+  libboost-all-dev \
+  libopencv-dev \
+  libgstreamer-plugins-base1.0-dev \
+  gstreamer1.0-plugins-good \
+  gstreamer1.0-plugins-bad \
+  gstreamer1.0-plugins-ugly \
+  gstreamer1.0-libav
+
+# Install pip packages
+pip3 install --upgrade pip
+pip3 install wheel setuptools
+</code></pre>
+<h3 id="power-mode-configuration">Power Mode Configuration</h3>
+<p>Configure Jetson for optimal performance based on application requirements:</p>
+<pre><code class="language-bash"># Check current power mode
+sudo nvpmodel -q
+
+# Set to MAX performance mode (for AI workloads)
+sudo nvpmodel -m 0
+
+# Check Jetson clocks
+sudo jetson_clocks
+
+# For persistent jetson_clocks (recommended for deployment)
+echo &#x27;sudo jetson_clocks&#x27; | sudo tee -a /etc/rc.local
+</code></pre>
+<h3 id="thermal-management">Thermal Management</h3>
+<p>For continuous AI workloads, implement thermal management:</p>
+<pre><code class="language-bash"># Install jetson-stats for monitoring
+sudo -H pip3 install -U jetson-stats
+
+# Check thermal status
+jtop
+
+# Configure thermal settings
+# Edit /etc/nvpmodel.conf to adjust power limits based on thermal constraints
+</code></pre>
+<h2 id="docker-and-containerization">Docker and Containerization</h2>
+<h3 id="setting-up-docker-for-jetson">Setting up Docker for Jetson</h3>
+<p>Docker provides isolated environments for deploying robotics applications:</p>
+<pre><code class="language-bash"># Install Docker
+curl -fsSL https://get.docker.com -o get-docker.sh
+sh get-docker.sh
+
+# Add user to docker group
+sudo usermod -aG docker $USER
+
+# Install NVIDIA Container Toolkit
+distribution=$(. /etc/os-release;echo $ID$VERSION_ID)
+curl -s -L https://nvidia.github.io/nvidia-docker/gpgkey | sudo apt-key add -
+curl -s -L https://nvidia.github.io/nvidia-docker/$distribution/nvidia-docker.list | sudo tee /etc/apt/sources.list.d/nvidia-docker.list
+
+sudo apt update
+sudo apt install -y nvidia-container-toolkit
+
+# Restart Docker
+sudo systemctl restart docker
+</code></pre>
+<h3 id="jetson-specific-docker-images">Jetson-Specific Docker Images</h3>
+<p>Create Docker images optimized for Jetson platforms:</p>
+<pre><code class="language-dockerfile"># Dockerfile for Jetson-based humanoid robot AI
+FROM nvcr.io/nvidia/l4t-ml:r35.4.1-py3
+
+# Set environment variables
+ENV DEBIAN_FRONTEND=noninteractive
+ENV NVIDIA_VISIBLE_DEVICES=all
+ENV NVIDIA_DRIVER_CAPABILITIES=compute,utility
+ENV NVIDIA_REQUIRE_CUDA=&quot;cuda&gt;=11.4 brand=tesla,driver&gt;=470,driver&lt;471 brand=unknown,driver&gt;=470,driver&lt;471 brand=nvidia,driver&gt;=470,driver&lt;471 brand=nvidiartx,driver&gt;=470,driver&lt;471 brand=geforce,driver&gt;=470,driver&lt;471 brand=geforcertx,driver&gt;=470,driver&lt;471 brand=quadro,driver&gt;=470,driver&lt;471 brand=quadrortx,driver&gt;=470,driver&lt;471 brand=titan,driver&gt;=470,driver&lt;471 brand=titanrtx,driver&gt;=470,driver&lt;471&quot;
+
+# Install system dependencies
+RUN apt-get update &amp;&amp; apt-get install -y \
+    build-essential \
+    cmake \
+    git \
+    python3-dev \
+    python3-pip \
+    python3-venv \
+    libeigen3-dev \
+    libboost-all-dev \
+    libopencv-dev \
+    libgstreamer-plugins-base1.0-dev \
+    gstreamer1.0-plugins-good \
+    gstreamer1.0-plugins-bad \
+    gstreamer1.0-plugins-ugly \
+    gstreamer1.0-libav \
+    ros-humble-ros-base \
+    &amp;&amp; rm -rf /var/lib/apt/lists/*
+
+# Install Python packages
+RUN pip3 install --upgrade pip setuptools wheel
+
+# Install robotics-specific packages
+RUN pip3 install \
+    torch torchvision torchaudio \
+    --index-url https://download.pytorch.org/whl/cu118
+
+RUN pip3 install \
+    openai-whisper \
+    transformers \
+    supervision \
+    opencv-python-headless \
+    numpy \
+    scipy \
+    matplotlib
+
+# Create workspace
+WORKDIR /workspace
+
+# Copy application code
+COPY . /workspace/
+
+# Set up ROS workspace
+RUN source /opt/ros/humble/setup.bash &amp;&amp; \
+    colcon build --packages-select humanoid_vla_pipeline
+
+# Source ROS setup
+RUN echo &quot;source /opt/ros/humble/setup.bash&quot; &gt;&gt; ~/.bashrc
+RUN echo &quot;source /workspace/install/setup.bash&quot; &gt;&gt; ~/.bashrc
+
+# Set up entrypoint
+COPY entrypoint.sh /entrypoint.sh
+RUN chmod +x /entrypoint.sh
+
+ENTRYPOINT [&quot;/entrypoint.sh&quot;]
+</code></pre>
+<h3 id="docker-compose-for-multi-service-deployment">Docker Compose for Multi-Service Deployment</h3>
+<p>For complex humanoid robot applications with multiple services:</p>
+<pre><code class="language-yaml"># docker-compose.jetson.yml
+version: &#x27;3.8&#x27;
+
+services:
+  perception:
+    build:
+      context: .
+      dockerfile: Dockerfile.perception
+    runtime: nvidia
+    environment:
+      - NVIDIA_VISIBLE_DEVICES=all
+      - NVIDIA_DRIVER_CAPABILITIES=compute,utility
+    volumes:
+      - /tmp:/tmp
+      - ./data:/workspace/data
+    devices:
+      - /dev/video0:/dev/video0
+      - /dev/i2c-1:/dev/i2c-1
+    deploy:
+      resources:
+        limits:
+          memory: 4G
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]
+    command: [&quot;ros2&quot;, &quot;launch&quot;, &quot;perception_pipeline&quot;, &quot;perception.launch.py&quot;]
+
+  language:
+    build:
+      context: .
+      dockerfile: Dockerfile.language
+    runtime: nvidia
+    environment:
+      - NVIDIA_VISIBLE_DEVICES=all
+      - NVIDIA_DRIVER_CAPABILITIES=compute,utility
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+    volumes:
+      - ./models:/workspace/models
+    deploy:
+      resources:
+        limits:
+          memory: 2G
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]
+    command: [&quot;python3&quot;, &quot;language_processor.py&quot;]
+
+  planning:
+    build:
+      context: .
+      dockerfile: Dockerfile.planning
+    runtime: nvidia
+    environment:
+      - NVIDIA_VISIBLE_DEVICES=all
+      - NVIDIA_DRIVER_CAPABILITIES=compute,utility
+    volumes:
+      - ./config:/workspace/config
+    depends_on:
+      - perception
+      - language
+    command: [&quot;ros2&quot;, &quot;run&quot;, &quot;action_planner&quot;, &quot;planner_node&quot;]
+
+  control:
+    build:
+      context: .
+      dockerfile: Dockerfile.control
+    runtime: nvidia
+    environment:
+      - NVIDIA_VISIBLE_DEVICES=all
+      - NVIDIA_DRIVER_CAPABILITIES=compute,utility
+    devices:
+      - /dev/ttyACM0:/dev/ttyACM0  # For robot control interface
+    depends_on:
+      - planning
+    command: [&quot;ros2&quot;, &quot;launch&quot;, &quot;robot_control&quot;, &quot;control.launch.py&quot;]
+</code></pre>
+<h2 id="ai-model-optimization-for-jetson">AI Model Optimization for Jetson</h2>
+<h3 id="tensorrt-optimization">TensorRT Optimization</h3>
+<p>TensorRT provides optimal inference performance on Jetson platforms:</p>
+<pre><code class="language-python"># tensorrt_optimizer.py
+import tensorrt as trt
+import pycuda.driver as cuda
+import pycuda.autoinit
+import numpy as np
+import torch
+
+class TensorRTOptimizer:
+    def __init__(self):
+        self.logger = trt.Logger(trt.Logger.WARNING)
+        self.builder = trt.Builder(self.logger)
+        self.network = None
+        self.engine = None
+
+    def optimize_pytorch_model(self, pytorch_model, input_shape, onnx_path, trt_path):
+        &quot;&quot;&quot;Optimize PyTorch model using TensorRT&quot;&quot;&quot;
+        # Export PyTorch model to ONNX
+        dummy_input = torch.randn(input_shape).cuda()
+        torch.onnx.export(
+            pytorch_model,
+            dummy_input,
+            onnx_path,
+            export_params=True,
+            opset_version=11,
+            do_constant_folding=True,
+            input_names=[&#x27;input&#x27;],
+            output_names=[&#x27;output&#x27;],
+            dynamic_axes={
+                &#x27;input&#x27;: {0: &#x27;batch_size&#x27;},
+                &#x27;output&#x27;: {0: &#x27;batch_size&#x27;}
+            }
+        )
+
+        # Build TensorRT engine
+        self.build_engine_from_onnx(onnx_path, trt_path, input_shape)
+
+    def build_engine_from_onnx(self, onnx_path, trt_path, input_shape):
+        &quot;&quot;&quot;Build TensorRT engine from ONNX model&quot;&quot;&quot;
+        # Create network
+        network_flags = 1 &lt;&lt; int(trt.NetworkDefinitionCreationFlag.EXPLICIT_BATCH)
+        self.network = self.builder.create_network(network_flags)
+
+        # Create ONNX parser
+        parser = trt.OnnxParser(self.network, self.logger)
+
+        # Parse ONNX
+        with open(onnx_path, &#x27;rb&#x27;) as model:
+            if not parser.parse(model.read()):
+                for error in range(parser.num_errors):
+                    print(parser.get_error(error))
+                return None
+
+        # Configure builder
+        config = self.builder.create_builder_config()
+
+        # Set memory limit (adjust based on Jetson model)
+        config.set_memory_pool_limit(trt.MemoryPoolType.WORKSPACE, 2 &lt;&lt; 30)  # 2GB
+
+        # Create optimization profile
+        profile = self.builder.create_optimization_profile()
+        profile.set_shape(&#x27;input&#x27;, min=input_shape, opt=input_shape, max=input_shape)
+        config.add_optimization_profile(profile)
+
+        # Build engine
+        self.engine = self.builder.build_engine(self.network, config)
+
+        if self.engine is None:
+            print(&quot;Failed to build engine&quot;)
+            return None
+
+        # Serialize engine
+        with open(trt_path, &#x27;wb&#x27;) as f:
+            f.write(self.engine.serialize())
+
+        print(f&quot;TensorRT engine saved to {trt_path}&quot;)
+        return self.engine
+
+    def load_engine(self, trt_path):
+        &quot;&quot;&quot;Load TensorRT engine&quot;&quot;&quot;
+        with open(trt_path, &#x27;rb&#x27;) as f:
+            engine_data = f.read()
+
+        runtime = trt.Runtime(self.logger)
+        self.engine = runtime.deserialize_cuda_engine(engine_data)
+
+        return self.engine
+
+    def infer(self, input_data):
+        &quot;&quot;&quot;Perform inference using TensorRT engine&quot;&quot;&quot;
+        if self.engine is None:
+            raise ValueError(&quot;Engine not loaded&quot;)
+
+        # Create execution context
+        context = self.engine.create_execution_context()
+
+        # Allocate buffers
+        inputs, outputs, bindings, stream = self.allocate_buffers(context)
+
+        # Copy input data to GPU
+        cuda.memcpy_htod(inputs[0].host, input_data)
+
+        # Run inference
+        context.execute_async_v2(bindings=bindings, stream_handle=stream.handle)
+
+        # Copy output data back to CPU
+        cuda.memcpy_dtoh(outputs[0].host, outputs[0].device)
+
+        return outputs[0].host
+
+    def allocate_buffers(self, context):
+        &quot;&quot;&quot;Allocate input and output buffers for inference&quot;&quot;&quot;
+        inputs = []
+        outputs = []
+        bindings = []
+        stream = cuda.Stream()
+
+        for binding in self.engine:
+            size = trt.volume(self.engine.get_binding_shape(binding))
+            dtype = trt.nptype(self.engine.get_binding_dtype(binding))
+            host_mem = cuda.pagelocked_empty(size, dtype)
+            device_mem = cuda.mem_alloc(host_mem.nbytes)
+            bindings.append(int(device_mem))
+
+            if self.engine.binding_is_input(binding):
+                inputs.append({&#x27;host&#x27;: host_mem, &#x27;device&#x27;: device_mem})
+            else:
+                outputs.append({&#x27;host&#x27;: host_mem, &#x27;device&#x27;: device_mem})
+
+        return inputs, outputs, bindings, stream
+
+def optimize_vla_models():
+    &quot;&quot;&quot;Optimize VLA pipeline models for Jetson deployment&quot;&quot;&quot;
+    optimizer = TensorRTOptimizer()
+
+    # Optimize vision model (e.g., GroundingDINO)
+    # Note: This is a conceptual example - actual implementation would depend on specific model
+    print(&quot;Optimizing vision model...&quot;)
+    # optimizer.optimize_pytorch_model(vision_model, [1, 3, 640, 640], &quot;vision.onnx&quot;, &quot;vision.trt&quot;)
+
+    # Optimize language model (e.g., small language model for edge deployment)
+    print(&quot;Optimizing language model...&quot;)
+    # optimizer.optimize_pytorch_model(lang_model, [1, 512], &quot;language.onnx&quot;, &quot;language.trt&quot;)
+
+    print(&quot;Model optimization completed&quot;)
+
+if __name__ == &quot;__main__&quot;:
+    optimize_vla_models()
+</code></pre>
+<h3 id="quantization-for-performance">Quantization for Performance</h3>
+<p>Implement quantization to improve inference speed:</p>
+<pre><code class="language-python"># quantization_optimizer.py
+import torch
+import torch.quantization
+from torch.quantization import QuantStub, DeQuantStub
+
+class QuantizedVLA(torch.nn.Module):
+    def __init__(self, original_model):
+        super(QuantizedVLA, self).__init__()
+        self.quant = QuantStub()
+        self.model = original_model
+        self.dequant = DeQuantStub()
+
+    def forward(self, x):
+        x = self.quant(x)
+        x = self.model(x)
+        x = self.dequant(x)
+        return x
+
+def quantize_model(model, sample_data):
+    &quot;&quot;&quot;Quantize model for improved performance on Jetson&quot;&quot;&quot;
+    # Set model to evaluation mode
+    model.eval()
+
+    # Fuse operations for better quantization
+    model = torch.quantization.fuse_modules(model, [
+        [&#x27;conv1&#x27;, &#x27;bn1&#x27;, &#x27;relu1&#x27;],
+        [&#x27;conv2&#x27;, &#x27;bn2&#x27;, &#x27;relu2&#x27;],
+        # Add more fusion patterns as needed
+    ])
+
+    # Prepare model for quantization
+    model.qconfig = torch.quantization.get_default_qconfig(&#x27;fbgemm&#x27;)
+    torch.quantization.prepare(model, inplace=True)
+
+    # Calibrate with sample data
+    with torch.no_grad():
+        for data in sample_data:
+            model(data)
+
+    # Convert to quantized model
+    torch.quantization.convert(model, inplace=True)
+
+    return model
+
+def optimize_for_jetson(model_path, output_path, input_shape):
+    &quot;&quot;&quot;Complete optimization pipeline for Jetson deployment&quot;&quot;&quot;
+    # Load original model
+    model = torch.jit.load(model_path)
+    model.eval()
+
+    # Create sample data for calibration
+    sample_data = [torch.randn(input_shape) for _ in range(100)]
+
+    # Quantize model
+    quantized_model = quantize_model(model, sample_data)
+
+    # Save quantized model
+    torch.jit.save(quantized_model, output_path)
+    print(f&quot;Quantized model saved to {output_path}&quot;)
+
+    return quantized_model
+</code></pre>
+<h2 id="ros-2-integration-on-jetson">ROS 2 Integration on Jetson</h2>
+<h3 id="setting-up-ros-2-humble-on-jetson">Setting up ROS 2 Humble on Jetson</h3>
+<pre><code class="language-bash"># Install ROS 2 Humble Hawksbill
+sudo apt update
+sudo apt install software-properties-common
+sudo add-apt-repository universe
+
+# Add ROS 2 GPG key and repository
+sudo apt update &amp;&amp; sudo apt install curl gnupg lsb-release
+curl -sSL https://raw.githubusercontent.com/ros/rosdistro/master/ros.key -o /usr/share/keyrings/ros-archive-keyring.gpg
+
+echo &quot;deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/ros-archive-keyring.gpg] http://packages.ros.org/ros2/ubuntu $(source /etc/os-release &amp;&amp; echo $UBUNTU_CODENAME) main&quot; | sudo tee /etc/apt/sources.list.d/ros2.list &gt; /dev/null
+
+sudo apt update
+sudo apt install ros-humble-ros-base
+sudo apt install ros-humble-cv-bridge ros-humble-tf2-tools ros-humble-tf2-geometry-msgs
+sudo apt install ros-humble-navigation2 ros-humble-nav2-bringup
+sudo apt install ros-humble-moveit ros-humble-moveit-ros ros-humble-moveit-planners
+sudo apt install ros-humble-isaac-ros-*  # Isaac ROS packages
+
+# Source ROS 2 setup
+echo &quot;source /opt/ros/humble/setup.bash&quot; &gt;&gt; ~/.bashrc
+source ~/.bashrc
+</code></pre>
+<h3 id="jetson-optimized-ros-2-launch-files">Jetson-Optimized ROS 2 Launch Files</h3>
+<p>Create launch files optimized for Jetson&#x27;s computational constraints:</p>
+<pre><code class="language-python"># launch/humanoid_vla_jetson.launch.py
+from launch import LaunchDescription
+from launch.actions import DeclareLaunchArgument, SetEnvironmentVariable
+from launch.substitutions import LaunchConfiguration
+from launch_ros.actions import Node
+import os
+
+def generate_launch_description():
+    # Launch configuration variables
+    use_sim_time = LaunchConfiguration(&#x27;use_sim_time&#x27;, default=&#x27;false&#x27;)
+    camera_topic = LaunchConfiguration(&#x27;camera_topic&#x27;, default=&#x27;/camera/image_raw&#x27;)
+    detection_confidence = LaunchConfiguration(&#x27;detection_confidence&#x27;, default=&#x27;0.5&#x27;)
+
+    # Set environment variables for Jetson optimization
+    os.environ[&#x27;CUDA_VISIBLE_DEVICES&#x27;] = &#x27;0&#x27;
+    os.environ[&#x27;OMP_NUM_THREADS&#x27;] = &#x27;4&#x27;  # Adjust based on Jetson CPU cores
+
+    # Perception node (optimized for Jetson)
+    perception_node = Node(
+        package=&#x27;humanoid_vla_perception&#x27;,
+        executable=&#x27;perception_node_jetson&#x27;,
+        name=&#x27;perception_node&#x27;,
+        parameters=[
+            {&#x27;use_sim_time&#x27;: use_sim_time},
+            {&#x27;detection_confidence&#x27;: detection_confidence},
+            {&#x27;model_path&#x27;: &#x27;/workspace/models/optimized_model.trt&#x27;},  # TensorRT model
+            {&#x27;input_size&#x27;: [640, 640]},  # Reduced input size for performance
+            {&#x27;max_batch_size&#x27;: 1},  # Single batch for real-time processing
+        ],
+        remappings=[
+            (&#x27;/camera/image_raw&#x27;, camera_topic),
+            (&#x27;/object_detections&#x27;, &#x27;/vla/perception/detections&#x27;),
+        ],
+        # Set CPU affinity for real-time performance
+        additional_env={
+            &#x27;CUDA_VISIBLE_DEVICES&#x27;: &#x27;0&#x27;,
+            &#x27;OMP_NUM_THREADS&#x27;: &#x27;4&#x27;,
+        },
+        # Limit memory usage
+        mem_target=&#x27;4.0GiB&#x27;,
+        # Limit CPU usage if needed
+        cpu_quota=&#x27;800000&#x27;,  # 80% of one CPU
+        output=&#x27;screen&#x27;
+    )
+
+    # Language processing node
+    language_node = Node(
+        package=&#x27;humanoid_vla_language&#x27;,
+        executable=&#x27;language_processor_jetson&#x27;,
+        name=&#x27;language_processor&#x27;,
+        parameters=[
+            {&#x27;use_sim_time&#x27;: use_sim_time},
+            {&#x27;model_path&#x27;: &#x27;/workspace/models/quantized_language_model.pt&#x27;},
+            {&#x27;max_tokens&#x27;: 128},  # Limit for edge deployment
+        ],
+        remappings=[
+            (&#x27;/user_command&#x27;, &#x27;/vla/language/user_command&#x27;),
+            (&#x27;/parsed_command&#x27;, &#x27;/vla/language/parsed_command&#x27;),
+        ],
+        output=&#x27;screen&#x27;
+    )
+
+    # Action planning node
+    planning_node = Node(
+        package=&#x27;humanoid_vla_planning&#x27;,
+        executable=&#x27;action_planner_jetson&#x27;,
+        name=&#x27;action_planner&#x27;,
+        parameters=[
+            {&#x27;use_sim_time&#x27;: use_sim_time},
+            {&#x27;planning_timeout&#x27;: 10.0},  # Reduced timeout for real-time
+            {&#x27;max_plan_steps&#x27;: 50},  # Limit plan complexity
+        ],
+        remappings=[
+            (&#x27;/vla/language/parsed_command&#x27;, &#x27;/vla/planning/parsed_command&#x27;),
+            (&#x27;/vla/planning/action_plan&#x27;, &#x27;/vla/execution/action_plan&#x27;),
+        ],
+        output=&#x27;screen&#x27;
+    )
+
+    # Execution node
+    execution_node = Node(
+        package=&#x27;humanoid_vla_execution&#x27;,
+        executable=&#x27;execution_manager_jetson&#x27;,
+        name=&#x27;execution_manager&#x27;,
+        parameters=[
+            {&#x27;use_sim_time&#x27;: use_sim_time},
+            {&#x27;execution_timeout&#x27;: 30.0},
+            {&#x27;safety_check_interval&#x27;: 0.1},  # 100ms safety checks
+        ],
+        remappings=[
+            (&#x27;/vla/planning/action_plan&#x27;, &#x27;/vla/execution/action_plan&#x27;),
+            (&#x27;/robot_commands&#x27;, &#x27;/vla/execution/robot_commands&#x27;),
+        ],
+        output=&#x27;screen&#x27;
+    )
+
+    # Performance monitoring node
+    monitor_node = Node(
+        package=&#x27;humanoid_vla_monitoring&#x27;,
+        executable=&#x27;performance_monitor_jetson&#x27;,
+        name=&#x27;performance_monitor&#x27;,
+        parameters=[
+            {&#x27;use_sim_time&#x27;: use_sim_time},
+            {&#x27;monitor_interval&#x27;: 1.0},
+            {&#x27;gpu_monitoring&#x27;: True},
+        ],
+        output=&#x27;screen&#x27;
+    )
+
+    # Create launch description
+    ld = LaunchDescription()
+
+    # Add nodes
+    ld.add_action(perception_node)
+    ld.add_action(language_node)
+    ld.add_action(planning_node)
+    ld.add_action(execution_node)
+    ld.add_action(monitor_node)
+
+    return ld
+</code></pre>
+<h2 id="performance-monitoring-and-optimization">Performance Monitoring and Optimization</h2>
+<h3 id="jetson-performance-monitoring">Jetson Performance Monitoring</h3>
+<p>Monitor performance metrics for optimization:</p>
+<pre><code class="language-python"># jetson_monitor.py
+import subprocess
+import json
+import time
+import threading
+import rospy
+from std_msgs.msg import String
+
+class JetsonPerformanceMonitor:
+    def __init__(self):
+        self.monitoring_active = True
+        self.metrics = {}
+
+        # ROS publishers
+        self.gpu_pub = rospy.Publisher(&#x27;/jetson/gpu_stats&#x27;, String, queue_size=10)
+        self.cpu_pub = rospy.Publisher(&#x27;/jetson/cpu_stats&#x27;, String, queue_size=10)
+        self.memory_pub = rospy.Publisher(&#x27;/jetson/memory_stats&#x27;, String, queue_size=10)
+        self.temperature_pub = rospy.Publisher(&#x27;/jetson/temperature&#x27;, String, queue_size=10)
+
+    def get_jetson_stats(self):
+        &quot;&quot;&quot;Get comprehensive Jetson system statistics&quot;&quot;&quot;
+        stats = {}
+
+        # GPU utilization
+        try:
+            result = subprocess.run([&#x27;nvidia-smi&#x27;, &#x27;--query-gpu=utilization.gpu,memory.used,memory.total&#x27;, &#x27;--format=csv,noheader,nounits&#x27;],
+                                  capture_output=True, text=True)
+            if result.returncode == 0:
+                gpu_data = result.stdout.strip().split(&#x27;, &#x27;)
+                stats[&#x27;gpu_util&#x27;] = int(gpu_data[0])
+                stats[&#x27;gpu_memory_used&#x27;] = int(gpu_data[1])
+                stats[&#x27;gpu_memory_total&#x27;] = int(gpu_data[2])
+        except:
+            stats[&#x27;gpu_util&#x27;] = 0
+            stats[&#x27;gpu_memory_used&#x27;] = 0
+            stats[&#x27;gpu_memory_total&#x27;] = 0
+
+        # CPU utilization
+        try:
+            result = subprocess.run([&#x27;top&#x27;, &#x27;-bn1&#x27;, &#x27;-p1&#x27;, &#x27;-p2&#x27;], capture_output=True, text=True)
+            # Parse CPU usage from top output
+            lines = result.stdout.split(&#x27;\n&#x27;)
+            for line in lines:
+                if &#x27;Cpu(s)&#x27; in line:
+                    cpu_percent = line.split(&#x27;,&#x27;)[0].split(&#x27;:&#x27;)[1].strip()
+                    stats[&#x27;cpu_util&#x27;] = float(cpu_percent.replace(&#x27;%us&#x27;, &#x27;&#x27;).replace(&#x27;%&#x27;, &#x27;&#x27;))
+                    break
+        except:
+            stats[&#x27;cpu_util&#x27;] = 0
+
+        # Memory usage
+        try:
+            result = subprocess.run([&#x27;free&#x27;, &#x27;-m&#x27;], capture_output=True, text=True)
+            lines = result.stdout.split(&#x27;\n&#x27;)
+            memory_line = lines[1].split()
+            stats[&#x27;memory_used&#x27;] = int(memory_line[2])
+            stats[&#x27;memory_total&#x27;] = int(memory_line[1])
+            stats[&#x27;memory_percent&#x27;] = (stats[&#x27;memory_used&#x27;] / stats[&#x27;memory_total&#x27;]) * 100
+        except:
+            stats[&#x27;memory_used&#x27;] = 0
+            stats[&#x27;memory_total&#x27;] = 1
+            stats[&#x27;memory_percent&#x27;] = 0
+
+        # Temperature
+        try:
+            result = subprocess.run([&#x27;cat&#x27;, &#x27;/sys/class/thermal/thermal_zone0/temp&#x27;], capture_output=True, text=True)
+            temp = int(result.stdout.strip()) / 1000.0  # Convert from millidegrees to degrees
+            stats[&#x27;temperature&#x27;] = temp
+        except:
+            stats[&#x27;temperature&#x27;] = 0
+
+        # Power consumption
+        try:
+            result = subprocess.run([&#x27;cat&#x27;, &#x27;/sys/bus/i2c/drivers/ina3221/0-0040/iio:device0/in_power0_input&#x27;],
+                                  capture_output=True, text=True)
+            power = float(result.stdout.strip()) / 1000.0  # Convert to watts
+            stats[&#x27;power_consumption&#x27;] = power
+        except:
+            stats[&#x27;power_consumption&#x27;] = 0
+
+        return stats
+
+    def publish_metrics(self):
+        &quot;&quot;&quot;Publish performance metrics via ROS&quot;&quot;&quot;
+        stats = self.get_jetson_stats()
+
+        # Publish GPU stats
+        gpu_msg = String()
+        gpu_msg.data = json.dumps({
+            &#x27;timestamp&#x27;: time.time(),
+            &#x27;utilization&#x27;: stats.get(&#x27;gpu_util&#x27;, 0),
+            &#x27;memory_used&#x27;: stats.get(&#x27;gpu_memory_used&#x27;, 0),
+            &#x27;memory_total&#x27;: stats.get(&#x27;gpu_memory_total&#x27;, 1),
+            &#x27;memory_percent&#x27;: (stats.get(&#x27;gpu_memory_used&#x27;, 0) / max(stats.get(&#x27;gpu_memory_total&#x27;, 1), 1)) * 100
+        })
+        self.gpu_pub.publish(gpu_msg)
+
+        # Publish CPU stats
+        cpu_msg = String()
+        cpu_msg.data = json.dumps({
+            &#x27;timestamp&#x27;: time.time(),
+            &#x27;utilization&#x27;: stats.get(&#x27;cpu_util&#x27;, 0),
+            &#x27;temperature&#x27;: stats.get(&#x27;temperature&#x27;, 0)
+        })
+        self.cpu_pub.publish(cpu_msg)
+
+        # Publish memory stats
+        memory_msg = String()
+        memory_msg.data = json.dumps({
+            &#x27;timestamp&#x27;: time.time(),
+            &#x27;used&#x27;: stats.get(&#x27;memory_used&#x27;, 0),
+            &#x27;total&#x27;: stats.get(&#x27;memory_total&#x27;, 1),
+            &#x27;percent&#x27;: stats.get(&#x27;memory_percent&#x27;, 0)
+        })
+        self.memory_pub.publish(memory_msg)
+
+        # Publish temperature
+        temp_msg = String()
+        temp_msg.data = json.dumps({
+            &#x27;timestamp&#x27;: time.time(),
+            &#x27;temperature&#x27;: stats.get(&#x27;temperature&#x27;, 0),
+            &#x27;power_consumption&#x27;: stats.get(&#x27;power_consumption&#x27;, 0)
+        })
+        self.temperature_pub.publish(temp_msg)
+
+    def start_monitoring(self):
+        &quot;&quot;&quot;Start continuous monitoring&quot;&quot;&quot;
+        rate = rospy.Rate(1)  # 1 Hz monitoring
+
+        while self.monitoring_active and not rospy.is_shutdown():
+            try:
+                self.publish_metrics()
+            except Exception as e:
+                rospy.logerr(f&quot;Error in performance monitoring: {e}&quot;)
+
+            rate.sleep()
+
+    def stop_monitoring(self):
+        &quot;&quot;&quot;Stop monitoring&quot;&quot;&quot;
+        self.monitoring_active = False
+
+def main():
+    rospy.init_node(&#x27;jetson_performance_monitor&#x27;)
+    monitor = JetsonPerformanceMonitor()
+
+    try:
+        monitor.start_monitoring()
+    except rospy.ROSInterruptException:
+        rospy.loginfo(&quot;Performance monitor interrupted&quot;)
+    except KeyboardInterrupt:
+        rospy.loginfo(&quot;Performance monitor stopped by user&quot;)
+
+if __name__ == &quot;__main__&quot;:
+    main()
+</code></pre>
+<h3 id="adaptive-resource-management">Adaptive Resource Management</h3>
+<p>Implement adaptive resource management based on performance metrics:</p>
+<pre><code class="language-python"># adaptive_resource_manager.py
+import rospy
+import threading
+from std_msgs.msg import String
+import json
+
+class AdaptiveResourceManager:
+    def __init__(self):
+        # Subscribers for performance metrics
+        self.gpu_sub = rospy.Subscriber(&#x27;/jetson/gpu_stats&#x27;, String, self.gpu_callback)
+        self.cpu_sub = rospy.Subscriber(&#x27;/jetson/cpu_stats&#x27;, String, self.cpu_callback)
+        self.memory_sub = rospy.Subscriber(&#x27;/jetson/memory_stats&#x27;, String, self.memory_callback)
+
+        # Publishers for resource commands
+        self.resource_cmd_pub = rospy.Publisher(&#x27;/resource_manager/commands&#x27;, String, queue_size=10)
+
+        # Current system state
+        self.gpu_stats = {}
+        self.cpu_stats = {}
+        self.memory_stats = {}
+
+        # Resource thresholds
+        self.thresholds = {
+            &#x27;gpu_util_high&#x27;: 85,   # % GPU utilization
+            &#x27;cpu_util_high&#x27;: 80,   # % CPU utilization
+            &#x27;memory_high&#x27;: 85,     # % memory usage
+            &#x27;temperature_high&#x27;: 75 # °C
+        }
+
+        # Adaptive parameters
+        self.current_quality = 1.0  # 1.0 = full quality, 0.5 = half quality
+        self.quality_adjustment_lock = threading.Lock()
+
+    def gpu_callback(self, msg):
+        &quot;&quot;&quot;Handle GPU statistics&quot;&quot;&quot;
+        try:
+            self.gpu_stats = json.loads(msg.data)
+            self.evaluate_resource_usage()
+        except Exception as e:
+            rospy.logerr(f&quot;Error processing GPU stats: {e}&quot;)
+
+    def cpu_callback(self, msg):
+        &quot;&quot;&quot;Handle CPU statistics&quot;&quot;&quot;
+        try:
+            self.cpu_stats = json.loads(msg.data)
+            self.evaluate_resource_usage()
+        except Exception as e:
+            rospy.logerr(f&quot;Error processing CPU stats: {e}&quot;)
+
+    def memory_callback(self, msg):
+        &quot;&quot;&quot;Handle memory statistics&quot;&quot;&quot;
+        try:
+            self.memory_stats = json.loads(msg.data)
+            self.evaluate_resource_usage()
+        except Exception as e:
+            rospy.logerr(f&quot;Error processing memory stats: {e}&quot;)
+
+    def evaluate_resource_usage(self):
+        &quot;&quot;&quot;Evaluate current resource usage and adjust accordingly&quot;&quot;&quot;
+        # Check if we have all necessary stats
+        if not all([self.gpu_stats, self.cpu_stats, self.memory_stats]):
+            return
+
+        # Calculate resource pressure
+        gpu_pressure = self.gpu_stats.get(&#x27;utilization&#x27;, 0) / self.thresholds[&#x27;gpu_util_high&#x27;]
+        cpu_pressure = self.cpu_stats.get(&#x27;utilization&#x27;, 0) / self.thresholds[&#x27;cpu_util_high&#x27;]
+        memory_pressure = self.memory_stats.get(&#x27;percent&#x27;, 0) / self.thresholds[&#x27;memory_high&#x27;]
+
+        # Overall pressure is maximum of individual pressures
+        pressure = max(gpu_pressure, cpu_pressure, memory_pressure)
+
+        # Adjust quality based on pressure
+        with self.quality_adjustment_lock:
+            if pressure &gt; 1.0:
+                # High pressure - reduce quality
+                self.current_quality = max(0.3, self.current_quality * 0.95)
+                self.publish_resource_command(&#x27;reduce_quality&#x27;, self.current_quality)
+            elif pressure &lt; 0.6:
+                # Low pressure - increase quality
+                self.current_quality = min(1.0, self.current_quality * 1.02)
+                self.publish_resource_command(&#x27;increase_quality&#x27;, self.current_quality)
+
+        rospy.loginfo(f&quot;Resource pressure: {pressure:.2f}, Quality: {self.current_quality:.2f}&quot;)
+
+    def publish_resource_command(self, command_type, value):
+        &quot;&quot;&quot;Publish resource management command&quot;&quot;&quot;
+        cmd_msg = String()
+        cmd_msg.data = json.dumps({
+            &#x27;command&#x27;: command_type,
+            &#x27;value&#x27;: value,
+            &#x27;timestamp&#x27;: rospy.Time.now().to_sec()
+        })
+        self.resource_cmd_pub.publish(cmd_msg)
+
+    def get_current_quality_setting(self):
+        &quot;&quot;&quot;Get current quality setting&quot;&quot;&quot;
+        with self.quality_adjustment_lock:
+            return self.current_quality
+
+    def adjust_pipeline_for_quality(self, quality_level):
+        &quot;&quot;&quot;Adjust VLA pipeline parameters based on quality level&quot;&quot;&quot;
+        # This would adjust various pipeline parameters:
+        # - Input resolution
+        # - Model complexity
+        # - Processing frequency
+        # - Number of tracked objects
+        pass
+
+def main():
+    rospy.init_node(&#x27;adaptive_resource_manager&#x27;)
+    manager = AdaptiveResourceManager()
+
+    rospy.spin()
+
+if __name__ == &quot;__main__&quot;:
+    main()
+</code></pre>
+<h2 id="deployment-best-practices">Deployment Best Practices</h2>
+<h3 id="containerized-deployment-strategy">Containerized Deployment Strategy</h3>
+<pre><code class="language-yaml"># docker-compose.prod.yml for production deployment
+version: &#x27;3.8&#x27;
+
+services:
+  vla_perception:
+    image: humanoid-vla/perception:jetson-optimized
+    runtime: nvidia
+    environment:
+      - NVIDIA_VISIBLE_DEVICES=all
+      - NVIDIA_DRIVER_CAPABILITIES=compute,utility
+      - PERCEPTION_QUALITY=${PERCEPTION_QUALITY:-1.0}
+    volumes:
+      - /tmp:/tmp
+      - ./models:/workspace/models:ro
+      - ./logs:/workspace/logs
+    devices:
+      - /dev/video0:/dev/video0
+    deploy:
+      resources:
+        limits:
+          memory: 3G
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]
+    command: [&quot;bash&quot;, &quot;-c&quot;, &quot;source /opt/ros/humble/setup.bash &amp;&amp; ros2 launch perception_pipeline perception_jetson.launch.py&quot;]
+    restart: unless-stopped
+    healthcheck:
+      test: [&quot;CMD&quot;, &quot;python3&quot;, &quot;-c&quot;, &quot;import rospy; rospy.init_node(&#x27;health_check&#x27;); print(&#x27;Healthy&#x27;)&quot;]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  vla_language:
+    image: humanoid-vla/language:jetson-optimized
+    runtime: nvidia
+    environment:
+      - NVIDIA_VISIBLE_DEVICES=all
+      - NVIDIA_DRIVER_CAPABILITIES=compute,utility
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+      - LANGUAGE_QUALITY=${LANGUAGE_QUALITY:-1.0}
+    volumes:
+      - ./models:/workspace/models:ro
+      - ./logs:/workspace/logs
+    deploy:
+      resources:
+        limits:
+          memory: 2G
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]
+    command: [&quot;bash&quot;, &quot;-c&quot;, &quot;source /opt/ros/humble/setup.bash &amp;&amp; python3 language_processor.py&quot;]
+    restart: unless-stopped
+
+  vla_planning:
+    image: humanoid-vla/planning:jetson-optimized
+    runtime: nvidia
+    environment:
+      - NVIDIA_VISIBLE_DEVICES=all
+      - NVIDIA_DRIVER_CAPABILITIES=compute,utility
+      - PLANNING_QUALITY=${PLANNING_QUALITY:-1.0}
+    volumes:
+      - ./config:/workspace/config:ro
+      - ./logs:/workspace/logs
+    depends_on:
+      - vla_perception
+      - vla_language
+    command: [&quot;bash&quot;, &quot;-c&quot;, &quot;source /opt/ros/humble/setup.bash &amp;&amp; ros2 run action_planner planner_node&quot;]
+    restart: unless-stopped
+
+  vla_control:
+    image: humanoid-vla/control:jetson-optimized
+    runtime: nvidia
+    environment:
+      - NVIDIA_VISIBLE_DEVICES=all
+      - NVIDIA_DRIVER_CAPABILITIES=compute,utility
+    devices:
+      - /dev/ttyACM0:/dev/ttyACM0
+    depends_on:
+      - vla_planning
+    command: [&quot;bash&quot;, &quot;-c&quot;, &quot;source /opt/ros/humble/setup.bash &amp;&amp; ros2 launch robot_control control_jetson.launch.py&quot;]
+    restart: unless-stopped
+
+  monitoring:
+    image: humanoid-vla/monitoring:jetson-optimized
+    runtime: nvidia
+    environment:
+      - NVIDIA_VISIBLE_DEVICES=all
+      - NVIDIA_DRIVER_CAPABILITIES=all
+    volumes:
+      - ./logs:/workspace/logs
+    network_mode: host
+    command: [&quot;python3&quot;, &quot;monitoring_node.py&quot;]
+    restart: unless-stopped
+</code></pre>
+<h3 id="production-deployment-scripts">Production Deployment Scripts</h3>
+<pre><code class="language-bash">#!/bin/bash
+# deploy_jetson.sh - Production deployment script for Jetson-based humanoid robots
+
+set -e  # Exit on any error
+
+echo &quot;Starting Jetson deployment for humanoid robot...&quot;
+
+# Check if running on Jetson
+if ! [ -f /etc/nv_tegra_release ]; then
+    echo &quot;Error: This script should run on a Jetson device&quot;
+    exit 1
+fi
+
+# Check for NVIDIA GPU
+if ! nvidia-smi &gt; /dev/null 2&gt;&amp;1; then
+    echo &quot;Error: NVIDIA GPU not detected&quot;
+    exit 1
+fi
+
+# Set up environment
+export DEBIAN_FRONTEND=noninteractive
+
+# Configure power mode for optimal performance
+echo &quot;Configuring Jetson power mode...&quot;
+sudo nvpmodel -m 0  # MAX performance mode
+sudo jetson_clocks  # Lock clocks for consistent performance
+
+# Set up swap space if needed (for memory-intensive operations)
+echo &quot;Setting up swap space...&quot;
+if [ ! -f /var/swap ]; then
+    sudo fallocate -l 4G /var/swap
+    sudo chmod 600 /var/swap
+    sudo mkswap /var/swap
+    sudo swapon /var/swap
+    echo &quot;/var/swap none swap sw 0 0&quot; | sudo tee -a /etc/fstab
+fi
+
+# Set up persistent environment variables
+echo &quot;Setting up environment...&quot;
+cat &lt;&lt; &#x27;EOF&#x27; | sudo tee -a /etc/environment
+CUDA_HOME=/usr/local/cuda
+NVIDIA_VISIBLE_DEVICES=all
+NVIDIA_DRIVER_CAPABILITIES=compute,utility
+ROS_DOMAIN_ID=42
+EOF
+
+# Source environment
+source /etc/environment
+
+# Build and deploy containers
+echo &quot;Building and deploying containers...&quot;
+if [ -f &quot;docker-compose.prod.yml&quot; ]; then
+    docker-compose -f docker-compose.prod.yml build
+    docker-compose -f docker-compose.prod.yml up -d
+else
+    echo &quot;No docker-compose.prod.yml found, building individual containers...&quot;
+    docker build -t humanoid-vla/perception:jetson-optimized -f Dockerfile.perception .
+    docker build -t humanoid-vla/language:jetson-optimized -f Dockerfile.language .
+    docker build -t humanoid-vla/planning:jetson-optimized -f Dockerfile.planning .
+    docker build -t humanoid-vla/control:jetson-optimized -f Dockerfile.control .
+    docker build -t humanoid-vla/monitoring:jetson-optimized -f Dockerfile.monitoring .
+fi
+
+# Set up auto-start on boot
+echo &quot;Setting up auto-start...&quot;
+cat &lt;&lt; &#x27;EOF&#x27; | sudo tee /etc/systemd/system/humanoid-vla.service
+[Unit]
+Description=Humanoid VLA Service
+After=docker.service
+Requires=docker.service
+
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+ExecStart=/usr/bin/docker-compose -f /path/to/docker-compose.prod.yml up -d
+ExecStop=/usr/bin/docker-compose -f /path/to/docker-compose.prod.yml down
+WorkingDirectory=/path/to/deployment
+
+[Install]
+WantedBy=multi-user.target
+EOF
+
+sudo systemctl daemon-reload
+sudo systemctl enable humanoid-vla.service
+
+# Set up log rotation
+echo &quot;Setting up log rotation...&quot;
+cat &lt;&lt; &#x27;EOF&#x27; | sudo tee /etc/logrotate.d/humanoid-vla
+/var/log/humanoid/*.log {
+    daily
+    missingok
+    rotate 30
+    compress
+    delaycompress
+    notifempty
+    create 644 root root
+}
+EOF
+
+# Performance tuning
+echo &quot;Applying performance tuning...&quot;
+# Set CPU governor to performance
+echo performance | sudo tee /sys/devices/system/cpu/cpu*/cpufreq/scaling_governor
+
+# Set up monitoring
+echo &quot;Setting up monitoring...&quot;
+# This would start system monitoring services
+sudo systemctl enable nvstats 2&gt;/dev/null || echo &quot;nvstats not available&quot;
+
+echo &quot;Jetson deployment completed successfully!&quot;
+echo &quot;Service status:&quot;
+systemctl status humanoid-vla.service
+
+echo &quot;Current container status:&quot;
+docker-compose -f docker-compose.prod.yml ps
+</code></pre>
+<h2 id="troubleshooting-and-maintenance">Troubleshooting and Maintenance</h2>
+<h3 id="common-jetson-issues-and-solutions">Common Jetson Issues and Solutions</h3>
+<pre><code class="language-python"># jetson_troubleshooter.py
+import subprocess
+import rospy
+from std_msgs.msg import String
+
+class JetsonTroubleshooter:
+    def __init__(self):
+        self.troubleshooting_pub = rospy.Publisher(&#x27;/jetson/troubleshooting&#x27;, String, queue_size=10)
+
+    def run_diagnostics(self):
+        &quot;&quot;&quot;Run comprehensive diagnostics on Jetson system&quot;&quot;&quot;
+        diagnostics = {}
+
+        # Check basic system health
+        diagnostics[&#x27;system_health&#x27;] = self.check_system_health()
+
+        # Check GPU functionality
+        diagnostics[&#x27;gpu_health&#x27;] = self.check_gpu_health()
+
+        # Check thermal status
+        diagnostics[&#x27;thermal_status&#x27;] = self.check_thermal_status()
+
+        # Check memory status
+        diagnostics[&#x27;memory_status&#x27;] = self.check_memory_status()
+
+        # Check power status
+        diagnostics[&#x27;power_status&#x27;] = self.check_power_status()
+
+        return diagnostics
+
+    def check_system_health(self):
+        &quot;&quot;&quot;Check basic system health&quot;&quot;&quot;
+        health = {&#x27;status&#x27;: &#x27;ok&#x27;, &#x27;issues&#x27;: []}
+
+        try:
+            # Check disk space
+            result = subprocess.run([&#x27;df&#x27;, &#x27;-h&#x27;], capture_output=True, text=True)
+            for line in result.stdout.split(&#x27;\n&#x27;):
+                if &#x27;/dev/mmcblk0p1&#x27; in line or &#x27;/dev/nvme0n1p1&#x27; in line:  # Common Jetson disks
+                    parts = line.split()
+                    if len(parts) &gt;= 5:
+                        usage = int(parts[4].replace(&#x27;%&#x27;, &#x27;&#x27;))
+                        if usage &gt; 90:
+                            health[&#x27;status&#x27;] = &#x27;warning&#x27;
+                            health[&#x27;issues&#x27;].append(f&quot;Disk usage high: {usage}%&quot;)
+
+            # Check system load
+            with open(&#x27;/proc/loadavg&#x27;, &#x27;r&#x27;) as f:
+                load_avg = f.read().strip().split()[0]
+                load = float(load_avg)
+                if load &gt; 4.0:  # High load threshold
+                    health[&#x27;status&#x27;] = &#x27;warning&#x27;
+                    health[&#x27;issues&#x27;].append(f&quot;High system load: {load}&quot;)
+
+        except Exception as e:
+            health[&#x27;status&#x27;] = &#x27;error&#x27;
+            health[&#x27;issues&#x27;].append(f&quot;System health check failed: {e}&quot;)
+
+        return health
+
+    def check_gpu_health(self):
+        &quot;&quot;&quot;Check GPU functionality&quot;&quot;&quot;
+        health = {&#x27;status&#x27;: &#x27;ok&#x27;, &#x27;issues&#x27;: []}
+
+        try:
+            # Check nvidia-smi
+            result = subprocess.run([&#x27;nvidia-smi&#x27;], capture_output=True, text=True, timeout=10)
+            if result.returncode != 0:
+                health[&#x27;status&#x27;] = &#x27;error&#x27;
+                health[&#x27;issues&#x27;].append(&quot;nvidia-smi failed&quot;)
+                return health
+
+            # Check CUDA functionality
+            import torch
+            if not torch.cuda.is_available():
+                health[&#x27;status&#x27;] = &#x27;error&#x27;
+                health[&#x27;issues&#x27;].append(&quot;CUDA not available&quot;)
+            else:
+                # Test CUDA operations
+                try:
+                    x = torch.randn(100, 100).cuda()
+                    y = torch.randn(100, 100).cuda()
+                    z = torch.mm(x, y)
+                    del x, y, z
+                except Exception as e:
+                    health[&#x27;status&#x27;] = &#x27;error&#x27;
+                    health[&#x27;issues&#x27;].append(f&quot;CUDA operation failed: {e}&quot;)
+
+        except ImportError:
+            health[&#x27;status&#x27;] = &#x27;error&#x27;
+            health[&#x27;issues&#x27;].append(&quot;PyTorch not installed&quot;)
+        except Exception as e:
+            health[&#x27;status&#x27;] = &#x27;error&#x27;
+            health[&#x27;issues&#x27;].append(f&quot;GPU health check failed: {e}&quot;)
+
+        return health
+
+    def check_thermal_status(self):
+        &quot;&quot;&quot;Check thermal status&quot;&quot;&quot;
+        health = {&#x27;status&#x27;: &#x27;ok&#x27;, &#x27;issues&#x27;: [], &#x27;temperature&#x27;: 0}
+
+        try:
+            # Read thermal zones
+            import glob
+            thermal_zones = glob.glob(&#x27;/sys/class/thermal/thermal_zone*/&#x27;)
+
+            for zone in thermal_zones:
+                with open(f&quot;{zone}type&quot;, &#x27;r&#x27;) as f:
+                    zone_type = f.read().strip()
+
+                with open(f&quot;{zone}temp&quot;, &#x27;r&#x27;) as f:
+                    temp = int(f.read().strip()) / 1000.0  # Convert to Celsius
+
+                health[&#x27;temperature&#x27;] = max(health[&#x27;temperature&#x27;], temp)
+
+                if zone_type in [&#x27;CPU&#x27;, &#x27;GPU&#x27;, &#x27;THERMAL_ZONE&#x27;]:
+                    if temp &gt; 85:
+                        health[&#x27;status&#x27;] = &#x27;critical&#x27;
+                        health[&#x27;issues&#x27;].append(f&quot;Critical temperature: {temp}°C in {zone_type}&quot;)
+                    elif temp &gt; 75:
+                        health[&#x27;status&#x27;] = &#x27;warning&#x27;
+                        health[&#x27;issues&#x27;].append(f&quot;High temperature: {temp}°C in {zone_type}&quot;)
+
+        except Exception as e:
+            health[&#x27;status&#x27;] = &#x27;error&#x27;
+            health[&#x27;issues&#x27;].append(f&quot;Thermal check failed: {e}&quot;)
+
+        return health
+
+    def check_memory_status(self):
+        &quot;&quot;&quot;Check memory status&quot;&quot;&quot;
+        health = {&#x27;status&#x27;: &#x27;ok&#x27;, &#x27;issues&#x27;: [], &#x27;memory_percent&#x27;: 0}
+
+        try:
+            with open(&#x27;/proc/meminfo&#x27;, &#x27;r&#x27;) as f:
+                meminfo = f.read()
+
+            lines = meminfo.split(&#x27;\n&#x27;)
+            mem_total = mem_free = 0
+
+            for line in lines:
+                if line.startswith(&#x27;MemTotal:&#x27;):
+                    mem_total = int(line.split()[1])  # KB
+                elif line.startswith(&#x27;MemAvailable:&#x27;):
+                    mem_free = int(line.split()[1])  # KB
+
+            if mem_total &gt; 0:
+                mem_used = mem_total - mem_free
+                mem_percent = (mem_used / mem_total) * 100
+                health[&#x27;memory_percent&#x27;] = mem_percent
+
+                if mem_percent &gt; 90:
+                    health[&#x27;status&#x27;] = &#x27;critical&#x27;
+                    health[&#x27;issues&#x27;].append(f&quot;Memory usage critical: {mem_percent:.1f}%&quot;)
+                elif mem_percent &gt; 80:
+                    health[&#x27;status&#x27;] = &#x27;warning&#x27;
+                    health[&#x27;issues&#x27;].append(f&quot;Memory usage high: {mem_percent:.1f}%&quot;)
+
+        except Exception as e:
+            health[&#x27;status&#x27;] = &#x27;error&#x27;
+            health[&#x27;issues&#x27;].append(f&quot;Memory check failed: {e}&quot;)
+
+        return health
+
+    def check_power_status(self):
+        &quot;&quot;&quot;Check power status&quot;&quot;&quot;
+        health = {&#x27;status&#x27;: &#x27;ok&#x27;, &#x27;issues&#x27;: [], &#x27;power_mw&#x27;: 0}
+
+        try:
+            # Check INA3221 power monitor (common on Jetson boards)
+            ina_paths = [
+                &#x27;/sys/bus/i2c/drivers/ina3221/0-0040/iio:device0/in_power0_input&#x27;,
+                &#x27;/sys/bus/i2c/drivers/ina3221/0-0041/iio:device1/in_power0_input&#x27;,
+                &#x27;/sys/bus/i2c/drivers/ina3221/0-0042/iio:device2/in_power0_input&#x27;
+            ]
+
+            total_power = 0
+            for path in ina_paths:
+                try:
+                    with open(path, &#x27;r&#x27;) as f:
+                        power = int(f.read().strip())
+                        total_power += power
+                except:
+                    continue
+
+            health[&#x27;power_mw&#x27;] = total_power
+
+            # Check power consumption thresholds
+            if total_power &gt; 30000:  # 30W threshold
+                health[&#x27;status&#x27;] = &#x27;warning&#x27;
+                health[&#x27;issues&#x27;].append(f&quot;High power consumption: {total_power/1000:.1f}W&quot;)
+
+        except Exception as e:
+            health[&#x27;status&#x27;] = &#x27;error&#x27;
+            health[&#x27;issues&#x27;].append(f&quot;Power check failed: {e}&quot;)
+
+        return health
+
+    def publish_diagnostics(self):
+        &quot;&quot;&quot;Publish diagnostics via ROS&quot;&quot;&quot;
+        diagnostics = self.run_diagnostics()
+
+        msg = String()
+        msg.data = str(diagnostics)
+        self.troubleshooting_pub.publish(msg)
+
+        return diagnostics
+
+def main():
+    rospy.init_node(&#x27;jetson_troubleshooter&#x27;)
+    troubleshooter = JetsonTroubleshooter()
+
+    rate = rospy.Rate(1)  # Run diagnostics every second
+    while not rospy.is_shutdown():
+        diagnostics = troubleshooter.publish_diagnostics()
+
+        # Log critical issues
+        for component, status in diagnostics.items():
+            if isinstance(status, dict) and status.get(&#x27;status&#x27;) == &#x27;critical&#x27;:
+                rospy.logerr(f&quot;CRITICAL ISSUE in {component}: {status.get(&#x27;issues&#x27;, [])}&quot;)
+
+        rate.sleep()
+
+if __name__ == &quot;__main__&quot;:
+    main()
+</code></pre>
+<h2 id="summary">Summary</h2>
+<p>In this chapter, you&#x27;ve learned:</p>
+<ul>
+<li>The capabilities and specifications of different Jetson platforms (AGX Orin, Xavier NX, Nano)</li>
+<li>How to set up and configure Jetson systems for humanoid robot applications</li>
+<li>Docker and containerization strategies for Jetson deployment</li>
+<li>AI model optimization techniques using TensorRT and quantization</li>
+<li>ROS 2 integration and optimization for Jetson platforms</li>
+<li>Performance monitoring and adaptive resource management</li>
+<li>Production deployment strategies and best practices</li>
+<li>Troubleshooting techniques for Jetson-based systems</li>
+</ul>
+<p>Jetson platforms provide an excellent foundation for deploying AI-powered humanoid robots, offering the right balance of computational power, energy efficiency, and compact form factor needed for mobile robotic applications.</p>
+<h2 id="exercises">Exercises</h2>
+<ol>
+<li>Set up a Jetson AGX Orin development environment</li>
+<li>Deploy a simple AI model using TensorRT optimization</li>
+<li>Create a Docker container for a ROS 2 humanoid robot application</li>
+<li>Implement performance monitoring and adaptive resource management</li>
+<li>Deploy a complete VLA pipeline on a Jetson platform</li>
+</ol>
+<div class="starboard-notebook-container"><div class="starboard-notebook-header"><span class="starboard-notebook-icon">📊</span><span class="starboard-notebook-title">Interactive Notebook</span></div><div class="starboard-notebook-content"><div class="starboard-children-container"><pre><code class="language-python"># This would be an interactive code block for students to experiment with Jetson deployment
+# In a real implementation, this would connect to Jetson system services
+# to test deployment and optimization techniques
+</code></pre></div></div><div class="starboard-notebook-footer"><small>Note: This is a placeholder for interactive Starboard notebooks.</small></div></div></div><footer class="theme-doc-footer docusaurus-mt-lg"><div class="row margin-top--sm theme-doc-footer-edit-meta-row"><div class="col noPrint_WFHX"><a href="https://github.com/facebook/docusaurus/tree/main/packages/create-docusaurus/templates/shared/docs/module-4-vla/04-jetson-deployment.mdx" target="_blank" rel="noopener noreferrer" class="theme-edit-this-page"><svg fill="currentColor" height="20" width="20" viewBox="0 0 40 40" class="iconEdit_Z9Sw" aria-hidden="true"><g><path d="m34.5 11.7l-3 3.1-6.3-6.3 3.1-3q0.5-0.5 1.2-0.5t1.1 0.5l3.9 3.9q0.5 0.4 0.5 1.1t-0.5 1.2z m-29.5 17.1l18.4-18.5 6.3 6.3-18.4 18.4h-6.3v-6.2z"></path></g></svg>Edit this page</a></div><div class="col lastUpdated_JAkA"></div></div></footer></article><nav class="docusaurus-mt-lg pagination-nav" aria-label="Docs pages"><a class="pagination-nav__link pagination-nav__link--prev" href="/physical-ai-textbook/docs/module-4-vla/end-to-end-pipeline"><div class="pagination-nav__sublabel">Previous</div><div class="pagination-nav__label">End-to-End VLA Pipeline</div></a><a class="pagination-nav__link pagination-nav__link--next" href="/physical-ai-textbook/docs/module-4-vla/ai-integration-examples"><div class="pagination-nav__sublabel">Next</div><div class="pagination-nav__label">AI Integration Examples</div></a></nav></div></div><div class="col col--3"><div class="tableOfContents_bqdL thin-scrollbar theme-doc-toc-desktop"><ul class="table-of-contents table-of-contents__left-border"><li><a href="#introduction" class="table-of-contents__link toc-highlight">Introduction</a></li><li><a href="#jetson-platform-overview" class="table-of-contents__link toc-highlight">Jetson Platform Overview</a><ul><li><a href="#jetson-agx-orin" class="table-of-contents__link toc-highlight">Jetson AGX Orin</a></li><li><a href="#jetson-xavier-nx" class="table-of-contents__link toc-highlight">Jetson Xavier NX</a></li><li><a href="#jetson-nano" class="table-of-contents__link toc-highlight">Jetson Nano</a></li></ul></li><li><a href="#jetson-setup-and-configuration" class="table-of-contents__link toc-highlight">Jetson Setup and Configuration</a><ul><li><a href="#initial-setup" class="table-of-contents__link toc-highlight">Initial Setup</a></li><li><a href="#power-mode-configuration" class="table-of-contents__link toc-highlight">Power Mode Configuration</a></li><li><a href="#thermal-management" class="table-of-contents__link toc-highlight">Thermal Management</a></li></ul></li><li><a href="#docker-and-containerization" class="table-of-contents__link toc-highlight">Docker and Containerization</a><ul><li><a href="#setting-up-docker-for-jetson" class="table-of-contents__link toc-highlight">Setting up Docker for Jetson</a></li><li><a href="#jetson-specific-docker-images" class="table-of-contents__link toc-highlight">Jetson-Specific Docker Images</a></li><li><a href="#docker-compose-for-multi-service-deployment" class="table-of-contents__link toc-highlight">Docker Compose for Multi-Service Deployment</a></li></ul></li><li><a href="#ai-model-optimization-for-jetson" class="table-of-contents__link toc-highlight">AI Model Optimization for Jetson</a><ul><li><a href="#tensorrt-optimization" class="table-of-contents__link toc-highlight">TensorRT Optimization</a></li><li><a href="#quantization-for-performance" class="table-of-contents__link toc-highlight">Quantization for Performance</a></li></ul></li><li><a href="#ros-2-integration-on-jetson" class="table-of-contents__link toc-highlight">ROS 2 Integration on Jetson</a><ul><li><a href="#setting-up-ros-2-humble-on-jetson" class="table-of-contents__link toc-highlight">Setting up ROS 2 Humble on Jetson</a></li><li><a href="#jetson-optimized-ros-2-launch-files" class="table-of-contents__link toc-highlight">Jetson-Optimized ROS 2 Launch Files</a></li></ul></li><li><a href="#performance-monitoring-and-optimization" class="table-of-contents__link toc-highlight">Performance Monitoring and Optimization</a><ul><li><a href="#jetson-performance-monitoring" class="table-of-contents__link toc-highlight">Jetson Performance Monitoring</a></li><li><a href="#adaptive-resource-management" class="table-of-contents__link toc-highlight">Adaptive Resource Management</a></li></ul></li><li><a href="#deployment-best-practices" class="table-of-contents__link toc-highlight">Deployment Best Practices</a><ul><li><a href="#containerized-deployment-strategy" class="table-of-contents__link toc-highlight">Containerized Deployment Strategy</a></li><li><a href="#production-deployment-scripts" class="table-of-contents__link toc-highlight">Production Deployment Scripts</a></li></ul></li><li><a href="#troubleshooting-and-maintenance" class="table-of-contents__link toc-highlight">Troubleshooting and Maintenance</a><ul><li><a href="#common-jetson-issues-and-solutions" class="table-of-contents__link toc-highlight">Common Jetson Issues and Solutions</a></li></ul></li><li><a href="#summary" class="table-of-contents__link toc-highlight">Summary</a></li><li><a href="#exercises" class="table-of-contents__link toc-highlight">Exercises</a></li></ul></div></div></div></div></main></div></div></div><footer class="theme-layout-footer footer footer--dark"><div class="container container-fluid"><div class="row footer__links"><div class="theme-layout-footer-column col footer__col"><div class="footer__title">Docs</div><ul class="footer__items clean-list"><li class="footer__item"><a class="footer__link-item" href="/physical-ai-textbook/docs/intro/introduction-to-physical-ai">Textbook</a></li></ul></div><div class="theme-layout-footer-column col footer__col"><div class="footer__title">Community</div><ul class="footer__items clean-list"><li class="footer__item"><a href="https://stackoverflow.com/questions/tagged/docusaurus" target="_blank" rel="noopener noreferrer" class="footer__link-item">Stack Overflow<svg width="13.5" height="13.5" aria-label="(opens in new tab)" class="iconExternalLink_nPIU"><use href="#theme-svg-external-link"></use></svg></a></li><li class="footer__item"><a href="https://discordapp.com/invite/docusaurus" target="_blank" rel="noopener noreferrer" class="footer__link-item">Discord<svg width="13.5" height="13.5" aria-label="(opens in new tab)" class="iconExternalLink_nPIU"><use href="#theme-svg-external-link"></use></svg></a></li><li class="footer__item"><a href="https://twitter.com/docusaurus" target="_blank" rel="noopener noreferrer" class="footer__link-item">Twitter<svg width="13.5" height="13.5" aria-label="(opens in new tab)" class="iconExternalLink_nPIU"><use href="#theme-svg-external-link"></use></svg></a></li></ul></div><div class="theme-layout-footer-column col footer__col"><div class="footer__title">More</div><ul class="footer__items clean-list"><li class="footer__item"><a href="https://github.com/Gulshan-koondhar/physical-ai-textbook" target="_blank" rel="noopener noreferrer" class="footer__link-item">GitHub<svg width="13.5" height="13.5" aria-label="(opens in new tab)" class="iconExternalLink_nPIU"><use href="#theme-svg-external-link"></use></svg></a></li></ul></div></div><div class="footer__bottom text--center"><div class="footer__copyright">Copyright © 2025 My Project, Inc. Built with Docusaurus.</div></div></div></footer></div>
+</body>
+</html>

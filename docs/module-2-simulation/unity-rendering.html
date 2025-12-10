@@ -1,0 +1,960 @@
+<!doctype html>
+<html lang="en" dir="ltr" class="docs-wrapper plugin-docs plugin-id-default docs-version-current docs-doc-page docs-doc-id-module-2-simulation/unity-rendering" data-has-hydrated="false">
+<head>
+<meta charset="UTF-8">
+<meta name="generator" content="Docusaurus v3.9.2">
+<title data-rh="true">Unity Rendering for Humanoid Robotics Simulation | Physical AI &amp; Humanoid Robotics</title><meta data-rh="true" name="viewport" content="width=device-width,initial-scale=1"><meta data-rh="true" name="twitter:card" content="summary_large_image"><meta data-rh="true" property="og:image" content="https://Gulshan-koondhar.github.io/physical-ai-textbook/img/docusaurus-social-card.jpg"><meta data-rh="true" name="twitter:image" content="https://Gulshan-koondhar.github.io/physical-ai-textbook/img/docusaurus-social-card.jpg"><meta data-rh="true" property="og:url" content="https://Gulshan-koondhar.github.io/physical-ai-textbook/docs/module-2-simulation/unity-rendering"><meta data-rh="true" property="og:locale" content="en"><meta data-rh="true" name="docusaurus_locale" content="en"><meta data-rh="true" name="docsearch:language" content="en"><meta data-rh="true" name="docusaurus_version" content="current"><meta data-rh="true" name="docusaurus_tag" content="docs-default-current"><meta data-rh="true" name="docsearch:version" content="current"><meta data-rh="true" name="docsearch:docusaurus_tag" content="docs-default-current"><meta data-rh="true" property="og:title" content="Unity Rendering for Humanoid Robotics Simulation | Physical AI &amp; Humanoid Robotics"><meta data-rh="true" name="description" content="Integrate Unity with ROS 2 for high-quality rendering and visualization of humanoid robots"><meta data-rh="true" property="og:description" content="Integrate Unity with ROS 2 for high-quality rendering and visualization of humanoid robots"><meta data-rh="true" name="keywords" content="Unity,rendering,visualization,humanoid,simulation,ROS 2"><link data-rh="true" rel="icon" href="/physical-ai-textbook/img/favicon.ico"><link data-rh="true" rel="canonical" href="https://Gulshan-koondhar.github.io/physical-ai-textbook/docs/module-2-simulation/unity-rendering"><link data-rh="true" rel="alternate" href="https://Gulshan-koondhar.github.io/physical-ai-textbook/docs/module-2-simulation/unity-rendering" hreflang="en"><link data-rh="true" rel="alternate" href="https://Gulshan-koondhar.github.io/physical-ai-textbook/docs/module-2-simulation/unity-rendering" hreflang="x-default"><script data-rh="true" type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Unity Rendering","item":"https://Gulshan-koondhar.github.io/physical-ai-textbook/docs/module-2-simulation/unity-rendering"}]}</script><link rel="stylesheet" href="/physical-ai-textbook/assets/css/styles.4f99da8f.css">
+<script src="/physical-ai-textbook/assets/js/runtime~main.7cf563d1.js" defer="defer"></script>
+<script src="/physical-ai-textbook/assets/js/main.6dcd1921.js" defer="defer"></script>
+</head>
+<body class="navigation-with-keyboard">
+<svg style="display: none;"><defs>
+<symbol id="theme-svg-external-link" viewBox="0 0 24 24"><path fill="currentColor" d="M21 13v10h-21v-19h12v2h-10v15h17v-8h2zm3-12h-10.988l4.035 4-6.977 7.07 2.828 2.828 6.977-7.07 4.125 4.172v-11z"/></symbol>
+</defs></svg>
+<script>!function(){var t=function(){try{return new URLSearchParams(window.location.search).get("docusaurus-theme")}catch(t){}}()||function(){try{return window.localStorage.getItem("theme")}catch(t){}}();document.documentElement.setAttribute("data-theme",t||"light"),document.documentElement.setAttribute("data-theme-choice",t||"light")}(),function(){try{const c=new URLSearchParams(window.location.search).entries();for(var[t,e]of c)if(t.startsWith("docusaurus-data-")){var a=t.replace("docusaurus-data-","data-");document.documentElement.setAttribute(a,e)}}catch(t){}}()</script><div id="__docusaurus"><div role="region" aria-label="Skip to main content"><a class="skipToContent_fXgn" href="#__docusaurus_skipToContent_fallback">Skip to main content</a></div><nav aria-label="Main" class="theme-layout-navbar navbar navbar--fixed-top"><div class="navbar__inner"><div class="theme-layout-navbar-left navbar__items"><button aria-label="Toggle navigation bar" aria-expanded="false" class="navbar__toggle clean-btn" type="button"><svg width="30" height="30" viewBox="0 0 30 30" aria-hidden="true"><path stroke="currentColor" stroke-linecap="round" stroke-miterlimit="10" stroke-width="2" d="M4 7h22M4 15h22M4 23h22"></path></svg></button><a class="navbar__brand" href="/physical-ai-textbook/"><div class="navbar__logo"><img src="/physical-ai-textbook/img/logo.svg" alt="Physical AI Logo" class="themedComponent_mlkZ themedComponent--light_NVdE"><img src="/physical-ai-textbook/img/logo.svg" alt="Physical AI Logo" class="themedComponent_mlkZ themedComponent--dark_xIcU"></div><b class="navbar__title text--truncate">Physical AI Textbook</b></a><a aria-current="page" class="navbar__item navbar__link navbar__link--active" href="/physical-ai-textbook/docs/intro/introduction-to-physical-ai">Textbook</a></div><div class="theme-layout-navbar-right navbar__items navbar__items--right"><a href="https://github.com/Gulshan-koondhar/physical-ai-textbook" target="_blank" rel="noopener noreferrer" class="navbar__item navbar__link">GitHub<svg width="13.5" height="13.5" aria-label="(opens in new tab)" class="iconExternalLink_nPIU"><use href="#theme-svg-external-link"></use></svg></a><div class="toggle_vylO colorModeToggle_DEke"><button class="clean-btn toggleButton_gllP toggleButtonDisabled_aARS" type="button" disabled="" title="system mode" aria-label="Switch between dark and light mode (currently system mode)"><svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" class="toggleIcon_g3eP lightToggleIcon_pyhR"><path fill="currentColor" d="M12,9c1.65,0,3,1.35,3,3s-1.35,3-3,3s-3-1.35-3-3S10.35,9,12,9 M12,7c-2.76,0-5,2.24-5,5s2.24,5,5,5s5-2.24,5-5 S14.76,7,12,7L12,7z M2,13l2,0c0.55,0,1-0.45,1-1s-0.45-1-1-1l-2,0c-0.55,0-1,0.45-1,1S1.45,13,2,13z M20,13l2,0c0.55,0,1-0.45,1-1 s-0.45-1-1-1l-2,0c-0.55,0-1,0.45-1,1S19.45,13,20,13z M11,2v2c0,0.55,0.45,1,1,1s1-0.45,1-1V2c0-0.55-0.45-1-1-1S11,1.45,11,2z M11,20v2c0,0.55,0.45,1,1,1s1-0.45,1-1v-2c0-0.55-0.45-1-1-1C11.45,19,11,19.45,11,20z M5.99,4.58c-0.39-0.39-1.03-0.39-1.41,0 c-0.39,0.39-0.39,1.03,0,1.41l1.06,1.06c0.39,0.39,1.03,0.39,1.41,0s0.39-1.03,0-1.41L5.99,4.58z M18.36,16.95 c-0.39-0.39-1.03-0.39-1.41,0c-0.39,0.39-0.39,1.03,0,1.41l1.06,1.06c0.39,0.39,1.03,0.39,1.41,0c0.39-0.39,0.39-1.03,0-1.41 L18.36,16.95z M19.42,5.99c0.39-0.39,0.39-1.03,0-1.41c-0.39-0.39-1.03-0.39-1.41,0l-1.06,1.06c-0.39,0.39-0.39,1.03,0,1.41 s1.03,0.39,1.41,0L19.42,5.99z M7.05,18.36c0.39-0.39,0.39-1.03,0-1.41c-0.39-0.39-1.03-0.39-1.41,0l-1.06,1.06 c-0.39,0.39-0.39,1.03,0,1.41s1.03,0.39,1.41,0L7.05,18.36z"></path></svg><svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" class="toggleIcon_g3eP darkToggleIcon_wfgR"><path fill="currentColor" d="M9.37,5.51C9.19,6.15,9.1,6.82,9.1,7.5c0,4.08,3.32,7.4,7.4,7.4c0.68,0,1.35-0.09,1.99-0.27C17.45,17.19,14.93,19,12,19 c-3.86,0-7-3.14-7-7C5,9.07,6.81,6.55,9.37,5.51z M12,3c-4.97,0-9,4.03-9,9s4.03,9,9,9s9-4.03,9-9c0-0.46-0.04-0.92-0.1-1.36 c-0.98,1.37-2.58,2.26-4.4,2.26c-2.98,0-5.4-2.42-5.4-5.4c0-1.81,0.89-3.42,2.26-4.4C12.92,3.04,12.46,3,12,3L12,3z"></path></svg><svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" class="toggleIcon_g3eP systemToggleIcon_QzmC"><path fill="currentColor" d="m12 21c4.971 0 9-4.029 9-9s-4.029-9-9-9-9 4.029-9 9 4.029 9 9 9zm4.95-13.95c1.313 1.313 2.05 3.093 2.05 4.95s-0.738 3.637-2.05 4.95c-1.313 1.313-3.093 2.05-4.95 2.05v-14c1.857 0 3.637 0.737 4.95 2.05z"></path></svg></button></div><div class="navbarSearchContainer_Bca1"></div></div></div><div role="presentation" class="navbar-sidebar__backdrop"></div></nav><div id="__docusaurus_skipToContent_fallback" class="theme-layout-main main-wrapper mainWrapper_z2l0"><div class="docsWrapper_hBAB"><button aria-label="Scroll back to top" class="clean-btn theme-back-to-top-button backToTopButton_sjWU" type="button"></button><div class="docRoot_UBD9"><aside class="theme-doc-sidebar-container docSidebarContainer_YfHR"><div class="sidebarViewport_aRkj"><div class="sidebar_njMd"><nav aria-label="Docs sidebar" class="menu thin-scrollbar menu_SIkG"><ul class="theme-doc-sidebar-menu menu__list"><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist menu__link--sublist-caret" role="button" aria-expanded="false" href="/physical-ai-textbook/docs/intro/introduction-to-physical-ai"><span title="Introduction" class="categoryLinkLabel_W154">Introduction</span></a></div></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist menu__link--sublist-caret" role="button" aria-expanded="false" href="/physical-ai-textbook/docs/module-1-ros/ros2-from-zero"><span title="Module 1 - ROS 2 Fundamentals" class="categoryLinkLabel_W154">Module 1 - ROS 2 Fundamentals</span></a></div></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist menu__link--sublist-caret menu__link--active" role="button" aria-expanded="true" href="/physical-ai-textbook/docs/module-2-simulation/gazebo-harmonic-setup"><span title="Module 2 - Simulation" class="categoryLinkLabel_W154">Module 2 - Simulation</span></a></div><ul class="menu__list"><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-2 menu__list-item"><a class="menu__link" tabindex="0" href="/physical-ai-textbook/docs/module-2-simulation/gazebo-harmonic-setup"><span title="Gazebo Harmonic Setup" class="linkLabel_WmDU">Gazebo Harmonic Setup</span></a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-2 menu__list-item"><a class="menu__link" tabindex="0" href="/physical-ai-textbook/docs/module-2-simulation/simulating-humanoid"><span title="Simulating Humanoid in Gazebo" class="linkLabel_WmDU">Simulating Humanoid in Gazebo</span></a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-2 menu__list-item"><a class="menu__link menu__link--active" aria-current="page" tabindex="0" href="/physical-ai-textbook/docs/module-2-simulation/unity-rendering"><span title="Unity Rendering" class="linkLabel_WmDU">Unity Rendering</span></a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-2 menu__list-item"><a class="menu__link" tabindex="0" href="/physical-ai-textbook/docs/module-2-simulation/sensor-plugin-configuration"><span title="Sensor Plugin Configuration" class="linkLabel_WmDU">Sensor Plugin Configuration</span></a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-2 menu__list-item"><a class="menu__link" tabindex="0" href="/physical-ai-textbook/docs/module-2-simulation/sensor-configurations"><span title="Sensor Configurations" class="linkLabel_WmDU">Sensor Configurations</span></a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-2 menu__list-item"><a class="menu__link" tabindex="0" href="/physical-ai-textbook/docs/module-2-simulation/ros-tcp-connector"><span title="ROS TCP Connector Bridge" class="linkLabel_WmDU">ROS TCP Connector Bridge</span></a></li></ul></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist menu__link--sublist-caret" role="button" aria-expanded="false" href="/physical-ai-textbook/docs/module-3-ai-brain/isaac-sim-installation"><span title="Module 3 - AI Brain" class="categoryLinkLabel_W154">Module 3 - AI Brain</span></a></div></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist menu__link--sublist-caret" role="button" aria-expanded="false" href="/physical-ai-textbook/docs/module-4-vla/whisper-gpt-ros-planner"><span title="Module 4 - VLA Integration" class="categoryLinkLabel_W154">Module 4 - VLA Integration</span></a></div></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist menu__link--sublist-caret" role="button" aria-expanded="false" href="/physical-ai-textbook/docs/capstone/red-cup-project"><span title="Capstone Project" class="categoryLinkLabel_W154">Capstone Project</span></a></div></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist menu__link--sublist-caret" role="button" aria-expanded="false" href="/physical-ai-textbook/docs/hardware/hardware-guide"><span title="Hardware Guide" class="categoryLinkLabel_W154">Hardware Guide</span></a></div></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist menu__link--sublist-caret" role="button" aria-expanded="false" href="/physical-ai-textbook/docs/appendix/troubleshooting"><span title="Appendices" class="categoryLinkLabel_W154">Appendices</span></a></div></li></ul></nav></div></div></aside><main class="docMainContainer_TBSr"><div class="container padding-top--md padding-bottom--lg"><div class="row"><div class="col docItemCol_VOVn"><div class="docItemContainer_Djhp"><article><nav class="theme-doc-breadcrumbs breadcrumbsContainer_Z_bl" aria-label="Breadcrumbs"><ul class="breadcrumbs"><li class="breadcrumbs__item"><a aria-label="Home page" class="breadcrumbs__link" href="/physical-ai-textbook/"><svg viewBox="0 0 24 24" class="breadcrumbHomeIcon_YNFT"><path d="M10 19v-5h4v5c0 .55.45 1 1 1h3c.55 0 1-.45 1-1v-7h1.7c.46 0 .68-.57.33-.87L12.67 3.6c-.38-.34-.96-.34-1.34 0l-8.36 7.53c-.34.3-.13.87.33.87H5v7c0 .55.45 1 1 1h3c.55 0 1-.45 1-1z" fill="currentColor"></path></svg></a></li><li class="breadcrumbs__item"><span class="breadcrumbs__link">Module 2 - Simulation</span></li><li class="breadcrumbs__item breadcrumbs__item--active"><span class="breadcrumbs__link">Unity Rendering</span></li></ul></nav><div class="tocCollapsible_ETCw theme-doc-toc-mobile tocMobile_ITEo"><button type="button" class="clean-btn tocCollapsibleButton_TO0P">On this page</button></div><div class="theme-doc-markdown markdown"><header><h1 id="unity-rendering-for-humanoid-robotics-simulation">Unity Rendering for Humanoid Robotics Simulation</h1></header>
+<h2 id="introduction">Introduction</h2>
+<p>Unity is a powerful 3D rendering engine that provides high-quality graphics capabilities for robotics simulation and visualization. When combined with ROS 2 through the ROS TCP Connector, Unity becomes a valuable tool for creating photorealistic environments, advanced visualization, and human-in-the-loop interfaces for humanoid robotics development. This chapter covers how to set up and use Unity for humanoid robot rendering and simulation.</p>
+<h2 id="understanding-unity-ros-integration">Understanding Unity-ROS Integration</h2>
+<h3 id="the-ros-tcp-connector">The ROS-TCP-Connector</h3>
+<p>The ROS-TCP-Connector provides a bridge between ROS 2 and Unity, enabling:</p>
+<ul>
+<li>Real-time data exchange between ROS 2 nodes and Unity</li>
+<li>Visualization of robot states and sensor data</li>
+<li>Control interface for Unity-based simulation</li>
+<li>Integration with existing ROS 2 workflows</li>
+</ul>
+<h3 id="architecture-overview">Architecture Overview</h3>
+<p>The Unity-ROS integration typically involves:</p>
+<ol>
+<li><strong>ROS 2 Bridge Node</strong>: Runs in ROS 2 environment, handles message conversion</li>
+<li><strong>TCP Connection</strong>: Low-latency communication channel</li>
+<li><strong>Unity ROS Package</strong>: Handles message reception and Unity scene updates</li>
+<li><strong>Custom Unity Scripts</strong>: Process ROS messages and update 3D scene</li>
+</ol>
+<h2 id="setting-up-unity-for-ros-2-integration">Setting up Unity for ROS 2 Integration</h2>
+<h3 id="prerequisites">Prerequisites</h3>
+<p>Before setting up Unity for ROS 2 integration:</p>
+<ol>
+<li><strong>Unity Hub and Unity 2021.3 LTS or newer</strong> (recommended for stability)</li>
+<li><strong>ROS 2 Humble Hawksbill</strong> installed and configured</li>
+<li><strong>Unity Robotics Hub Package</strong> from Unity Asset Store or GitHub</li>
+<li><strong>ROS-TCP-Connector Package</strong> for Unity</li>
+<li><strong>Basic knowledge of Unity development workflow</strong></li>
+</ol>
+<h3 id="installing-unity-ros-packages">Installing Unity ROS Packages</h3>
+<h4 id="method-1-unity-package-manager">Method 1: Unity Package Manager</h4>
+<ol>
+<li>Open Unity Hub and create a new 3D project</li>
+<li>Go to Window → Package Manager</li>
+<li>Click the &quot;+&quot; button → Add package from git URL</li>
+<li>Add the Unity Robotics packages:</li>
+</ol>
+<pre><code>com.unity.robotics.ros-tcp-connector
+com.unity.robotics.urdf-importer
+</code></pre>
+<h4 id="method-2-manual-installation">Method 2: Manual Installation</h4>
+<p>Download the packages from the Unity Robotics GitHub repository and import them through Assets → Import Package → Custom Package.</p>
+<h3 id="basic-unity-scene-setup">Basic Unity Scene Setup</h3>
+<p>Create a basic scene for humanoid robot visualization:</p>
+<pre><code class="language-csharp">// Scripts/RobotVisualization.cs
+using UnityEngine;
+using Unity.Robotics.ROSTCPConnector;
+using RosMessageTypes.Sensor;
+using RosMessageTypes.Geometry;
+
+public class RobotVisualization : MonoBehaviour
+{
+    [SerializeField]
+    private string robotDescriptionTopic = &quot;/robot_description&quot;;
+
+    [SerializeField]
+    private string jointStatesTopic = &quot;/joint_states&quot;;
+
+    [SerializeField]
+    private GameObject robotModel; // Your humanoid robot prefab
+
+    private ROSConnection ros;
+    private JointStateMsg latestJointState;
+
+    void Start()
+    {
+        // Initialize ROS connection
+        ros = ROSConnection.instance;
+
+        // Subscribe to joint states
+        ros.Subscribe&lt;JointStateMsg&gt;(jointStatesTopic, JointStateCallback);
+    }
+
+    void JointStateCallback(JointStateMsg jointState)
+    {
+        latestJointState = jointState;
+    }
+
+    void Update()
+    {
+        if (latestJointState != null)
+        {
+            UpdateRobotJoints();
+        }
+    }
+
+    void UpdateRobotJoints()
+    {
+        // Update each joint in the robot model based on joint states
+        for (int i = 0; i &lt; latestJointState.name.Count; i++)
+        {
+            string jointName = latestJointState.name[i];
+            float jointPosition = (float)latestJointState.position[i];
+
+            Transform jointTransform = FindJointByName(jointName);
+            if (jointTransform != null)
+            {
+                // Update the joint position based on joint type
+                // This is a simplified example - actual implementation depends on joint structure
+                jointTransform.localEulerAngles = new Vector3(0, jointPosition * Mathf.Rad2Deg, 0);
+            }
+        }
+    }
+
+    Transform FindJointByName(string jointName)
+    {
+        // Remove prefixes like &quot;left_&quot; or &quot;right_&quot; if needed
+        string cleanName = jointName.Replace(&quot;left_&quot;, &quot;&quot;).Replace(&quot;right_&quot;, &quot;&quot;);
+        Transform[] allTransforms = robotModel.GetComponentsInChildren&lt;Transform&gt;();
+
+        foreach (Transform t in allTransforms)
+        {
+            if (t.name.Contains(cleanName))
+                return t;
+        }
+        return null;
+    }
+}
+</code></pre>
+<h2 id="creating-humanoid-robot-models-for-unity">Creating Humanoid Robot Models for Unity</h2>
+<h3 id="importing-urdf-models">Importing URDF Models</h3>
+<p>Unity provides tools for importing URDF models:</p>
+<pre><code class="language-csharp">// Scripts/URDFLoader.cs
+using UnityEngine;
+using Unity.Robotics.UrdfImporter;
+using System.IO;
+
+public class URDFLoader : MonoBehaviour
+{
+    [SerializeField]
+    private string urdfPath = &quot;Packages/your_robot_description/urdf/humanoid.urdf&quot;;
+
+    void Start()
+    {
+        LoadURDFModel();
+    }
+
+    void LoadURDFModel()
+    {
+        if (File.Exists(urdfPath))
+        {
+            GameObject robot = UrdfRobotExtensions.CreateRobotFromUrdf(urdfPath);
+            robot.transform.SetParent(transform);
+            robot.transform.localPosition = Vector3.zero;
+            robot.transform.localRotation = Quaternion.identity;
+        }
+        else
+        {
+            Debug.LogError(&quot;URDF file not found: &quot; + urdfPath);
+        }
+    }
+}
+</code></pre>
+<h3 id="optimizing-models-for-real-time-rendering">Optimizing Models for Real-time Rendering</h3>
+<p>For humanoid robots with many joints:</p>
+<ol>
+<li><strong>LOD (Level of Detail) Systems</strong>: Create simplified versions of complex meshes</li>
+<li><strong>Animation Rigging</strong>: Use Unity&#x27;s Animation Rigging package for efficient joint control</li>
+<li><strong>Shader Optimization</strong>: Use efficient shaders for real-time performance</li>
+<li><strong>Mesh Simplification</strong>: Reduce polygon count where possible</li>
+</ol>
+<h3 id="example-humanoid-joint-mapping">Example Humanoid Joint Mapping</h3>
+<pre><code class="language-csharp">// Scripts/HumanoidJointController.cs
+using UnityEngine;
+using System.Collections.Generic;
+
+[System.Serializable]
+public class JointMapping
+{
+    public string rosJointName;
+    public Transform unityJoint;
+    public JointType jointType;
+    public float minAngle;
+    public float maxAngle;
+}
+
+public enum JointType
+{
+    Revolute,
+    Prismatic,
+    Fixed
+}
+
+public class HumanoidJointController : MonoBehaviour
+{
+    [SerializeField]
+    private List&lt;JointMapping&gt; jointMappings = new List&lt;JointMapping&gt;();
+
+    public void UpdateJointPositions(Dictionary&lt;string, double&gt; jointPositions)
+    {
+        foreach (var mapping in jointMappings)
+        {
+            if (jointPositions.ContainsKey(mapping.rosJointName))
+            {
+                float position = (float)jointPositions[mapping.rosJointName];
+                ApplyJointTransform(mapping, position);
+            }
+        }
+    }
+
+    void ApplyJointTransform(JointMapping mapping, float position)
+    {
+        switch (mapping.jointType)
+        {
+            case JointType.Revolute:
+                // Clamp position to joint limits
+                float clampedPosition = Mathf.Clamp(position, mapping.minAngle, mapping.maxAngle);
+                // Apply rotation
+                mapping.unityJoint.localEulerAngles = new Vector3(0, clampedPosition * Mathf.Rad2Deg, 0);
+                break;
+
+            case JointType.Prismatic:
+                // Apply linear translation
+                Vector3 translation = mapping.unityJoint.localPosition;
+                translation.y = position; // Adjust axis as needed
+                mapping.unityJoint.localPosition = translation;
+                break;
+
+            case JointType.Fixed:
+                // No movement for fixed joints
+                break;
+        }
+    }
+}
+</code></pre>
+<h2 id="implementing-ros-communication-in-unity">Implementing ROS Communication in Unity</h2>
+<h3 id="setting-up-ros-tcp-connector">Setting up ROS TCP Connector</h3>
+<pre><code class="language-csharp">// Scripts/ROSConnectionManager.cs
+using UnityEngine;
+using Unity.Robotics.ROSTCPConnector;
+using RosMessageTypes.Std;
+using RosMessageTypes.Geometry;
+
+public class ROSConnectionManager : MonoBehaviour
+{
+    [SerializeField]
+    private string rosIPAddress = &quot;127.0.0.1&quot;;
+    [SerializeField]
+    private int rosPort = 10000;
+
+    private ROSConnection rosConnection;
+
+    void Start()
+    {
+        rosConnection = ROSConnection.GetOrCreateInstance();
+        rosConnection.rosIPAddress = rosIPAddress;
+        rosConnection.rosPort = rosPort;
+
+        // Start subscriptions
+        SubscribeToTopics();
+    }
+
+    void SubscribeToTopics()
+    {
+        rosConnection.Subscribe&lt;JointStateMsg&gt;(&quot;/joint_states&quot;, OnJointStateReceived);
+        rosConnection.Subscribe&lt;OdometryMsg&gt;(&quot;/odom&quot;, OnOdometryReceived);
+        rosConnection.Subscribe&lt;ImuMsg&gt;(&quot;/imu/data&quot;, OnIMUReceived);
+    }
+
+    void OnJointStateReceived(JointStateMsg msg)
+    {
+        // Process joint state message
+        var jointDict = new System.Collections.Generic.Dictionary&lt;string, double&gt;();
+        for (int i = 0; i &lt; msg.name.Count; i++)
+        {
+            jointDict[msg.name[i]] = msg.position[i];
+        }
+
+        // Notify other components
+        SendMessage(&quot;UpdateRobotJoints&quot;, jointDict, SendMessageOptions.DontRequireReceiver);
+    }
+
+    void OnOdometryReceived(OdometryMsg msg)
+    {
+        // Update robot position and orientation
+        Vector3 position = new Vector3(
+            (float)msg.pose.pose.position.x,
+            (float)msg.pose.pose.position.z, // Unity Y is up
+            (float)msg.pose.pose.position.y  // Swap Y and Z
+        );
+
+        Quaternion rotation = new Quaternion(
+            (float)msg.pose.pose.orientation.x,
+            (float)msg.pose.pose.orientation.z,
+            (float)msg.pose.pose.orientation.y, // Swap Y and Z
+            (float)msg.pose.pose.orientation.w
+        );
+
+        transform.position = position;
+        transform.rotation = rotation;
+    }
+
+    void OnIMUReceived(ImuMsg msg)
+    {
+        // Process IMU data
+        Vector3 orientation = new Vector3(
+            (float)msg.orientation.x,
+            (float)msg.orientation.z,
+            (float)msg.orientation.y
+        );
+
+        // Use for balance visualization or other purposes
+    }
+}
+</code></pre>
+<h3 id="publishing-messages-from-unity">Publishing Messages from Unity</h3>
+<pre><code class="language-csharp">// Scripts/UnityCommandPublisher.cs
+using UnityEngine;
+using Unity.Robotics.ROSTCPConnector;
+using RosMessageTypes.Geometry;
+using RosMessageTypes.Std;
+
+public class UnityCommandPublisher : MonoBehaviour
+{
+    private ROSConnection ros;
+
+    void Start()
+    {
+        ros = ROSConnection.instance;
+    }
+
+    public void PublishJointCommands(Dictionary&lt;string, float&gt; jointCommands)
+    {
+        var jointCmd = new JointStateMsg();
+        jointCmd.header = new HeaderMsg();
+        jointCmd.header.stamp = new TimeStamp(ROSConnection.GetNodeTimeInSecs());
+        jointCmd.header.frame_id = &quot;base_link&quot;;
+
+        foreach (var cmd in jointCommands)
+        {
+            jointCmd.name.Add(cmd.Key);
+            jointCmd.position.Add(cmd.Value);
+        }
+
+        ros.Publish(&quot;/joint_commands&quot;, jointCmd);
+    }
+
+    public void PublishVelocityCommand(float linearX, float angularZ)
+    {
+        var twist = new TwistMsg();
+        twist.linear = new Vector3Msg(linearX, 0, 0);
+        twist.angular = new Vector3Msg(0, 0, angularZ);
+
+        ros.Publish(&quot;/cmd_vel&quot;, twist);
+    }
+}
+</code></pre>
+<h2 id="advanced-rendering-techniques">Advanced Rendering Techniques</h2>
+<h3 id="physically-based-rendering-pbr">Physically-Based Rendering (PBR)</h3>
+<p>For realistic humanoid visualization:</p>
+<pre><code class="language-csharp">// Scripts/HumanoidPBRSetup.cs
+using UnityEngine;
+
+public class HumanoidPBRSetup : MonoBehaviour
+{
+    [Header(&quot;Material Properties&quot;)]
+    [SerializeField] private Color baseColor = Color.gray;
+    [SerializeField] private float metallic = 0.2f;
+    [SerializeField] private float smoothness = 0.5f;
+    [SerializeField] private Texture2D normalMap;
+    [SerializeField] private Texture2D roughnessMap;
+
+    void Start()
+    {
+        SetupPBRMaterials();
+    }
+
+    void SetupPBRMaterials()
+    {
+        Renderer[] renderers = GetComponentsInChildren&lt;Renderer&gt;();
+
+        foreach (Renderer renderer in renderers)
+        {
+            Material material = renderer.material;
+
+            material.color = baseColor;
+            material.SetFloat(&quot;_Metallic&quot;, metallic);
+            material.SetFloat(&quot;_Smoothness&quot;, smoothness);
+
+            if (normalMap != null)
+                material.SetTexture(&quot;_BumpMap&quot;, normalMap);
+
+            if (roughnessMap != null)
+                material.SetTexture(&quot;_MetallicGlossMap&quot;, roughnessMap);
+        }
+    }
+}
+</code></pre>
+<h3 id="real-time-shadows-and-lighting">Real-time Shadows and Lighting</h3>
+<pre><code class="language-csharp">// Scripts/DynamicLighting.cs
+using UnityEngine;
+
+public class DynamicLighting : MonoBehaviour
+{
+    [Header(&quot;Lighting Setup&quot;)]
+    [SerializeField] private Light mainLight;
+    [SerializeField] private float lightIntensity = 1.0f;
+    [SerializeField] private Color lightColor = Color.white;
+    [SerializeField] private float shadowDistance = 50f;
+
+    void Start()
+    {
+        ConfigureLighting();
+    }
+
+    void ConfigureLighting()
+    {
+        if (mainLight != null)
+        {
+            mainLight.color = lightColor;
+            mainLight.intensity = lightIntensity;
+            mainLight.shadows = LightShadows.Soft;
+            mainLight.shadowDistance = shadowDistance;
+        }
+    }
+
+    // Update lighting based on time of day or other factors
+    void UpdateLighting(float timeOfDay)
+    {
+        // Example: Adjust lighting based on time
+        float intensityMultiplier = Mathf.Clamp01(Mathf.Sin(timeOfDay * Mathf.PI));
+        mainLight.intensity = lightIntensity * intensityMultiplier;
+    }
+}
+</code></pre>
+<h2 id="creating-interactive-environments">Creating Interactive Environments</h2>
+<h3 id="environment-setup-for-humanoid-testing">Environment Setup for Humanoid Testing</h3>
+<pre><code class="language-csharp">// Scripts/HumanoidTestEnvironment.cs
+using UnityEngine;
+
+public class HumanoidTestEnvironment : MonoBehaviour
+{
+    [Header(&quot;Environment Elements&quot;)]
+    [SerializeField] private Transform[] obstaclePositions;
+    [SerializeField] private GameObject[] obstaclePrefabs;
+    [SerializeField] private Material[] floorMaterials;
+    [SerializeField] private float environmentScale = 1.0f;
+
+    [Header(&quot;Navigation Elements&quot;)]
+    [SerializeField] private Transform[] waypointMarkers;
+    [SerializeField] private GameObject[] interactiveObjects;
+
+    void Start()
+    {
+        SetupEnvironment();
+        PlaceObstacles();
+        SetupNavigationMarkers();
+    }
+
+    void SetupEnvironment()
+    {
+        // Create floor with appropriate material
+        GameObject floor = GameObject.CreatePrimitive(PrimitiveType.Plane);
+        floor.transform.SetParent(transform);
+        floor.transform.localScale = Vector3.one * environmentScale;
+
+        if (floorMaterials.Length &gt; 0)
+        {
+            floor.GetComponent&lt;Renderer&gt;().material = floorMaterials[0];
+        }
+    }
+
+    void PlaceObstacles()
+    {
+        foreach (Transform pos in obstaclePositions)
+        {
+            if (obstaclePrefabs.Length &gt; 0)
+            {
+                int randomPrefab = Random.Range(0, obstaclePrefabs.Length);
+                GameObject obstacle = Instantiate(obstaclePrefabs[randomPrefab], pos.position, pos.rotation);
+                obstacle.transform.SetParent(transform);
+            }
+        }
+    }
+
+    void SetupNavigationMarkers()
+    {
+        foreach (Transform waypoint in waypointMarkers)
+        {
+            // Create visual markers for navigation testing
+            GameObject marker = GameObject.CreatePrimitive(PrimitiveType.Cylinder);
+            marker.transform.position = waypoint.position + Vector3.up * 0.1f; // Slightly above ground
+            marker.transform.localScale = new Vector3(0.2f, 0.1f, 0.2f);
+            marker.GetComponent&lt;Renderer&gt;().material.color = Color.green;
+        }
+    }
+}
+</code></pre>
+<h3 id="user-interface-integration">User Interface Integration</h3>
+<pre><code class="language-csharp">// Scripts/HumanoidControlUI.cs
+using UnityEngine;
+using UnityEngine.UI;
+using System.Collections.Generic;
+
+public class HumanoidControlUI : MonoBehaviour
+{
+    [Header(&quot;UI Elements&quot;)]
+    [SerializeField] private Text statusText;
+    [SerializeField] private Text jointStateText;
+    [SerializeField] private Slider linearVelocitySlider;
+    [SerializeField] private Slider angularVelocitySlider;
+    [SerializeField] private Button walkButton;
+    [SerializeField] private Button standButton;
+    [SerializeField] private Button resetButton;
+
+    private Dictionary&lt;string, double&gt; currentJointStates = new Dictionary&lt;string, double&gt;();
+    private float linearVelocity = 0f;
+    private float angularVelocity = 0f;
+
+    void Start()
+    {
+        SetupUIEvents();
+    }
+
+    void SetupUIEvents()
+    {
+        linearVelocitySlider.onValueChanged.AddListener(OnLinearVelocityChanged);
+        angularVelocitySlider.onValueChanged.AddListener(OnAngularVelocityChanged);
+        walkButton.onClick.AddListener(OnWalkButtonClicked);
+        standButton.onClick.AddListener(OnStandButtonClicked);
+        resetButton.onClick.AddListener(OnResetButtonClicked);
+    }
+
+    void OnLinearVelocityChanged(float value)
+    {
+        linearVelocity = value;
+        PublishVelocityCommand();
+    }
+
+    void OnAngularVelocityChanged(float value)
+    {
+        angularVelocity = value;
+        PublishVelocityCommand();
+    }
+
+    void OnWalkButtonClicked()
+    {
+        // Send walk command to ROS
+        // Implementation depends on your robot&#x27;s command interface
+    }
+
+    void OnStandButtonClicked()
+    {
+        // Send stand command to ROS
+    }
+
+    void OnResetButtonClicked()
+    {
+        // Send reset command to ROS
+    }
+
+    void PublishVelocityCommand()
+    {
+        // Publish velocity command through ROS connection
+        // This would call the publisher script
+    }
+
+    public void UpdateJointStates(Dictionary&lt;string, double&gt; jointStates)
+    {
+        currentJointStates = jointStates;
+        UpdateJointStateDisplay();
+    }
+
+    void UpdateJointStateDisplay()
+    {
+        string jointText = &quot;Joint States:\n&quot;;
+        foreach (var joint in currentJointStates)
+        {
+            jointText += $&quot;{joint.Key}: {joint.Value:F3}\n&quot;;
+        }
+        jointStateText.text = jointText;
+    }
+
+    public void UpdateStatus(string status)
+    {
+        statusText.text = $&quot;Status: {status}&quot;;
+    }
+}
+</code></pre>
+<h2 id="performance-optimization">Performance Optimization</h2>
+<h3 id="rendering-optimization-for-complex-humanoid-models">Rendering Optimization for Complex Humanoid Models</h3>
+<pre><code class="language-csharp">// Scripts/HumanoidLODController.cs
+using UnityEngine;
+
+[RequireComponent(typeof(SkinnedMeshRenderer))]
+public class HumanoidLODController : MonoBehaviour
+{
+    [Header(&quot;LOD Configuration&quot;)]
+    [SerializeField] private float[] lodDistances = { 10f, 20f, 50f };
+    [SerializeField] private GameObject[] lodModels;
+
+    [Header(&quot;Culling Configuration&quot;)]
+    [SerializeField] private float cullDistance = 100f;
+    [SerializeField] private bool useOcclusionCulling = true;
+
+    private Camera mainCamera;
+    private SkinnedMeshRenderer meshRenderer;
+
+    void Start()
+    {
+        mainCamera = Camera.main;
+        meshRenderer = GetComponent&lt;SkinnedMeshRenderer&gt;();
+
+        if (mainCamera == null)
+        {
+            mainCamera = FindObjectOfType&lt;Camera&gt;();
+        }
+    }
+
+    void Update()
+    {
+        if (mainCamera != null)
+        {
+            float distance = Vector3.Distance(transform.position, mainCamera.transform.position);
+
+            // LOD switching
+            UpdateLOD(distance);
+
+            // Culling
+            UpdateCulling(distance);
+        }
+    }
+
+    void UpdateLOD(float distance)
+    {
+        // Switch between LOD levels based on distance
+        for (int i = 0; i &lt; lodDistances.Length; i++)
+        {
+            if (distance &lt;= lodDistances[i])
+            {
+                ActivateLODLevel(i);
+                return;
+            }
+        }
+
+        // Use lowest detail level if beyond all distances
+        ActivateLODLevel(lodDistances.Length);
+    }
+
+    void ActivateLODLevel(int level)
+    {
+        for (int i = 0; i &lt; lodModels.Length; i++)
+        {
+            if (lodModels[i] != null)
+            {
+                lodModels[i].SetActive(i == level);
+            }
+        }
+    }
+
+    void UpdateCulling(float distance)
+    {
+        if (distance &gt; cullDistance)
+        {
+            // Disable rendering beyond cull distance
+            foreach (var lod in lodModels)
+            {
+                if (lod != null)
+                    lod.SetActive(false);
+            }
+        }
+    }
+}
+</code></pre>
+<h3 id="multi-threading-for-ros-communication">Multi-threading for ROS Communication</h3>
+<pre><code class="language-csharp">// Scripts/AsyncROSCommunicator.cs
+using UnityEngine;
+using System.Collections;
+using System.Threading.Tasks;
+using System.Collections.Concurrent;
+
+public class AsyncROSCommunicator : MonoBehaviour
+{
+    private ConcurrentQueue&lt;System.Action&gt; mainThreadActions = new ConcurrentQueue&lt;System.Action&gt;();
+    private bool isCommunicating = false;
+
+    void Start()
+    {
+        StartCoroutine(ProcessMainThreadActions());
+    }
+
+    public async Task&lt;T&gt; SendRequestAsync&lt;T&gt;(string service, object request)
+    {
+        // This is a simplified example
+        // In practice, you&#x27;d use Unity&#x27;s async/await with ROS services
+        return await Task.Run(() =&gt;
+        {
+            // Send ROS service request
+            // Process response
+            return default(T);
+        });
+    }
+
+    IEnumerator ProcessMainThreadActions()
+    {
+        while (true)
+        {
+            while (mainThreadActions.TryDequeue(out System.Action action))
+            {
+                action?.Invoke();
+            }
+            yield return new WaitForSeconds(0.01f); // Small delay to prevent blocking
+        }
+    }
+
+    public void QueueActionOnMainThread(System.Action action)
+    {
+        mainThreadActions.Enqueue(action);
+    }
+}
+</code></pre>
+<h2 id="integration-with-simulation-workflows">Integration with Simulation Workflows</h2>
+<h3 id="unity-as-simulation-environment">Unity as Simulation Environment</h3>
+<p>Unity can serve as a high-quality simulation environment:</p>
+<pre><code class="language-csharp">// Scripts/UnitySimulationManager.cs
+using UnityEngine;
+using Unity.Robotics.ROSTCPConnector;
+
+public class UnitySimulationManager : MonoBehaviour
+{
+    [Header(&quot;Simulation Settings&quot;)]
+    [SerializeField] private bool isSimulationMode = true;
+    [SerializeField] private float simulationTimeScale = 1.0f;
+    [SerializeField] private string simulationScene = &quot;HumanoidSimulation&quot;;
+
+    [Header(&quot;Physics Settings&quot;)]
+    [SerializeField] private float gravityScale = 1.0f;
+    [SerializeField] private float physicsTimeStep = 0.02f;
+
+    private bool isPaused = false;
+
+    void Start()
+    {
+        SetupSimulationEnvironment();
+    }
+
+    void SetupSimulationEnvironment()
+    {
+        if (isSimulationMode)
+        {
+            // Configure Unity physics for simulation
+            Physics.gravity = new Vector3(0, -9.81f * gravityScale, 0);
+            Time.timeScale = simulationTimeScale;
+
+            // Initialize ROS connection for simulation
+            var ros = ROSConnection.GetOrCreateInstance();
+            ros.Initialize();
+        }
+    }
+
+    public void PauseSimulation()
+    {
+        isPaused = true;
+        Time.timeScale = 0;
+    }
+
+    public void ResumeSimulation()
+    {
+        isPaused = false;
+        Time.timeScale = simulationTimeScale;
+    }
+
+    public void ResetSimulation()
+    {
+        // Reset robot position and state
+        // Reset environment
+        // Reset ROS connections if needed
+    }
+
+    public void SetSimulationSpeed(float speed)
+    {
+        simulationTimeScale = speed;
+        Time.timeScale = simulationTimeScale;
+    }
+}
+</code></pre>
+<h3 id="recording-and-playback-features">Recording and Playback Features</h3>
+<pre><code class="language-csharp">// Scripts/SimulationRecorder.cs
+using UnityEngine;
+using System.Collections.Generic;
+using System.IO;
+
+[System.Serializable]
+public class RobotStateFrame
+{
+    public float timestamp;
+    public Vector3 position;
+    public Quaternion rotation;
+    public Dictionary&lt;string, double&gt; jointStates;
+    public Vector3 linearVelocity;
+    public Vector3 angularVelocity;
+}
+
+public class SimulationRecorder : MonoBehaviour
+{
+    [Header(&quot;Recording Settings&quot;)]
+    [SerializeField] private bool isRecording = false;
+    [SerializeField] private string recordingPath = &quot;Recordings/&quot;;
+    [SerializeField] private float recordingInterval = 0.1f;
+
+    private List&lt;RobotStateFrame&gt; recordedFrames = new List&lt;RobotStateFrame&gt;();
+    private float lastRecordTime = 0f;
+
+    void Update()
+    {
+        if (isRecording)
+        {
+            RecordFrame();
+        }
+    }
+
+    void RecordFrame()
+    {
+        float currentTime = Time.time;
+        if (currentTime - lastRecordTime &gt;= recordingInterval)
+        {
+            RobotStateFrame frame = new RobotStateFrame
+            {
+                timestamp = currentTime,
+                position = transform.position,
+                rotation = transform.rotation,
+                jointStates = GetCurrentJointStates(), // Implementation needed
+                linearVelocity = GetLinearVelocity(), // Implementation needed
+                angularVelocity = GetAngularVelocity() // Implementation needed
+            };
+
+            recordedFrames.Add(frame);
+            lastRecordTime = currentTime;
+        }
+    }
+
+    public void SaveRecording(string fileName)
+    {
+        string fullPath = Path.Combine(Application.persistentDataPath, recordingPath, fileName + &quot;.json&quot;);
+
+        var recordingData = new
+        {
+            frames = recordedFrames,
+            recordingInterval = recordingInterval
+        };
+
+        string json = JsonUtility.ToJson(recordingData, true);
+        File.WriteAllText(fullPath, json);
+    }
+
+    public void LoadRecording(string fileName)
+    {
+        string fullPath = Path.Combine(Application.persistentDataPath, recordingPath, fileName + &quot;.json&quot;);
+
+        if (File.Exists(fullPath))
+        {
+            string json = File.ReadAllText(fullPath);
+            var recordingData = JsonUtility.FromJson&lt;dynamic&gt;(json);
+            // Load and process the recording data
+        }
+    }
+
+    public void PlaybackRecording(List&lt;RobotStateFrame&gt; frames)
+    {
+        // Implement playback logic
+        // This would interpolate between frames and update robot state
+    }
+}
+</code></pre>
+<h2 id="best-practices-for-unity-ros-integration">Best Practices for Unity-ROS Integration</h2>
+<h3 id="1-efficient-data-transfer">1. Efficient Data Transfer</h3>
+<ul>
+<li>Use appropriate message types for Unity</li>
+<li>Implement message compression for high-frequency data</li>
+<li>Batch updates when possible</li>
+<li>Use efficient serialization formats</li>
+</ul>
+<h3 id="2-performance-considerations">2. Performance Considerations</h3>
+<ul>
+<li>Optimize Unity scenes for real-time performance</li>
+<li>Use object pooling for frequently created objects</li>
+<li>Implement efficient rendering techniques</li>
+<li>Monitor frame rate and adjust complexity accordingly</li>
+</ul>
+<h3 id="3-robust-communication">3. Robust Communication</h3>
+<ul>
+<li>Implement connection status monitoring</li>
+<li>Add retry mechanisms for failed communications</li>
+<li>Use appropriate buffer sizes</li>
+<li>Handle message timeouts gracefully</li>
+</ul>
+<h3 id="4-development-workflow">4. Development Workflow</h3>
+<ul>
+<li>Version control for Unity scenes and assets</li>
+<li>Consistent naming conventions between ROS and Unity</li>
+<li>Documentation for message mappings</li>
+<li>Testing procedures for both Unity and ROS components</li>
+</ul>
+<h2 id="troubleshooting-common-issues">Troubleshooting Common Issues</h2>
+<h3 id="1-connection-problems">1. Connection Problems</h3>
+<p>Common issues and solutions:</p>
+<ul>
+<li>Check IP addresses and ports</li>
+<li>Verify firewall settings</li>
+<li>Ensure ROS bridge node is running</li>
+<li>Check Unity and ROS network configurations</li>
+</ul>
+<h3 id="2-performance-issues">2. Performance Issues</h3>
+<p>Optimization strategies:</p>
+<ul>
+<li>Reduce mesh complexity</li>
+<li>Use efficient shaders</li>
+<li>Implement LOD systems</li>
+<li>Optimize update frequencies</li>
+</ul>
+<h3 id="3-coordinate-system-mismatches">3. Coordinate System Mismatches</h3>
+<p>Ensure proper coordinate conversion:</p>
+<ul>
+<li>ROS uses right-handed coordinate system (X forward, Y left, Z up)</li>
+<li>Unity uses left-handed coordinate system (X right, Y up, Z forward)</li>
+<li>Apply appropriate transformations</li>
+</ul>
+<h2 id="summary">Summary</h2>
+<p>In this chapter, you&#x27;ve learned:</p>
+<ul>
+<li>How to set up Unity for ROS 2 integration using the ROS-TCP-Connector</li>
+<li>Techniques for importing and optimizing humanoid robot models for Unity</li>
+<li>Implementation of ROS communication in Unity for real-time visualization</li>
+<li>Advanced rendering techniques for photorealistic humanoid visualization</li>
+<li>Creation of interactive environments for humanoid testing</li>
+<li>Performance optimization strategies for complex humanoid models</li>
+<li>Integration of Unity as a simulation environment</li>
+<li>Recording and playback features for simulation data</li>
+<li>Best practices for Unity-ROS integration</li>
+<li>Troubleshooting techniques for common issues</li>
+</ul>
+<p>Unity provides powerful rendering capabilities that complement Gazebo simulation, offering photorealistic visualization and human-in-the-loop interfaces for humanoid robotics development.</p>
+<h2 id="exercises">Exercises</h2>
+<ol>
+<li>Set up a Unity project with ROS-TCP-Connector and connect to a ROS 2 network</li>
+<li>Import a humanoid robot model and create joint mapping for visualization</li>
+<li>Implement a basic visualization system that shows joint states in real-time</li>
+<li>Create an interactive environment with obstacles for humanoid navigation</li>
+<li>Implement recording and playback functionality for simulation data</li>
+</ol>
+<div class="starboard-notebook-container"><div class="starboard-notebook-header"><span class="starboard-notebook-icon">📊</span><span class="starboard-notebook-title">Interactive Notebook</span></div><div class="starboard-notebook-content"><div class="starboard-children-container"><pre><code class="language-python"># This would be an interactive code block for students to experiment with Unity-ROS integration
+# In a real implementation, this would connect to ROS 2 services
+# to interact with the Unity simulation environment
+</code></pre></div></div><div class="starboard-notebook-footer"><small>Note: This is a placeholder for interactive Starboard notebooks.</small></div></div></div><footer class="theme-doc-footer docusaurus-mt-lg"><div class="row margin-top--sm theme-doc-footer-edit-meta-row"><div class="col noPrint_WFHX"><a href="https://github.com/facebook/docusaurus/tree/main/packages/create-docusaurus/templates/shared/docs/module-2-simulation/03-unity-rendering.mdx" target="_blank" rel="noopener noreferrer" class="theme-edit-this-page"><svg fill="currentColor" height="20" width="20" viewBox="0 0 40 40" class="iconEdit_Z9Sw" aria-hidden="true"><g><path d="m34.5 11.7l-3 3.1-6.3-6.3 3.1-3q0.5-0.5 1.2-0.5t1.1 0.5l3.9 3.9q0.5 0.4 0.5 1.1t-0.5 1.2z m-29.5 17.1l18.4-18.5 6.3 6.3-18.4 18.4h-6.3v-6.2z"></path></g></svg>Edit this page</a></div><div class="col lastUpdated_JAkA"></div></div></footer></article><nav class="docusaurus-mt-lg pagination-nav" aria-label="Docs pages"><a class="pagination-nav__link pagination-nav__link--prev" href="/physical-ai-textbook/docs/module-2-simulation/simulating-humanoid"><div class="pagination-nav__sublabel">Previous</div><div class="pagination-nav__label">Simulating Humanoid in Gazebo</div></a><a class="pagination-nav__link pagination-nav__link--next" href="/physical-ai-textbook/docs/module-2-simulation/sensor-plugin-configuration"><div class="pagination-nav__sublabel">Next</div><div class="pagination-nav__label">Sensor Plugin Configuration</div></a></nav></div></div><div class="col col--3"><div class="tableOfContents_bqdL thin-scrollbar theme-doc-toc-desktop"><ul class="table-of-contents table-of-contents__left-border"><li><a href="#introduction" class="table-of-contents__link toc-highlight">Introduction</a></li><li><a href="#understanding-unity-ros-integration" class="table-of-contents__link toc-highlight">Understanding Unity-ROS Integration</a><ul><li><a href="#the-ros-tcp-connector" class="table-of-contents__link toc-highlight">The ROS-TCP-Connector</a></li><li><a href="#architecture-overview" class="table-of-contents__link toc-highlight">Architecture Overview</a></li></ul></li><li><a href="#setting-up-unity-for-ros-2-integration" class="table-of-contents__link toc-highlight">Setting up Unity for ROS 2 Integration</a><ul><li><a href="#prerequisites" class="table-of-contents__link toc-highlight">Prerequisites</a></li><li><a href="#installing-unity-ros-packages" class="table-of-contents__link toc-highlight">Installing Unity ROS Packages</a></li><li><a href="#basic-unity-scene-setup" class="table-of-contents__link toc-highlight">Basic Unity Scene Setup</a></li></ul></li><li><a href="#creating-humanoid-robot-models-for-unity" class="table-of-contents__link toc-highlight">Creating Humanoid Robot Models for Unity</a><ul><li><a href="#importing-urdf-models" class="table-of-contents__link toc-highlight">Importing URDF Models</a></li><li><a href="#optimizing-models-for-real-time-rendering" class="table-of-contents__link toc-highlight">Optimizing Models for Real-time Rendering</a></li><li><a href="#example-humanoid-joint-mapping" class="table-of-contents__link toc-highlight">Example Humanoid Joint Mapping</a></li></ul></li><li><a href="#implementing-ros-communication-in-unity" class="table-of-contents__link toc-highlight">Implementing ROS Communication in Unity</a><ul><li><a href="#setting-up-ros-tcp-connector" class="table-of-contents__link toc-highlight">Setting up ROS TCP Connector</a></li><li><a href="#publishing-messages-from-unity" class="table-of-contents__link toc-highlight">Publishing Messages from Unity</a></li></ul></li><li><a href="#advanced-rendering-techniques" class="table-of-contents__link toc-highlight">Advanced Rendering Techniques</a><ul><li><a href="#physically-based-rendering-pbr" class="table-of-contents__link toc-highlight">Physically-Based Rendering (PBR)</a></li><li><a href="#real-time-shadows-and-lighting" class="table-of-contents__link toc-highlight">Real-time Shadows and Lighting</a></li></ul></li><li><a href="#creating-interactive-environments" class="table-of-contents__link toc-highlight">Creating Interactive Environments</a><ul><li><a href="#environment-setup-for-humanoid-testing" class="table-of-contents__link toc-highlight">Environment Setup for Humanoid Testing</a></li><li><a href="#user-interface-integration" class="table-of-contents__link toc-highlight">User Interface Integration</a></li></ul></li><li><a href="#performance-optimization" class="table-of-contents__link toc-highlight">Performance Optimization</a><ul><li><a href="#rendering-optimization-for-complex-humanoid-models" class="table-of-contents__link toc-highlight">Rendering Optimization for Complex Humanoid Models</a></li><li><a href="#multi-threading-for-ros-communication" class="table-of-contents__link toc-highlight">Multi-threading for ROS Communication</a></li></ul></li><li><a href="#integration-with-simulation-workflows" class="table-of-contents__link toc-highlight">Integration with Simulation Workflows</a><ul><li><a href="#unity-as-simulation-environment" class="table-of-contents__link toc-highlight">Unity as Simulation Environment</a></li><li><a href="#recording-and-playback-features" class="table-of-contents__link toc-highlight">Recording and Playback Features</a></li></ul></li><li><a href="#best-practices-for-unity-ros-integration" class="table-of-contents__link toc-highlight">Best Practices for Unity-ROS Integration</a><ul><li><a href="#1-efficient-data-transfer" class="table-of-contents__link toc-highlight">1. Efficient Data Transfer</a></li><li><a href="#2-performance-considerations" class="table-of-contents__link toc-highlight">2. Performance Considerations</a></li><li><a href="#3-robust-communication" class="table-of-contents__link toc-highlight">3. Robust Communication</a></li><li><a href="#4-development-workflow" class="table-of-contents__link toc-highlight">4. Development Workflow</a></li></ul></li><li><a href="#troubleshooting-common-issues" class="table-of-contents__link toc-highlight">Troubleshooting Common Issues</a><ul><li><a href="#1-connection-problems" class="table-of-contents__link toc-highlight">1. Connection Problems</a></li><li><a href="#2-performance-issues" class="table-of-contents__link toc-highlight">2. Performance Issues</a></li><li><a href="#3-coordinate-system-mismatches" class="table-of-contents__link toc-highlight">3. Coordinate System Mismatches</a></li></ul></li><li><a href="#summary" class="table-of-contents__link toc-highlight">Summary</a></li><li><a href="#exercises" class="table-of-contents__link toc-highlight">Exercises</a></li></ul></div></div></div></div></main></div></div></div><footer class="theme-layout-footer footer footer--dark"><div class="container container-fluid"><div class="row footer__links"><div class="theme-layout-footer-column col footer__col"><div class="footer__title">Docs</div><ul class="footer__items clean-list"><li class="footer__item"><a class="footer__link-item" href="/physical-ai-textbook/docs/intro/introduction-to-physical-ai">Textbook</a></li></ul></div><div class="theme-layout-footer-column col footer__col"><div class="footer__title">Community</div><ul class="footer__items clean-list"><li class="footer__item"><a href="https://stackoverflow.com/questions/tagged/docusaurus" target="_blank" rel="noopener noreferrer" class="footer__link-item">Stack Overflow<svg width="13.5" height="13.5" aria-label="(opens in new tab)" class="iconExternalLink_nPIU"><use href="#theme-svg-external-link"></use></svg></a></li><li class="footer__item"><a href="https://discordapp.com/invite/docusaurus" target="_blank" rel="noopener noreferrer" class="footer__link-item">Discord<svg width="13.5" height="13.5" aria-label="(opens in new tab)" class="iconExternalLink_nPIU"><use href="#theme-svg-external-link"></use></svg></a></li><li class="footer__item"><a href="https://twitter.com/docusaurus" target="_blank" rel="noopener noreferrer" class="footer__link-item">Twitter<svg width="13.5" height="13.5" aria-label="(opens in new tab)" class="iconExternalLink_nPIU"><use href="#theme-svg-external-link"></use></svg></a></li></ul></div><div class="theme-layout-footer-column col footer__col"><div class="footer__title">More</div><ul class="footer__items clean-list"><li class="footer__item"><a href="https://github.com/Gulshan-koondhar/physical-ai-textbook" target="_blank" rel="noopener noreferrer" class="footer__link-item">GitHub<svg width="13.5" height="13.5" aria-label="(opens in new tab)" class="iconExternalLink_nPIU"><use href="#theme-svg-external-link"></use></svg></a></li></ul></div></div><div class="footer__bottom text--center"><div class="footer__copyright">Copyright © 2025 My Project, Inc. Built with Docusaurus.</div></div></div></footer></div>
+</body>
+</html>

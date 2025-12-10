@@ -1,0 +1,1015 @@
+<!doctype html>
+<html lang="en" dir="ltr" class="docs-wrapper plugin-docs plugin-id-default docs-version-current docs-doc-page docs-doc-id-module-2-simulation/ros-tcp-connector" data-has-hydrated="false">
+<head>
+<meta charset="UTF-8">
+<meta name="generator" content="Docusaurus v3.9.2">
+<title data-rh="true">ROS TCP Connector Bridge for Unity Integration | Physical AI &amp; Humanoid Robotics</title><meta data-rh="true" name="viewport" content="width=device-width,initial-scale=1"><meta data-rh="true" name="twitter:card" content="summary_large_image"><meta data-rh="true" property="og:image" content="https://Gulshan-koondhar.github.io/physical-ai-textbook/img/docusaurus-social-card.jpg"><meta data-rh="true" name="twitter:image" content="https://Gulshan-koondhar.github.io/physical-ai-textbook/img/docusaurus-social-card.jpg"><meta data-rh="true" property="og:url" content="https://Gulshan-koondhar.github.io/physical-ai-textbook/docs/module-2-simulation/ros-tcp-connector"><meta data-rh="true" property="og:locale" content="en"><meta data-rh="true" name="docusaurus_locale" content="en"><meta data-rh="true" name="docsearch:language" content="en"><meta data-rh="true" name="docusaurus_version" content="current"><meta data-rh="true" name="docusaurus_tag" content="docs-default-current"><meta data-rh="true" name="docsearch:version" content="current"><meta data-rh="true" name="docsearch:docusaurus_tag" content="docs-default-current"><meta data-rh="true" property="og:title" content="ROS TCP Connector Bridge for Unity Integration | Physical AI &amp; Humanoid Robotics"><meta data-rh="true" name="description" content="Set up and configure the ROS TCP Connector for Unity integration in humanoid robotics simulation"><meta data-rh="true" property="og:description" content="Set up and configure the ROS TCP Connector for Unity integration in humanoid robotics simulation"><meta data-rh="true" name="keywords" content="ROS TCP Connector,Unity,bridge,integration,humanoid,simulation"><link data-rh="true" rel="icon" href="/physical-ai-textbook/img/favicon.ico"><link data-rh="true" rel="canonical" href="https://Gulshan-koondhar.github.io/physical-ai-textbook/docs/module-2-simulation/ros-tcp-connector"><link data-rh="true" rel="alternate" href="https://Gulshan-koondhar.github.io/physical-ai-textbook/docs/module-2-simulation/ros-tcp-connector" hreflang="en"><link data-rh="true" rel="alternate" href="https://Gulshan-koondhar.github.io/physical-ai-textbook/docs/module-2-simulation/ros-tcp-connector" hreflang="x-default"><script data-rh="true" type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"ROS TCP Connector Bridge","item":"https://Gulshan-koondhar.github.io/physical-ai-textbook/docs/module-2-simulation/ros-tcp-connector"}]}</script><link rel="stylesheet" href="/physical-ai-textbook/assets/css/styles.4f99da8f.css">
+<script src="/physical-ai-textbook/assets/js/runtime~main.7cf563d1.js" defer="defer"></script>
+<script src="/physical-ai-textbook/assets/js/main.6dcd1921.js" defer="defer"></script>
+</head>
+<body class="navigation-with-keyboard">
+<svg style="display: none;"><defs>
+<symbol id="theme-svg-external-link" viewBox="0 0 24 24"><path fill="currentColor" d="M21 13v10h-21v-19h12v2h-10v15h17v-8h2zm3-12h-10.988l4.035 4-6.977 7.07 2.828 2.828 6.977-7.07 4.125 4.172v-11z"/></symbol>
+</defs></svg>
+<script>!function(){var t=function(){try{return new URLSearchParams(window.location.search).get("docusaurus-theme")}catch(t){}}()||function(){try{return window.localStorage.getItem("theme")}catch(t){}}();document.documentElement.setAttribute("data-theme",t||"light"),document.documentElement.setAttribute("data-theme-choice",t||"light")}(),function(){try{const c=new URLSearchParams(window.location.search).entries();for(var[t,e]of c)if(t.startsWith("docusaurus-data-")){var a=t.replace("docusaurus-data-","data-");document.documentElement.setAttribute(a,e)}}catch(t){}}()</script><div id="__docusaurus"><div role="region" aria-label="Skip to main content"><a class="skipToContent_fXgn" href="#__docusaurus_skipToContent_fallback">Skip to main content</a></div><nav aria-label="Main" class="theme-layout-navbar navbar navbar--fixed-top"><div class="navbar__inner"><div class="theme-layout-navbar-left navbar__items"><button aria-label="Toggle navigation bar" aria-expanded="false" class="navbar__toggle clean-btn" type="button"><svg width="30" height="30" viewBox="0 0 30 30" aria-hidden="true"><path stroke="currentColor" stroke-linecap="round" stroke-miterlimit="10" stroke-width="2" d="M4 7h22M4 15h22M4 23h22"></path></svg></button><a class="navbar__brand" href="/physical-ai-textbook/"><div class="navbar__logo"><img src="/physical-ai-textbook/img/logo.svg" alt="Physical AI Logo" class="themedComponent_mlkZ themedComponent--light_NVdE"><img src="/physical-ai-textbook/img/logo.svg" alt="Physical AI Logo" class="themedComponent_mlkZ themedComponent--dark_xIcU"></div><b class="navbar__title text--truncate">Physical AI Textbook</b></a><a aria-current="page" class="navbar__item navbar__link navbar__link--active" href="/physical-ai-textbook/docs/intro/introduction-to-physical-ai">Textbook</a></div><div class="theme-layout-navbar-right navbar__items navbar__items--right"><a href="https://github.com/Gulshan-koondhar/physical-ai-textbook" target="_blank" rel="noopener noreferrer" class="navbar__item navbar__link">GitHub<svg width="13.5" height="13.5" aria-label="(opens in new tab)" class="iconExternalLink_nPIU"><use href="#theme-svg-external-link"></use></svg></a><div class="toggle_vylO colorModeToggle_DEke"><button class="clean-btn toggleButton_gllP toggleButtonDisabled_aARS" type="button" disabled="" title="system mode" aria-label="Switch between dark and light mode (currently system mode)"><svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" class="toggleIcon_g3eP lightToggleIcon_pyhR"><path fill="currentColor" d="M12,9c1.65,0,3,1.35,3,3s-1.35,3-3,3s-3-1.35-3-3S10.35,9,12,9 M12,7c-2.76,0-5,2.24-5,5s2.24,5,5,5s5-2.24,5-5 S14.76,7,12,7L12,7z M2,13l2,0c0.55,0,1-0.45,1-1s-0.45-1-1-1l-2,0c-0.55,0-1,0.45-1,1S1.45,13,2,13z M20,13l2,0c0.55,0,1-0.45,1-1 s-0.45-1-1-1l-2,0c-0.55,0-1,0.45-1,1S19.45,13,20,13z M11,2v2c0,0.55,0.45,1,1,1s1-0.45,1-1V2c0-0.55-0.45-1-1-1S11,1.45,11,2z M11,20v2c0,0.55,0.45,1,1,1s1-0.45,1-1v-2c0-0.55-0.45-1-1-1C11.45,19,11,19.45,11,20z M5.99,4.58c-0.39-0.39-1.03-0.39-1.41,0 c-0.39,0.39-0.39,1.03,0,1.41l1.06,1.06c0.39,0.39,1.03,0.39,1.41,0s0.39-1.03,0-1.41L5.99,4.58z M18.36,16.95 c-0.39-0.39-1.03-0.39-1.41,0c-0.39,0.39-0.39,1.03,0,1.41l1.06,1.06c0.39,0.39,1.03,0.39,1.41,0c0.39-0.39,0.39-1.03,0-1.41 L18.36,16.95z M19.42,5.99c0.39-0.39,0.39-1.03,0-1.41c-0.39-0.39-1.03-0.39-1.41,0l-1.06,1.06c-0.39,0.39-0.39,1.03,0,1.41 s1.03,0.39,1.41,0L19.42,5.99z M7.05,18.36c0.39-0.39,0.39-1.03,0-1.41c-0.39-0.39-1.03-0.39-1.41,0l-1.06,1.06 c-0.39,0.39-0.39,1.03,0,1.41s1.03,0.39,1.41,0L7.05,18.36z"></path></svg><svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" class="toggleIcon_g3eP darkToggleIcon_wfgR"><path fill="currentColor" d="M9.37,5.51C9.19,6.15,9.1,6.82,9.1,7.5c0,4.08,3.32,7.4,7.4,7.4c0.68,0,1.35-0.09,1.99-0.27C17.45,17.19,14.93,19,12,19 c-3.86,0-7-3.14-7-7C5,9.07,6.81,6.55,9.37,5.51z M12,3c-4.97,0-9,4.03-9,9s4.03,9,9,9s9-4.03,9-9c0-0.46-0.04-0.92-0.1-1.36 c-0.98,1.37-2.58,2.26-4.4,2.26c-2.98,0-5.4-2.42-5.4-5.4c0-1.81,0.89-3.42,2.26-4.4C12.92,3.04,12.46,3,12,3L12,3z"></path></svg><svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" class="toggleIcon_g3eP systemToggleIcon_QzmC"><path fill="currentColor" d="m12 21c4.971 0 9-4.029 9-9s-4.029-9-9-9-9 4.029-9 9 4.029 9 9 9zm4.95-13.95c1.313 1.313 2.05 3.093 2.05 4.95s-0.738 3.637-2.05 4.95c-1.313 1.313-3.093 2.05-4.95 2.05v-14c1.857 0 3.637 0.737 4.95 2.05z"></path></svg></button></div><div class="navbarSearchContainer_Bca1"></div></div></div><div role="presentation" class="navbar-sidebar__backdrop"></div></nav><div id="__docusaurus_skipToContent_fallback" class="theme-layout-main main-wrapper mainWrapper_z2l0"><div class="docsWrapper_hBAB"><button aria-label="Scroll back to top" class="clean-btn theme-back-to-top-button backToTopButton_sjWU" type="button"></button><div class="docRoot_UBD9"><aside class="theme-doc-sidebar-container docSidebarContainer_YfHR"><div class="sidebarViewport_aRkj"><div class="sidebar_njMd"><nav aria-label="Docs sidebar" class="menu thin-scrollbar menu_SIkG"><ul class="theme-doc-sidebar-menu menu__list"><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist menu__link--sublist-caret" role="button" aria-expanded="false" href="/physical-ai-textbook/docs/intro/introduction-to-physical-ai"><span title="Introduction" class="categoryLinkLabel_W154">Introduction</span></a></div></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist menu__link--sublist-caret" role="button" aria-expanded="false" href="/physical-ai-textbook/docs/module-1-ros/ros2-from-zero"><span title="Module 1 - ROS 2 Fundamentals" class="categoryLinkLabel_W154">Module 1 - ROS 2 Fundamentals</span></a></div></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist menu__link--sublist-caret menu__link--active" role="button" aria-expanded="true" href="/physical-ai-textbook/docs/module-2-simulation/gazebo-harmonic-setup"><span title="Module 2 - Simulation" class="categoryLinkLabel_W154">Module 2 - Simulation</span></a></div><ul class="menu__list"><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-2 menu__list-item"><a class="menu__link" tabindex="0" href="/physical-ai-textbook/docs/module-2-simulation/gazebo-harmonic-setup"><span title="Gazebo Harmonic Setup" class="linkLabel_WmDU">Gazebo Harmonic Setup</span></a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-2 menu__list-item"><a class="menu__link" tabindex="0" href="/physical-ai-textbook/docs/module-2-simulation/simulating-humanoid"><span title="Simulating Humanoid in Gazebo" class="linkLabel_WmDU">Simulating Humanoid in Gazebo</span></a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-2 menu__list-item"><a class="menu__link" tabindex="0" href="/physical-ai-textbook/docs/module-2-simulation/unity-rendering"><span title="Unity Rendering" class="linkLabel_WmDU">Unity Rendering</span></a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-2 menu__list-item"><a class="menu__link" tabindex="0" href="/physical-ai-textbook/docs/module-2-simulation/sensor-plugin-configuration"><span title="Sensor Plugin Configuration" class="linkLabel_WmDU">Sensor Plugin Configuration</span></a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-2 menu__list-item"><a class="menu__link" tabindex="0" href="/physical-ai-textbook/docs/module-2-simulation/sensor-configurations"><span title="Sensor Configurations" class="linkLabel_WmDU">Sensor Configurations</span></a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-2 menu__list-item"><a class="menu__link menu__link--active" aria-current="page" tabindex="0" href="/physical-ai-textbook/docs/module-2-simulation/ros-tcp-connector"><span title="ROS TCP Connector Bridge" class="linkLabel_WmDU">ROS TCP Connector Bridge</span></a></li></ul></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist menu__link--sublist-caret" role="button" aria-expanded="false" href="/physical-ai-textbook/docs/module-3-ai-brain/isaac-sim-installation"><span title="Module 3 - AI Brain" class="categoryLinkLabel_W154">Module 3 - AI Brain</span></a></div></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist menu__link--sublist-caret" role="button" aria-expanded="false" href="/physical-ai-textbook/docs/module-4-vla/whisper-gpt-ros-planner"><span title="Module 4 - VLA Integration" class="categoryLinkLabel_W154">Module 4 - VLA Integration</span></a></div></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist menu__link--sublist-caret" role="button" aria-expanded="false" href="/physical-ai-textbook/docs/capstone/red-cup-project"><span title="Capstone Project" class="categoryLinkLabel_W154">Capstone Project</span></a></div></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist menu__link--sublist-caret" role="button" aria-expanded="false" href="/physical-ai-textbook/docs/hardware/hardware-guide"><span title="Hardware Guide" class="categoryLinkLabel_W154">Hardware Guide</span></a></div></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist menu__link--sublist-caret" role="button" aria-expanded="false" href="/physical-ai-textbook/docs/appendix/troubleshooting"><span title="Appendices" class="categoryLinkLabel_W154">Appendices</span></a></div></li></ul></nav></div></div></aside><main class="docMainContainer_TBSr"><div class="container padding-top--md padding-bottom--lg"><div class="row"><div class="col docItemCol_VOVn"><div class="docItemContainer_Djhp"><article><nav class="theme-doc-breadcrumbs breadcrumbsContainer_Z_bl" aria-label="Breadcrumbs"><ul class="breadcrumbs"><li class="breadcrumbs__item"><a aria-label="Home page" class="breadcrumbs__link" href="/physical-ai-textbook/"><svg viewBox="0 0 24 24" class="breadcrumbHomeIcon_YNFT"><path d="M10 19v-5h4v5c0 .55.45 1 1 1h3c.55 0 1-.45 1-1v-7h1.7c.46 0 .68-.57.33-.87L12.67 3.6c-.38-.34-.96-.34-1.34 0l-8.36 7.53c-.34.3-.13.87.33.87H5v7c0 .55.45 1 1 1h3c.55 0 1-.45 1-1z" fill="currentColor"></path></svg></a></li><li class="breadcrumbs__item"><span class="breadcrumbs__link">Module 2 - Simulation</span></li><li class="breadcrumbs__item breadcrumbs__item--active"><span class="breadcrumbs__link">ROS TCP Connector Bridge</span></li></ul></nav><div class="tocCollapsible_ETCw theme-doc-toc-mobile tocMobile_ITEo"><button type="button" class="clean-btn tocCollapsibleButton_TO0P">On this page</button></div><div class="theme-doc-markdown markdown"><header><h1 id="ros-tcp-connector-bridge-for-unity-integration">ROS TCP Connector Bridge for Unity Integration</h1></header>
+<h2 id="introduction">Introduction</h2>
+<p>The ROS TCP Connector provides a bridge between ROS 2 and Unity, enabling real-time communication for humanoid robotics simulation and visualization. This bridge allows Unity to act as a high-quality rendering environment while ROS 2 handles the physics simulation, control systems, and sensor processing. This chapter covers the setup, configuration, and usage of the ROS TCP Connector for humanoid robotics applications.</p>
+<h2 id="understanding-the-ros-tcp-connector-architecture">Understanding the ROS TCP Connector Architecture</h2>
+<h3 id="core-components">Core Components</h3>
+<p>The ROS TCP Connector consists of several key components:</p>
+<ol>
+<li><strong>ROS Bridge Node</strong>: Runs in the ROS 2 environment and handles message conversion</li>
+<li><strong>TCP Communication Layer</strong>: Provides low-latency communication between ROS 2 and Unity</li>
+<li><strong>Unity ROS Package</strong>: Handles message reception and Unity scene updates</li>
+<li><strong>Message Converters</strong>: Translate between ROS message types and Unity data structures</li>
+</ol>
+<h3 id="communication-flow">Communication Flow</h3>
+<p>The typical communication flow is:</p>
+<ul>
+<li>ROS 2 nodes publish messages to topics</li>
+<li>ROS Bridge receives messages and sends them over TCP to Unity</li>
+<li>Unity receives messages and updates the 3D scene</li>
+<li>Unity can publish messages back to ROS 2 through the bridge</li>
+</ul>
+<h2 id="setting-up-the-ros-tcp-connector">Setting up the ROS TCP Connector</h2>
+<h3 id="prerequisites">Prerequisites</h3>
+<p>Before setting up the ROS TCP Connector, ensure you have:</p>
+<ol>
+<li><strong>ROS 2 Humble Hawksbill</strong> installed and configured</li>
+<li><strong>Unity 2021.3 LTS or newer</strong> with Unity Hub</li>
+<li><strong>Python 3.8+</strong> for the bridge node</li>
+<li><strong>Basic knowledge of ROS 2 concepts</strong> (topics, messages, services)</li>
+</ol>
+<h3 id="installing-the-ros-bridge">Installing the ROS Bridge</h3>
+<h4 id="method-1-using-apt-ubuntu">Method 1: Using APT (Ubuntu)</h4>
+<pre><code class="language-bash">sudo apt update
+sudo apt install ros-humble-rosbridge-suite
+</code></pre>
+<h4 id="method-2-building-from-source">Method 2: Building from Source</h4>
+<pre><code class="language-bash"># Create a workspace
+mkdir -p ~/rosbridge_ws/src
+cd ~/rosbridge_ws/src
+
+# Clone the rosbridge repository
+git clone -b humble https://github.com/RobotWebTools/rosbridge_suite.git
+
+# Build the workspace
+cd ~/rosbridge_ws
+colcon build --packages-select rosbridge_suite
+source install/setup.bash
+</code></pre>
+<h3 id="installing-unity-ros-tcp-connector">Installing Unity ROS TCP Connector</h3>
+<p>In Unity, install the ROS TCP Connector package:</p>
+<ol>
+<li>Open Unity Hub and create a new 3D project</li>
+<li>Go to Window → Package Manager</li>
+<li>Click the &quot;+&quot; button → Add package from git URL</li>
+<li>Add: <code>com.unity.robotics.ros-tcp-connector</code></li>
+</ol>
+<h2 id="configuring-the-ros-bridge">Configuring the ROS Bridge</h2>
+<h3 id="basic-bridge-launch-file">Basic Bridge Launch File</h3>
+<p>Create a launch file to start the ROS bridge:</p>
+<pre><code class="language-python"># launch/rosbridge.launch.py
+from launch import LaunchDescription
+from launch.actions import DeclareLaunchArgument
+from launch.substitutions import LaunchConfiguration
+from launch_ros.actions import Node
+
+def generate_launch_description():
+    # Launch configuration variables
+    port = LaunchConfiguration(&#x27;port&#x27;, default=&#x27;9090&#x27;)
+    address = LaunchConfiguration(&#x27;address&#x27;, default=&#x27;127.0.0.1&#x27;)
+    reuse_service = LaunchConfiguration(&#x27;reuse_service&#x27;, default=&#x27;true&#x27;)
+
+    # Launch arguments
+    declare_port_cmd = DeclareLaunchArgument(
+        &#x27;port&#x27;,
+        default_value=&#x27;9090&#x27;,
+        description=&#x27;Port to use for the ROS bridge&#x27;)
+
+    declare_address_cmd = DeclareLaunchArgument(
+        &#x27;address&#x27;,
+        default_value=&#x27;127.0.0.1&#x27;,
+        description=&#x27;Address to use for the ROS bridge&#x27;)
+
+    declare_reuse_service_cmd = DeclareLaunchArgument(
+        &#x27;reuse_service&#x27;,
+        default_value=&#x27;true&#x27;,
+        description=&#x27;Whether to reuse service connections&#x27;)
+
+    # ROS Bridge Server node
+    rosbridge_server = Node(
+        package=&#x27;rosbridge_server&#x27;,
+        executable=&#x27;rosbridge_websocket&#x27;,
+        name=&#x27;rosbridge_server&#x27;,
+        parameters=[
+            {&#x27;port&#x27;: port},
+            {&#x27;address&#x27;: address},
+            {&#x27;reuse_service_client&#x27;: reuse_service},
+            {&#x27;authenticate_services&#x27;: False},
+            {&#x27;fragment_size&#x27;: 4096},
+            {&#x27;max_message_size&#x27;: 65536},
+            {&#x27;unregister_timeout&#x27;: 10.0}
+        ],
+        output=&#x27;screen&#x27;
+    )
+
+    # Create launch description
+    ld = LaunchDescription()
+
+    # Add launch arguments
+    ld.add_action(declare_port_cmd)
+    ld.add_action(declare_address_cmd)
+    ld.add_action(declare_reuse_service_cmd)
+
+    # Add ROS bridge node
+    ld.add_action(rosbridge_server)
+
+    return ld
+</code></pre>
+<h3 id="advanced-bridge-configuration">Advanced Bridge Configuration</h3>
+<p>For humanoid robotics applications, you may need additional configuration:</p>
+<pre><code class="language-yaml"># config/rosbridge_config.yaml
+rosbridge_websocket:
+  ros__parameters:
+    # Server configuration
+    port: 9090
+    address: &quot;0.0.0.0&quot;  # Allow connections from any address
+    authenticate_services: false
+    reuse_service_client: true
+
+    # Message configuration
+    fragment_size: 8192  # Increase for larger messages
+    max_message_size: 131072  # Increase for complex humanoid data
+    incoming_buffer: 65536
+    socket_timeout: 10
+    tcp_no_delay: true  # Reduce latency
+    ssl: false
+
+    # Topics configuration
+    topics_glob: [&quot;*&quot;]  # Allow all topics by default
+    services_glob: [&quot;*&quot;]  # Allow all services by default
+    params_glob: [&quot;*&quot;]  # Allow all parameters by default
+
+    # Throttle configuration for humanoid sensors
+    bson_only_mode: false
+    send_buffer_size: 65536
+    status_level: 2  # 0=disabled, 1=warning, 2=all
+</code></pre>
+<h2 id="unity-integration-setup">Unity Integration Setup</h2>
+<h3 id="basic-unity-connection-script">Basic Unity Connection Script</h3>
+<p>Create a connection script in Unity to connect to the ROS bridge:</p>
+<pre><code class="language-csharp">// Scripts/ROSConnectionManager.cs
+using UnityEngine;
+using Unity.Robotics.ROSTCPConnector;
+using RosMessageTypes.Sensor;
+using RosMessageTypes.Geometry;
+
+public class ROSConnectionManager : MonoBehaviour
+{
+    [Header(&quot;ROS Connection Settings&quot;)]
+    [SerializeField] private string rosIPAddress = &quot;127.0.0.1&quot;;
+    [SerializeField] private int rosPort = 9090;
+    [SerializeField] private bool useSSL = false;
+
+    [Header(&quot;Subscribed Topics&quot;)]
+    [SerializeField] private string jointStatesTopic = &quot;/joint_states&quot;;
+    [SerializeField] private string imuTopic = &quot;/imu/data&quot;;
+    [SerializeField] private string odometryTopic = &quot;/odom&quot;;
+
+    private ROSConnection rosConnection;
+    private bool isConnected = false;
+
+    void Start()
+    {
+        InitializeROSConnection();
+        SubscribeToTopics();
+    }
+
+    void InitializeROSConnection()
+    {
+        rosConnection = ROSConnection.GetOrCreateInstance();
+        rosConnection.OnConnected += OnConnected;
+        rosConnection.OnDisconnected += OnDisconnected;
+
+        // Configure connection
+        rosConnection.host = rosIPAddress;
+        rosConnection.port = rosPort;
+        rosConnection.useSSL = useSSL;
+    }
+
+    void SubscribeToTopics()
+    {
+        // Subscribe to joint states for humanoid robot visualization
+        rosConnection.Subscribe&lt;JointStateMsg&gt;(jointStatesTopic, OnJointStateReceived);
+
+        // Subscribe to IMU data for orientation visualization
+        rosConnection.Subscribe&lt;ImuMsg&gt;(imuTopic, OnIMUReceived);
+
+        // Subscribe to odometry for position tracking
+        rosConnection.Subscribe&lt;OdometryMsg&gt;(odometryTopic, OnOdometryReceived);
+    }
+
+    void OnConnected()
+    {
+        isConnected = true;
+        Debug.Log(&quot;Connected to ROS bridge at &quot; + rosConnection.host + &quot;:&quot; + rosConnection.port);
+    }
+
+    void OnDisconnected()
+    {
+        isConnected = false;
+        Debug.LogWarning(&quot;Disconnected from ROS bridge&quot;);
+    }
+
+    void OnJointStateReceived(JointStateMsg msg)
+    {
+        // Process joint state message
+        var jointPositions = new System.Collections.Generic.Dictionary&lt;string, double&gt;();
+
+        for (int i = 0; i &lt; msg.name.Count; i++)
+        {
+            if (i &lt; msg.position.Count)
+            {
+                jointPositions[msg.name[i]] = msg.position[i];
+            }
+        }
+
+        // Notify other components about the new joint states
+        SendMessage(&quot;UpdateRobotJoints&quot;, jointPositions, SendMessageOptions.DontRequireReceiver);
+    }
+
+    void OnIMUReceived(ImuMsg msg)
+    {
+        // Process IMU data
+        Vector3 orientation = new Vector3(
+            (float)msg.orientation.x,
+            (float)msg.orientation.y,
+            (float)msg.orientation.z
+        );
+
+        // Use for visualization or other purposes
+        SendMessage(&quot;UpdateOrientation&quot;, orientation, SendMessageOptions.DontRequireReceiver);
+    }
+
+    void OnOdometryReceived(OdometryMsg msg)
+    {
+        // Process odometry data
+        Vector3 position = new Vector3(
+            (float)msg.pose.pose.position.x,
+            (float)msg.pose.pose.position.z,  // Unity Y is up
+            (float)msg.pose.pose.position.y   // Swap Y and Z
+        );
+
+        // Update robot position in Unity
+        transform.position = position;
+    }
+
+    public bool IsConnected()
+    {
+        return isConnected;
+    }
+
+    void OnApplicationQuit()
+    {
+        if (rosConnection != null)
+        {
+            rosConnection.Close();
+        }
+    }
+}
+</code></pre>
+<h3 id="humanoid-robot-joint-controller">Humanoid Robot Joint Controller</h3>
+<p>Create a script to update the humanoid robot&#x27;s joints based on ROS messages:</p>
+<pre><code class="language-csharp">// Scripts/HumanoidJointController.cs
+using UnityEngine;
+using System.Collections.Generic;
+
+[System.Serializable]
+public class JointMapping
+{
+    public string rosJointName;
+    public Transform unityJoint;
+    public JointType jointType;
+    public Vector3 rotationAxis = Vector3.up;
+    public float minAngle = -180f;
+    public float maxAngle = 180f;
+    public float positionMultiplier = 1f;
+}
+
+public enum JointType
+{
+    Revolute,
+    Prismatic,
+    Fixed
+}
+
+public class HumanoidJointController : MonoBehaviour
+{
+    [Header(&quot;Joint Configuration&quot;)]
+    [SerializeField] private List&lt;JointMapping&gt; jointMappings = new List&lt;JointMapping&gt;();
+    [SerializeField] private bool updateInFixedUpdate = true;
+
+    private Dictionary&lt;string, double&gt; currentJointPositions = new Dictionary&lt;string, double&gt;();
+    private bool hasNewData = false;
+
+    void Start()
+    {
+        // Initialize all joint positions to zero if not already mapped
+        foreach (var mapping in jointMappings)
+        {
+            if (!currentJointPositions.ContainsKey(mapping.rosJointName))
+            {
+                currentJointPositions[mapping.rosJointName] = 0.0;
+            }
+        }
+    }
+
+    void Update()
+    {
+        if (!updateInFixedUpdate)
+        {
+            UpdateJoints();
+        }
+    }
+
+    void FixedUpdate()
+    {
+        if (updateInFixedUpdate)
+        {
+            UpdateJoints();
+        }
+    }
+
+    public void UpdateRobotJoints(Dictionary&lt;string, double&gt; jointPositions)
+    {
+        currentJointPositions = new Dictionary&lt;string, double&gt;(jointPositions);
+        hasNewData = true;
+    }
+
+    void UpdateJoints()
+    {
+        if (!hasNewData) return;
+
+        foreach (var mapping in jointMappings)
+        {
+            if (currentJointPositions.ContainsKey(mapping.rosJointName))
+            {
+                double position = currentJointPositions[mapping.rosJointName];
+                ApplyJointTransform(mapping, (float)position);
+            }
+        }
+
+        hasNewData = false;
+    }
+
+    void ApplyJointTransform(JointMapping mapping, float position)
+    {
+        if (mapping.unityJoint == null) return;
+
+        switch (mapping.jointType)
+        {
+            case JointType.Revolute:
+                // Apply rotational joint
+                float clampedPosition = Mathf.Clamp(position, mapping.minAngle * Mathf.Deg2Rad, mapping.maxAngle * Mathf.Deg2Rad);
+                float rotationInDegrees = clampedPosition * Mathf.Rad2Deg * mapping.positionMultiplier;
+
+                Vector3 rotation = mapping.rotationAxis * rotationInDegrees;
+                mapping.unityJoint.localEulerAngles = rotation;
+                break;
+
+            case JointType.Prismatic:
+                // Apply linear joint
+                float linearPosition = position * mapping.positionMultiplier;
+                Vector3 linearOffset = mapping.rotationAxis * linearPosition;
+                mapping.unityJoint.localPosition += linearOffset;
+                break;
+
+            case JointType.Fixed:
+                // No movement for fixed joints
+                break;
+        }
+    }
+
+    // Helper method to add joint mapping at runtime
+    public void AddJointMapping(string rosJointName, Transform unityJoint, JointType jointType = JointType.Revolute)
+    {
+        JointMapping newMapping = new JointMapping
+        {
+            rosJointName = rosJointName,
+            unityJoint = unityJoint,
+            jointType = jointType
+        };
+
+        jointMappings.Add(newMapping);
+        currentJointPositions[rosJointName] = 0.0;
+    }
+}
+</code></pre>
+<h2 id="publishing-messages-from-unity">Publishing Messages from Unity</h2>
+<h3 id="joint-command-publisher">Joint Command Publisher</h3>
+<p>Create a script to publish joint commands from Unity back to ROS:</p>
+<pre><code class="language-csharp">// Scripts/JointCommandPublisher.cs
+using UnityEngine;
+using Unity.Robotics.ROSTCPConnector;
+using RosMessageTypes.Sensor;
+using RosMessageTypes.Std;
+
+public class JointCommandPublisher : MonoBehaviour
+{
+    [Header(&quot;Publisher Settings&quot;)]
+    [SerializeField] private string jointCommandTopic = &quot;/joint_commands&quot;;
+    [SerializeField] private float publishRate = 50f; // Hz
+
+    [Header(&quot;Joint Configuration&quot;)]
+    [SerializeField] private string[] jointNames;
+    [SerializeField] private Transform[] jointTransforms;
+
+    private ROSConnection ros;
+    private float lastPublishTime = 0f;
+    private float publishInterval;
+
+    void Start()
+    {
+        ros = ROSConnection.GetOrCreateInstance();
+        publishInterval = 1f / publishRate;
+
+        if (jointNames.Length != jointTransforms.Length)
+        {
+            Debug.LogError(&quot;Joint names and transforms arrays must have the same length!&quot;);
+        }
+    }
+
+    void Update()
+    {
+        if (Time.time - lastPublishTime &gt;= publishInterval)
+        {
+            PublishJointCommands();
+            lastPublishTime = Time.time;
+        }
+    }
+
+    void PublishJointCommands()
+    {
+        if (jointNames.Length == 0 || jointTransforms.Length == 0) return;
+
+        // Create joint state message
+        var jointState = new JointStateMsg();
+        jointState.header = new HeaderMsg();
+        jointState.header.stamp = new TimeStamp(ROSConnection.GetNodeTimeInSecs());
+        jointState.header.frame_id = &quot;base_link&quot;;
+
+        // Add joint names and positions
+        for (int i = 0; i &lt; jointNames.Length &amp;&amp; i &lt; jointTransforms.Length; i++)
+        {
+            jointState.name.Add(jointNames[i]);
+
+            // Convert Unity rotation to ROS joint position (simplified)
+            // This depends on your joint configuration
+            float jointPosition = jointTransforms[i].localEulerAngles.y * Mathf.Deg2Rad;
+            jointState.position.Add(jointPosition);
+        }
+
+        // Publish the message
+        ros.Publish(jointCommandTopic, jointState);
+    }
+
+    // Method to publish specific joint positions
+    public void PublishJointPositions(Dictionary&lt;string, float&gt; jointPositions)
+    {
+        var jointState = new JointStateMsg();
+        jointState.header = new HeaderMsg();
+        jointState.header.stamp = new TimeStamp(ROSConnection.GetNodeTimeInSecs());
+        jointState.header.frame_id = &quot;base_link&quot;;
+
+        foreach (var kvp in jointPositions)
+        {
+            jointState.name.Add(kvp.Key);
+            jointState.position.Add(kvp.Value);
+        }
+
+        ros.Publish(jointCommandTopic, jointState);
+    }
+}
+</code></pre>
+<h3 id="velocity-command-publisher">Velocity Command Publisher</h3>
+<p>For humanoid locomotion, create a velocity command publisher:</p>
+<pre><code class="language-csharp">// Scripts/VelocityCommandPublisher.cs
+using UnityEngine;
+using Unity.Robotics.ROSTCPConnector;
+using RosMessageTypes.Geometry;
+
+public class VelocityCommandPublisher : MonoBehaviour
+{
+    [Header(&quot;Topic Configuration&quot;)]
+    [SerializeField] private string cmdVelTopic = &quot;/cmd_vel&quot;;
+    [SerializeField] private float maxLinearVelocity = 1.0f;
+    [SerializeField] private float maxAngularVelocity = 1.0f;
+
+    private ROSConnection ros;
+
+    void Start()
+    {
+        ros = ROSConnection.GetOrCreateInstance();
+    }
+
+    public void PublishVelocityCommand(float linearX, float angularZ)
+    {
+        // Clamp velocities to prevent excessive commands
+        linearX = Mathf.Clamp(linearX, -maxLinearVelocity, maxLinearVelocity);
+        angularZ = Mathf.Clamp(angularZ, -maxAngularVelocity, maxAngularVelocity);
+
+        var twist = new TwistMsg();
+        twist.linear = new Vector3Msg(linearX, 0, 0);
+        twist.angular = new Vector3Msg(0, 0, angularZ);
+
+        ros.Publish(cmdVelTopic, twist);
+    }
+
+    // Publish velocity based on Unity input
+    public void PublishFromInput()
+    {
+        float linearInput = Input.GetAxis(&quot;Vertical&quot;);
+        float angularInput = Input.GetAxis(&quot;Horizontal&quot;);
+
+        PublishVelocityCommand(linearInput * maxLinearVelocity, angularInput * maxAngularVelocity);
+    }
+}
+</code></pre>
+<h2 id="advanced-integration-features">Advanced Integration Features</h2>
+<h3 id="service-calls-from-unity">Service Calls from Unity</h3>
+<p>Enable Unity to call ROS services:</p>
+<pre><code class="language-csharp">// Scripts/ROSServiceCaller.cs
+using UnityEngine;
+using Unity.Robotics.ROSTCPConnector;
+using RosMessageTypes.Std;
+
+public class ROSServiceCaller : MonoBehaviour
+{
+    [Header(&quot;Service Configuration&quot;)]
+    [SerializeField] private string serviceName = &quot;/set_pose&quot;;
+    [SerializeField] private float timeoutSec = 5.0f;
+
+    private ROSConnection ros;
+
+    void Start()
+    {
+        ros = ROSConnection.GetOrCreateInstance();
+    }
+
+    public void CallSetPoseService(string frameId, float x, float y, float z)
+    {
+        var request = new SetPoseRequest();
+        request.target_pose = new RosMessageTypes.Geometry.PoseMsg();
+        request.target_pose.position = new RosMessageTypes.Geometry.PointMsg(x, y, z);
+        request.target_pose.orientation = new RosMessageTypes.Geometry.QuaternionMsg(0, 0, 0, 1);
+
+        ros.CallService&lt;SetPoseRequest, SetPoseResponse&gt;(
+            serviceName,
+            request,
+            (SetPoseResponse response) =&gt;
+            {
+                Debug.Log(&quot;Service call successful: &quot; + response.success);
+            },
+            (float)timeoutSec
+        );
+    }
+
+    public void CallEmptyService(string serviceToCall)
+    {
+        var request = new EmptyRequest();
+
+        ros.CallService&lt;EmptyRequest, EmptyResponse&gt;(
+            serviceToCall,
+            request,
+            (EmptyResponse response) =&gt;
+            {
+                Debug.Log(&quot;Empty service call completed&quot;);
+            },
+            (float)timeoutSec
+        );
+    }
+}
+</code></pre>
+<h3 id="parameter-management">Parameter Management</h3>
+<p>Access and modify ROS parameters from Unity:</p>
+<pre><code class="language-csharp">// Scripts/ROSParameterManager.cs
+using UnityEngine;
+using Unity.Robotics.ROSTCPConnector;
+using System.Collections.Generic;
+
+public class ROSParameterManager : MonoBehaviour
+{
+    private ROSConnection ros;
+
+    void Start()
+    {
+        ros = ROSConnection.GetOrCreateInstance();
+    }
+
+    public void SetParameter(string paramName, object value)
+    {
+        ros.SendParameter(paramName, value);
+    }
+
+    public void GetParameter(string paramName, System.Action&lt;object&gt; callback)
+    {
+        ros.GetParameter(paramName, callback);
+    }
+
+    public void GetParameterList(System.Action&lt;List&lt;string&gt;&gt; callback)
+    {
+        ros.GetParameterList(callback);
+    }
+
+    // Example: Set humanoid control parameters
+    public void SetControlParameters(float balanceGain, float walkSpeed)
+    {
+        SetParameter(&quot;/humanoid_robot/balance_gain&quot;, balanceGain);
+        SetParameter(&quot;/humanoid_robot/walk_speed&quot;, walkSpeed);
+    }
+}
+</code></pre>
+<h2 id="performance-optimization">Performance Optimization</h2>
+<h3 id="efficient-message-handling">Efficient Message Handling</h3>
+<p>Optimize for humanoid robots with many joints:</p>
+<pre><code class="language-csharp">// Scripts/OptimizedJointHandler.cs
+using UnityEngine;
+using System.Collections.Generic;
+using Unity.Robotics.ROSTCPConnector;
+using RosMessageTypes.Sensor;
+
+public class OptimizedJointHandler : MonoBehaviour
+{
+    [Header(&quot;Optimization Settings&quot;)]
+    [SerializeField] private float updateInterval = 0.02f; // 50Hz
+    [SerializeField] private bool useInterpolation = true;
+
+    private Dictionary&lt;string, double&gt; currentJointPositions = new Dictionary&lt;string, double&gt;();
+    private Dictionary&lt;string, double&gt; targetJointPositions = new Dictionary&lt;string, double&gt;();
+    private Dictionary&lt;string, double&gt; previousJointPositions = new Dictionary&lt;string, double&gt;();
+
+    private float lastUpdateTime = 0f;
+    private HumanoidJointController jointController;
+
+    void Start()
+    {
+        jointController = GetComponent&lt;HumanoidJointController&gt;();
+        rosConnection = ROSConnection.GetOrCreateInstance();
+        rosConnection.Subscribe&lt;JointStateMsg&gt;(&quot;/joint_states&quot;, OnJointStateReceived);
+    }
+
+    void OnJointStateReceived(JointStateMsg msg)
+    {
+        // Store previous positions for interpolation
+        previousJointPositions = new Dictionary&lt;string, double&gt;(currentJointPositions);
+
+        // Update target positions
+        for (int i = 0; i &lt; msg.name.Count &amp;&amp; i &lt; msg.position.Count; i++)
+        {
+            targetJointPositions[msg.name[i]] = msg.position[i];
+        }
+
+        lastUpdateTime = Time.time;
+    }
+
+    void Update()
+    {
+        if (useInterpolation &amp;&amp; Time.time - lastUpdateTime &lt; updateInterval)
+        {
+            float t = (Time.time - lastUpdateTime) / updateInterval;
+            t = Mathf.Clamp01(t);
+
+            // Interpolate between previous and target positions
+            var interpolatedPositions = new Dictionary&lt;string, double&gt;();
+
+            foreach (var kvp in targetJointPositions)
+            {
+                double prevPos = previousJointPositions.ContainsKey(kvp.Key) ?
+                                previousJointPositions[kvp.Key] : kvp.Value;
+
+                double interpolatedPos = prevPos + (kvp.Value - prevPos) * t;
+                interpolatedPositions[kvp.Key] = interpolatedPos;
+            }
+
+            jointController.UpdateRobotJoints(interpolatedPositions);
+        }
+        else if (Time.time - lastUpdateTime &gt;= updateInterval)
+        {
+            // Use target positions directly if interpolation is disabled or update interval passed
+            jointController.UpdateRobotJoints(new Dictionary&lt;string, double&gt;(targetJointPositions));
+        }
+    }
+}
+</code></pre>
+<h3 id="connection-status-monitoring">Connection Status Monitoring</h3>
+<p>Monitor and handle connection issues gracefully:</p>
+<pre><code class="language-csharp">// Scripts/ConnectionMonitor.cs
+using UnityEngine;
+using Unity.Robotics.ROSTCPConnector;
+using System.Collections;
+
+public class ConnectionMonitor : MonoBehaviour
+{
+    [Header(&quot;Connection Settings&quot;)]
+    [SerializeField] private float connectionCheckInterval = 1.0f;
+    [SerializeField] private int maxReconnectionAttempts = 5;
+    [SerializeField] private float reconnectionDelay = 2.0f;
+
+    private ROSConnection rosConnection;
+    private bool isConnected = false;
+    private int reconnectionAttempts = 0;
+    private Coroutine reconnectionCoroutine;
+
+    void Start()
+    {
+        rosConnection = ROSConnection.GetOrCreateInstance();
+        rosConnection.OnConnected += OnConnected;
+        rosConnection.OnDisconnected += OnDisconnected;
+
+        StartCoroutine(CheckConnectionStatus());
+    }
+
+    IEnumerator CheckConnectionStatus()
+    {
+        while (true)
+        {
+            yield return new WaitForSeconds(connectionCheckInterval);
+
+            if (rosConnection != null)
+            {
+                // Check if we&#x27;re still connected
+                if (!isConnected &amp;&amp; reconnectionAttempts &lt; maxReconnectionAttempts)
+                {
+                    AttemptReconnection();
+                }
+            }
+        }
+    }
+
+    void OnConnected()
+    {
+        isConnected = true;
+        reconnectionAttempts = 0;
+        Debug.Log(&quot;Successfully connected to ROS bridge&quot;);
+
+        if (reconnectionCoroutine != null)
+        {
+            StopCoroutine(reconnectionCoroutine);
+        }
+    }
+
+    void OnDisconnected()
+    {
+        isConnected = false;
+        Debug.LogWarning(&quot;Disconnected from ROS bridge. Attempting to reconnect...&quot;);
+
+        if (reconnectionAttempts &lt; maxReconnectionAttempts)
+        {
+            reconnectionCoroutine = StartCoroutine(ReconnectionRoutine());
+        }
+        else
+        {
+            Debug.LogError(&quot;Maximum reconnection attempts reached. Please check ROS bridge connection.&quot;);
+        }
+    }
+
+    void AttemptReconnection()
+    {
+        if (rosConnection != null)
+        {
+            rosConnection.Connect();
+        }
+    }
+
+    IEnumerator ReconnectionRoutine()
+    {
+        while (reconnectionAttempts &lt; maxReconnectionAttempts &amp;&amp; !isConnected)
+        {
+            reconnectionAttempts++;
+            Debug.Log($&quot;Reconnection attempt {reconnectionAttempts}/{maxReconnectionAttempts}&quot;);
+
+            rosConnection.Connect();
+
+            yield return new WaitForSeconds(reconnectionDelay);
+        }
+
+        if (!isConnected)
+        {
+            Debug.LogError(&quot;Failed to reconnect after maximum attempts&quot;);
+        }
+    }
+
+    public bool IsConnected()
+    {
+        return isConnected;
+    }
+
+    void OnApplicationQuit()
+    {
+        if (rosConnection != null)
+        {
+            rosConnection.Close();
+        }
+    }
+}
+</code></pre>
+<h2 id="troubleshooting-common-issues">Troubleshooting Common Issues</h2>
+<h3 id="connection-problems">Connection Problems</h3>
+<h4 id="issue-cannot-connect-to-ros-bridge">Issue: Cannot Connect to ROS Bridge</h4>
+<p><strong>Solutions:</strong></p>
+<ul>
+<li>Verify ROS bridge is running: <code>ros2 run rosbridge_server rosbridge_websocket</code></li>
+<li>Check IP address and port settings</li>
+<li>Ensure firewall allows connections on the specified port</li>
+<li>Verify network connectivity between Unity and ROS systems</li>
+</ul>
+<h4 id="issue-high-latency">Issue: High Latency</h4>
+<p><strong>Solutions:</strong></p>
+<ul>
+<li>Use TCP_NO_DELAY option in bridge configuration</li>
+<li>Reduce message frequency where possible</li>
+<li>Optimize network configuration</li>
+<li>Consider local deployment for minimum latency</li>
+</ul>
+<h3 id="message-handling-issues">Message Handling Issues</h3>
+<h4 id="issue-messages-not-receiving">Issue: Messages Not Receiving</h4>
+<p><strong>Solutions:</strong></p>
+<ul>
+<li>Check topic names match between ROS and Unity</li>
+<li>Verify message types are compatible</li>
+<li>Ensure subscriptions are properly set up</li>
+<li>Check ROS bridge configuration allows the topic</li>
+</ul>
+<h4 id="issue-performance-degradation-with-many-joints">Issue: Performance Degradation with Many Joints</h4>
+<p><strong>Solutions:</strong></p>
+<ul>
+<li>Implement message throttling</li>
+<li>Use interpolation for smooth visualization</li>
+<li>Optimize Unity rendering for complex humanoid models</li>
+<li>Consider using lower update rates for less critical joints</li>
+</ul>
+<h3 id="best-practices-for-humanoid-integration">Best Practices for Humanoid Integration</h3>
+<h4 id="1-efficient-data-transfer">1. Efficient Data Transfer</h4>
+<ul>
+<li>Use appropriate message types for Unity</li>
+<li>Implement message compression for high-frequency data</li>
+<li>Batch updates when possible</li>
+<li>Use efficient serialization formats</li>
+</ul>
+<h4 id="2-robust-communication">2. Robust Communication</h4>
+<ul>
+<li>Implement connection status monitoring</li>
+<li>Add retry mechanisms for failed communications</li>
+<li>Use appropriate buffer sizes</li>
+<li>Handle message timeouts gracefully</li>
+</ul>
+<h4 id="3-performance-considerations">3. Performance Considerations</h4>
+<ul>
+<li>Optimize Unity scenes for real-time performance</li>
+<li>Use object pooling for frequently created objects</li>
+<li>Implement efficient rendering techniques</li>
+<li>Monitor frame rate and adjust complexity accordingly</li>
+</ul>
+<h4 id="4-error-handling">4. Error Handling</h4>
+<ul>
+<li>Implement graceful degradation when connection is lost</li>
+<li>Provide fallback behaviors for critical functions</li>
+<li>Log connection and communication issues</li>
+<li>Implement circuit breaker patterns for service calls</li>
+</ul>
+<h2 id="integration-example-complete-humanoid-setup">Integration Example: Complete Humanoid Setup</h2>
+<p>Here&#x27;s a complete example of integrating a humanoid robot with ROS TCP Connector:</p>
+<pre><code class="language-csharp">// Scripts/CompleteHumanoidIntegration.cs
+using UnityEngine;
+using Unity.Robotics.ROSTCPConnector;
+using RosMessageTypes.Sensor;
+using RosMessageTypes.Geometry;
+using RosMessageTypes.Nav;
+using System.Collections.Generic;
+
+[RequireComponent(typeof(ROSConnectionManager))]
+[RequireComponent(typeof(HumanoidJointController))]
+public class CompleteHumanoidIntegration : MonoBehaviour
+{
+    [Header(&quot;ROS Topics&quot;)]
+    [SerializeField] private string jointStatesTopic = &quot;/joint_states&quot;;
+    [SerializeField] private string jointCommandTopic = &quot;/joint_commands&quot;;
+    [SerializeField] private string imuTopic = &quot;/imu/data&quot;;
+    [SerializeField] private string cmdVelTopic = &quot;/cmd_vel&quot;;
+    [SerializeField] private string tfTopic = &quot;/tf&quot;;
+
+    [Header(&quot;Humanoid Configuration&quot;)]
+    [SerializeField] private Transform robotRoot;
+    [SerializeField] private List&lt;JointMapping&gt; jointMappings = new List&lt;JointMapping&gt;();
+
+    private ROSConnection rosConnection;
+    private HumanoidJointController jointController;
+    private ROSConnectionManager connectionManager;
+
+    void Start()
+    {
+        // Get required components
+        rosConnection = ROSConnection.GetOrCreateInstance();
+        jointController = GetComponent&lt;HumanoidJointController&gt;();
+        connectionManager = GetComponent&lt;ROSConnectionManager&gt;();
+
+        // Set up joint mappings
+        foreach (var mapping in jointMappings)
+        {
+            jointController.AddJointMapping(mapping.rosJointName, mapping.unityJoint, mapping.jointType);
+        }
+
+        // Subscribe to topics
+        rosConnection.Subscribe&lt;JointStateMsg&gt;(jointStatesTopic, OnJointStatesReceived);
+        rosConnection.Subscribe&lt;ImuMsg&gt;(imuTopic, OnIMUReceived);
+        rosConnection.Subscribe&lt;OdometryMsg&gt;(&quot;/odom&quot;, OnOdometryReceived);
+
+        Debug.Log(&quot;Complete humanoid integration initialized&quot;);
+    }
+
+    void OnJointStatesReceived(JointStateMsg msg)
+    {
+        var jointPositions = new Dictionary&lt;string, double&gt;();
+
+        for (int i = 0; i &lt; msg.name.Count &amp;&amp; i &lt; msg.position.Count; i++)
+        {
+            jointPositions[msg.name[i]] = msg.position[i];
+        }
+
+        jointController.UpdateRobotJoints(jointPositions);
+    }
+
+    void OnIMUReceived(IMUMessage msg)
+    {
+        // Handle IMU data for orientation visualization
+        // Implementation depends on your specific needs
+    }
+
+    void OnOdometryReceived(OdometryMsg msg)
+    {
+        // Update robot position in Unity world
+        Vector3 position = new Vector3(
+            (float)msg.pose.pose.position.x,
+            (float)msg.pose.pose.position.z,
+            (float)msg.pose.pose.position.y
+        );
+
+        robotRoot.position = position;
+    }
+
+    // Method to send commands back to ROS
+    public void SendJointCommands(Dictionary&lt;string, float&gt; commands)
+    {
+        var jointState = new JointStateMsg();
+        jointState.header = new HeaderMsg();
+        jointState.header.stamp = new TimeStamp(ROSConnection.GetNodeTimeInSecs());
+        jointState.header.frame_id = &quot;base_link&quot;;
+
+        foreach (var cmd in commands)
+        {
+            jointState.name.Add(cmd.Key);
+            jointState.position.Add(cmd.Value);
+        }
+
+        rosConnection.Publish(jointCommandTopic, jointState);
+    }
+
+    public void SendVelocityCommand(float linearX, float angularZ)
+    {
+        var twist = new TwistMsg();
+        twist.linear = new Vector3Msg(linearX, 0, 0);
+        twist.angular = new Vector3Msg(0, 0, angularZ);
+
+        rosConnection.Publish(cmdVelTopic, twist);
+    }
+}
+</code></pre>
+<h2 id="summary">Summary</h2>
+<p>In this chapter, you&#x27;ve learned:</p>
+<ul>
+<li>How to set up and configure the ROS TCP Connector for Unity integration</li>
+<li>The architecture and components of the ROS-Unity bridge system</li>
+<li>How to implement connection management and error handling</li>
+<li>Techniques for subscribing to ROS topics and updating Unity scenes</li>
+<li>How to publish messages from Unity back to ROS 2</li>
+<li>Advanced features like service calls and parameter management</li>
+<li>Performance optimization strategies for humanoid robots</li>
+<li>Troubleshooting techniques for common integration issues</li>
+<li>Best practices for robust ROS-Unity integration</li>
+</ul>
+<p>The ROS TCP Connector enables powerful integration between ROS 2 and Unity, allowing for high-quality visualization and human-in-the-loop interaction with humanoid robots while maintaining the robust physics simulation and control capabilities of ROS 2.</p>
+<h2 id="exercises">Exercises</h2>
+<ol>
+<li>Set up a ROS TCP Connector bridge and connect Unity to a ROS 2 network</li>
+<li>Create a humanoid robot model in Unity with proper joint mapping</li>
+<li>Implement real-time joint state visualization from ROS 2</li>
+<li>Add bidirectional communication for sending commands from Unity</li>
+<li>Optimize the connection for low-latency humanoid robot control</li>
+</ol>
+<div class="starboard-notebook-container"><div class="starboard-notebook-header"><span class="starboard-notebook-icon">📊</span><span class="starboard-notebook-title">Interactive Notebook</span></div><div class="starboard-notebook-content"><div class="starboard-children-container"><pre><code class="language-python"># This would be an interactive code block for students to experiment with ROS TCP Connector
+# In a real implementation, this would connect to ROS 2 services
+# to test the bridge functionality
+</code></pre></div></div><div class="starboard-notebook-footer"><small>Note: This is a placeholder for interactive Starboard notebooks.</small></div></div></div><footer class="theme-doc-footer docusaurus-mt-lg"><div class="row margin-top--sm theme-doc-footer-edit-meta-row"><div class="col noPrint_WFHX"><a href="https://github.com/facebook/docusaurus/tree/main/packages/create-docusaurus/templates/shared/docs/module-2-simulation/06-ros-tcp-connector.mdx" target="_blank" rel="noopener noreferrer" class="theme-edit-this-page"><svg fill="currentColor" height="20" width="20" viewBox="0 0 40 40" class="iconEdit_Z9Sw" aria-hidden="true"><g><path d="m34.5 11.7l-3 3.1-6.3-6.3 3.1-3q0.5-0.5 1.2-0.5t1.1 0.5l3.9 3.9q0.5 0.4 0.5 1.1t-0.5 1.2z m-29.5 17.1l18.4-18.5 6.3 6.3-18.4 18.4h-6.3v-6.2z"></path></g></svg>Edit this page</a></div><div class="col lastUpdated_JAkA"></div></div></footer></article><nav class="docusaurus-mt-lg pagination-nav" aria-label="Docs pages"><a class="pagination-nav__link pagination-nav__link--prev" href="/physical-ai-textbook/docs/module-2-simulation/sensor-configurations"><div class="pagination-nav__sublabel">Previous</div><div class="pagination-nav__label">Sensor Configurations</div></a><a class="pagination-nav__link pagination-nav__link--next" href="/physical-ai-textbook/docs/module-3-ai-brain/isaac-sim-installation"><div class="pagination-nav__sublabel">Next</div><div class="pagination-nav__label">Isaac Sim Installation</div></a></nav></div></div><div class="col col--3"><div class="tableOfContents_bqdL thin-scrollbar theme-doc-toc-desktop"><ul class="table-of-contents table-of-contents__left-border"><li><a href="#introduction" class="table-of-contents__link toc-highlight">Introduction</a></li><li><a href="#understanding-the-ros-tcp-connector-architecture" class="table-of-contents__link toc-highlight">Understanding the ROS TCP Connector Architecture</a><ul><li><a href="#core-components" class="table-of-contents__link toc-highlight">Core Components</a></li><li><a href="#communication-flow" class="table-of-contents__link toc-highlight">Communication Flow</a></li></ul></li><li><a href="#setting-up-the-ros-tcp-connector" class="table-of-contents__link toc-highlight">Setting up the ROS TCP Connector</a><ul><li><a href="#prerequisites" class="table-of-contents__link toc-highlight">Prerequisites</a></li><li><a href="#installing-the-ros-bridge" class="table-of-contents__link toc-highlight">Installing the ROS Bridge</a></li><li><a href="#installing-unity-ros-tcp-connector" class="table-of-contents__link toc-highlight">Installing Unity ROS TCP Connector</a></li></ul></li><li><a href="#configuring-the-ros-bridge" class="table-of-contents__link toc-highlight">Configuring the ROS Bridge</a><ul><li><a href="#basic-bridge-launch-file" class="table-of-contents__link toc-highlight">Basic Bridge Launch File</a></li><li><a href="#advanced-bridge-configuration" class="table-of-contents__link toc-highlight">Advanced Bridge Configuration</a></li></ul></li><li><a href="#unity-integration-setup" class="table-of-contents__link toc-highlight">Unity Integration Setup</a><ul><li><a href="#basic-unity-connection-script" class="table-of-contents__link toc-highlight">Basic Unity Connection Script</a></li><li><a href="#humanoid-robot-joint-controller" class="table-of-contents__link toc-highlight">Humanoid Robot Joint Controller</a></li></ul></li><li><a href="#publishing-messages-from-unity" class="table-of-contents__link toc-highlight">Publishing Messages from Unity</a><ul><li><a href="#joint-command-publisher" class="table-of-contents__link toc-highlight">Joint Command Publisher</a></li><li><a href="#velocity-command-publisher" class="table-of-contents__link toc-highlight">Velocity Command Publisher</a></li></ul></li><li><a href="#advanced-integration-features" class="table-of-contents__link toc-highlight">Advanced Integration Features</a><ul><li><a href="#service-calls-from-unity" class="table-of-contents__link toc-highlight">Service Calls from Unity</a></li><li><a href="#parameter-management" class="table-of-contents__link toc-highlight">Parameter Management</a></li></ul></li><li><a href="#performance-optimization" class="table-of-contents__link toc-highlight">Performance Optimization</a><ul><li><a href="#efficient-message-handling" class="table-of-contents__link toc-highlight">Efficient Message Handling</a></li><li><a href="#connection-status-monitoring" class="table-of-contents__link toc-highlight">Connection Status Monitoring</a></li></ul></li><li><a href="#troubleshooting-common-issues" class="table-of-contents__link toc-highlight">Troubleshooting Common Issues</a><ul><li><a href="#connection-problems" class="table-of-contents__link toc-highlight">Connection Problems</a></li><li><a href="#message-handling-issues" class="table-of-contents__link toc-highlight">Message Handling Issues</a></li><li><a href="#best-practices-for-humanoid-integration" class="table-of-contents__link toc-highlight">Best Practices for Humanoid Integration</a></li></ul></li><li><a href="#integration-example-complete-humanoid-setup" class="table-of-contents__link toc-highlight">Integration Example: Complete Humanoid Setup</a></li><li><a href="#summary" class="table-of-contents__link toc-highlight">Summary</a></li><li><a href="#exercises" class="table-of-contents__link toc-highlight">Exercises</a></li></ul></div></div></div></div></main></div></div></div><footer class="theme-layout-footer footer footer--dark"><div class="container container-fluid"><div class="row footer__links"><div class="theme-layout-footer-column col footer__col"><div class="footer__title">Docs</div><ul class="footer__items clean-list"><li class="footer__item"><a class="footer__link-item" href="/physical-ai-textbook/docs/intro/introduction-to-physical-ai">Textbook</a></li></ul></div><div class="theme-layout-footer-column col footer__col"><div class="footer__title">Community</div><ul class="footer__items clean-list"><li class="footer__item"><a href="https://stackoverflow.com/questions/tagged/docusaurus" target="_blank" rel="noopener noreferrer" class="footer__link-item">Stack Overflow<svg width="13.5" height="13.5" aria-label="(opens in new tab)" class="iconExternalLink_nPIU"><use href="#theme-svg-external-link"></use></svg></a></li><li class="footer__item"><a href="https://discordapp.com/invite/docusaurus" target="_blank" rel="noopener noreferrer" class="footer__link-item">Discord<svg width="13.5" height="13.5" aria-label="(opens in new tab)" class="iconExternalLink_nPIU"><use href="#theme-svg-external-link"></use></svg></a></li><li class="footer__item"><a href="https://twitter.com/docusaurus" target="_blank" rel="noopener noreferrer" class="footer__link-item">Twitter<svg width="13.5" height="13.5" aria-label="(opens in new tab)" class="iconExternalLink_nPIU"><use href="#theme-svg-external-link"></use></svg></a></li></ul></div><div class="theme-layout-footer-column col footer__col"><div class="footer__title">More</div><ul class="footer__items clean-list"><li class="footer__item"><a href="https://github.com/Gulshan-koondhar/physical-ai-textbook" target="_blank" rel="noopener noreferrer" class="footer__link-item">GitHub<svg width="13.5" height="13.5" aria-label="(opens in new tab)" class="iconExternalLink_nPIU"><use href="#theme-svg-external-link"></use></svg></a></li></ul></div></div><div class="footer__bottom text--center"><div class="footer__copyright">Copyright © 2025 My Project, Inc. Built with Docusaurus.</div></div></div></footer></div>
+</body>
+</html>

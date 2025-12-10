@@ -1,0 +1,637 @@
+<!doctype html>
+<html lang="en" dir="ltr" class="docs-wrapper plugin-docs plugin-id-default docs-version-current docs-doc-page docs-doc-id-module-1-ros/urdf-xacro-mastery" data-has-hydrated="false">
+<head>
+<meta charset="UTF-8">
+<meta name="generator" content="Docusaurus v3.9.2">
+<title data-rh="true">URDF/Xacro Mastery | Physical AI &amp; Humanoid Robotics</title><meta data-rh="true" name="viewport" content="width=device-width,initial-scale=1"><meta data-rh="true" name="twitter:card" content="summary_large_image"><meta data-rh="true" property="og:image" content="https://Gulshan-koondhar.github.io/physical-ai-textbook/img/docusaurus-social-card.jpg"><meta data-rh="true" name="twitter:image" content="https://Gulshan-koondhar.github.io/physical-ai-textbook/img/docusaurus-social-card.jpg"><meta data-rh="true" property="og:url" content="https://Gulshan-koondhar.github.io/physical-ai-textbook/docs/module-1-ros/urdf-xacro-mastery"><meta data-rh="true" property="og:locale" content="en"><meta data-rh="true" name="docusaurus_locale" content="en"><meta data-rh="true" name="docsearch:language" content="en"><meta data-rh="true" name="docusaurus_version" content="current"><meta data-rh="true" name="docusaurus_tag" content="docs-default-current"><meta data-rh="true" name="docsearch:version" content="current"><meta data-rh="true" name="docsearch:docusaurus_tag" content="docs-default-current"><meta data-rh="true" property="og:title" content="URDF/Xacro Mastery | Physical AI &amp; Humanoid Robotics"><meta data-rh="true" name="description" content="Master the Unified Robot Description Format (URDF) and Xacro macros for humanoid robot modeling"><meta data-rh="true" property="og:description" content="Master the Unified Robot Description Format (URDF) and Xacro macros for humanoid robot modeling"><meta data-rh="true" name="keywords" content="URDF,Xacro,robot modeling,humanoid,ROS 2"><link data-rh="true" rel="icon" href="/physical-ai-textbook/img/favicon.ico"><link data-rh="true" rel="canonical" href="https://Gulshan-koondhar.github.io/physical-ai-textbook/docs/module-1-ros/urdf-xacro-mastery"><link data-rh="true" rel="alternate" href="https://Gulshan-koondhar.github.io/physical-ai-textbook/docs/module-1-ros/urdf-xacro-mastery" hreflang="en"><link data-rh="true" rel="alternate" href="https://Gulshan-koondhar.github.io/physical-ai-textbook/docs/module-1-ros/urdf-xacro-mastery" hreflang="x-default"><script data-rh="true" type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"URDF/Xacro Mastery","item":"https://Gulshan-koondhar.github.io/physical-ai-textbook/docs/module-1-ros/urdf-xacro-mastery"}]}</script><link rel="stylesheet" href="/physical-ai-textbook/assets/css/styles.4f99da8f.css">
+<script src="/physical-ai-textbook/assets/js/runtime~main.7cf563d1.js" defer="defer"></script>
+<script src="/physical-ai-textbook/assets/js/main.6dcd1921.js" defer="defer"></script>
+</head>
+<body class="navigation-with-keyboard">
+<svg style="display: none;"><defs>
+<symbol id="theme-svg-external-link" viewBox="0 0 24 24"><path fill="currentColor" d="M21 13v10h-21v-19h12v2h-10v15h17v-8h2zm3-12h-10.988l4.035 4-6.977 7.07 2.828 2.828 6.977-7.07 4.125 4.172v-11z"/></symbol>
+</defs></svg>
+<script>!function(){var t=function(){try{return new URLSearchParams(window.location.search).get("docusaurus-theme")}catch(t){}}()||function(){try{return window.localStorage.getItem("theme")}catch(t){}}();document.documentElement.setAttribute("data-theme",t||"light"),document.documentElement.setAttribute("data-theme-choice",t||"light")}(),function(){try{const c=new URLSearchParams(window.location.search).entries();for(var[t,e]of c)if(t.startsWith("docusaurus-data-")){var a=t.replace("docusaurus-data-","data-");document.documentElement.setAttribute(a,e)}}catch(t){}}()</script><div id="__docusaurus"><div role="region" aria-label="Skip to main content"><a class="skipToContent_fXgn" href="#__docusaurus_skipToContent_fallback">Skip to main content</a></div><nav aria-label="Main" class="theme-layout-navbar navbar navbar--fixed-top"><div class="navbar__inner"><div class="theme-layout-navbar-left navbar__items"><button aria-label="Toggle navigation bar" aria-expanded="false" class="navbar__toggle clean-btn" type="button"><svg width="30" height="30" viewBox="0 0 30 30" aria-hidden="true"><path stroke="currentColor" stroke-linecap="round" stroke-miterlimit="10" stroke-width="2" d="M4 7h22M4 15h22M4 23h22"></path></svg></button><a class="navbar__brand" href="/physical-ai-textbook/"><div class="navbar__logo"><img src="/physical-ai-textbook/img/logo.svg" alt="Physical AI Logo" class="themedComponent_mlkZ themedComponent--light_NVdE"><img src="/physical-ai-textbook/img/logo.svg" alt="Physical AI Logo" class="themedComponent_mlkZ themedComponent--dark_xIcU"></div><b class="navbar__title text--truncate">Physical AI Textbook</b></a><a aria-current="page" class="navbar__item navbar__link navbar__link--active" href="/physical-ai-textbook/docs/intro/introduction-to-physical-ai">Textbook</a></div><div class="theme-layout-navbar-right navbar__items navbar__items--right"><a href="https://github.com/Gulshan-koondhar/physical-ai-textbook" target="_blank" rel="noopener noreferrer" class="navbar__item navbar__link">GitHub<svg width="13.5" height="13.5" aria-label="(opens in new tab)" class="iconExternalLink_nPIU"><use href="#theme-svg-external-link"></use></svg></a><div class="toggle_vylO colorModeToggle_DEke"><button class="clean-btn toggleButton_gllP toggleButtonDisabled_aARS" type="button" disabled="" title="system mode" aria-label="Switch between dark and light mode (currently system mode)"><svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" class="toggleIcon_g3eP lightToggleIcon_pyhR"><path fill="currentColor" d="M12,9c1.65,0,3,1.35,3,3s-1.35,3-3,3s-3-1.35-3-3S10.35,9,12,9 M12,7c-2.76,0-5,2.24-5,5s2.24,5,5,5s5-2.24,5-5 S14.76,7,12,7L12,7z M2,13l2,0c0.55,0,1-0.45,1-1s-0.45-1-1-1l-2,0c-0.55,0-1,0.45-1,1S1.45,13,2,13z M20,13l2,0c0.55,0,1-0.45,1-1 s-0.45-1-1-1l-2,0c-0.55,0-1,0.45-1,1S19.45,13,20,13z M11,2v2c0,0.55,0.45,1,1,1s1-0.45,1-1V2c0-0.55-0.45-1-1-1S11,1.45,11,2z M11,20v2c0,0.55,0.45,1,1,1s1-0.45,1-1v-2c0-0.55-0.45-1-1-1C11.45,19,11,19.45,11,20z M5.99,4.58c-0.39-0.39-1.03-0.39-1.41,0 c-0.39,0.39-0.39,1.03,0,1.41l1.06,1.06c0.39,0.39,1.03,0.39,1.41,0s0.39-1.03,0-1.41L5.99,4.58z M18.36,16.95 c-0.39-0.39-1.03-0.39-1.41,0c-0.39,0.39-0.39,1.03,0,1.41l1.06,1.06c0.39,0.39,1.03,0.39,1.41,0c0.39-0.39,0.39-1.03,0-1.41 L18.36,16.95z M19.42,5.99c0.39-0.39,0.39-1.03,0-1.41c-0.39-0.39-1.03-0.39-1.41,0l-1.06,1.06c-0.39,0.39-0.39,1.03,0,1.41 s1.03,0.39,1.41,0L19.42,5.99z M7.05,18.36c0.39-0.39,0.39-1.03,0-1.41c-0.39-0.39-1.03-0.39-1.41,0l-1.06,1.06 c-0.39,0.39-0.39,1.03,0,1.41s1.03,0.39,1.41,0L7.05,18.36z"></path></svg><svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" class="toggleIcon_g3eP darkToggleIcon_wfgR"><path fill="currentColor" d="M9.37,5.51C9.19,6.15,9.1,6.82,9.1,7.5c0,4.08,3.32,7.4,7.4,7.4c0.68,0,1.35-0.09,1.99-0.27C17.45,17.19,14.93,19,12,19 c-3.86,0-7-3.14-7-7C5,9.07,6.81,6.55,9.37,5.51z M12,3c-4.97,0-9,4.03-9,9s4.03,9,9,9s9-4.03,9-9c0-0.46-0.04-0.92-0.1-1.36 c-0.98,1.37-2.58,2.26-4.4,2.26c-2.98,0-5.4-2.42-5.4-5.4c0-1.81,0.89-3.42,2.26-4.4C12.92,3.04,12.46,3,12,3L12,3z"></path></svg><svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" class="toggleIcon_g3eP systemToggleIcon_QzmC"><path fill="currentColor" d="m12 21c4.971 0 9-4.029 9-9s-4.029-9-9-9-9 4.029-9 9 4.029 9 9 9zm4.95-13.95c1.313 1.313 2.05 3.093 2.05 4.95s-0.738 3.637-2.05 4.95c-1.313 1.313-3.093 2.05-4.95 2.05v-14c1.857 0 3.637 0.737 4.95 2.05z"></path></svg></button></div><div class="navbarSearchContainer_Bca1"></div></div></div><div role="presentation" class="navbar-sidebar__backdrop"></div></nav><div id="__docusaurus_skipToContent_fallback" class="theme-layout-main main-wrapper mainWrapper_z2l0"><div class="docsWrapper_hBAB"><button aria-label="Scroll back to top" class="clean-btn theme-back-to-top-button backToTopButton_sjWU" type="button"></button><div class="docRoot_UBD9"><aside class="theme-doc-sidebar-container docSidebarContainer_YfHR"><div class="sidebarViewport_aRkj"><div class="sidebar_njMd"><nav aria-label="Docs sidebar" class="menu thin-scrollbar menu_SIkG"><ul class="theme-doc-sidebar-menu menu__list"><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist menu__link--sublist-caret" role="button" aria-expanded="false" href="/physical-ai-textbook/docs/intro/introduction-to-physical-ai"><span title="Introduction" class="categoryLinkLabel_W154">Introduction</span></a></div></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist menu__link--sublist-caret menu__link--active" role="button" aria-expanded="true" href="/physical-ai-textbook/docs/module-1-ros/ros2-from-zero"><span title="Module 1 - ROS 2 Fundamentals" class="categoryLinkLabel_W154">Module 1 - ROS 2 Fundamentals</span></a></div><ul class="menu__list"><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-2 menu__list-item"><a class="menu__link" tabindex="0" href="/physical-ai-textbook/docs/module-1-ros/ros2-from-zero"><span title="ROS 2 from Zero" class="linkLabel_WmDU">ROS 2 from Zero</span></a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-2 menu__list-item"><a class="menu__link menu__link--active" aria-current="page" tabindex="0" href="/physical-ai-textbook/docs/module-1-ros/urdf-xacro-mastery"><span title="URDF/Xacro Mastery" class="linkLabel_WmDU">URDF/Xacro Mastery</span></a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-2 menu__list-item"><a class="menu__link" tabindex="0" href="/physical-ai-textbook/docs/module-1-ros/nodes-topics-services"><span title="Nodes, Topics, Services" class="linkLabel_WmDU">Nodes, Topics, Services</span></a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-2 menu__list-item"><a class="menu__link" tabindex="0" href="/physical-ai-textbook/docs/module-1-ros/rviz-configuration"><span title="RViz2 Configuration" class="linkLabel_WmDU">RViz2 Configuration</span></a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-2 menu__list-item"><a class="menu__link" tabindex="0" href="/physical-ai-textbook/docs/module-1-ros/ros2-bag-foxglove"><span title="ROS 2 Bag and Foxglove" class="linkLabel_WmDU">ROS 2 Bag and Foxglove</span></a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-2 menu__list-item"><a class="menu__link" tabindex="0" href="/physical-ai-textbook/docs/module-1-ros/interactive-examples"><span title="Interactive ROS 2 Examples" class="linkLabel_WmDU">Interactive ROS 2 Examples</span></a></li></ul></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist menu__link--sublist-caret" role="button" aria-expanded="false" href="/physical-ai-textbook/docs/module-2-simulation/gazebo-harmonic-setup"><span title="Module 2 - Simulation" class="categoryLinkLabel_W154">Module 2 - Simulation</span></a></div></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist menu__link--sublist-caret" role="button" aria-expanded="false" href="/physical-ai-textbook/docs/module-3-ai-brain/isaac-sim-installation"><span title="Module 3 - AI Brain" class="categoryLinkLabel_W154">Module 3 - AI Brain</span></a></div></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist menu__link--sublist-caret" role="button" aria-expanded="false" href="/physical-ai-textbook/docs/module-4-vla/whisper-gpt-ros-planner"><span title="Module 4 - VLA Integration" class="categoryLinkLabel_W154">Module 4 - VLA Integration</span></a></div></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist menu__link--sublist-caret" role="button" aria-expanded="false" href="/physical-ai-textbook/docs/capstone/red-cup-project"><span title="Capstone Project" class="categoryLinkLabel_W154">Capstone Project</span></a></div></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist menu__link--sublist-caret" role="button" aria-expanded="false" href="/physical-ai-textbook/docs/hardware/hardware-guide"><span title="Hardware Guide" class="categoryLinkLabel_W154">Hardware Guide</span></a></div></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist menu__link--sublist-caret" role="button" aria-expanded="false" href="/physical-ai-textbook/docs/appendix/troubleshooting"><span title="Appendices" class="categoryLinkLabel_W154">Appendices</span></a></div></li></ul></nav></div></div></aside><main class="docMainContainer_TBSr"><div class="container padding-top--md padding-bottom--lg"><div class="row"><div class="col docItemCol_VOVn"><div class="docItemContainer_Djhp"><article><nav class="theme-doc-breadcrumbs breadcrumbsContainer_Z_bl" aria-label="Breadcrumbs"><ul class="breadcrumbs"><li class="breadcrumbs__item"><a aria-label="Home page" class="breadcrumbs__link" href="/physical-ai-textbook/"><svg viewBox="0 0 24 24" class="breadcrumbHomeIcon_YNFT"><path d="M10 19v-5h4v5c0 .55.45 1 1 1h3c.55 0 1-.45 1-1v-7h1.7c.46 0 .68-.57.33-.87L12.67 3.6c-.38-.34-.96-.34-1.34 0l-8.36 7.53c-.34.3-.13.87.33.87H5v7c0 .55.45 1 1 1h3c.55 0 1-.45 1-1z" fill="currentColor"></path></svg></a></li><li class="breadcrumbs__item"><span class="breadcrumbs__link">Module 1 - ROS 2 Fundamentals</span></li><li class="breadcrumbs__item breadcrumbs__item--active"><span class="breadcrumbs__link">URDF/Xacro Mastery</span></li></ul></nav><div class="tocCollapsible_ETCw theme-doc-toc-mobile tocMobile_ITEo"><button type="button" class="clean-btn tocCollapsibleButton_TO0P">On this page</button></div><div class="theme-doc-markdown markdown"><header><h1 id="urdfxacro-mastery">URDF/Xacro Mastery</h1></header>
+<h2 id="introduction">Introduction</h2>
+<p>The Unified Robot Description Format (URDF) is the standard XML format used in ROS for representing robots. For complex humanoid robots with 20+ degrees of freedom (DoF), URDF provides a structured way to define the robot&#x27;s physical properties, kinematic chains, and visual representation. However, as robot complexity increases, raw URDF becomes unwieldy. This is where Xacro (XML Macros) comes to the rescue, allowing us to use variables, macros, and mathematical expressions to create clean, maintainable robot descriptions.</p>
+<p>In this chapter, you&#x27;ll learn to create sophisticated humanoid robot models using URDF and Xacro, with a focus on practical applications for 20+ DoF robots.</p>
+<h2 id="understanding-urdf-structure">Understanding URDF Structure</h2>
+<h3 id="basic-urdf-components">Basic URDF Components</h3>
+<p>A URDF file describes a robot as a collection of rigid links connected by joints. Here&#x27;s the basic structure:</p>
+<pre><code class="language-xml">&lt;?xml version=&quot;1.0&quot;?&gt;
+&lt;robot name=&quot;humanoid_robot&quot;&gt;
+  &lt;!-- Links define rigid bodies --&gt;
+  &lt;link name=&quot;base_link&quot;&gt;
+    &lt;visual&gt;
+      &lt;geometry&gt;
+        &lt;cylinder length=&quot;0.6&quot; radius=&quot;0.2&quot;/&gt;
+      &lt;/geometry&gt;
+    &lt;/visual&gt;
+    &lt;collision&gt;
+      &lt;geometry&gt;
+        &lt;cylinder length=&quot;0.6&quot; radius=&quot;0.2&quot;/&gt;
+      &lt;/geometry&gt;
+    &lt;/collision&gt;
+    &lt;inertial&gt;
+      &lt;mass value=&quot;10&quot;/&gt;
+      &lt;inertia ixx=&quot;1.0&quot; ixy=&quot;0.0&quot; ixz=&quot;0.0&quot; iyy=&quot;1.0&quot; iyz=&quot;0.0&quot; izz=&quot;1.0&quot;/&gt;
+    &lt;/inertial&gt;
+  &lt;/link&gt;
+
+  &lt;!-- Joints connect links --&gt;
+  &lt;joint name=&quot;joint_name&quot; type=&quot;revolute&quot;&gt;
+    &lt;parent link=&quot;base_link&quot;/&gt;
+    &lt;child link=&quot;child_link&quot;/&gt;
+    &lt;origin xyz=&quot;0 0 0.3&quot; rpy=&quot;0 0 0&quot;/&gt;
+    &lt;axis xyz=&quot;0 0 1&quot;/&gt;
+    &lt;limit lower=&quot;-3.14&quot; upper=&quot;3.14&quot; effort=&quot;100&quot; velocity=&quot;1&quot;/&gt;
+  &lt;/joint&gt;
+&lt;/robot&gt;
+</code></pre>
+<h3 id="link-properties">Link Properties</h3>
+<p>Each link in a URDF must define three key properties:</p>
+<ol>
+<li><strong>Visual</strong>: How the link appears in simulation and visualization</li>
+<li><strong>Collision</strong>: How the link interacts with the physics engine</li>
+<li><strong>Inertial</strong>: Physical properties for dynamics simulation</li>
+</ol>
+<h3 id="joint-types">Joint Types</h3>
+<p>ROS supports several joint types:</p>
+<ul>
+<li><code>revolute</code>: Rotational joint with limited range</li>
+<li><code>continuous</code>: Rotational joint with unlimited range</li>
+<li><code>prismatic</code>: Linear sliding joint</li>
+<li><code>fixed</code>: No movement (welded connection)</li>
+<li><code>floating</code>: 6-DOF movement (rarely used)</li>
+</ul>
+<h2 id="introducing-xacro">Introducing Xacro</h2>
+<p>Xacro is a macro language that extends URDF with features like:</p>
+<ul>
+<li>Variables and constants</li>
+<li>Macros for reusable components</li>
+<li>Mathematical expressions</li>
+<li>Conditional blocks</li>
+</ul>
+<h3 id="basic-xacro-syntax">Basic Xacro Syntax</h3>
+<pre><code class="language-xml">&lt;?xml version=&quot;1.0&quot;?&gt;
+&lt;robot xmlns:xacro=&quot;http://www.ros.org/wiki/xacro&quot; name=&quot;humanoid_with_xacro&quot;&gt;
+
+  &lt;!-- Define constants --&gt;
+  &lt;xacro:property name=&quot;M_PI&quot; value=&quot;3.1415926535897931&quot; /&gt;
+  &lt;xacro:property name=&quot;base_radius&quot; value=&quot;0.15&quot; /&gt;
+  &lt;xacro:property name=&quot;base_length&quot; value=&quot;0.2&quot; /&gt;
+
+  &lt;!-- Define a macro for repeated elements --&gt;
+  &lt;xacro:macro name=&quot;simple_cylinder_inertial&quot; params=&quot;radius length mass *origin&quot;&gt;
+    &lt;inertial&gt;
+      &lt;mass value=&quot;${mass}&quot; /&gt;
+      &lt;xacro:insert_block name=&quot;origin&quot; /&gt;
+      &lt;inertia ixx=&quot;${0.0833333 * mass * (3 * radius * radius + length * length)}&quot;
+               iyy=&quot;${0.0833333 * mass * (3 * radius * radius + length * length)}&quot;
+               izz=&quot;${0.5 * mass * radius * radius}&quot;
+               ixy=&quot;0&quot; ixz=&quot;0&quot; iyz=&quot;0&quot; /&gt;
+    &lt;/inertial&gt;
+  &lt;/xacro:macro&gt;
+
+  &lt;link name=&quot;base_link&quot;&gt;
+    &lt;visual&gt;
+      &lt;geometry&gt;
+        &lt;cylinder radius=&quot;${base_radius}&quot; length=&quot;${base_length}&quot;/&gt;
+      &lt;/geometry&gt;
+    &lt;/visual&gt;
+    &lt;collision&gt;
+      &lt;geometry&gt;
+        &lt;cylinder radius=&quot;${base_radius}&quot; length=&quot;${base_length}&quot;/&gt;
+      &lt;/geometry&gt;
+    &lt;/collision&gt;
+    &lt;xacro:simple_cylinder_inertial radius=&quot;${base_radius}&quot; length=&quot;${base_length}&quot; mass=&quot;10&quot;&gt;
+      &lt;origin xyz=&quot;0 0 0&quot; rpy=&quot;0 0 0&quot;/&gt;
+    &lt;/xacro:simple_cylinder_inertial&gt;
+  &lt;/link&gt;
+
+&lt;/robot&gt;
+</code></pre>
+<h2 id="building-a-humanoid-robot-model">Building a Humanoid Robot Model</h2>
+<p>Let&#x27;s create a simplified humanoid model focusing on the key principles. For a complete 22-DoF humanoid, we&#x27;ll need to model:</p>
+<ul>
+<li>Torso with 6 DoF (waist rotation, chest movement)</li>
+<li>2 Arms with 7 DoF each (shoulder: 3 DoF, elbow: 1 DoF, wrist: 2 DoF, hand: 1 DoF)</li>
+<li>2 Legs with 6 DoF each (hip: 3 DoF, knee: 1 DoF, ankle: 2 DoF)</li>
+</ul>
+<h3 id="complete-humanoid-xacro-example">Complete Humanoid Xacro Example</h3>
+<pre><code class="language-xml">&lt;?xml version=&quot;1.0&quot;?&gt;
+&lt;robot xmlns:xacro=&quot;http://www.ros.org/wiki/xacro&quot; name=&quot;simple_humanoid&quot;&gt;
+
+  &lt;!-- Constants --&gt;
+  &lt;xacro:property name=&quot;M_PI&quot; value=&quot;3.1415926535897931&quot; /&gt;
+
+  &lt;!-- Material definitions --&gt;
+  &lt;material name=&quot;black&quot;&gt;
+    &lt;color rgba=&quot;0.0 0.0 0.0 1.0&quot;/&gt;
+  &lt;/material&gt;
+  &lt;material name=&quot;blue&quot;&gt;
+    &lt;color rgba=&quot;0.0 0.0 0.8 1.0&quot;/&gt;
+  &lt;/material&gt;
+  &lt;material name=&quot;green&quot;&gt;
+    &lt;color rgba=&quot;0.0 0.8 0.0 1.0&quot;/&gt;
+  &lt;/material&gt;
+  &lt;material name=&quot;grey&quot;&gt;
+    &lt;color rgba=&quot;0.2 0.2 0.2 1.0&quot;/&gt;
+  &lt;/material&gt;
+  &lt;material name=&quot;orange&quot;&gt;
+    &lt;color rgba=&quot;1.0 0.423529411765 0.0392156862745 1.0&quot;/&gt;
+  &lt;/material&gt;
+  &lt;material name=&quot;brown&quot;&gt;
+    &lt;color rgba=&quot;0.870588235294 0.811764705882 0.764705882353 1.0&quot;/&gt;
+  &lt;/material&gt;
+  &lt;material name=&quot;red&quot;&gt;
+    &lt;color rgba=&quot;0.8 0.0 0.0 1.0&quot;/&gt;
+  &lt;/material&gt;
+  &lt;material name=&quot;white&quot;&gt;
+    &lt;color rgba=&quot;1.0 1.0 1.0 1.0&quot;/&gt;
+  &lt;/material&gt;
+
+  &lt;!-- Inertial macros --&gt;
+  &lt;xacro:macro name=&quot;cylinder_inertial&quot; params=&quot;mass length radius *origin&quot;&gt;
+    &lt;inertial&gt;
+      &lt;mass value=&quot;${mass}&quot; /&gt;
+      &lt;xacro:insert_block name=&quot;origin&quot; /&gt;
+      &lt;inertia ixx=&quot;${0.0833333 * mass * (3 * radius * radius + length * length)}&quot;
+               iyy=&quot;${0.0833333 * mass * (3 * radius * radius + length * length)}&quot;
+               izz=&quot;${0.5 * mass * radius * radius}&quot;
+               ixy=&quot;0&quot; ixz=&quot;0&quot; iyz=&quot;0&quot; /&gt;
+    &lt;/inertial&gt;
+  &lt;/xacro:macro&gt;
+
+  &lt;xacro:macro name=&quot;box_inertial&quot; params=&quot;mass x y z *origin&quot;&gt;
+    &lt;inertial&gt;
+      &lt;mass value=&quot;${mass}&quot; /&gt;
+      &lt;xacro:insert_block name=&quot;origin&quot; /&gt;
+      &lt;inertia ixx=&quot;${0.0833333 * mass * (y*y + z*z)}&quot;
+               iyy=&quot;${0.0833333 * mass * (x*x + z*z)}&quot;
+               izz=&quot;${0.5 * mass * (x*x + y*y)}&quot;
+               ixy=&quot;0&quot; ixz=&quot;0&quot; iyz=&quot;0&quot; /&gt;
+    &lt;/inertial&gt;
+  &lt;/xacro:macro&gt;
+
+  &lt;xacro:macro name=&quot;sphere_inertial&quot; params=&quot;mass radius *origin&quot;&gt;
+    &lt;inertial&gt;
+      &lt;mass value=&quot;${mass}&quot; /&gt;
+      &lt;xacro:insert_block name=&quot;origin&quot; /&gt;
+      &lt;inertia ixx=&quot;${0.4 * mass * radius * radius}&quot;
+               iyy=&quot;${0.4 * mass * radius * radius}&quot;
+               izz=&quot;${0.4 * mass * radius * radius}&quot;
+               ixy=&quot;0&quot; ixz=&quot;0&quot; iyz=&quot;0&quot; /&gt;
+    &lt;/inertial&gt;
+  &lt;/xacro:macro&gt;
+
+  &lt;!-- Base link --&gt;
+  &lt;link name=&quot;base_link&quot;&gt;
+    &lt;visual&gt;
+      &lt;geometry&gt;
+        &lt;box size=&quot;0.1 0.1 0.1&quot;/&gt;
+      &lt;/geometry&gt;
+      &lt;material name=&quot;blue&quot;/&gt;
+    &lt;/visual&gt;
+    &lt;collision&gt;
+      &lt;geometry&gt;
+        &lt;box size=&quot;0.1 0.1 0.1&quot;/&gt;
+      &lt;/geometry&gt;
+    &lt;/collision&gt;
+    &lt;xacro:box_inertial mass=&quot;1&quot; x=&quot;0.1&quot; y=&quot;0.1&quot; z=&quot;0.1&quot;&gt;
+      &lt;origin xyz=&quot;0 0 0&quot;/&gt;
+    &lt;/xacro:box_inertial&gt;
+  &lt;/link&gt;
+
+  &lt;!-- Torso --&gt;
+  &lt;joint name=&quot;torso_joint&quot; type=&quot;fixed&quot;&gt;
+    &lt;parent link=&quot;base_link&quot;/&gt;
+    &lt;child link=&quot;torso_link&quot;/&gt;
+    &lt;origin xyz=&quot;0 0 0.05&quot; rpy=&quot;0 0 0&quot;/&gt;
+  &lt;/joint&gt;
+
+  &lt;link name=&quot;torso_link&quot;&gt;
+    &lt;visual&gt;
+      &lt;geometry&gt;
+        &lt;box size=&quot;0.2 0.15 0.4&quot;/&gt;
+      &lt;/geometry&gt;
+      &lt;material name=&quot;white&quot;/&gt;
+    &lt;/visual&gt;
+    &lt;collision&gt;
+      &lt;geometry&gt;
+        &lt;box size=&quot;0.2 0.15 0.4&quot;/&gt;
+      &lt;/geometry&gt;
+    &lt;/collision&gt;
+    &lt;xacro:box_inertial mass=&quot;5&quot; x=&quot;0.2&quot; y=&quot;0.15&quot; z=&quot;0.4&quot;&gt;
+      &lt;origin xyz=&quot;0 0 0&quot;/&gt;
+    &lt;/xacro:box_inertial&gt;
+  &lt;/link&gt;
+
+  &lt;!-- Head --&gt;
+  &lt;joint name=&quot;neck_joint&quot; type=&quot;revolute&quot;&gt;
+    &lt;parent link=&quot;torso_link&quot;/&gt;
+    &lt;child link=&quot;head_link&quot;/&gt;
+    &lt;origin xyz=&quot;0 0 0.25&quot; rpy=&quot;0 0 0&quot;/&gt;
+    &lt;axis xyz=&quot;0 1 0&quot;/&gt;
+    &lt;limit lower=&quot;${-M_PI/4}&quot; upper=&quot;${M_PI/4}&quot; effort=&quot;10&quot; velocity=&quot;1&quot;/&gt;
+  &lt;/joint&gt;
+
+  &lt;link name=&quot;head_link&quot;&gt;
+    &lt;visual&gt;
+      &lt;geometry&gt;
+        &lt;sphere radius=&quot;0.1&quot;/&gt;
+      &lt;/geometry&gt;
+      &lt;material name=&quot;white&quot;/&gt;
+    &lt;/visual&gt;
+    &lt;collision&gt;
+      &lt;geometry&gt;
+        &lt;sphere radius=&quot;0.1&quot;/&gt;
+      &lt;/geometry&gt;
+    &lt;/collision&gt;
+    &lt;xacro:sphere_inertial mass=&quot;1&quot; radius=&quot;0.1&quot;&gt;
+      &lt;origin xyz=&quot;0 0 0&quot;/&gt;
+    &lt;/xacro:sphere_inertial&gt;
+  &lt;/link&gt;
+
+  &lt;!-- Left Arm --&gt;
+  &lt;joint name=&quot;left_shoulder_yaw&quot; type=&quot;revolute&quot;&gt;
+    &lt;parent link=&quot;torso_link&quot;/&gt;
+    &lt;child link=&quot;left_upper_arm&quot;/&gt;
+    &lt;origin xyz=&quot;0.15 0 0.1&quot; rpy=&quot;0 0 0&quot;/&gt;
+    &lt;axis xyz=&quot;0 0 1&quot;/&gt;
+    &lt;limit lower=&quot;${-M_PI/2}&quot; upper=&quot;${M_PI/2}&quot; effort=&quot;10&quot; velocity=&quot;1&quot;/&gt;
+  &lt;/joint&gt;
+
+  &lt;link name=&quot;left_upper_arm&quot;&gt;
+    &lt;visual&gt;
+      &lt;geometry&gt;
+        &lt;cylinder radius=&quot;0.05&quot; length=&quot;0.3&quot;/&gt;
+      &lt;/geometry&gt;
+      &lt;origin xyz=&quot;0 0 0.15&quot; rpy=&quot;${M_PI/2} 0 0&quot;/&gt;
+      &lt;material name=&quot;orange&quot;/&gt;
+    &lt;/visual&gt;
+    &lt;collision&gt;
+      &lt;geometry&gt;
+        &lt;cylinder radius=&quot;0.05&quot; length=&quot;0.3&quot;/&gt;
+      &lt;/geometry&gt;
+      &lt;origin xyz=&quot;0 0 0.15&quot; rpy=&quot;${M_PI/2} 0 0&quot;/&gt;
+    &lt;/collision&gt;
+    &lt;xacro:cylinder_inertial mass=&quot;1&quot; length=&quot;0.3&quot; radius=&quot;0.05&quot;&gt;
+      &lt;origin xyz=&quot;0 0 0.15&quot; rpy=&quot;${M_PI/2} 0 0&quot;/&gt;
+    &lt;/xacro:cylinder_inertial&gt;
+  &lt;/link&gt;
+
+  &lt;joint name=&quot;left_elbow&quot; type=&quot;revolute&quot;&gt;
+    &lt;parent link=&quot;left_upper_arm&quot;/&gt;
+    &lt;child link=&quot;left_lower_arm&quot;/&gt;
+    &lt;origin xyz=&quot;0 0 0.3&quot; rpy=&quot;0 0 0&quot;/&gt;
+    &lt;axis xyz=&quot;0 1 0&quot;/&gt;
+    &lt;limit lower=&quot;0&quot; upper=&quot;${M_PI}&quot; effort=&quot;10&quot; velocity=&quot;1&quot;/&gt;
+  &lt;/joint&gt;
+
+  &lt;link name=&quot;left_lower_arm&quot;&gt;
+    &lt;visual&gt;
+      &lt;geometry&gt;
+        &lt;cylinder radius=&quot;0.04&quot; length=&quot;0.25&quot;/&gt;
+      &lt;/geometry&gt;
+      &lt;origin xyz=&quot;0 0 0.125&quot; rpy=&quot;${M_PI/2} 0 0&quot;/&gt;
+      &lt;material name=&quot;orange&quot;/&gt;
+    &lt;/visual&gt;
+    &lt;collision&gt;
+      &lt;geometry&gt;
+        &lt;cylinder radius=&quot;0.04&quot; length=&quot;0.25&quot;/&gt;
+      &lt;/geometry&gt;
+      &lt;origin xyz=&quot;0 0 0.125&quot; rpy=&quot;${M_PI/2} 0 0&quot;/&gt;
+    &lt;/collision&gt;
+    &lt;xacro:cylinder_inertial mass=&quot;0.8&quot; length=&quot;0.25&quot; radius=&quot;0.04&quot;&gt;
+      &lt;origin xyz=&quot;0 0 0.125&quot; rpy=&quot;${M_PI/2} 0 0&quot;/&gt;
+    &lt;/xacro:cylinder_inertial&gt;
+  &lt;/link&gt;
+
+  &lt;!-- Right Arm (symmetric to left) --&gt;
+  &lt;joint name=&quot;right_shoulder_yaw&quot; type=&quot;revolute&quot;&gt;
+    &lt;parent link=&quot;torso_link&quot;/&gt;
+    &lt;child link=&quot;right_upper_arm&quot;/&gt;
+    &lt;origin xyz=&quot;-0.15 0 0.1&quot; rpy=&quot;0 0 0&quot;/&gt;
+    &lt;axis xyz=&quot;0 0 1&quot;/&gt;
+    &lt;limit lower=&quot;${-M_PI/2}&quot; upper=&quot;${M_PI/2}&quot; effort=&quot;10&quot; velocity=&quot;1&quot;/&gt;
+  &lt;/joint&gt;
+
+  &lt;link name=&quot;right_upper_arm&quot;&gt;
+    &lt;visual&gt;
+      &lt;geometry&gt;
+        &lt;cylinder radius=&quot;0.05&quot; length=&quot;0.3&quot;/&gt;
+      &lt;/geometry&gt;
+      &lt;origin xyz=&quot;0 0 0.15&quot; rpy=&quot;${M_PI/2} 0 0&quot;/&gt;
+      &lt;material name=&quot;orange&quot;/&gt;
+    &lt;/visual&gt;
+    &lt;collision&gt;
+      &lt;geometry&gt;
+        &lt;cylinder radius=&quot;0.05&quot; length=&quot;0.3&quot;/&gt;
+      &lt;/geometry&gt;
+      &lt;origin xyz=&quot;0 0 0.15&quot; rpy=&quot;${M_PI/2} 0 0&quot;/&gt;
+    &lt;/collision&gt;
+    &lt;xacro:cylinder_inertial mass=&quot;1&quot; length=&quot;0.3&quot; radius=&quot;0.05&quot;&gt;
+      &lt;origin xyz=&quot;0 0 0.15&quot; rpy=&quot;${M_PI/2} 0 0&quot;/&gt;
+    &lt;/xacro:cylinder_inertial&gt;
+  &lt;/link&gt;
+
+  &lt;joint name=&quot;right_elbow&quot; type=&quot;revolute&quot;&gt;
+    &lt;parent link=&quot;right_upper_arm&quot;/&gt;
+    &lt;child link=&quot;right_lower_arm&quot;/&gt;
+    &lt;origin xyz=&quot;0 0 0.3&quot; rpy=&quot;0 0 0&quot;/&gt;
+    &lt;axis xyz=&quot;0 1 0&quot;/&gt;
+    &lt;limit lower=&quot;0&quot; upper=&quot;${M_PI}&quot; effort=&quot;10&quot; velocity=&quot;1&quot;/&gt;
+  &lt;/joint&gt;
+
+  &lt;link name=&quot;right_lower_arm&quot;&gt;
+    &lt;visual&gt;
+      &lt;geometry&gt;
+        &lt;cylinder radius=&quot;0.04&quot; length=&quot;0.25&quot;/&gt;
+      &lt;/geometry&gt;
+      &lt;origin xyz=&quot;0 0 0.125&quot; rpy=&quot;${M_PI/2} 0 0&quot;/&gt;
+      &lt;material name=&quot;orange&quot;/&gt;
+    &lt;/visual&gt;
+    &lt;collision&gt;
+      &lt;geometry&gt;
+        &lt;cylinder radius=&quot;0.04&quot; length=&quot;0.25&quot;/&gt;
+      &lt;/geometry&gt;
+      &lt;origin xyz=&quot;0 0 0.125&quot; rpy=&quot;${M_PI/2} 0 0&quot;/&gt;
+    &lt;/collision&gt;
+    &lt;xacro:cylinder_inertial mass=&quot;0.8&quot; length=&quot;0.25&quot; radius=&quot;0.04&quot;&gt;
+      &lt;origin xyz=&quot;0 0 0.125&quot; rpy=&quot;${M_PI/2} 0 0&quot;/&gt;
+    &lt;/xacro:cylinder_inertial&gt;
+  &lt;/link&gt;
+
+  &lt;!-- Left Leg --&gt;
+  &lt;joint name=&quot;left_hip_yaw&quot; type=&quot;revolute&quot;&gt;
+    &lt;parent link=&quot;torso_link&quot;/&gt;
+    &lt;child link=&quot;left_thigh&quot;/&gt;
+    &lt;origin xyz=&quot;0.05 0 -0.2&quot; rpy=&quot;0 0 0&quot;/&gt;
+    &lt;axis xyz=&quot;0 0 1&quot;/&gt;
+    &lt;limit lower=&quot;${-M_PI/4}&quot; upper=&quot;${M_PI/4}&quot; effort=&quot;15&quot; velocity=&quot;1&quot;/&gt;
+  &lt;/joint&gt;
+
+  &lt;link name=&quot;left_thigh&quot;&gt;
+    &lt;visual&gt;
+      &lt;geometry&gt;
+        &lt;cylinder radius=&quot;0.06&quot; length=&quot;0.4&quot;/&gt;
+      &lt;/geometry&gt;
+      &lt;origin xyz=&quot;0 0 -0.2&quot; rpy=&quot;${M_PI/2} 0 0&quot;/&gt;
+      &lt;material name=&quot;green&quot;/&gt;
+    &lt;/visual&gt;
+    &lt;collision&gt;
+      &lt;geometry&gt;
+        &lt;cylinder radius=&quot;0.06&quot; length=&quot;0.4&quot;/&gt;
+      &lt;/geometry&gt;
+      &lt;origin xyz=&quot;0 0 -0.2&quot; rpy=&quot;${M_PI/2} 0 0&quot;/&gt;
+    &lt;/collision&gt;
+    &lt;xacro:cylinder_inertial mass=&quot;2&quot; length=&quot;0.4&quot; radius=&quot;0.06&quot;&gt;
+      &lt;origin xyz=&quot;0 0 -0.2&quot; rpy=&quot;${M_PI/2} 0 0&quot;/&gt;
+    &lt;/xacro:cylinder_inertial&gt;
+  &lt;/link&gt;
+
+  &lt;joint name=&quot;left_knee&quot; type=&quot;revolute&quot;&gt;
+    &lt;parent link=&quot;left_thigh&quot;/&gt;
+    &lt;child link=&quot;left_shin&quot;/&gt;
+    &lt;origin xyz=&quot;0 0 -0.4&quot; rpy=&quot;0 0 0&quot;/&gt;
+    &lt;axis xyz=&quot;0 1 0&quot;/&gt;
+    &lt;limit lower=&quot;0&quot; upper=&quot;${M_PI}&quot; effort=&quot;15&quot; velocity=&quot;1&quot;/&gt;
+  &lt;/joint&gt;
+
+  &lt;link name=&quot;left_shin&quot;&gt;
+    &lt;visual&gt;
+      &lt;geometry&gt;
+        &lt;cylinder radius=&quot;0.05&quot; length=&quot;0.4&quot;/&gt;
+      &lt;/geometry&gt;
+      &lt;origin xyz=&quot;0 0 -0.2&quot; rpy=&quot;${M_PI/2} 0 0&quot;/&gt;
+      &lt;material name=&quot;green&quot;/&gt;
+    &lt;/visual&gt;
+    &lt;collision&gt;
+      &lt;geometry&gt;
+        &lt;cylinder radius=&quot;0.05&quot; length=&quot;0.4&quot;/&gt;
+      &lt;/geometry&gt;
+      &lt;origin xyz=&quot;0 0 -0.2&quot; rpy=&quot;${M_PI/2} 0 0&quot;/&gt;
+    &lt;/collision&gt;
+    &lt;xacro:cylinder_inertial mass=&quot;1.5&quot; length=&quot;0.4&quot; radius=&quot;0.05&quot;&gt;
+      &lt;origin xyz=&quot;0 0 -0.2&quot; rpy=&quot;${M_PI/2} 0 0&quot;/&gt;
+    &lt;/xacro:cylinder_inertial&gt;
+  &lt;/link&gt;
+
+  &lt;!-- Right Leg --&gt;
+  &lt;joint name=&quot;right_hip_yaw&quot; type=&quot;revolute&quot;&gt;
+    &lt;parent link=&quot;torso_link&quot;/&gt;
+    &lt;child link=&quot;right_thigh&quot;/&gt;
+    &lt;origin xyz=&quot;-0.05 0 -0.2&quot; rpy=&quot;0 0 0&quot;/&gt;
+    &lt;axis xyz=&quot;0 0 1&quot;/&gt;
+    &lt;limit lower=&quot;${-M_PI/4}&quot; upper=&quot;${M_PI/4}&quot; effort=&quot;15&quot; velocity=&quot;1&quot;/&gt;
+  &lt;/joint&gt;
+
+  &lt;link name=&quot;right_thigh&quot;&gt;
+    &lt;visual&gt;
+      &lt;geometry&gt;
+        &lt;cylinder radius=&quot;0.06&quot; length=&quot;0.4&quot;/&gt;
+      &lt;/geometry&gt;
+      &lt;origin xyz=&quot;0 0 -0.2&quot; rpy=&quot;${M_PI/2} 0 0&quot;/&gt;
+      &lt;material name=&quot;green&quot;/&gt;
+    &lt;/visual&gt;
+    &lt;collision&gt;
+      &lt;geometry&gt;
+        &lt;cylinder radius=&quot;0.06&quot; length=&quot;0.4&quot;/&gt;
+      &lt;/geometry&gt;
+      &lt;origin xyz=&quot;0 0 -0.2&quot; rpy=&quot;${M_PI/2} 0 0&quot;/&gt;
+    &lt;/collision&gt;
+    &lt;xacro:cylinder_inertial mass=&quot;2&quot; length=&quot;0.4&quot; radius=&quot;0.06&quot;&gt;
+      &lt;origin xyz=&quot;0 0 -0.2&quot; rpy=&quot;${M_PI/2} 0 0&quot;/&gt;
+    &lt;/xacro:cylinder_inertial&gt;
+  &lt;/link&gt;
+
+  &lt;joint name=&quot;right_knee&quot; type=&quot;revolute&quot;&gt;
+    &lt;parent link=&quot;right_thigh&quot;/&gt;
+    &lt;child link=&quot;right_shin&quot;/&gt;
+    &lt;origin xyz=&quot;0 0 -0.4&quot; rpy=&quot;0 0 0&quot;/&gt;
+    &lt;axis xyz=&quot;0 1 0&quot;/&gt;
+    &lt;limit lower=&quot;0&quot; upper=&quot;${M_PI}&quot; effort=&quot;15&quot; velocity=&quot;1&quot;/&gt;
+  &lt;/joint&gt;
+
+  &lt;link name=&quot;right_shin&quot;&gt;
+    &lt;visual&gt;
+      &lt;geometry&gt;
+        &lt;cylinder radius=&quot;0.05&quot; length=&quot;0.4&quot;/&gt;
+      &lt;/geometry&gt;
+      &lt;origin xyz=&quot;0 0 -0.2&quot; rpy=&quot;${M_PI/2} 0 0&quot;/&gt;
+      &lt;material name=&quot;green&quot;/&gt;
+    &lt;/visual&gt;
+    &lt;collision&gt;
+      &lt;geometry&gt;
+        &lt;cylinder radius=&quot;0.05&quot; length=&quot;0.4&quot;/&gt;
+      &lt;/geometry&gt;
+      &lt;origin xyz=&quot;0 0 -0.2&quot; rpy=&quot;${M_PI/2} 0 0&quot;/&gt;
+    &lt;/collision&gt;
+    &lt;xacro:cylinder_inertial mass=&quot;1.5&quot; length=&quot;0.4&quot; radius=&quot;0.05&quot;&gt;
+      &lt;origin xyz=&quot;0 0 -0.2&quot; rpy=&quot;${M_PI/2} 0 0&quot;/&gt;
+    &lt;/xacro:cylinder_inertial&gt;
+  &lt;/link&gt;
+
+&lt;/robot&gt;
+</code></pre>
+<h2 id="advanced-xacro-techniques">Advanced Xacro Techniques</h2>
+<h3 id="parameterized-macros">Parameterized Macros</h3>
+<p>Xacro macros can accept parameters to create reusable components:</p>
+<pre><code class="language-xml">&lt;xacro:macro name=&quot;simple_arm&quot; params=&quot;side parent_link x_pos y_pos z_pos&quot;&gt;
+  &lt;!-- Shoulder joint --&gt;
+  &lt;joint name=&quot;${side}_shoulder_yaw&quot; type=&quot;revolute&quot;&gt;
+    &lt;parent link=&quot;${parent_link}&quot;/&gt;
+    &lt;child link=&quot;${side}_upper_arm&quot;/&gt;
+    &lt;origin xyz=&quot;${x_pos} ${y_pos} ${z_pos}&quot; rpy=&quot;0 0 0&quot;/&gt;
+    &lt;axis xyz=&quot;0 0 1&quot;/&gt;
+    &lt;limit lower=&quot;${-M_PI/2}&quot; upper=&quot;${M_PI/2}&quot; effort=&quot;10&quot; velocity=&quot;1&quot;/&gt;
+  &lt;/joint&gt;
+
+  &lt;link name=&quot;${side}_upper_arm&quot;&gt;
+    &lt;visual&gt;
+      &lt;geometry&gt;
+        &lt;cylinder radius=&quot;0.05&quot; length=&quot;0.3&quot;/&gt;
+      &lt;/geometry&gt;
+      &lt;origin xyz=&quot;0 0 0.15&quot; rpy=&quot;${M_PI/2} 0 0&quot;/&gt;
+      &lt;material name=&quot;orange&quot;/&gt;
+    &lt;/visual&gt;
+    &lt;collision&gt;
+      &lt;geometry&gt;
+        &lt;cylinder radius=&quot;0.05&quot; length=&quot;0.3&quot;/&gt;
+      &lt;/geometry&gt;
+      &lt;origin xyz=&quot;0 0 0.15&quot; rpy=&quot;${M_PI/2} 0 0&quot;/&gt;
+    &lt;/collision&gt;
+    &lt;xacro:cylinder_inertial mass=&quot;1&quot; length=&quot;0.3&quot; radius=&quot;0.05&quot;&gt;
+      &lt;origin xyz=&quot;0 0 0.15&quot; rpy=&quot;${M_PI/2} 0 0&quot;/&gt;
+    &lt;/xacro:cylinder_inertial&gt;
+  &lt;/link&gt;
+
+  &lt;!-- Elbow joint --&gt;
+  &lt;joint name=&quot;${side}_elbow&quot; type=&quot;revolute&quot;&gt;
+    &lt;parent link=&quot;${side}_upper_arm&quot;/&gt;
+    &lt;child link=&quot;${side}_lower_arm&quot;/&gt;
+    &lt;origin xyz=&quot;0 0 0.3&quot; rpy=&quot;0 0 0&quot;/&gt;
+    &lt;axis xyz=&quot;0 1 0&quot;/&gt;
+    &lt;limit lower=&quot;0&quot; upper=&quot;${M_PI}&quot; effort=&quot;10&quot; velocity=&quot;1&quot;/&gt;
+  &lt;/joint&gt;
+
+  &lt;link name=&quot;${side}_lower_arm&quot;&gt;
+    &lt;visual&gt;
+      &lt;geometry&gt;
+        &lt;cylinder radius=&quot;0.04&quot; length=&quot;0.25&quot;/&gt;
+      &lt;/geometry&gt;
+      &lt;origin xyz=&quot;0 0 0.125&quot; rpy=&quot;${M_PI/2} 0 0&quot;/&gt;
+      &lt;material name=&quot;orange&quot;/&gt;
+    &lt;/visual&gt;
+    &lt;collision&gt;
+      &lt;geometry&gt;
+        &lt;cylinder radius=&quot;0.04&quot; length=&quot;0.25&quot;/&gt;
+      &lt;/geometry&gt;
+      &lt;origin xyz=&quot;0 0 0.125&quot; rpy=&quot;${M_PI/2} 0 0&quot;/&gt;
+    &lt;/collision&gt;
+    &lt;xacro:cylinder_inertial mass=&quot;0.8&quot; length=&quot;0.25&quot; radius=&quot;0.04&quot;&gt;
+      &lt;origin xyz=&quot;0 0 0.125&quot; rpy=&quot;${M_PI/2} 0 0&quot;/&gt;
+    &lt;/xacro:cylinder_inertial&gt;
+  &lt;/link&gt;
+&lt;/xacro:macro&gt;
+
+&lt;!-- Use the macro to create both arms --&gt;
+&lt;xacro:simple_arm side=&quot;left&quot; parent_link=&quot;torso_link&quot; x_pos=&quot;0.15&quot; y_pos=&quot;0&quot; z_pos=&quot;0.1&quot;/&gt;
+&lt;xacro:simple_arm side=&quot;right&quot; parent_link=&quot;torso_link&quot; x_pos=&quot;-0.15&quot; y_pos=&quot;0&quot; z_pos=&quot;0.1&quot;/&gt;
+</code></pre>
+<h3 id="mathematical-expressions">Mathematical Expressions</h3>
+<p>Xacro supports mathematical expressions using Python&#x27;s eval function:</p>
+<pre><code class="language-xml">&lt;xacro:property name=&quot;arm_length&quot; value=&quot;0.3&quot; /&gt;
+&lt;xacro:property name=&quot;elbow_offset&quot; value=&quot;${arm_length / 2}&quot; /&gt;
+
+&lt;!-- This will evaluate to 0.15 --&gt;
+&lt;origin xyz=&quot;0 0 ${elbow_offset}&quot; rpy=&quot;0 0 0&quot;/&gt;
+</code></pre>
+<h3 id="conditional-blocks">Conditional Blocks</h3>
+<p>Use xacro if statements to conditionally include content:</p>
+<pre><code class="language-xml">&lt;xacro:property name=&quot;include_gripper&quot; value=&quot;true&quot; /&gt;
+
+&lt;xacro:if value=&quot;${include_gripper}&quot;&gt;
+  &lt;joint name=&quot;gripper_joint&quot; type=&quot;prismatic&quot;&gt;
+    &lt;parent link=&quot;left_lower_arm&quot;/&gt;
+    &lt;child link=&quot;gripper&quot;/&gt;
+    &lt;origin xyz=&quot;0 0 0.25&quot; rpy=&quot;0 0 0&quot;/&gt;
+    &lt;axis xyz=&quot;1 0 0&quot;/&gt;
+    &lt;limit lower=&quot;0&quot; upper=&quot;0.05&quot; effort=&quot;5&quot; velocity=&quot;0.5&quot;/&gt;
+  &lt;/joint&gt;
+&lt;/xacro:if&gt;
+</code></pre>
+<h2 id="best-practices-for-humanoid-urdfxacro">Best Practices for Humanoid URDF/Xacro</h2>
+<h3 id="1-organize-by-functional-groups">1. Organize by Functional Groups</h3>
+<p>Structure your Xacro file to group related components:</p>
+<pre><code class="language-xml">&lt;!-- Header and constants --&gt;
+&lt;!-- Materials --&gt;
+&lt;!-- Inertial macros --&gt;
+&lt;!-- Base and torso --&gt;
+&lt;!-- Left arm chain --&gt;
+&lt;!-- Right arm chain --&gt;
+&lt;!-- Left leg chain --&gt;
+&lt;!-- Right leg chain --&gt;
+&lt;!-- Sensors --&gt;
+&lt;!-- Transmission definitions --&gt;
+</code></pre>
+<h3 id="2-use-descriptive-names">2. Use Descriptive Names</h3>
+<p>Follow a consistent naming convention:</p>
+<ul>
+<li>Links: <code>body_part_link</code> (e.g., <code>left_upper_arm_link</code>)</li>
+<li>Joints: <code>body_part_joint</code> (e.g., <code>left_shoulder_pitch_joint</code>)</li>
+<li>Avoid generic names like <code>link1</code>, <code>joint2</code></li>
+</ul>
+<h3 id="3-validate-your-urdf">3. Validate Your URDF</h3>
+<p>Use ROS tools to check your URDF:</p>
+<pre><code class="language-bash"># Check for XML syntax errors
+xacro my_robot.urdf.xacro
+
+# Check for kinematic loops and other issues
+check_urdf my_robot.urdf
+</code></pre>
+<h3 id="4-consider-computational-complexity">4. Consider Computational Complexity</h3>
+<p>For complex humanoid robots:</p>
+<ul>
+<li>Use simplified collision geometries where possible</li>
+<li>Reduce the number of small, detailed meshes</li>
+<li>Balance visual fidelity with simulation performance</li>
+</ul>
+<h2 id="working-with-urdf-in-ros-2">Working with URDF in ROS 2</h2>
+<h3 id="launching-with-robot-state-publisher">Launching with Robot State Publisher</h3>
+<p>To visualize your robot in RViz2, use the robot_state_publisher:</p>
+<pre><code class="language-xml">&lt;launch&gt;
+  &lt;!-- Load the URDF into the parameter server --&gt;
+  &lt;node pkg=&quot;robot_state_publisher&quot; exec=&quot;robot_state_publisher&quot; name=&quot;robot_state_publisher&quot;&gt;
+    &lt;param name=&quot;robot_description&quot; value=&quot;$(var robot_description)&quot;/&gt;
+  &lt;/node&gt;
+&lt;/launch&gt;
+</code></pre>
+<h3 id="tf-trees">TF Trees</h3>
+<p>URDF automatically generates a transform tree (TF) based on your joint definitions. You can visualize this in RViz2 or with:</p>
+<pre><code class="language-bash">ros2 run tf2_tools view_frames
+</code></pre>
+<h2 id="summary">Summary</h2>
+<p>In this chapter, you&#x27;ve learned:</p>
+<ul>
+<li>The fundamentals of URDF and how to structure robot descriptions</li>
+<li>How Xacro extends URDF with macros, variables, and expressions</li>
+<li>How to create a complete humanoid robot model with 22+ degrees of freedom</li>
+<li>Advanced techniques like parameterized macros and conditional blocks</li>
+<li>Best practices for organizing and validating URDF/Xacro files</li>
+</ul>
+<p>In the next chapter, we&#x27;ll explore how to work with these models in ROS 2 through nodes, topics, and services.</p>
+<h2 id="exercises">Exercises</h2>
+<ol>
+<li>Create a simplified version of a humanoid robot with only 12 DoF (6 for each leg, no arms)</li>
+<li>Add a gripper to one of the arms in the example robot</li>
+<li>Modify the robot to have different physical properties (mass, size) for each link</li>
+<li>Create a Xacro macro that generates a 6-DoF manipulator arm with configurable link lengths</li>
+</ol>
+<div class="starboard-notebook-container"><div class="starboard-notebook-header"><span class="starboard-notebook-icon">📊</span><span class="starboard-notebook-title">Interactive Notebook</span></div><div class="starboard-notebook-content"><div class="starboard-children-container"><pre><code class="language-python"># This would be an interactive code block for students to experiment with URDF
+# In a real implementation, this would connect to ROS 2 services
+# to visualize and manipulate the robot model
+</code></pre></div></div><div class="starboard-notebook-footer"><small>Note: This is a placeholder for interactive Starboard notebooks.</small></div></div></div><footer class="theme-doc-footer docusaurus-mt-lg"><div class="row margin-top--sm theme-doc-footer-edit-meta-row"><div class="col noPrint_WFHX"><a href="https://github.com/facebook/docusaurus/tree/main/packages/create-docusaurus/templates/shared/docs/module-1-ros/03-urdf-xacro-mastery.mdx" target="_blank" rel="noopener noreferrer" class="theme-edit-this-page"><svg fill="currentColor" height="20" width="20" viewBox="0 0 40 40" class="iconEdit_Z9Sw" aria-hidden="true"><g><path d="m34.5 11.7l-3 3.1-6.3-6.3 3.1-3q0.5-0.5 1.2-0.5t1.1 0.5l3.9 3.9q0.5 0.4 0.5 1.1t-0.5 1.2z m-29.5 17.1l18.4-18.5 6.3 6.3-18.4 18.4h-6.3v-6.2z"></path></g></svg>Edit this page</a></div><div class="col lastUpdated_JAkA"></div></div></footer></article><nav class="docusaurus-mt-lg pagination-nav" aria-label="Docs pages"><a class="pagination-nav__link pagination-nav__link--prev" href="/physical-ai-textbook/docs/module-1-ros/ros2-from-zero"><div class="pagination-nav__sublabel">Previous</div><div class="pagination-nav__label">ROS 2 from Zero</div></a><a class="pagination-nav__link pagination-nav__link--next" href="/physical-ai-textbook/docs/module-1-ros/nodes-topics-services"><div class="pagination-nav__sublabel">Next</div><div class="pagination-nav__label">Nodes, Topics, Services</div></a></nav></div></div><div class="col col--3"><div class="tableOfContents_bqdL thin-scrollbar theme-doc-toc-desktop"><ul class="table-of-contents table-of-contents__left-border"><li><a href="#introduction" class="table-of-contents__link toc-highlight">Introduction</a></li><li><a href="#understanding-urdf-structure" class="table-of-contents__link toc-highlight">Understanding URDF Structure</a><ul><li><a href="#basic-urdf-components" class="table-of-contents__link toc-highlight">Basic URDF Components</a></li><li><a href="#link-properties" class="table-of-contents__link toc-highlight">Link Properties</a></li><li><a href="#joint-types" class="table-of-contents__link toc-highlight">Joint Types</a></li></ul></li><li><a href="#introducing-xacro" class="table-of-contents__link toc-highlight">Introducing Xacro</a><ul><li><a href="#basic-xacro-syntax" class="table-of-contents__link toc-highlight">Basic Xacro Syntax</a></li></ul></li><li><a href="#building-a-humanoid-robot-model" class="table-of-contents__link toc-highlight">Building a Humanoid Robot Model</a><ul><li><a href="#complete-humanoid-xacro-example" class="table-of-contents__link toc-highlight">Complete Humanoid Xacro Example</a></li></ul></li><li><a href="#advanced-xacro-techniques" class="table-of-contents__link toc-highlight">Advanced Xacro Techniques</a><ul><li><a href="#parameterized-macros" class="table-of-contents__link toc-highlight">Parameterized Macros</a></li><li><a href="#mathematical-expressions" class="table-of-contents__link toc-highlight">Mathematical Expressions</a></li><li><a href="#conditional-blocks" class="table-of-contents__link toc-highlight">Conditional Blocks</a></li></ul></li><li><a href="#best-practices-for-humanoid-urdfxacro" class="table-of-contents__link toc-highlight">Best Practices for Humanoid URDF/Xacro</a><ul><li><a href="#1-organize-by-functional-groups" class="table-of-contents__link toc-highlight">1. Organize by Functional Groups</a></li><li><a href="#2-use-descriptive-names" class="table-of-contents__link toc-highlight">2. Use Descriptive Names</a></li><li><a href="#3-validate-your-urdf" class="table-of-contents__link toc-highlight">3. Validate Your URDF</a></li><li><a href="#4-consider-computational-complexity" class="table-of-contents__link toc-highlight">4. Consider Computational Complexity</a></li></ul></li><li><a href="#working-with-urdf-in-ros-2" class="table-of-contents__link toc-highlight">Working with URDF in ROS 2</a><ul><li><a href="#launching-with-robot-state-publisher" class="table-of-contents__link toc-highlight">Launching with Robot State Publisher</a></li><li><a href="#tf-trees" class="table-of-contents__link toc-highlight">TF Trees</a></li></ul></li><li><a href="#summary" class="table-of-contents__link toc-highlight">Summary</a></li><li><a href="#exercises" class="table-of-contents__link toc-highlight">Exercises</a></li></ul></div></div></div></div></main></div></div></div><footer class="theme-layout-footer footer footer--dark"><div class="container container-fluid"><div class="row footer__links"><div class="theme-layout-footer-column col footer__col"><div class="footer__title">Docs</div><ul class="footer__items clean-list"><li class="footer__item"><a class="footer__link-item" href="/physical-ai-textbook/docs/intro/introduction-to-physical-ai">Textbook</a></li></ul></div><div class="theme-layout-footer-column col footer__col"><div class="footer__title">Community</div><ul class="footer__items clean-list"><li class="footer__item"><a href="https://stackoverflow.com/questions/tagged/docusaurus" target="_blank" rel="noopener noreferrer" class="footer__link-item">Stack Overflow<svg width="13.5" height="13.5" aria-label="(opens in new tab)" class="iconExternalLink_nPIU"><use href="#theme-svg-external-link"></use></svg></a></li><li class="footer__item"><a href="https://discordapp.com/invite/docusaurus" target="_blank" rel="noopener noreferrer" class="footer__link-item">Discord<svg width="13.5" height="13.5" aria-label="(opens in new tab)" class="iconExternalLink_nPIU"><use href="#theme-svg-external-link"></use></svg></a></li><li class="footer__item"><a href="https://twitter.com/docusaurus" target="_blank" rel="noopener noreferrer" class="footer__link-item">Twitter<svg width="13.5" height="13.5" aria-label="(opens in new tab)" class="iconExternalLink_nPIU"><use href="#theme-svg-external-link"></use></svg></a></li></ul></div><div class="theme-layout-footer-column col footer__col"><div class="footer__title">More</div><ul class="footer__items clean-list"><li class="footer__item"><a href="https://github.com/Gulshan-koondhar/physical-ai-textbook" target="_blank" rel="noopener noreferrer" class="footer__link-item">GitHub<svg width="13.5" height="13.5" aria-label="(opens in new tab)" class="iconExternalLink_nPIU"><use href="#theme-svg-external-link"></use></svg></a></li></ul></div></div><div class="footer__bottom text--center"><div class="footer__copyright">Copyright © 2025 My Project, Inc. Built with Docusaurus.</div></div></div></footer></div>
+</body>
+</html>

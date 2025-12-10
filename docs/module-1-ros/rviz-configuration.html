@@ -1,0 +1,351 @@
+<!doctype html>
+<html lang="en" dir="ltr" class="docs-wrapper plugin-docs plugin-id-default docs-version-current docs-doc-page docs-doc-id-module-1-ros/rviz-configuration" data-has-hydrated="false">
+<head>
+<meta charset="UTF-8">
+<meta name="generator" content="Docusaurus v3.9.2">
+<title data-rh="true">RViz2 Configuration for Humanoid Visualization | Physical AI &amp; Humanoid Robotics</title><meta data-rh="true" name="viewport" content="width=device-width,initial-scale=1"><meta data-rh="true" name="twitter:card" content="summary_large_image"><meta data-rh="true" property="og:image" content="https://Gulshan-koondhar.github.io/physical-ai-textbook/img/docusaurus-social-card.jpg"><meta data-rh="true" name="twitter:image" content="https://Gulshan-koondhar.github.io/physical-ai-textbook/img/docusaurus-social-card.jpg"><meta data-rh="true" property="og:url" content="https://Gulshan-koondhar.github.io/physical-ai-textbook/docs/module-1-ros/rviz-configuration"><meta data-rh="true" property="og:locale" content="en"><meta data-rh="true" name="docusaurus_locale" content="en"><meta data-rh="true" name="docsearch:language" content="en"><meta data-rh="true" name="docusaurus_version" content="current"><meta data-rh="true" name="docusaurus_tag" content="docs-default-current"><meta data-rh="true" name="docsearch:version" content="current"><meta data-rh="true" name="docsearch:docusaurus_tag" content="docs-default-current"><meta data-rh="true" property="og:title" content="RViz2 Configuration for Humanoid Visualization | Physical AI &amp; Humanoid Robotics"><meta data-rh="true" name="description" content="Configure RViz2 for visualizing and debugging humanoid robot systems in ROS 2"><meta data-rh="true" property="og:description" content="Configure RViz2 for visualizing and debugging humanoid robot systems in ROS 2"><meta data-rh="true" name="keywords" content="RViz2,visualization,humanoid,ROS 2,debugging,configuration"><link data-rh="true" rel="icon" href="/physical-ai-textbook/img/favicon.ico"><link data-rh="true" rel="canonical" href="https://Gulshan-koondhar.github.io/physical-ai-textbook/docs/module-1-ros/rviz-configuration"><link data-rh="true" rel="alternate" href="https://Gulshan-koondhar.github.io/physical-ai-textbook/docs/module-1-ros/rviz-configuration" hreflang="en"><link data-rh="true" rel="alternate" href="https://Gulshan-koondhar.github.io/physical-ai-textbook/docs/module-1-ros/rviz-configuration" hreflang="x-default"><script data-rh="true" type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"RViz2 Configuration","item":"https://Gulshan-koondhar.github.io/physical-ai-textbook/docs/module-1-ros/rviz-configuration"}]}</script><link rel="stylesheet" href="/physical-ai-textbook/assets/css/styles.4f99da8f.css">
+<script src="/physical-ai-textbook/assets/js/runtime~main.7cf563d1.js" defer="defer"></script>
+<script src="/physical-ai-textbook/assets/js/main.6dcd1921.js" defer="defer"></script>
+</head>
+<body class="navigation-with-keyboard">
+<svg style="display: none;"><defs>
+<symbol id="theme-svg-external-link" viewBox="0 0 24 24"><path fill="currentColor" d="M21 13v10h-21v-19h12v2h-10v15h17v-8h2zm3-12h-10.988l4.035 4-6.977 7.07 2.828 2.828 6.977-7.07 4.125 4.172v-11z"/></symbol>
+</defs></svg>
+<script>!function(){var t=function(){try{return new URLSearchParams(window.location.search).get("docusaurus-theme")}catch(t){}}()||function(){try{return window.localStorage.getItem("theme")}catch(t){}}();document.documentElement.setAttribute("data-theme",t||"light"),document.documentElement.setAttribute("data-theme-choice",t||"light")}(),function(){try{const c=new URLSearchParams(window.location.search).entries();for(var[t,e]of c)if(t.startsWith("docusaurus-data-")){var a=t.replace("docusaurus-data-","data-");document.documentElement.setAttribute(a,e)}}catch(t){}}()</script><div id="__docusaurus"><div role="region" aria-label="Skip to main content"><a class="skipToContent_fXgn" href="#__docusaurus_skipToContent_fallback">Skip to main content</a></div><nav aria-label="Main" class="theme-layout-navbar navbar navbar--fixed-top"><div class="navbar__inner"><div class="theme-layout-navbar-left navbar__items"><button aria-label="Toggle navigation bar" aria-expanded="false" class="navbar__toggle clean-btn" type="button"><svg width="30" height="30" viewBox="0 0 30 30" aria-hidden="true"><path stroke="currentColor" stroke-linecap="round" stroke-miterlimit="10" stroke-width="2" d="M4 7h22M4 15h22M4 23h22"></path></svg></button><a class="navbar__brand" href="/physical-ai-textbook/"><div class="navbar__logo"><img src="/physical-ai-textbook/img/logo.svg" alt="Physical AI Logo" class="themedComponent_mlkZ themedComponent--light_NVdE"><img src="/physical-ai-textbook/img/logo.svg" alt="Physical AI Logo" class="themedComponent_mlkZ themedComponent--dark_xIcU"></div><b class="navbar__title text--truncate">Physical AI Textbook</b></a><a aria-current="page" class="navbar__item navbar__link navbar__link--active" href="/physical-ai-textbook/docs/intro/introduction-to-physical-ai">Textbook</a></div><div class="theme-layout-navbar-right navbar__items navbar__items--right"><a href="https://github.com/Gulshan-koondhar/physical-ai-textbook" target="_blank" rel="noopener noreferrer" class="navbar__item navbar__link">GitHub<svg width="13.5" height="13.5" aria-label="(opens in new tab)" class="iconExternalLink_nPIU"><use href="#theme-svg-external-link"></use></svg></a><div class="toggle_vylO colorModeToggle_DEke"><button class="clean-btn toggleButton_gllP toggleButtonDisabled_aARS" type="button" disabled="" title="system mode" aria-label="Switch between dark and light mode (currently system mode)"><svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" class="toggleIcon_g3eP lightToggleIcon_pyhR"><path fill="currentColor" d="M12,9c1.65,0,3,1.35,3,3s-1.35,3-3,3s-3-1.35-3-3S10.35,9,12,9 M12,7c-2.76,0-5,2.24-5,5s2.24,5,5,5s5-2.24,5-5 S14.76,7,12,7L12,7z M2,13l2,0c0.55,0,1-0.45,1-1s-0.45-1-1-1l-2,0c-0.55,0-1,0.45-1,1S1.45,13,2,13z M20,13l2,0c0.55,0,1-0.45,1-1 s-0.45-1-1-1l-2,0c-0.55,0-1,0.45-1,1S19.45,13,20,13z M11,2v2c0,0.55,0.45,1,1,1s1-0.45,1-1V2c0-0.55-0.45-1-1-1S11,1.45,11,2z M11,20v2c0,0.55,0.45,1,1,1s1-0.45,1-1v-2c0-0.55-0.45-1-1-1C11.45,19,11,19.45,11,20z M5.99,4.58c-0.39-0.39-1.03-0.39-1.41,0 c-0.39,0.39-0.39,1.03,0,1.41l1.06,1.06c0.39,0.39,1.03,0.39,1.41,0s0.39-1.03,0-1.41L5.99,4.58z M18.36,16.95 c-0.39-0.39-1.03-0.39-1.41,0c-0.39,0.39-0.39,1.03,0,1.41l1.06,1.06c0.39,0.39,1.03,0.39,1.41,0c0.39-0.39,0.39-1.03,0-1.41 L18.36,16.95z M19.42,5.99c0.39-0.39,0.39-1.03,0-1.41c-0.39-0.39-1.03-0.39-1.41,0l-1.06,1.06c-0.39,0.39-0.39,1.03,0,1.41 s1.03,0.39,1.41,0L19.42,5.99z M7.05,18.36c0.39-0.39,0.39-1.03,0-1.41c-0.39-0.39-1.03-0.39-1.41,0l-1.06,1.06 c-0.39,0.39-0.39,1.03,0,1.41s1.03,0.39,1.41,0L7.05,18.36z"></path></svg><svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" class="toggleIcon_g3eP darkToggleIcon_wfgR"><path fill="currentColor" d="M9.37,5.51C9.19,6.15,9.1,6.82,9.1,7.5c0,4.08,3.32,7.4,7.4,7.4c0.68,0,1.35-0.09,1.99-0.27C17.45,17.19,14.93,19,12,19 c-3.86,0-7-3.14-7-7C5,9.07,6.81,6.55,9.37,5.51z M12,3c-4.97,0-9,4.03-9,9s4.03,9,9,9s9-4.03,9-9c0-0.46-0.04-0.92-0.1-1.36 c-0.98,1.37-2.58,2.26-4.4,2.26c-2.98,0-5.4-2.42-5.4-5.4c0-1.81,0.89-3.42,2.26-4.4C12.92,3.04,12.46,3,12,3L12,3z"></path></svg><svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" class="toggleIcon_g3eP systemToggleIcon_QzmC"><path fill="currentColor" d="m12 21c4.971 0 9-4.029 9-9s-4.029-9-9-9-9 4.029-9 9 4.029 9 9 9zm4.95-13.95c1.313 1.313 2.05 3.093 2.05 4.95s-0.738 3.637-2.05 4.95c-1.313 1.313-3.093 2.05-4.95 2.05v-14c1.857 0 3.637 0.737 4.95 2.05z"></path></svg></button></div><div class="navbarSearchContainer_Bca1"></div></div></div><div role="presentation" class="navbar-sidebar__backdrop"></div></nav><div id="__docusaurus_skipToContent_fallback" class="theme-layout-main main-wrapper mainWrapper_z2l0"><div class="docsWrapper_hBAB"><button aria-label="Scroll back to top" class="clean-btn theme-back-to-top-button backToTopButton_sjWU" type="button"></button><div class="docRoot_UBD9"><aside class="theme-doc-sidebar-container docSidebarContainer_YfHR"><div class="sidebarViewport_aRkj"><div class="sidebar_njMd"><nav aria-label="Docs sidebar" class="menu thin-scrollbar menu_SIkG"><ul class="theme-doc-sidebar-menu menu__list"><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist menu__link--sublist-caret" role="button" aria-expanded="false" href="/physical-ai-textbook/docs/intro/introduction-to-physical-ai"><span title="Introduction" class="categoryLinkLabel_W154">Introduction</span></a></div></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist menu__link--sublist-caret menu__link--active" role="button" aria-expanded="true" href="/physical-ai-textbook/docs/module-1-ros/ros2-from-zero"><span title="Module 1 - ROS 2 Fundamentals" class="categoryLinkLabel_W154">Module 1 - ROS 2 Fundamentals</span></a></div><ul class="menu__list"><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-2 menu__list-item"><a class="menu__link" tabindex="0" href="/physical-ai-textbook/docs/module-1-ros/ros2-from-zero"><span title="ROS 2 from Zero" class="linkLabel_WmDU">ROS 2 from Zero</span></a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-2 menu__list-item"><a class="menu__link" tabindex="0" href="/physical-ai-textbook/docs/module-1-ros/urdf-xacro-mastery"><span title="URDF/Xacro Mastery" class="linkLabel_WmDU">URDF/Xacro Mastery</span></a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-2 menu__list-item"><a class="menu__link" tabindex="0" href="/physical-ai-textbook/docs/module-1-ros/nodes-topics-services"><span title="Nodes, Topics, Services" class="linkLabel_WmDU">Nodes, Topics, Services</span></a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-2 menu__list-item"><a class="menu__link menu__link--active" aria-current="page" tabindex="0" href="/physical-ai-textbook/docs/module-1-ros/rviz-configuration"><span title="RViz2 Configuration" class="linkLabel_WmDU">RViz2 Configuration</span></a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-2 menu__list-item"><a class="menu__link" tabindex="0" href="/physical-ai-textbook/docs/module-1-ros/ros2-bag-foxglove"><span title="ROS 2 Bag and Foxglove" class="linkLabel_WmDU">ROS 2 Bag and Foxglove</span></a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-2 menu__list-item"><a class="menu__link" tabindex="0" href="/physical-ai-textbook/docs/module-1-ros/interactive-examples"><span title="Interactive ROS 2 Examples" class="linkLabel_WmDU">Interactive ROS 2 Examples</span></a></li></ul></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist menu__link--sublist-caret" role="button" aria-expanded="false" href="/physical-ai-textbook/docs/module-2-simulation/gazebo-harmonic-setup"><span title="Module 2 - Simulation" class="categoryLinkLabel_W154">Module 2 - Simulation</span></a></div></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist menu__link--sublist-caret" role="button" aria-expanded="false" href="/physical-ai-textbook/docs/module-3-ai-brain/isaac-sim-installation"><span title="Module 3 - AI Brain" class="categoryLinkLabel_W154">Module 3 - AI Brain</span></a></div></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist menu__link--sublist-caret" role="button" aria-expanded="false" href="/physical-ai-textbook/docs/module-4-vla/whisper-gpt-ros-planner"><span title="Module 4 - VLA Integration" class="categoryLinkLabel_W154">Module 4 - VLA Integration</span></a></div></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist menu__link--sublist-caret" role="button" aria-expanded="false" href="/physical-ai-textbook/docs/capstone/red-cup-project"><span title="Capstone Project" class="categoryLinkLabel_W154">Capstone Project</span></a></div></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist menu__link--sublist-caret" role="button" aria-expanded="false" href="/physical-ai-textbook/docs/hardware/hardware-guide"><span title="Hardware Guide" class="categoryLinkLabel_W154">Hardware Guide</span></a></div></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist menu__link--sublist-caret" role="button" aria-expanded="false" href="/physical-ai-textbook/docs/appendix/troubleshooting"><span title="Appendices" class="categoryLinkLabel_W154">Appendices</span></a></div></li></ul></nav></div></div></aside><main class="docMainContainer_TBSr"><div class="container padding-top--md padding-bottom--lg"><div class="row"><div class="col docItemCol_VOVn"><div class="docItemContainer_Djhp"><article><nav class="theme-doc-breadcrumbs breadcrumbsContainer_Z_bl" aria-label="Breadcrumbs"><ul class="breadcrumbs"><li class="breadcrumbs__item"><a aria-label="Home page" class="breadcrumbs__link" href="/physical-ai-textbook/"><svg viewBox="0 0 24 24" class="breadcrumbHomeIcon_YNFT"><path d="M10 19v-5h4v5c0 .55.45 1 1 1h3c.55 0 1-.45 1-1v-7h1.7c.46 0 .68-.57.33-.87L12.67 3.6c-.38-.34-.96-.34-1.34 0l-8.36 7.53c-.34.3-.13.87.33.87H5v7c0 .55.45 1 1 1h3c.55 0 1-.45 1-1z" fill="currentColor"></path></svg></a></li><li class="breadcrumbs__item"><span class="breadcrumbs__link">Module 1 - ROS 2 Fundamentals</span></li><li class="breadcrumbs__item breadcrumbs__item--active"><span class="breadcrumbs__link">RViz2 Configuration</span></li></ul></nav><div class="tocCollapsible_ETCw theme-doc-toc-mobile tocMobile_ITEo"><button type="button" class="clean-btn tocCollapsibleButton_TO0P">On this page</button></div><div class="theme-doc-markdown markdown"><header><h1 id="rviz2-configuration-for-humanoid-visualization">RViz2 Configuration for Humanoid Visualization</h1></header>
+<h2 id="introduction">Introduction</h2>
+<p>RViz2 (Robot Visualizer 2) is the 3D visualization tool for ROS 2. It&#x27;s an essential tool for humanoid robotics development, allowing you to visualize robot models, sensor data, trajectories, and other important information in a 3D environment. Proper configuration of RViz2 is crucial for effective development, debugging, and monitoring of humanoid robot systems.</p>
+<p>In this chapter, you&#x27;ll learn how to configure RViz2 for optimal visualization of humanoid robots, including setting up displays, configuring TF trees, and integrating with sensor data.</p>
+<h2 id="understanding-rviz2-architecture">Understanding RViz2 Architecture</h2>
+<h3 id="core-components">Core Components</h3>
+<p>RViz2 consists of several key components:</p>
+<ol>
+<li><strong>Displays Panel</strong>: Where you add visualization elements (robot models, sensors, trajectories)</li>
+<li><strong>Views Panel</strong>: Controls the camera perspective and navigation</li>
+<li><strong>Tools Panel</strong>: Interactive tools for setting goals, poses, and other interactions</li>
+<li><strong>Time Panel</strong>: Controls for playback of recorded data</li>
+<li><strong>Selection Panel</strong>: Information about selected objects</li>
+</ol>
+<h3 id="coordinate-systems">Coordinate Systems</h3>
+<p>RViz2 uses the right-handed coordinate system common in ROS:</p>
+<ul>
+<li>X: Forward</li>
+<li>Y: Left</li>
+<li>Z: Up</li>
+</ul>
+<p>For humanoid robots, this typically means:</p>
+<ul>
+<li>Base frame (often <code>base_link</code>) is at the robot&#x27;s center of mass or pelvis</li>
+<li>Forward direction is toward the robot&#x27;s front</li>
+<li>Left is the robot&#x27;s left side</li>
+</ul>
+<h2 id="setting-up-basic-robot-visualization">Setting Up Basic Robot Visualization</h2>
+<h3 id="robotmodel-display">RobotModel Display</h3>
+<p>The RobotModel display shows your robot&#x27;s URDF model with its current joint states:</p>
+<ol>
+<li>
+<p><strong>Add RobotModel Display</strong>:</p>
+<ul>
+<li>Click &quot;Add&quot; in the Displays panel</li>
+<li>Select &quot;RobotModel&quot; under &quot;rviz_default_plugins&quot;</li>
+</ul>
+</li>
+<li>
+<p><strong>Configure Robot Description</strong>:</p>
+<ul>
+<li>Set &quot;Description Source&quot; to &quot;Topic&quot;</li>
+<li>Set &quot;Description Topic&quot; to <code>/robot_description</code></li>
+<li>Set &quot;Update Interval&quot; to 0 (continuous updates)</li>
+</ul>
+</li>
+<li>
+<p><strong>Configure TF Settings</strong>:</p>
+<ul>
+<li>Set &quot;TF Prefix&quot; if using namespaces</li>
+<li>The robot will be positioned relative to the &quot;Fixed Frame&quot;</li>
+</ul>
+</li>
+</ol>
+<h3 id="tf-transform-display">TF (Transform) Display</h3>
+<p>The TF display shows the relationship between different coordinate frames:</p>
+<ol>
+<li>
+<p><strong>Add TF Display</strong>:</p>
+<ul>
+<li>Click &quot;Add&quot; in the Displays panel</li>
+<li>Select &quot;TF&quot; under &quot;rviz_default_plugins&quot;</li>
+</ul>
+</li>
+<li>
+<p><strong>Configure TF Settings</strong>:</p>
+<ul>
+<li>Set &quot;Frame Timeout&quot; (typically 15 seconds)</li>
+<li>Set &quot;Marker Scale&quot; (typically 0.5-1.0 for humanoid robots)</li>
+<li>Choose whether to &quot;Show Names&quot;, &quot;Show Axes&quot;, and &quot;Show Arrows&quot;</li>
+</ul>
+</li>
+</ol>
+<h2 id="configuring-displays-for-humanoid-robots">Configuring Displays for Humanoid Robots</h2>
+<h3 id="joint-state-visualization">Joint State Visualization</h3>
+<p>To visualize the current joint positions of your humanoid robot:</p>
+<pre><code class="language-yaml"># In your RViz2 configuration
+- Class: rviz_default_plugins/RobotModel
+  Description Source: Topic
+  Description Topic: /robot_description
+  Enabled: true
+  Links:
+    All Links Enabled: true
+    Expand Joint Details: false
+    Expand Link Details: false
+    Expand Tree: false
+    Link Tree Style: Links in Alphabetic Order
+  Name: RobotModel
+  TF Prefix: &quot;&quot;
+  Update Interval: 0
+  Value: true
+  Visual Enabled: true
+</code></pre>
+<h3 id="sensor-data-visualization">Sensor Data Visualization</h3>
+<p>For humanoid robots with multiple sensors, configure these displays:</p>
+<h4 id="laserscan-display-for-lidar">LaserScan Display (for LiDAR)</h4>
+<pre><code class="language-yaml">- Class: rviz_default_plugins/LaserScan
+  Enabled: true
+  Topic: /scan
+  Size (m): 0.05
+  Color: 255; 255; 255
+</code></pre>
+<h4 id="pointcloud2-display-for-3d-cameras">PointCloud2 Display (for 3D cameras)</h4>
+<pre><code class="language-yaml">- Class: rviz_default_plugins/PointCloud2
+  Enabled: true
+  Topic: /camera/depth/points
+  Size (m): 0.01
+  Style: Flat Squares
+</code></pre>
+<h4 id="image-display-for-cameras">Image Display (for cameras)</h4>
+<pre><code class="language-yaml">- Class: rviz_default_plugins/Image
+  Enabled: true
+  Topic: /camera/image_raw
+</code></pre>
+<h2 id="advanced-configuration-for-humanoid-systems">Advanced Configuration for Humanoid Systems</h2>
+<h3 id="multiple-robot-visualization">Multiple Robot Visualization</h3>
+<p>For scenarios with multiple humanoid robots:</p>
+<ol>
+<li><strong>Use Namespaces</strong>: Each robot should have a unique namespace</li>
+<li><strong>Configure TF Prefix</strong>: Set appropriate TF prefixes for each robot</li>
+<li><strong>Color Coding</strong>: Use different colors for each robot&#x27;s displays</li>
+</ol>
+<h3 id="interactive-markers">Interactive Markers</h3>
+<p>For direct manipulation of humanoid robot states:</p>
+<ol>
+<li><strong>Add InteractiveMarker Display</strong> if available</li>
+<li><strong>Use MoveIt2 Integration</strong>: For motion planning visualization</li>
+<li><strong>Custom Interactive Tools</strong>: Create custom tools for specific humanoid controls</li>
+</ol>
+<h3 id="planning-and-navigation-visualization">Planning and Navigation Visualization</h3>
+<p>For humanoid navigation and manipulation:</p>
+<h4 id="path-display">Path Display</h4>
+<pre><code class="language-yaml">- Class: rviz_default_plugins/Path
+  Enabled: true
+  Topic: /plan
+  Color: 25; 255; 0
+  Alpha: 1
+</code></pre>
+<h4 id="marker-display">Marker Display</h4>
+<pre><code class="language-yaml">- Class: rviz_default_plugins/Marker
+  Enabled: true
+  Topic: /visualization_marker
+</code></pre>
+<h2 id="creating-custom-rviz2-configurations">Creating Custom RViz2 Configurations</h2>
+<h3 id="manual-configuration">Manual Configuration</h3>
+<ol>
+<li>
+<p><strong>Start RViz2</strong>:</p>
+<pre><code class="language-bash">rviz2
+</code></pre>
+</li>
+<li>
+<p><strong>Set Fixed Frame</strong>:</p>
+<ul>
+<li>In Global Options, set &quot;Fixed Frame&quot; to your robot&#x27;s base frame (e.g., <code>base_link</code>)</li>
+</ul>
+</li>
+<li>
+<p><strong>Add Displays</strong>:</p>
+<ul>
+<li>RobotModel for the robot visualization</li>
+<li>TF for transform relationships</li>
+<li>Appropriate sensor displays based on your robot&#x27;s sensors</li>
+</ul>
+</li>
+<li>
+<p><strong>Save Configuration</strong>:</p>
+<ul>
+<li>File → Save Config As → <code>humanoid_robot_config.rviz</code></li>
+</ul>
+</li>
+</ol>
+<h3 id="launch-file-integration">Launch File Integration</h3>
+<p>Create a launch file to start RViz2 with your configuration:</p>
+<pre><code class="language-python"># launch/rviz.launch.py
+from launch import LaunchDescription
+from launch.actions import DeclareLaunchArgument
+from launch.substitutions import LaunchConfiguration
+from launch_ros.actions import Node
+
+def generate_launch_description():
+    return LaunchDescription([
+        DeclareLaunchArgument(
+            &#x27;rviz_config&#x27;,
+            default_value=&#x27;humanoid_robot_config.rviz&#x27;,
+            description=&#x27;Full path to RViz config file&#x27;
+        ),
+
+        Node(
+            package=&#x27;rviz2&#x27;,
+            executable=&#x27;rviz2&#x27;,
+            name=&#x27;rviz2&#x27;,
+            arguments=[&#x27;-d&#x27;, LaunchConfiguration(&#x27;rviz_config&#x27;)],
+            output=&#x27;screen&#x27;
+        )
+    ])
+</code></pre>
+<h2 id="rviz2-plugins-for-humanoid-robotics">RViz2 Plugins for Humanoid Robotics</h2>
+<h3 id="moveit2-integration">MoveIt2 Integration</h3>
+<p>MoveIt2 provides planning and execution capabilities for humanoid robots:</p>
+<pre><code class="language-yaml"># MoveIt2 displays in RViz2 configuration
+- Class: moveit_rviz_plugin/MotionPlanning
+  Enabled: true
+  Name: Motion Planning
+</code></pre>
+<h3 id="navigation2-integration">Navigation2 Integration</h3>
+<p>For humanoid navigation:</p>
+<pre><code class="language-yaml"># Navigation2 displays
+- Class: nav2_rviz_plugins/Navigation2
+  Enabled: true
+  Name: Navigation2
+</code></pre>
+<h2 id="optimizing-performance">Optimizing Performance</h2>
+<h3 id="display-management">Display Management</h3>
+<p>For complex humanoid robots with many links:</p>
+<ol>
+<li><strong>Selective Link Display</strong>: Only show important links when needed</li>
+<li><strong>LOD (Level of Detail)</strong>: Use simpler meshes for distant visualization</li>
+<li><strong>Update Rates</strong>: Don&#x27;t update displays faster than necessary</li>
+</ol>
+<h3 id="memory-management">Memory Management</h3>
+<ol>
+<li><strong>Reduce Point Cloud Density</strong>: For visualization only, reduce point cloud resolution</li>
+<li><strong>Limit Trail Lengths</strong>: For trajectory visualization, limit the number of stored points</li>
+<li><strong>Use Efficient Meshes</strong>: Optimize robot meshes for visualization</li>
+</ol>
+<h2 id="debugging-with-rviz2">Debugging with RViz2</h2>
+<h3 id="common-visualization-issues">Common Visualization Issues</h3>
+<ol>
+<li>
+<p><strong>Missing Robot Model</strong>:</p>
+<ul>
+<li>Check that <code>/robot_description</code> topic is published</li>
+<li>Verify joint states are being published to <code>/joint_states</code></li>
+</ul>
+</li>
+<li>
+<p><strong>Incorrect TF Transforms</strong>:</p>
+<ul>
+<li>Use <code>ros2 run tf2_tools view_frames</code> to check TF tree</li>
+<li>Verify that robot_state_publisher is running</li>
+</ul>
+</li>
+<li>
+<p><strong>Sensor Data Not Appearing</strong>:</p>
+<ul>
+<li>Check topic names and message types</li>
+<li>Verify that sensor drivers are publishing data</li>
+</ul>
+</li>
+</ol>
+<h3 id="diagnostic-tools">Diagnostic Tools</h3>
+<h4 id="tf-tree-visualization">TF Tree Visualization</h4>
+<pre><code class="language-bash"># View the current TF tree
+ros2 run tf2_tools view_frames
+
+# Echo specific transforms
+ros2 run tf2_ros tf2_echo base_link left_foot_link
+</code></pre>
+<h4 id="topic-monitoring">Topic Monitoring</h4>
+<pre><code class="language-bash"># Check if topics are being published
+ros2 topic list
+ros2 topic echo /joint_states --field position
+</code></pre>
+<h2 id="rviz2-best-practices-for-humanoid-robotics">RViz2 Best Practices for Humanoid Robotics</h2>
+<h3 id="1-organized-layout">1. Organized Layout</h3>
+<p>Structure your RViz2 layout to prioritize important information:</p>
+<ul>
+<li>Robot model as the central focus</li>
+<li>Sensor data around the robot</li>
+<li>Trajectories and planning information in the background</li>
+</ul>
+<h3 id="2-color-coding">2. Color Coding</h3>
+<p>Use consistent color schemes:</p>
+<ul>
+<li>Robot model: Neutral colors (white, gray, blue)</li>
+<li>Planned trajectories: Green</li>
+<li>Executed trajectories: Red</li>
+<li>Obstacles: Orange or red</li>
+<li>Goals: Green or yellow</li>
+</ul>
+<h3 id="3-layered-visualization">3. Layered Visualization</h3>
+<p>Organize displays in layers:</p>
+<ul>
+<li>Background: Environment and obstacles</li>
+<li>Middle: Robot model and sensor data</li>
+<li>Foreground: Planning and control information</li>
+</ul>
+<h3 id="4-performance-optimization">4. Performance Optimization</h3>
+<p>For real-time humanoid control:</p>
+<ul>
+<li>Use lower resolution meshes for real-time visualization</li>
+<li>Limit the number of simultaneously active displays</li>
+<li>Use appropriate update rates for each display type</li>
+</ul>
+<h2 id="foxglove-studio-integration">Foxglove Studio Integration</h2>
+<p>In addition to RViz2, Foxglove Studio provides an alternative visualization and debugging platform for humanoid robots:</p>
+<h3 id="key-features-for-humanoid-robotics">Key Features for Humanoid Robotics:</h3>
+<ul>
+<li>Web-based interface accessible from multiple devices</li>
+<li>Flexible layout system for custom dashboards</li>
+<li>Support for multiple data sources and formats</li>
+<li>Advanced plotting and analysis tools</li>
+<li>Collaboration features for team development</li>
+</ul>
+<h3 id="setup-for-humanoid-robots">Setup for Humanoid Robots:</h3>
+<ol>
+<li><strong>Connect to ROS 2 Bridge</strong>: Foxglove can connect directly to ROS 2 networks</li>
+<li><strong>Custom Panels</strong>: Create specialized panels for humanoid-specific data</li>
+<li><strong>3D Visualization</strong>: Similar to RViz2 but with web-based rendering</li>
+<li><strong>Data Recording</strong>: Built-in support for recording and replaying data</li>
+</ol>
+<h2 id="summary">Summary</h2>
+<p>In this chapter, you&#x27;ve learned:</p>
+<ul>
+<li>How to configure RViz2 for humanoid robot visualization</li>
+<li>Essential displays for robot model, sensors, and transforms</li>
+<li>Advanced configuration options for complex humanoid systems</li>
+<li>Integration with planning and navigation systems</li>
+<li>Performance optimization techniques</li>
+<li>Debugging strategies using visualization</li>
+<li>Alternative visualization with Foxglove Studio</li>
+</ul>
+<p>Proper visualization configuration is essential for developing, debugging, and operating humanoid robots. The right RViz2 setup can provide valuable insights into robot behavior and help identify issues quickly.</p>
+<h2 id="exercises">Exercises</h2>
+<ol>
+<li>Create a custom RViz2 configuration file for your specific humanoid robot</li>
+<li>Add displays for all sensors on your robot (LiDAR, cameras, IMU, etc.)</li>
+<li>Configure TF visualization to clearly show the relationship between all robot frames</li>
+<li>Set up a launch file that starts RViz2 with your custom configuration</li>
+<li>Explore Foxglove Studio as an alternative visualization platform</li>
+</ol>
+<div class="starboard-notebook-container"><div class="starboard-notebook-header"><span class="starboard-notebook-icon">📊</span><span class="starboard-notebook-title">Interactive Notebook</span></div><div class="starboard-notebook-content"><div class="starboard-children-container"><pre><code class="language-python"># This would be an interactive code block for students to experiment with RViz2
+# In a real implementation, this would connect to ROS 2 services
+# to visualize and manipulate the robot model
+</code></pre></div></div><div class="starboard-notebook-footer"><small>Note: This is a placeholder for interactive Starboard notebooks.</small></div></div></div><footer class="theme-doc-footer docusaurus-mt-lg"><div class="row margin-top--sm theme-doc-footer-edit-meta-row"><div class="col noPrint_WFHX"><a href="https://github.com/facebook/docusaurus/tree/main/packages/create-docusaurus/templates/shared/docs/module-1-ros/05-rviz-configuration.mdx" target="_blank" rel="noopener noreferrer" class="theme-edit-this-page"><svg fill="currentColor" height="20" width="20" viewBox="0 0 40 40" class="iconEdit_Z9Sw" aria-hidden="true"><g><path d="m34.5 11.7l-3 3.1-6.3-6.3 3.1-3q0.5-0.5 1.2-0.5t1.1 0.5l3.9 3.9q0.5 0.4 0.5 1.1t-0.5 1.2z m-29.5 17.1l18.4-18.5 6.3 6.3-18.4 18.4h-6.3v-6.2z"></path></g></svg>Edit this page</a></div><div class="col lastUpdated_JAkA"></div></div></footer></article><nav class="docusaurus-mt-lg pagination-nav" aria-label="Docs pages"><a class="pagination-nav__link pagination-nav__link--prev" href="/physical-ai-textbook/docs/module-1-ros/nodes-topics-services"><div class="pagination-nav__sublabel">Previous</div><div class="pagination-nav__label">Nodes, Topics, Services</div></a><a class="pagination-nav__link pagination-nav__link--next" href="/physical-ai-textbook/docs/module-1-ros/ros2-bag-foxglove"><div class="pagination-nav__sublabel">Next</div><div class="pagination-nav__label">ROS 2 Bag and Foxglove</div></a></nav></div></div><div class="col col--3"><div class="tableOfContents_bqdL thin-scrollbar theme-doc-toc-desktop"><ul class="table-of-contents table-of-contents__left-border"><li><a href="#introduction" class="table-of-contents__link toc-highlight">Introduction</a></li><li><a href="#understanding-rviz2-architecture" class="table-of-contents__link toc-highlight">Understanding RViz2 Architecture</a><ul><li><a href="#core-components" class="table-of-contents__link toc-highlight">Core Components</a></li><li><a href="#coordinate-systems" class="table-of-contents__link toc-highlight">Coordinate Systems</a></li></ul></li><li><a href="#setting-up-basic-robot-visualization" class="table-of-contents__link toc-highlight">Setting Up Basic Robot Visualization</a><ul><li><a href="#robotmodel-display" class="table-of-contents__link toc-highlight">RobotModel Display</a></li><li><a href="#tf-transform-display" class="table-of-contents__link toc-highlight">TF (Transform) Display</a></li></ul></li><li><a href="#configuring-displays-for-humanoid-robots" class="table-of-contents__link toc-highlight">Configuring Displays for Humanoid Robots</a><ul><li><a href="#joint-state-visualization" class="table-of-contents__link toc-highlight">Joint State Visualization</a></li><li><a href="#sensor-data-visualization" class="table-of-contents__link toc-highlight">Sensor Data Visualization</a></li></ul></li><li><a href="#advanced-configuration-for-humanoid-systems" class="table-of-contents__link toc-highlight">Advanced Configuration for Humanoid Systems</a><ul><li><a href="#multiple-robot-visualization" class="table-of-contents__link toc-highlight">Multiple Robot Visualization</a></li><li><a href="#interactive-markers" class="table-of-contents__link toc-highlight">Interactive Markers</a></li><li><a href="#planning-and-navigation-visualization" class="table-of-contents__link toc-highlight">Planning and Navigation Visualization</a></li></ul></li><li><a href="#creating-custom-rviz2-configurations" class="table-of-contents__link toc-highlight">Creating Custom RViz2 Configurations</a><ul><li><a href="#manual-configuration" class="table-of-contents__link toc-highlight">Manual Configuration</a></li><li><a href="#launch-file-integration" class="table-of-contents__link toc-highlight">Launch File Integration</a></li></ul></li><li><a href="#rviz2-plugins-for-humanoid-robotics" class="table-of-contents__link toc-highlight">RViz2 Plugins for Humanoid Robotics</a><ul><li><a href="#moveit2-integration" class="table-of-contents__link toc-highlight">MoveIt2 Integration</a></li><li><a href="#navigation2-integration" class="table-of-contents__link toc-highlight">Navigation2 Integration</a></li></ul></li><li><a href="#optimizing-performance" class="table-of-contents__link toc-highlight">Optimizing Performance</a><ul><li><a href="#display-management" class="table-of-contents__link toc-highlight">Display Management</a></li><li><a href="#memory-management" class="table-of-contents__link toc-highlight">Memory Management</a></li></ul></li><li><a href="#debugging-with-rviz2" class="table-of-contents__link toc-highlight">Debugging with RViz2</a><ul><li><a href="#common-visualization-issues" class="table-of-contents__link toc-highlight">Common Visualization Issues</a></li><li><a href="#diagnostic-tools" class="table-of-contents__link toc-highlight">Diagnostic Tools</a></li></ul></li><li><a href="#rviz2-best-practices-for-humanoid-robotics" class="table-of-contents__link toc-highlight">RViz2 Best Practices for Humanoid Robotics</a><ul><li><a href="#1-organized-layout" class="table-of-contents__link toc-highlight">1. Organized Layout</a></li><li><a href="#2-color-coding" class="table-of-contents__link toc-highlight">2. Color Coding</a></li><li><a href="#3-layered-visualization" class="table-of-contents__link toc-highlight">3. Layered Visualization</a></li><li><a href="#4-performance-optimization" class="table-of-contents__link toc-highlight">4. Performance Optimization</a></li></ul></li><li><a href="#foxglove-studio-integration" class="table-of-contents__link toc-highlight">Foxglove Studio Integration</a><ul><li><a href="#key-features-for-humanoid-robotics" class="table-of-contents__link toc-highlight">Key Features for Humanoid Robotics:</a></li><li><a href="#setup-for-humanoid-robots" class="table-of-contents__link toc-highlight">Setup for Humanoid Robots:</a></li></ul></li><li><a href="#summary" class="table-of-contents__link toc-highlight">Summary</a></li><li><a href="#exercises" class="table-of-contents__link toc-highlight">Exercises</a></li></ul></div></div></div></div></main></div></div></div><footer class="theme-layout-footer footer footer--dark"><div class="container container-fluid"><div class="row footer__links"><div class="theme-layout-footer-column col footer__col"><div class="footer__title">Docs</div><ul class="footer__items clean-list"><li class="footer__item"><a class="footer__link-item" href="/physical-ai-textbook/docs/intro/introduction-to-physical-ai">Textbook</a></li></ul></div><div class="theme-layout-footer-column col footer__col"><div class="footer__title">Community</div><ul class="footer__items clean-list"><li class="footer__item"><a href="https://stackoverflow.com/questions/tagged/docusaurus" target="_blank" rel="noopener noreferrer" class="footer__link-item">Stack Overflow<svg width="13.5" height="13.5" aria-label="(opens in new tab)" class="iconExternalLink_nPIU"><use href="#theme-svg-external-link"></use></svg></a></li><li class="footer__item"><a href="https://discordapp.com/invite/docusaurus" target="_blank" rel="noopener noreferrer" class="footer__link-item">Discord<svg width="13.5" height="13.5" aria-label="(opens in new tab)" class="iconExternalLink_nPIU"><use href="#theme-svg-external-link"></use></svg></a></li><li class="footer__item"><a href="https://twitter.com/docusaurus" target="_blank" rel="noopener noreferrer" class="footer__link-item">Twitter<svg width="13.5" height="13.5" aria-label="(opens in new tab)" class="iconExternalLink_nPIU"><use href="#theme-svg-external-link"></use></svg></a></li></ul></div><div class="theme-layout-footer-column col footer__col"><div class="footer__title">More</div><ul class="footer__items clean-list"><li class="footer__item"><a href="https://github.com/Gulshan-koondhar/physical-ai-textbook" target="_blank" rel="noopener noreferrer" class="footer__link-item">GitHub<svg width="13.5" height="13.5" aria-label="(opens in new tab)" class="iconExternalLink_nPIU"><use href="#theme-svg-external-link"></use></svg></a></li></ul></div></div><div class="footer__bottom text--center"><div class="footer__copyright">Copyright © 2025 My Project, Inc. Built with Docusaurus.</div></div></div></footer></div>
+</body>
+</html>

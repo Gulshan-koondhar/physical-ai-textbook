@@ -1,0 +1,1524 @@
+<!doctype html>
+<html lang="en" dir="ltr" class="docs-wrapper plugin-docs plugin-id-default docs-version-current docs-doc-page docs-doc-id-deployment/deployment-guide" data-has-hydrated="false">
+<head>
+<meta charset="UTF-8">
+<meta name="generator" content="Docusaurus v3.9.2">
+<title data-rh="true">Deployment Guide for Physical AI &amp; Humanoid Robotics | Physical AI &amp; Humanoid Robotics</title><meta data-rh="true" name="viewport" content="width=device-width,initial-scale=1"><meta data-rh="true" name="twitter:card" content="summary_large_image"><meta data-rh="true" property="og:image" content="https://Gulshan-koondhar.github.io/physical-ai-textbook/img/docusaurus-social-card.jpg"><meta data-rh="true" name="twitter:image" content="https://Gulshan-koondhar.github.io/physical-ai-textbook/img/docusaurus-social-card.jpg"><meta data-rh="true" property="og:url" content="https://Gulshan-koondhar.github.io/physical-ai-textbook/docs/deployment/deployment-guide"><meta data-rh="true" property="og:locale" content="en"><meta data-rh="true" name="docusaurus_locale" content="en"><meta data-rh="true" name="docsearch:language" content="en"><meta data-rh="true" name="docusaurus_version" content="current"><meta data-rh="true" name="docusaurus_tag" content="docs-default-current"><meta data-rh="true" name="docsearch:version" content="current"><meta data-rh="true" name="docsearch:docusaurus_tag" content="docs-default-current"><meta data-rh="true" property="og:title" content="Deployment Guide for Physical AI &amp; Humanoid Robotics | Physical AI &amp; Humanoid Robotics"><meta data-rh="true" name="description" content="Comprehensive guide for deploying physical AI systems and humanoid robots in production environments"><meta data-rh="true" property="og:description" content="Comprehensive guide for deploying physical AI systems and humanoid robots in production environments"><meta data-rh="true" name="keywords" content="deployment,AI,humanoid,robotics,production,deployment,CI/CD,monitoring"><link data-rh="true" rel="icon" href="/physical-ai-textbook/img/favicon.ico"><link data-rh="true" rel="canonical" href="https://Gulshan-koondhar.github.io/physical-ai-textbook/docs/deployment/deployment-guide"><link data-rh="true" rel="alternate" href="https://Gulshan-koondhar.github.io/physical-ai-textbook/docs/deployment/deployment-guide" hreflang="en"><link data-rh="true" rel="alternate" href="https://Gulshan-koondhar.github.io/physical-ai-textbook/docs/deployment/deployment-guide" hreflang="x-default"><link rel="stylesheet" href="/physical-ai-textbook/assets/css/styles.4f99da8f.css">
+<script src="/physical-ai-textbook/assets/js/runtime~main.7cf563d1.js" defer="defer"></script>
+<script src="/physical-ai-textbook/assets/js/main.6dcd1921.js" defer="defer"></script>
+</head>
+<body class="navigation-with-keyboard">
+<svg style="display: none;"><defs>
+<symbol id="theme-svg-external-link" viewBox="0 0 24 24"><path fill="currentColor" d="M21 13v10h-21v-19h12v2h-10v15h17v-8h2zm3-12h-10.988l4.035 4-6.977 7.07 2.828 2.828 6.977-7.07 4.125 4.172v-11z"/></symbol>
+</defs></svg>
+<script>!function(){var t=function(){try{return new URLSearchParams(window.location.search).get("docusaurus-theme")}catch(t){}}()||function(){try{return window.localStorage.getItem("theme")}catch(t){}}();document.documentElement.setAttribute("data-theme",t||"light"),document.documentElement.setAttribute("data-theme-choice",t||"light")}(),function(){try{const c=new URLSearchParams(window.location.search).entries();for(var[t,e]of c)if(t.startsWith("docusaurus-data-")){var a=t.replace("docusaurus-data-","data-");document.documentElement.setAttribute(a,e)}}catch(t){}}()</script><div id="__docusaurus"><div role="region" aria-label="Skip to main content"><a class="skipToContent_fXgn" href="#__docusaurus_skipToContent_fallback">Skip to main content</a></div><nav aria-label="Main" class="theme-layout-navbar navbar navbar--fixed-top"><div class="navbar__inner"><div class="theme-layout-navbar-left navbar__items"><button aria-label="Toggle navigation bar" aria-expanded="false" class="navbar__toggle clean-btn" type="button"><svg width="30" height="30" viewBox="0 0 30 30" aria-hidden="true"><path stroke="currentColor" stroke-linecap="round" stroke-miterlimit="10" stroke-width="2" d="M4 7h22M4 15h22M4 23h22"></path></svg></button><a class="navbar__brand" href="/physical-ai-textbook/"><div class="navbar__logo"><img src="/physical-ai-textbook/img/logo.svg" alt="Physical AI Logo" class="themedComponent_mlkZ themedComponent--light_NVdE"><img src="/physical-ai-textbook/img/logo.svg" alt="Physical AI Logo" class="themedComponent_mlkZ themedComponent--dark_xIcU"></div><b class="navbar__title text--truncate">Physical AI Textbook</b></a><a class="navbar__item navbar__link" href="/physical-ai-textbook/docs/intro/introduction-to-physical-ai">Textbook</a></div><div class="theme-layout-navbar-right navbar__items navbar__items--right"><a href="https://github.com/Gulshan-koondhar/physical-ai-textbook" target="_blank" rel="noopener noreferrer" class="navbar__item navbar__link">GitHub<svg width="13.5" height="13.5" aria-label="(opens in new tab)" class="iconExternalLink_nPIU"><use href="#theme-svg-external-link"></use></svg></a><div class="toggle_vylO colorModeToggle_DEke"><button class="clean-btn toggleButton_gllP toggleButtonDisabled_aARS" type="button" disabled="" title="system mode" aria-label="Switch between dark and light mode (currently system mode)"><svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" class="toggleIcon_g3eP lightToggleIcon_pyhR"><path fill="currentColor" d="M12,9c1.65,0,3,1.35,3,3s-1.35,3-3,3s-3-1.35-3-3S10.35,9,12,9 M12,7c-2.76,0-5,2.24-5,5s2.24,5,5,5s5-2.24,5-5 S14.76,7,12,7L12,7z M2,13l2,0c0.55,0,1-0.45,1-1s-0.45-1-1-1l-2,0c-0.55,0-1,0.45-1,1S1.45,13,2,13z M20,13l2,0c0.55,0,1-0.45,1-1 s-0.45-1-1-1l-2,0c-0.55,0-1,0.45-1,1S19.45,13,20,13z M11,2v2c0,0.55,0.45,1,1,1s1-0.45,1-1V2c0-0.55-0.45-1-1-1S11,1.45,11,2z M11,20v2c0,0.55,0.45,1,1,1s1-0.45,1-1v-2c0-0.55-0.45-1-1-1C11.45,19,11,19.45,11,20z M5.99,4.58c-0.39-0.39-1.03-0.39-1.41,0 c-0.39,0.39-0.39,1.03,0,1.41l1.06,1.06c0.39,0.39,1.03,0.39,1.41,0s0.39-1.03,0-1.41L5.99,4.58z M18.36,16.95 c-0.39-0.39-1.03-0.39-1.41,0c-0.39,0.39-0.39,1.03,0,1.41l1.06,1.06c0.39,0.39,1.03,0.39,1.41,0c0.39-0.39,0.39-1.03,0-1.41 L18.36,16.95z M19.42,5.99c0.39-0.39,0.39-1.03,0-1.41c-0.39-0.39-1.03-0.39-1.41,0l-1.06,1.06c-0.39,0.39-0.39,1.03,0,1.41 s1.03,0.39,1.41,0L19.42,5.99z M7.05,18.36c0.39-0.39,0.39-1.03,0-1.41c-0.39-0.39-1.03-0.39-1.41,0l-1.06,1.06 c-0.39,0.39-0.39,1.03,0,1.41s1.03,0.39,1.41,0L7.05,18.36z"></path></svg><svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" class="toggleIcon_g3eP darkToggleIcon_wfgR"><path fill="currentColor" d="M9.37,5.51C9.19,6.15,9.1,6.82,9.1,7.5c0,4.08,3.32,7.4,7.4,7.4c0.68,0,1.35-0.09,1.99-0.27C17.45,17.19,14.93,19,12,19 c-3.86,0-7-3.14-7-7C5,9.07,6.81,6.55,9.37,5.51z M12,3c-4.97,0-9,4.03-9,9s4.03,9,9,9s9-4.03,9-9c0-0.46-0.04-0.92-0.1-1.36 c-0.98,1.37-2.58,2.26-4.4,2.26c-2.98,0-5.4-2.42-5.4-5.4c0-1.81,0.89-3.42,2.26-4.4C12.92,3.04,12.46,3,12,3L12,3z"></path></svg><svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" class="toggleIcon_g3eP systemToggleIcon_QzmC"><path fill="currentColor" d="m12 21c4.971 0 9-4.029 9-9s-4.029-9-9-9-9 4.029-9 9 4.029 9 9 9zm4.95-13.95c1.313 1.313 2.05 3.093 2.05 4.95s-0.738 3.637-2.05 4.95c-1.313 1.313-3.093 2.05-4.95 2.05v-14c1.857 0 3.637 0.737 4.95 2.05z"></path></svg></button></div><div class="navbarSearchContainer_Bca1"></div></div></div><div role="presentation" class="navbar-sidebar__backdrop"></div></nav><div id="__docusaurus_skipToContent_fallback" class="theme-layout-main main-wrapper mainWrapper_z2l0"><div class="docsWrapper_hBAB"><button aria-label="Scroll back to top" class="clean-btn theme-back-to-top-button backToTopButton_sjWU" type="button"></button><div class="docRoot_UBD9"><main class="docMainContainer_TBSr docMainContainerEnhanced_lQrH"><div class="container padding-top--md padding-bottom--lg"><div class="row"><div class="col docItemCol_VOVn"><div class="docItemContainer_Djhp"><article><div class="tocCollapsible_ETCw theme-doc-toc-mobile tocMobile_ITEo"><button type="button" class="clean-btn tocCollapsibleButton_TO0P">On this page</button></div><div class="theme-doc-markdown markdown"><header><h1 id="deployment-guide-for-physical-ai--humanoid-robotics">Deployment Guide for Physical AI &amp; Humanoid Robotics</h1></header>
+<h2 id="introduction">Introduction</h2>
+<p>Deploying physical AI systems and humanoid robots in production environments requires careful planning, robust infrastructure, and comprehensive monitoring. Unlike traditional software applications, humanoid robots operate in dynamic physical environments and require real-time performance, safety considerations, and continuous operation. This guide covers the essential aspects of deploying AI-powered humanoid robots from development to production.</p>
+<p>The deployment of humanoid robots involves multiple layers: hardware deployment, software deployment, model deployment, and operational deployment. Each layer has its own challenges and requirements that must be addressed for successful deployment.</p>
+<h2 id="pre-deployment-planning">Pre-Deployment Planning</h2>
+<h3 id="environment-assessment">Environment Assessment</h3>
+<p>Before deploying humanoid robots, conduct a thorough environment assessment:</p>
+<h4 id="physical-environment">Physical Environment</h4>
+<ul>
+<li><strong>Space Requirements</strong>: Measure available space and plan robot navigation paths</li>
+<li><strong>Obstacle Mapping</strong>: Identify static and dynamic obstacles</li>
+<li><strong>Surface Conditions</strong>: Assess floor types, gradients, and slipperiness</li>
+<li><strong>Lighting Conditions</strong>: Evaluate ambient lighting for vision systems</li>
+<li><strong>Acoustic Environment</strong>: Assess noise levels for audio processing</li>
+</ul>
+<h4 id="network-infrastructure">Network Infrastructure</h4>
+<ul>
+<li><strong>WiFi Coverage</strong>: Ensure comprehensive coverage with minimal dead zones</li>
+<li><strong>Bandwidth Requirements</strong>: Calculate bandwidth for video streaming, data transmission</li>
+<li><strong>Latency Requirements</strong>: Ensure low-latency communication for real-time control</li>
+<li><strong>Security</strong>: Implement secure network protocols and authentication</li>
+</ul>
+<h4 id="power-infrastructure">Power Infrastructure</h4>
+<ul>
+<li><strong>Power Availability</strong>: Ensure sufficient outlets and power capacity</li>
+<li><strong>Backup Power</strong>: Plan for uninterruptible power supplies (UPS)</li>
+<li><strong>Power Consumption</strong>: Calculate robot power requirements and duty cycles</li>
+</ul>
+<h3 id="safety-assessment">Safety Assessment</h3>
+<h4 id="risk-analysis">Risk Analysis</h4>
+<ul>
+<li><strong>Human Interaction</strong>: Assess risks during human-robot interaction</li>
+<li><strong>Emergency Procedures</strong>: Plan for robot malfunctions and emergencies</li>
+<li><strong>Physical Barriers</strong>: Consider safety barriers and restricted zones</li>
+<li><strong>Monitoring Systems</strong>: Implement surveillance and alert systems</li>
+</ul>
+<h4 id="regulatory-compliance">Regulatory Compliance</h4>
+<ul>
+<li><strong>Safety Standards</strong>: Ensure compliance with ISO 13482 (service robots) or other applicable standards</li>
+<li><strong>Electrical Safety</strong>: Meet electrical safety requirements (IEC, UL standards)</li>
+<li><strong>EMC Compliance</strong>: Ensure electromagnetic compatibility</li>
+<li><strong>Local Regulations</strong>: Comply with local robotics regulations</li>
+</ul>
+<h2 id="hardware-deployment">Hardware Deployment</h2>
+<h3 id="robot-assembly-and-integration">Robot Assembly and Integration</h3>
+<h4 id="pre-assembly-checks">Pre-Assembly Checks</h4>
+<ol>
+<li><strong>Component Verification</strong>: Verify all components match specifications</li>
+<li><strong>Compatibility Testing</strong>: Test component compatibility before assembly</li>
+<li><strong>Firmware Verification</strong>: Ensure all firmware is up-to-date</li>
+<li><strong>Documentation Review</strong>: Review assembly procedures and safety guidelines</li>
+</ol>
+<h4 id="assembly-process">Assembly Process</h4>
+<ol>
+<li><strong>Mechanical Assembly</strong>: Follow manufacturer&#x27;s assembly procedures</li>
+<li><strong>Electrical Connections</strong>: Verify all connections are secure and correct</li>
+<li><strong>Cable Management</strong>: Route cables to prevent interference and damage</li>
+<li><strong>Initial Power-On</strong>: Conduct initial power-on tests with safety measures</li>
+</ol>
+<h4 id="calibration-procedures">Calibration Procedures</h4>
+<ol>
+<li><strong>Joint Calibration</strong>: Calibrate all joint encoders and limits</li>
+<li><strong>Sensor Calibration</strong>: Calibrate cameras, IMUs, and other sensors</li>
+<li><strong>Kinematic Calibration</strong>: Verify forward and inverse kinematics</li>
+<li><strong>Performance Testing</strong>: Test torque, speed, and accuracy specifications</li>
+</ol>
+<h3 id="infrastructure-setup">Infrastructure Setup</h3>
+<h4 id="network-configuration">Network Configuration</h4>
+<pre><code class="language-bash"># Example network setup script for robot deployment
+#!/bin/bash
+
+# Configure static IP for robot
+sudo ip addr add 192.168.1.100/24 dev eth0
+sudo ip link set eth0 up
+
+# Configure WiFi connection
+nmcli dev wifi connect &quot;robot-network&quot; password &quot;secure-password&quot;
+
+# Set up VPN for secure communication
+sudo openvpn --config /etc/openvpn/robot-vpn.ovpn --daemon
+
+# Configure DNS and hostname
+echo &quot;robot-humanoid-01&quot; | sudo tee /etc/hostname
+echo &quot;127.0.0.1 localhost&quot; | sudo tee /etc/hosts
+echo &quot;192.168.1.100 robot-humanoid-01&quot; | sudo tee -a /etc/hosts
+</code></pre>
+<h4 id="power-system-setup">Power System Setup</h4>
+<pre><code class="language-bash"># Power monitoring and management script
+#!/bin/bash
+
+# Monitor battery levels
+while true; do
+    battery_level=$(cat /sys/class/power_supply/BAT0/capacity)
+
+    if [ $battery_level -lt 20 ]; then
+        echo &quot;Low battery warning: $battery_level%&quot;
+        # Send alert to monitoring system
+        curl -X POST http://monitoring/api/alerts \
+             -H &quot;Content-Type: application/json&quot; \
+             -d &quot;{\&quot;type\&quot;:\&quot;battery\&quot;,\&quot;level\&quot;:$battery_level,\&quot;robot\&quot;:\&quot;humanoid-01\&quot;}&quot;
+
+        if [ $battery_level -lt 10 ]; then
+            echo &quot;Critical battery level, initiating safe shutdown&quot;
+            # Execute safe shutdown procedure
+            ssh robot@192.168.1.100 &quot;sudo systemctl start robot-safe-shutdown&quot;
+        fi
+    fi
+
+    sleep 60  # Check every minute
+done
+</code></pre>
+<h2 id="software-deployment">Software Deployment</h2>
+<h3 id="containerized-deployment-strategy">Containerized Deployment Strategy</h3>
+<h4 id="docker-configuration-for-robotics">Docker Configuration for Robotics</h4>
+<pre><code class="language-dockerfile"># Dockerfile for humanoid robot application
+FROM nvidia/cuda:11.8-devel-ubuntu20.04
+
+# Set environment variables
+ENV DEBIAN_FRONTEND=noninteractive
+ENV NVIDIA_VISIBLE_DEVICES=all
+ENV NVIDIA_DRIVER_CAPABILITIES=compute,utility
+ENV NVIDIA_REQUIRE_CUDA=&quot;cuda&gt;=11.8 brand=tesla,driver&gt;=470,driver&lt;471 brand=unknown,driver&gt;=470,driver&lt;471 brand=nvidia,driver&gt;=470,driver&lt;471 brand=nvidiartx,driver&gt;=470,driver&lt;471 brand=geforce,driver&gt;=470,driver&lt;471 brand=geforcertx,driver&gt;=470,driver&lt;471 brand=quadro,driver&gt;=470,driver&lt;471 brand=quadrortx,driver&gt;=470,driver&lt;471 brand=titan,driver&gt;=470,driver&lt;471 brand=titanrtx,driver&gt;=470,driver&lt;471&quot;
+
+# Install system dependencies
+RUN apt-get update &amp;&amp; apt-get install -y \
+    build-essential \
+    cmake \
+    git \
+    python3-dev \
+    python3-pip \
+    python3-venv \
+    libeigen3-dev \
+    libboost-all-dev \
+    libopencv-dev \
+    libgstreamer-plugins-base1.0-dev \
+    gstreamer1.0-plugins-good \
+    gstreamer1.0-plugins-bad \
+    gstreamer1.0-plugins-ugly \
+    gstreamer1.0-libav \
+    ros-humble-desktop \
+    &amp;&amp; rm -rf /var/lib/apt/lists/*
+
+# Install Python packages
+RUN pip3 install --upgrade pip setuptools wheel
+RUN pip3 install \
+    torch torchvision torchaudio \
+    --index-url https://download.pytorch.org/whl/cu118
+
+RUN pip3 install \
+    openai-whisper \
+    transformers \
+    supervision \
+    opencv-python \
+    numpy \
+    scipy \
+    matplotlib \
+    tensorrt \
+    pycuda
+
+# Create workspace
+WORKDIR /workspace
+
+# Copy application code
+COPY . /workspace/
+
+# Set up ROS workspace
+RUN source /opt/ros/humble/setup.bash &amp;&amp; \
+    colcon build --packages-select humanoid_robot_application
+
+# Create non-root user
+RUN useradd -ms /bin/bash robotuser &amp;&amp; \
+    usermod -aG dialout robotuser
+
+# Switch to robot user
+USER robotuser
+
+# Set up entrypoint
+COPY entrypoint.sh /entrypoint.sh
+RUN chmod +x /entrypoint.sh
+
+ENTRYPOINT [&quot;/entrypoint.sh&quot;]
+</code></pre>
+<h4 id="docker-compose-for-multi-service-deployment">Docker Compose for Multi-Service Deployment</h4>
+<pre><code class="language-yaml"># docker-compose.robot.yml
+version: &#x27;3.8&#x27;
+
+services:
+  perception:
+    build:
+      context: .
+      dockerfile: Dockerfile.perception
+    runtime: nvidia
+    environment:
+      - NVIDIA_VISIBLE_DEVICES=all
+      - NVIDIA_DRIVER_CAPABILITIES=compute,utility
+      - CUDA_VISIBLE_DEVICES=0
+    volumes:
+      - /tmp:/tmp
+      - ./models:/workspace/models
+      - ./logs:/workspace/logs
+    devices:
+      - /dev/video0:/dev/video0
+      - /dev/ttyUSB0:/dev/ttyUSB0
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]
+        limits:
+          memory: 4G
+    command: [&quot;ros2&quot;, &quot;launch&quot;, &quot;perception_pipeline&quot;, &quot;perception.launch.py&quot;]
+    restart: unless-stopped
+
+  language:
+    build:
+      context: .
+      dockerfile: Dockerfile.language
+    runtime: nvidia
+    environment:
+      - NVIDIA_VISIBLE_DEVICES=all
+      - NVIDIA_DRIVER_CAPABILITIES=compute,utility
+      - CUDA_VISIBLE_DEVICES=0
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+    volumes:
+      - ./models:/workspace/models
+      - ./logs:/workspace/logs
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]
+        limits:
+          memory: 2G
+    command: [&quot;python3&quot;, &quot;language_processor.py&quot;]
+    restart: unless-stopped
+
+  planning:
+    build:
+      context: .
+      dockerfile: Dockerfile.planning
+    environment:
+      - CUDA_VISIBLE_DEVICES=&quot;&quot;
+    volumes:
+      - ./config:/workspace/config
+      - ./logs:/workspace/logs
+    depends_on:
+      - perception
+      - language
+    command: [&quot;ros2&quot;, &quot;run&quot;, &quot;action_planner&quot;, &quot;planner_node&quot;]
+    restart: unless-stopped
+
+  control:
+    build:
+      context: .
+      dockerfile: Dockerfile.control
+    privileged: true
+    environment:
+      - CUDA_VISIBLE_DEVICES=&quot;&quot;
+    devices:
+      - /dev/ttyACM0:/dev/ttyACM0
+      - /dev/i2c-1:/dev/i2c-1
+    depends_on:
+      - planning
+    command: [&quot;ros2&quot;, &quot;launch&quot;, &quot;robot_control&quot;, &quot;control.launch.py&quot;]
+    restart: unless-stopped
+
+  monitoring:
+    image: prometheus/node-exporter:latest
+    environment:
+      - NVIDIA_VISIBLE_DEVICES=all
+      - NVIDIA_DRIVER_CAPABILITIES=all
+    volumes:
+      - /proc:/host/proc:ro
+      - /sys:/host/sys:ro
+      - /:/rootfs:ro
+    command:
+      - &#x27;--path.procfs=/host/proc&#x27;
+      - &#x27;--path.rootfs=/rootfs&#x27;
+      - &#x27;--collector.filesystem.mount-points-exclude=^/(sys|proc|dev|host|etc)($$|/)&#x27;
+    restart: unless-stopped
+
+  logging:
+    image: grafana/loki:latest
+    volumes:
+      - ./loki-config.yml:/etc/loki/config.yaml
+    command: [&quot;-config.file=/etc/loki/config.yaml&quot;]
+    restart: unless-stopped
+</code></pre>
+<h3 id="cicd-pipeline-for-robot-deployment">CI/CD Pipeline for Robot Deployment</h3>
+<h4 id="gitlab-cicd-configuration">GitLab CI/CD Configuration</h4>
+<pre><code class="language-yaml"># .gitlab-ci.yml
+stages:
+  - build
+  - test
+  - deploy
+
+variables:
+  DOCKER_DRIVER: overlay2
+  DOCKER_TLS_CERTDIR: &quot;/certs&quot;
+
+before_script:
+  - docker info
+
+# Build stage
+build_perception:
+  stage: build
+  script:
+    - docker build -f Dockerfile.perception -t $CI_REGISTRY_IMAGE/perception:$CI_COMMIT_SHA .
+    - docker push $CI_REGISTRY_IMAGE/perception:$CI_COMMIT_SHA
+  only:
+    - main
+
+build_language:
+  stage: build
+  script:
+    - docker build -f Dockerfile.language -t $CI_REGISTRY_IMAGE/language:$CI_COMMIT_SHA .
+    - docker push $CI_REGISTRY_IMAGE/language:$CI_COMMIT_SHA
+  only:
+    - main
+
+build_planning:
+  stage: build
+  script:
+    - docker build -f Dockerfile.planning -t $CI_REGISTRY_IMAGE/planning:$CI_COMMIT_SHA .
+    - docker push $CI_REGISTRY_IMAGE/planning:$CI_COMMIT_SHA
+  only:
+    - main
+
+# Test stage
+unit_tests:
+  stage: test
+  script:
+    - docker run --rm $CI_REGISTRY_IMAGE/perception:$CI_COMMIT_SHA python3 -m pytest tests/unit/
+    - docker run --rm $CI_REGISTRY_IMAGE/language:$CI_COMMIT_SHA python3 -m pytest tests/unit/
+    - docker run --rm $CI_REGISTRY_IMAGE/planning:$CI_COMMIT_SHA python3 -m pytest tests/unit/
+  dependencies:
+    - build_perception
+    - build_language
+    - build_planning
+
+integration_tests:
+  stage: test
+  script:
+    - docker-compose -f docker-compose.test.yml up --abort-on-container-exit
+  dependencies:
+    - build_perception
+    - build_language
+    - build_planning
+
+# Deploy stage
+deploy_staging:
+  stage: deploy
+  script:
+    - |
+      ssh robot@$STAGING_HOST &quot;
+        docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY &amp;&amp;
+        docker pull $CI_REGISTRY_IMAGE/perception:$CI_COMMIT_SHA &amp;&amp;
+        docker pull $CI_REGISTRY_IMAGE/language:$CI_COMMIT_SHA &amp;&amp;
+        docker pull $CI_REGISTRY_IMAGE/planning:$CI_COMMIT_SHA &amp;&amp;
+        docker-compose -f docker-compose.robot.yml down &amp;&amp;
+        docker-compose -f docker-compose.robot.yml up -d
+      &quot;
+  environment:
+    name: staging
+  when: manual
+  only:
+    - main
+
+deploy_production:
+  stage: deploy
+  script:
+    - |
+      ssh robot@$PRODUCTION_HOST &quot;
+        docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY &amp;&amp;
+        docker pull $CI_REGISTRY_IMAGE/perception:$CI_COMMIT_SHA &amp;&amp;
+        docker pull $CI_REGISTRY_IMAGE/language:$CI_COMMIT_SHA &amp;&amp;
+        docker pull $CI_REGISTRY_IMAGE/planning:$CI_COMMIT_SHA &amp;&amp;
+        docker-compose -f docker-compose.robot.yml down &amp;&amp;
+        docker-compose -f docker-compose.robot.yml up -d
+      &quot;
+  environment:
+    name: production
+  when: manual
+  only:
+    - main
+  rules:
+    - if: $CI_COMMIT_TAG
+</code></pre>
+<h4 id="jenkins-pipeline-for-robot-deployment">Jenkins Pipeline for Robot Deployment</h4>
+<pre><code class="language-groovy">// Jenkinsfile
+pipeline {
+    agent any
+
+    tools {
+        dockerTool &#x27;docker-20.10.12&#x27;
+    }
+
+    environment {
+        DOCKER_REGISTRY = &#x27;registry.example.com&#x27;
+        ROBOT_HOST = &#x27;robot01.example.com&#x27;
+    }
+
+    stages {
+        stage(&#x27;Checkout&#x27;) {
+            steps {
+                checkout scm
+            }
+        }
+
+        stage(&#x27;Build Docker Images&#x27;) {
+            parallel {
+                stage(&#x27;Perception&#x27;) {
+                    steps {
+                        script {
+                            docker.build(&quot;${DOCKER_REGISTRY}/robot-perception:${env.BUILD_NUMBER}&quot;)
+                        }
+                    }
+                }
+                stage(&#x27;Language&#x27;) {
+                    steps {
+                        script {
+                            docker.build(&quot;${DOCKER_REGISTRY}/robot-language:${env.BUILD_NUMBER}&quot;)
+                        }
+                    }
+                }
+                stage(&#x27;Planning&#x27;) {
+                    steps {
+                        script {
+                            docker.build(&quot;${DOCKER_REGISTRY}/robot-planning:${env.BUILD_NUMBER}&quot;)
+                        }
+                    }
+                }
+            }
+        }
+
+        stage(&#x27;Unit Tests&#x27;) {
+            steps {
+                sh &#x27;&#x27;&#x27;
+                docker run --rm ${DOCKER_REGISTRY}/robot-perception:${env.BUILD_NUMBER} python3 -m pytest tests/unit/
+                docker run --rm ${DOCKER_REGISTRY}/robot-language:${env.BUILD_NUMBER} python3 -m pytest tests/unit/
+                docker run --rm ${DOCKER_REGISTRY}/robot-planning:${env.BUILD_NUMBER} python3 -m pytest tests/unit/
+                &#x27;&#x27;&#x27;
+            }
+        }
+
+        stage(&#x27;Integration Tests&#x27;) {
+            steps {
+                sh &#x27;&#x27;&#x27;
+                docker-compose -f docker-compose.test.yml up --abort-on-container-exit
+                &#x27;&#x27;&#x27;
+            }
+        }
+
+        stage(&#x27;Deploy to Staging&#x27;) {
+            when {
+                branch &#x27;develop&#x27;
+            }
+            steps {
+                sshagent([&#x27;robot-deploy-key&#x27;]) {
+                    sh &#x27;&#x27;&#x27;
+                    scp docker-compose.robot.yml robot@${ROBOT_HOST}:~/docker-compose.robot.yml
+                    ssh robot@${ROBOT_HOST} &quot;
+                        docker login -u robot -p \$(cat ~/docker_password) ${DOCKER_REGISTRY} &amp;&amp;
+                        docker-compose -f docker-compose.robot.yml down &amp;&amp;
+                        docker-compose -f docker-compose.robot.yml pull &amp;&amp;
+                        docker-compose -f docker-compose.robot.yml up -d
+                    &quot;
+                    &#x27;&#x27;&#x27;
+                }
+            }
+        }
+
+        stage(&#x27;Deploy to Production&#x27;) {
+            when {
+                branch &#x27;main&#x27;
+            }
+            steps {
+                input message: &#x27;Deploy to production?&#x27;, ok: &#x27;Deploy&#x27;
+                sshagent([&#x27;robot-deploy-key&#x27;]) {
+                    sh &#x27;&#x27;&#x27;
+                    scp docker-compose.robot.yml robot@${ROBOT_HOST}:~/docker-compose.robot.yml
+                    ssh robot@${ROBOT_HOST} &quot;
+                        docker login -u robot -p \$(cat ~/docker_password) ${DOCKER_REGISTRY} &amp;&amp;
+                        docker-compose -f docker-compose.robot.yml down &amp;&amp;
+                        docker-compose -f docker-compose.robot.yml pull &amp;&amp;
+                        docker-compose -f docker-compose.robot.yml up -d
+                    &quot;
+                    &#x27;&#x27;&#x27;
+                }
+            }
+        }
+    }
+
+    post {
+        always {
+            script {
+                if (currentBuild.result == &#x27;FAILURE&#x27;) {
+                    emailext (
+                        subject: &quot;FAILED: Robot Deployment ${env.JOB_NAME} [${env.BUILD_NUMBER}]&quot;,
+                        body: &quot;Robot deployment failed. Please check the build logs.&quot;,
+                        to: &quot;devops@example.com&quot;
+                    )
+                }
+            }
+        }
+    }
+}
+</code></pre>
+<h2 id="model-deployment">Model Deployment</h2>
+<h3 id="mlflow-for-model-management">MLflow for Model Management</h3>
+<h4 id="model-registry-setup">Model Registry Setup</h4>
+<pre><code class="language-python"># mlflow_deployment.py
+import mlflow
+import mlflow.pytorch
+import torch
+from mlflow.tracking import MlflowClient
+import os
+
+class ModelDeploymentManager:
+    def __init__(self, tracking_uri=&quot;http://mlflow-server:5000&quot;):
+        self.client = MlflowClient(tracking_uri=tracking_uri)
+        mlflow.set_tracking_uri(tracking_uri)
+
+    def register_model(self, model, model_name, artifacts=None):
+        &quot;&quot;&quot;Register model in MLflow registry&quot;&quot;&quot;
+        with mlflow.start_run():
+            # Log model
+            mlflow.pytorch.log_model(
+                pytorch_model=model,
+                artifact_path=&quot;model&quot;,
+                conda_env=&quot;./environment.yml&quot;,
+                registered_model_name=model_name
+            )
+
+            # Log artifacts if provided
+            if artifacts:
+                for name, path in artifacts.items():
+                    mlflow.log_artifact(path, artifact_path=name)
+
+            run_id = mlflow.active_run().info.run_id
+            return run_id
+
+    def promote_model(self, model_name, version, stage=&quot;Production&quot;):
+        &quot;&quot;&quot;Promote model to production stage&quot;&quot;&quot;
+        self.client.transition_model_version_stage(
+            name=model_name,
+            version=version,
+            stage=stage
+        )
+
+    def get_production_model(self, model_name):
+        &quot;&quot;&quot;Get production model from registry&quot;&quot;&quot;
+        model_uri = f&quot;models:/{model_name}/production&quot;
+        model = mlflow.pytorch.load_model(model_uri)
+        return model
+
+    def deploy_model_to_robot(self, model_name, robot_ip, robot_port=8080):
+        &quot;&quot;&quot;Deploy model to robot via REST API&quot;&quot;&quot;
+        import requests
+        import json
+
+        # Get model from registry
+        model = self.get_production_model(model_name)
+
+        # Convert model to bytes for transmission
+        import io
+        buffer = io.BytesIO()
+        torch.save(model.state_dict(), buffer)
+        model_bytes = buffer.getvalue()
+
+        # Deploy to robot
+        url = f&quot;http://{robot_ip}:{robot_port}/api/models/deploy&quot;
+        response = requests.post(
+            url,
+            files={&#x27;model&#x27;: model_bytes},
+            data={&#x27;model_name&#x27;: model_name}
+        )
+
+        return response.json()
+
+def deploy_models():
+    &quot;&quot;&quot;Deploy all required models to robot&quot;&quot;&quot;
+    manager = ModelDeploymentManager()
+
+    # Deploy vision model
+    vision_model = torch.load(&quot;models/vision_model.pt&quot;)
+    vision_run_id = manager.register_model(
+        vision_model,
+        &quot;humanoid-vision-model&quot;,
+        {&quot;config&quot;: &quot;configs/vision_config.json&quot;}
+    )
+
+    # Promote to production
+    manager.promote_model(&quot;humanoid-vision-model&quot;, &quot;1&quot;, &quot;Production&quot;)
+
+    # Deploy language model
+    language_model = torch.load(&quot;models/language_model.pt&quot;)
+    language_run_id = manager.register_model(
+        language_model,
+        &quot;humanoid-language-model&quot;,
+        {&quot;tokenizer&quot;: &quot;models/tokenizer.json&quot;}
+    )
+
+    # Promote to production
+    manager.promote_model(&quot;humanoid-language-model&quot;, &quot;1&quot;, &quot;Production&quot;)
+
+    print(&quot;Models deployed and promoted to production&quot;)
+
+if __name__ == &quot;__main__&quot;:
+    deploy_models()
+</code></pre>
+<h4 id="model-serving-with-torchserve">Model Serving with TorchServe</h4>
+<pre><code class="language-bash"># torchserve_setup.sh
+#!/bin/bash
+
+# Install TorchServe
+pip3 install torch torchserve torch-model-archiver
+
+# Create model store directory
+mkdir -p /workspace/models/model_store
+
+# Archive models for serving
+torch-model-archiver --model-name vision_model \
+                     --version 1.0 \
+                     --model-file models/vision_model.py \
+                     --serialized-file models/vision_model.pt \
+                     --handler vision_handler.py \
+                     --extra-files configs/vision_config.json \
+                     --export-path /workspace/models/model_store
+
+torch-model-archiver --model-name language_model \
+                     --version 1.0 \
+                     --model-file models/language_model.py \
+                     --serialized-file models/language_model.pt \
+                     --handler language_handler.py \
+                     --extra-files configs/language_config.json \
+                     --export-path /workspace/models/model_store
+
+# Start TorchServe
+torchserve --start --model-store /workspace/models/model_store \
+           --models vision_model=vision_model.mar language_model=language_model.mar \
+           --ncs
+
+echo &quot;TorchServe started with vision and language models&quot;
+</code></pre>
+<h2 id="monitoring-and-observability">Monitoring and Observability</h2>
+<h3 id="prometheus-and-grafana-setup">Prometheus and Grafana Setup</h3>
+<h4 id="prometheus-configuration">Prometheus Configuration</h4>
+<pre><code class="language-yaml"># prometheus.yml
+global:
+  scrape_interval: 15s
+  evaluation_interval: 15s
+
+rule_files:
+  - &quot;alert_rules.yml&quot;
+
+scrape_configs:
+  - job_name: &#x27;robot-nodes&#x27;
+    static_configs:
+      - targets: [&#x27;robot01:9100&#x27;, &#x27;robot02:9100&#x27;]
+    scrape_interval: 5s
+
+  - job_name: &#x27;robot-applications&#x27;
+    static_configs:
+      - targets: [&#x27;robot01:8080&#x27;, &#x27;robot02:8080&#x27;]
+    scrape_interval: 10s
+
+  - job_name: &#x27;robot-docker&#x27;
+    static_configs:
+      - targets: [&#x27;robot01:9323&#x27;, &#x27;robot02:9323&#x27;]
+    scrape_interval: 15s
+
+  - job_name: &#x27;robot-gpu&#x27;
+    static_configs:
+      - targets: [&#x27;robot01:9445&#x27;, &#x27;robot02:9445&#x27;]
+    scrape_interval: 10s
+
+alerting:
+  alertmanagers:
+    - static_configs:
+        - targets: [&#x27;alertmanager:9093&#x27;]
+</code></pre>
+<h4 id="alert-rules-configuration">Alert Rules Configuration</h4>
+<pre><code class="language-yaml"># alert_rules.yml
+groups:
+  - name: robot_alerts
+    rules:
+      - alert: RobotDown
+        expr: up{job=&quot;robot-applications&quot;} == 0
+        for: 1m
+        labels:
+          severity: critical
+        annotations:
+          summary: &quot;Robot {{ $labels.instance }} is down&quot;
+          description: &quot;Robot {{ $labels.instance }} has been down for more than 1 minute&quot;
+
+      - alert: HighCPUUsage
+        expr: 100 - (avg by(instance) (rate(node_cpu_seconds_total{mode=&quot;idle&quot;}[5m])) * 100) &gt; 80
+        for: 2m
+        labels:
+          severity: warning
+        annotations:
+          summary: &quot;High CPU usage on {{ $labels.instance }}&quot;
+          description: &quot;CPU usage is above 80% for more than 2 minutes&quot;
+
+      - alert: HighMemoryUsage
+        expr: (node_memory_MemTotal_bytes - node_memory_MemFree_bytes) / node_memory_MemTotal_bytes * 100 &gt; 85
+        for: 2m
+        labels:
+          severity: warning
+        annotations:
+          summary: &quot;High memory usage on {{ $labels.instance }}&quot;
+          description: &quot;Memory usage is above 85% for more than 2 minutes&quot;
+
+      - alert: LowBattery
+        expr: robot_battery_percentage &lt; 20
+        for: 1m
+        labels:
+          severity: warning
+        annotations:
+          summary: &quot;Low battery on {{ $labels.robot }}&quot;
+          description: &quot;Robot battery is below 20%&quot;
+
+      - alert: VisionSystemFailure
+        expr: rate(robot_vision_errors_total[5m]) &gt; 10
+        for: 1m
+        labels:
+          severity: warning
+        annotations:
+          summary: &quot;High vision system error rate on {{ $labels.robot }}&quot;
+          description: &quot;Vision system is experiencing high error rate&quot;
+</code></pre>
+<h4 id="custom-robot-metrics-exporter">Custom Robot Metrics Exporter</h4>
+<pre><code class="language-python"># robot_metrics_exporter.py
+from prometheus_client import start_http_server, Gauge, Counter, Histogram
+import rospy
+from std_msgs.msg import String
+import json
+import time
+
+class RobotMetricsExporter:
+    def __init__(self, port=8080):
+        # Define metrics
+        self.battery_level = Gauge(&#x27;robot_battery_percentage&#x27;, &#x27;Battery level percentage&#x27;, [&#x27;robot&#x27;])
+        self.cpu_usage = Gauge(&#x27;robot_cpu_usage_percent&#x27;, &#x27;CPU usage percentage&#x27;, [&#x27;robot&#x27;])
+        self.memory_usage = Gauge(&#x27;robot_memory_usage_percent&#x27;, &#x27;Memory usage percentage&#x27;, [&#x27;robot&#x27;])
+        self.vision_errors = Counter(&#x27;robot_vision_errors_total&#x27;, &#x27;Total vision errors&#x27;, [&#x27;robot&#x27;])
+        self.inference_time = Histogram(&#x27;robot_inference_seconds&#x27;, &#x27;Inference time in seconds&#x27;, [&#x27;robot&#x27;, &#x27;model&#x27;])
+
+        # Robot state
+        self.robot_status = Gauge(&#x27;robot_operational_status&#x27;, &#x27;Robot operational status&#x27;, [&#x27;robot&#x27;])
+        self.active_tasks = Gauge(&#x27;robot_active_tasks&#x27;, &#x27;Number of active tasks&#x27;, [&#x27;robot&#x27;])
+
+        # Start HTTP server
+        start_http_server(port)
+        print(f&quot;Metrics exporter started on port {port}&quot;)
+
+    def update_battery(self, robot_name, battery_percentage):
+        self.battery_level.labels(robot=robot_name).set(battery_percentage)
+
+    def update_cpu_usage(self, robot_name, cpu_percentage):
+        self.cpu_usage.labels(robot=robot_name).set(cpu_percentage)
+
+    def update_memory_usage(self, robot_name, memory_percentage):
+        self.memory_usage.labels(robot=robot_name).set(memory_percentage)
+
+    def increment_vision_errors(self, robot_name):
+        self.vision_errors.labels(robot=robot_name).inc()
+
+    def observe_inference_time(self, robot_name, model_name, time_seconds):
+        self.inference_time.labels(robot=robot_name, model=model_name).observe(time_seconds)
+
+    def update_robot_status(self, robot_name, operational):
+        self.robot_status.labels(robot=robot_name).set(1 if operational else 0)
+
+    def update_active_tasks(self, robot_name, task_count):
+        self.active_tasks.labels(robot=robot_name).set(task_count)
+
+class RobotMetricsListener:
+    def __init__(self):
+        self.exporter = RobotMetricsExporter()
+        self.robot_name = rospy.get_param(&#x27;~robot_name&#x27;, &#x27;unknown_robot&#x27;)
+
+        # Subscribe to robot status topics
+        rospy.Subscriber(&#x27;/robot_status&#x27;, String, self.status_callback)
+        rospy.Subscriber(&#x27;/battery_status&#x27;, String, self.battery_callback)
+        rospy.Subscriber(&#x27;/system_metrics&#x27;, String, self.system_callback)
+
+    def status_callback(self, msg):
+        try:
+            data = json.loads(msg.data)
+            operational = data.get(&#x27;operational&#x27;, False)
+            active_tasks = data.get(&#x27;active_tasks&#x27;, 0)
+
+            self.exporter.update_robot_status(self.robot_name, operational)
+            self.exporter.update_active_tasks(self.robot_name, active_tasks)
+
+        except json.JSONDecodeError:
+            pass
+
+    def battery_callback(self, msg):
+        try:
+            data = json.loads(msg.data)
+            battery_level = data.get(&#x27;percentage&#x27;, 0)
+            self.exporter.update_battery(self.robot_name, battery_level)
+
+        except json.JSONDecodeError:
+            pass
+
+    def system_callback(self, msg):
+        try:
+            data = json.loads(msg.data)
+            cpu_usage = data.get(&#x27;cpu_percent&#x27;, 0)
+            memory_usage = data.get(&#x27;memory_percent&#x27;, 0)
+
+            self.exporter.update_cpu_usage(self.robot_name, cpu_usage)
+            self.exporter.update_memory_usage(self.robot_name, memory_usage)
+
+        except json.JSONDecodeError:
+            pass
+
+def main():
+    rospy.init_node(&#x27;robot_metrics_exporter&#x27;)
+    listener = RobotMetricsListener()
+
+    try:
+        rospy.spin()
+    except rospy.ROSInterruptException:
+        pass
+
+if __name__ == &quot;__main__&quot;:
+    main()
+</code></pre>
+<h3 id="loki-and-grafana-configuration">Loki and Grafana Configuration</h3>
+<h4 id="loki-configuration">Loki Configuration</h4>
+<pre><code class="language-yaml"># loki-config.yml
+auth_enabled: false
+
+server:
+  http_listen_port: 3100
+
+common:
+  path_prefix: /tmp/loki
+  storage:
+    filesystem:
+      chunks_directory: /tmp/loki/chunks
+      rules_directory: /tmp/loki/rules
+  replication_factor: 1
+  ring:
+    instance_addr: 127.0.0.1
+    kvstore:
+      store: inmemory
+
+schema_config:
+  configs:
+    - from: 2020-10-24
+      store: boltdb-shipper
+      object_store: filesystem
+      schema: v11
+      index:
+        prefix: index_
+        period: 24h
+
+ruler:
+  alertmanager_url: http://localhost:9093
+</code></pre>
+<h4 id="grafana-dashboard-configuration">Grafana Dashboard Configuration</h4>
+<pre><code class="language-json">{
+  &quot;dashboard&quot;: {
+    &quot;id&quot;: null,
+    &quot;title&quot;: &quot;Humanoid Robot Operations Dashboard&quot;,
+    &quot;tags&quot;: [&quot;robotics&quot;, &quot;ai&quot;, &quot;monitoring&quot;],
+    &quot;style&quot;: &quot;dark&quot;,
+    &quot;timezone&quot;: &quot;browser&quot;,
+    &quot;panels&quot;: [
+      {
+        &quot;id&quot;: 1,
+        &quot;title&quot;: &quot;Robot Status Overview&quot;,
+        &quot;type&quot;: &quot;stat&quot;,
+        &quot;gridPos&quot;: {&quot;h&quot;: 8, &quot;w&quot;: 6, &quot;x&quot;: 0, &quot;y&quot;: 0},
+        &quot;targets&quot;: [
+          {
+            &quot;expr&quot;: &quot;robot_operational_status&quot;,
+            &quot;legendFormat&quot;: &quot;{{robot}}&quot;
+          }
+        ],
+        &quot;fieldConfig&quot;: {
+          &quot;defaults&quot;: {
+            &quot;color&quot;: {
+              &quot;mode&quot;: &quot;thresholds&quot;
+            },
+            &quot;thresholds&quot;: {
+              &quot;steps&quot;: [
+                {&quot;color&quot;: &quot;red&quot;, &quot;value&quot;: null},
+                {&quot;color&quot;: &quot;green&quot;, &quot;value&quot;: 1}
+              ]
+            }
+          }
+        }
+      },
+      {
+        &quot;id&quot;: 2,
+        &quot;title&quot;: &quot;Battery Levels&quot;,
+        &quot;type&quot;: &quot;gauge&quot;,
+        &quot;gridPos&quot;: {&quot;h&quot;: 8, &quot;w&quot;: 6, &quot;x&quot;: 6, &quot;y&quot;: 0},
+        &quot;targets&quot;: [
+          {
+            &quot;expr&quot;: &quot;robot_battery_percentage&quot;,
+            &quot;legendFormat&quot;: &quot;{{robot}}&quot;
+          }
+        ]
+      },
+      {
+        &quot;id&quot;: 3,
+        &quot;title&quot;: &quot;CPU Usage&quot;,
+        &quot;type&quot;: &quot;graph&quot;,
+        &quot;gridPos&quot;: {&quot;h&quot;: 8, &quot;w&quot;: 12, &quot;x&quot;: 12, &quot;y&quot;: 0},
+        &quot;targets&quot;: [
+          {
+            &quot;expr&quot;: &quot;robot_cpu_usage_percent&quot;,
+            &quot;legendFormat&quot;: &quot;{{robot}}&quot;
+          }
+        ]
+      },
+      {
+        &quot;id&quot;: 4,
+        &quot;title&quot;: &quot;Vision System Performance&quot;,
+        &quot;type&quot;: &quot;graph&quot;,
+        &quot;gridPos&quot;: {&quot;h&quot;: 8, &quot;w&quot;: 12, &quot;x&quot;: 0, &quot;y&quot;: 8},
+        &quot;targets&quot;: [
+          {
+            &quot;expr&quot;: &quot;rate(robot_vision_errors_total[5m])&quot;,
+            &quot;legendFormat&quot;: &quot;{{robot}}&quot;
+          }
+        ]
+      },
+      {
+        &quot;id&quot;: 5,
+        &quot;title&quot;: &quot;Inference Times&quot;,
+        &quot;type&quot;: &quot;heatmap&quot;,
+        &quot;gridPos&quot;: {&quot;h&quot;: 8, &quot;w&quot;: 12, &quot;x&quot;: 12, &quot;y&quot;: 8},
+        &quot;targets&quot;: [
+          {
+            &quot;expr&quot;: &quot;robot_inference_seconds_bucket&quot;,
+            &quot;legendFormat&quot;: &quot;{{robot}}-{{model}}&quot;
+          }
+        ]
+      }
+    ],
+    &quot;time&quot;: {
+      &quot;from&quot;: &quot;now-6h&quot;,
+      &quot;to&quot;: &quot;now&quot;
+    },
+    &quot;refresh&quot;: &quot;30s&quot;
+  }
+}
+</code></pre>
+<h2 id="backup-and-recovery">Backup and Recovery</h2>
+<h3 id="data-backup-strategy">Data Backup Strategy</h3>
+<h4 id="robot-data-backup-script">Robot Data Backup Script</h4>
+<pre><code class="language-bash">#!/bin/bash
+# robot_backup.sh - Backup script for robot data
+
+BACKUP_DIR=&quot;/backup/robot_data&quot;
+DATE=$(date +%Y%m%d_%H%M%S)
+ROBOT_NAME=$(hostname)
+
+# Create backup directory
+mkdir -p $BACKUP_DIR/$DATE
+
+# Backup configuration files
+echo &quot;Backing up configuration files...&quot;
+tar -czf $BACKUP_DIR/$DATE/config_backup_$ROBOT_NAME.tar.gz \
+    /workspace/config \
+    /workspace/models \
+    /workspace/scripts
+
+# Backup logs
+echo &quot;Backing up logs...&quot;
+tar -czf $BACKUP_DIR/$DATE/logs_backup_$ROBOT_NAME.tar.gz \
+    /workspace/logs
+
+# Backup database (if applicable)
+if [ -f /workspace/database/robot.db ]; then
+    echo &quot;Backing up database...&quot;
+    cp /workspace/database/robot.db $BACKUP_DIR/$DATE/database_backup_$ROBOT_NAME.db
+fi
+
+# Backup mission data
+echo &quot;Backing up mission data...&quot;
+tar -czf $BACKUP_DIR/$DATE/missions_backup_$ROBOT_NAME.tar.gz \
+    /workspace/missions
+
+# Verify backup integrity
+echo &quot;Verifying backup integrity...&quot;
+tar -tzf $BACKUP_DIR/$DATE/config_backup_$ROBOT_NAME.tar.gz &gt; /dev/null
+if [ $? -eq 0 ]; then
+    echo &quot;Configuration backup verified successfully&quot;
+else
+    echo &quot;ERROR: Configuration backup verification failed&quot;
+    exit 1
+fi
+
+# Upload to remote storage (if configured)
+if [ -n &quot;$REMOTE_BACKUP_SERVER&quot; ]; then
+    echo &quot;Uploading backup to remote server...&quot;
+    rsync -avz $BACKUP_DIR/$DATE/ $REMOTE_BACKUP_SERVER:/backups/robots/$ROBOT_NAME/
+fi
+
+# Cleanup old backups (keep last 7 days)
+find $BACKUP_DIR -type d -mtime +7 -exec rm -rf {} + 2&gt;/dev/null
+
+echo &quot;Backup completed successfully: $BACKUP_DIR/$DATE&quot;
+</code></pre>
+<h3 id="disaster-recovery-plan">Disaster Recovery Plan</h3>
+<h4 id="robot-recovery-procedures">Robot Recovery Procedures</h4>
+<pre><code class="language-markdown"># Robot Disaster Recovery Procedures
+
+## Level 1: Minor Issues (Self-Recovery)
+- **Symptom**: Temporary sensor malfunction, minor navigation issues
+- **Action**: Robot attempts automatic recovery
+- **Timeline**: Immediate (seconds)
+
+## Level 2: Moderate Issues (Remote Recovery)
+- **Symptom**: Software crash, model inference failure
+- **Action**:
+  1. SSH to robot
+  2. Restart affected services
+  3. Verify functionality
+- **Timeline**: 5-15 minutes
+
+## Level 3: Major Issues (Manual Recovery)
+- **Symptom**: Hardware failure, critical system crash
+- **Action**:
+  1. Safely power down robot
+  2. Physical inspection and diagnosis
+  3. Replace/repair components
+  4. Full system restore from backup
+- **Timeline**: 30 minutes - 2 hours
+
+## Level 4: Catastrophic Failure (Complete Restore)
+- **Symptom**: Total system failure, corrupted storage
+- **Action**:
+  1. Full hardware diagnostic
+  2. OS reinstallation
+  3. Application restoration from backup
+  4. Configuration and calibration
+- **Timeline**: 2-8 hours
+
+## Recovery Checklist
+- [ ] Verify power connections
+- [ ] Check network connectivity
+- [ ] Validate sensor functionality
+- [ ] Test actuator operation
+- [ ] Verify AI model availability
+- [ ] Confirm safety systems
+- [ ] Run calibration procedures
+- [ ] Test basic movements
+- [ ] Validate navigation systems
+- [ ] Confirm communication channels
+</code></pre>
+<h2 id="security-considerations">Security Considerations</h2>
+<h3 id="network-security">Network Security</h3>
+<h4 id="firewall-configuration">Firewall Configuration</h4>
+<pre><code class="language-bash">#!/bin/bash
+# robot_firewall.sh - Configure firewall for robot security
+
+# Flush existing rules
+sudo iptables -F
+sudo iptables -X
+
+# Set default policies
+sudo iptables -P INPUT DROP
+sudo iptables -P FORWARD DROP
+sudo iptables -P OUTPUT ACCEPT
+
+# Allow loopback
+sudo iptables -A INPUT -i lo -j ACCEPT
+sudo iptables -A OUTPUT -o lo -j ACCEPT
+
+# Allow established connections
+sudo iptables -A INPUT -m state --state ESTABLISHED,RELATED -j ACCEPT
+
+# Allow SSH (admin access)
+sudo iptables -A INPUT -p tcp --dport 22 -s 192.168.1.0/24 -j ACCEPT
+
+# Allow ROS communication
+sudo iptables -A INPUT -p tcp --dport 11311 -j ACCEPT  # ROS master
+sudo iptables -A INPUT -p udp --dport 11311 -j ACCEPT
+
+# Allow Prometheus metrics
+sudo iptables -A INPUT -p tcp --dport 8080 -s 192.168.1.0/24 -j ACCEPT
+
+# Allow robot control interface
+sudo iptables -A INPUT -p tcp --dport 8081 -s 192.168.1.0/24 -j ACCEPT
+
+# Allow necessary services
+sudo iptables -A INPUT -p tcp --dport 22 -s 10.0.0.0/8 -j ACCEPT  # Internal network
+sudo iptables -A INPUT -p icmp -j ACCEPT  # Ping
+
+# Log dropped packets
+sudo iptables -A INPUT -j LOG --log-prefix &quot;DROPPED: &quot;
+
+echo &quot;Firewall configured for robot security&quot;
+</code></pre>
+<h3 id="authentication-and-authorization">Authentication and Authorization</h3>
+<h4 id="robot-api-authentication">Robot API Authentication</h4>
+<pre><code class="language-python"># robot_auth.py
+import jwt
+import hashlib
+from datetime import datetime, timedelta
+from functools import wraps
+from flask import Flask, request, jsonify, g
+import redis
+
+app = Flask(__name__)
+app.config[&#x27;SECRET_KEY&#x27;] = &#x27;your-secret-key-here&#x27;  # Use environment variable in production
+
+# Redis for token blacklisting
+redis_client = redis.Redis(host=&#x27;localhost&#x27;, port=6379, db=0)
+
+class RobotAuth:
+    @staticmethod
+    def generate_token(robot_id, permissions=None):
+        &quot;&quot;&quot;Generate JWT token for robot authentication&quot;&quot;&quot;
+        payload = {
+            &#x27;robot_id&#x27;: robot_id,
+            &#x27;permissions&#x27;: permissions or [],
+            &#x27;exp&#x27;: datetime.utcnow() + timedelta(hours=24),
+            &#x27;iat&#x27;: datetime.utcnow()
+        }
+
+        token = jwt.encode(payload, app.config[&#x27;SECRET_KEY&#x27;], algorithm=&#x27;HS256&#x27;)
+        return token
+
+    @staticmethod
+    def verify_token(token):
+        &quot;&quot;&quot;Verify JWT token&quot;&quot;&quot;
+        try:
+            # Check if token is blacklisted
+            if redis_client.exists(f&quot;blacklist:{token}&quot;):
+                return None
+
+            payload = jwt.decode(token, app.config[&#x27;SECRET_KEY&#x27;], algorithms=[&#x27;HS256&#x27;])
+            return payload
+        except jwt.ExpiredSignatureError:
+            return None
+        except jwt.InvalidTokenError:
+            return None
+
+    @staticmethod
+    def require_auth(permissions=None):
+        &quot;&quot;&quot;Decorator for requiring authentication&quot;&quot;&quot;
+        def decorator(f):
+            @wraps(f)
+            def decorated_function(*args, **kwargs):
+                token = None
+
+                if &#x27;Authorization&#x27; in request.headers:
+                    auth_header = request.headers[&#x27;Authorization&#x27;]
+                    try:
+                        token = auth_header.split(&quot; &quot;)[1]  # Bearer &lt;token&gt;
+                    except IndexError:
+                        return jsonify({&#x27;message&#x27;: &#x27;Invalid token format&#x27;}), 401
+
+                if not token:
+                    return jsonify({&#x27;message&#x27;: &#x27;Token is missing&#x27;}), 401
+
+                payload = RobotAuth.verify_token(token)
+                if not payload:
+                    return jsonify({&#x27;message&#x27;: &#x27;Token is invalid&#x27;}), 401
+
+                # Check permissions if required
+                if permissions:
+                    user_permissions = set(payload.get(&#x27;permissions&#x27;, []))
+                    required_permissions = set(permissions)
+                    if not required_permissions.issubset(user_permissions):
+                        return jsonify({&#x27;message&#x27;: &#x27;Insufficient permissions&#x27;}), 403
+
+                g.robot_id = payload[&#x27;robot_id&#x27;]
+                return f(*args, **kwargs)
+            return decorated_function
+        return decorator
+
+# Example protected route
+@app.route(&#x27;/api/v1/control&#x27;, methods=[&#x27;POST&#x27;])
+@RobotAuth.require_auth(permissions=[&#x27;control.robot&#x27;])
+def robot_control():
+    robot_id = g.robot_id
+    command = request.json.get(&#x27;command&#x27;)
+
+    # Process robot command
+    # ... implementation ...
+
+    return jsonify({
+        &#x27;status&#x27;: &#x27;success&#x27;,
+        &#x27;robot_id&#x27;: robot_id,
+        &#x27;command&#x27;: command
+    })
+
+@app.route(&#x27;/api/v1/auth/login&#x27;, methods=[&#x27;POST&#x27;])
+def login():
+    robot_id = request.json.get(&#x27;robot_id&#x27;)
+    password_hash = request.json.get(&#x27;password_hash&#x27;)  # Hashed on client side
+
+    # Verify robot credentials against database
+    # This is a simplified example - implement proper authentication
+    if verify_robot_credentials(robot_id, password_hash):
+        token = RobotAuth.generate_token(robot_id, permissions=[&#x27;control.robot&#x27;, &#x27;read.sensors&#x27;])
+        return jsonify({&#x27;token&#x27;: token}), 200
+    else:
+        return jsonify({&#x27;message&#x27;: &#x27;Invalid credentials&#x27;}), 401
+
+def verify_robot_credentials(robot_id, password_hash):
+    &quot;&quot;&quot;Verify robot credentials (implement proper database lookup)&quot;&quot;&quot;
+    # This should check against a secure database
+    # For demo purposes only
+    return True
+
+if __name__ == &#x27;__main__&#x27;:
+    app.run(host=&#x27;0.0.0.0&#x27;, port=8081, debug=False)
+</code></pre>
+<h2 id="performance-optimization">Performance Optimization</h2>
+<h3 id="resource-management">Resource Management</h3>
+<h4 id="robot-resource-monitor">Robot Resource Monitor</h4>
+<pre><code class="language-python"># resource_monitor.py
+import psutil
+import GPUtil
+import rospy
+from std_msgs.msg import String
+import json
+import time
+
+class RobotResourceMonitor:
+    def __init__(self):
+        rospy.init_node(&#x27;resource_monitor&#x27;)
+        self.status_pub = rospy.Publisher(&#x27;/system_metrics&#x27;, String, queue_size=10)
+
+        # Resource thresholds
+        self.cpu_threshold = 80  # %
+        self.memory_threshold = 85  # %
+        self.gpu_threshold = 85  # %
+
+        # Performance metrics
+        self.metrics_history = {
+            &#x27;cpu&#x27;: [],
+            &#x27;memory&#x27;: [],
+            &#x27;gpu&#x27;: [],
+            &#x27;timestamps&#x27;: []
+        }
+
+    def get_system_metrics(self):
+        &quot;&quot;&quot;Get current system resource usage&quot;&quot;&quot;
+        metrics = {
+            &#x27;timestamp&#x27;: rospy.Time.now().to_sec(),
+            &#x27;cpu_percent&#x27;: psutil.cpu_percent(interval=1),
+            &#x27;memory_percent&#x27;: psutil.virtual_memory().percent,
+            &#x27;disk_percent&#x27;: psutil.disk_usage(&#x27;/&#x27;).percent,
+            &#x27;network_io&#x27;: psutil.net_io_counters()._asdict(),
+            &#x27;process_count&#x27;: len(psutil.pids())
+        }
+
+        # GPU metrics if available
+        gpus = GPUtil.getGPUs()
+        if gpus:
+            gpu = gpus[0]  # Assuming single GPU
+            metrics.update({
+                &#x27;gpu_load&#x27;: gpu.load * 100,
+                &#x27;gpu_memory_used&#x27;: gpu.memoryUsed,
+                &#x27;gpu_memory_total&#x27;: gpu.memoryTotal,
+                &#x27;gpu_memory_percent&#x27;: gpu.memoryUtil * 100,
+                &#x27;gpu_temperature&#x27;: gpu.temperature
+            })
+
+        # Add to history
+        self.metrics_history[&#x27;cpu&#x27;].append(metrics[&#x27;cpu_percent&#x27;])
+        self.metrics_history[&#x27;memory&#x27;].append(metrics[&#x27;memory_percent&#x27;])
+        if &#x27;gpu_load&#x27; in metrics:
+            self.metrics_history[&#x27;gpu&#x27;].append(metrics[&#x27;gpu_load&#x27;])
+        self.metrics_history[&#x27;timestamps&#x27;].append(metrics[&#x27;timestamp&#x27;])
+
+        # Keep only recent history
+        max_history = 100
+        for key in self.metrics_history:
+            if len(self.metrics_history[key]) &gt; max_history:
+                self.metrics_history[key] = self.metrics_history[key][-max_history:]
+
+        return metrics
+
+    def check_resource_alerts(self, metrics):
+        &quot;&quot;&quot;Check for resource usage alerts&quot;&quot;&quot;
+        alerts = []
+
+        if metrics[&#x27;cpu_percent&#x27;] &gt; self.cpu_threshold:
+            alerts.append({
+                &#x27;type&#x27;: &#x27;high_cpu&#x27;,
+                &#x27;severity&#x27;: &#x27;warning&#x27;,
+                &#x27;message&#x27;: f&quot;CPU usage high: {metrics[&#x27;cpu_percent&#x27;]:.1f}%&quot;
+            })
+
+        if metrics[&#x27;memory_percent&#x27;] &gt; self.memory_threshold:
+            alerts.append({
+                &#x27;type&#x27;: &#x27;high_memory&#x27;,
+                &#x27;severity&#x27;: &#x27;warning&#x27;,
+                &#x27;message&#x27;: f&quot;Memory usage high: {metrics[&#x27;memory_percent&#x27;]:.1f}%&quot;
+            })
+
+        if &#x27;gpu_load&#x27; in metrics and metrics[&#x27;gpu_load&#x27;] &gt; self.gpu_threshold:
+            alerts.append({
+                &#x27;type&#x27;: &#x27;high_gpu&#x27;,
+                &#x27;severity&#x27;: &#x27;warning&#x27;,
+                &#x27;message&#x27;: f&quot;GPU usage high: {metrics[&#x27;gpu_load&#x27;]:.1f}%&quot;
+            })
+
+        return alerts
+
+    def run(self):
+        &quot;&quot;&quot;Main monitoring loop&quot;&quot;&quot;
+        rate = rospy.Rate(1)  # 1 Hz monitoring
+
+        while not rospy.is_shutdown():
+            try:
+                # Get current metrics
+                metrics = self.get_system_metrics()
+
+                # Check for alerts
+                alerts = self.check_resource_alerts(metrics)
+
+                # Publish metrics
+                metrics_msg = String()
+                metrics_msg.data = json.dumps({
+                    &#x27;metrics&#x27;: metrics,
+                    &#x27;alerts&#x27;: alerts,
+                    &#x27;history&#x27;: {
+                        &#x27;cpu_avg&#x27;: sum(self.metrics_history[&#x27;cpu&#x27;][-10:]) / len(self.metrics_history[&#x27;cpu&#x27;][-10:]),
+                        &#x27;memory_avg&#x27;: sum(self.metrics_history[&#x27;memory&#x27;][-10:]) / len(self.metrics_history[&#x27;memory&#x27;][-10:]),
+                        &#x27;gpu_avg&#x27;: sum(self.metrics_history[&#x27;gpu&#x27;][-10:]) / max(len(self.metrics_history[&#x27;gpu&#x27;][-10:]), 1) if self.metrics_history[&#x27;gpu&#x27;] else 0
+                    }
+                })
+                self.status_pub.publish(metrics_msg)
+
+                # Log alerts
+                if alerts:
+                    for alert in alerts:
+                        rospy.logwarn(f&quot;Resource Alert: {alert[&#x27;message&#x27;]}&quot;)
+
+            except Exception as e:
+                rospy.logerr(f&quot;Resource monitoring error: {e}&quot;)
+
+            rate.sleep()
+
+def main():
+    monitor = RobotResourceMonitor()
+    try:
+        monitor.run()
+    except rospy.ROSInterruptException:
+        rospy.loginfo(&quot;Resource monitor interrupted&quot;)
+    except KeyboardInterrupt:
+        rospy.loginfo(&quot;Resource monitor stopped&quot;)
+
+if __name__ == &quot;__main__&quot;:
+    main()
+</code></pre>
+<h2 id="rollback-procedures">Rollback Procedures</h2>
+<h3 id="safe-rollback-strategy">Safe Rollback Strategy</h3>
+<h4 id="robot-rollback-script">Robot Rollback Script</h4>
+<pre><code class="language-bash">#!/bin/bash
+# robot_rollback.sh - Safe rollback script for robot deployments
+
+set -e  # Exit on error
+
+ROBOT_NAME=$(hostname)
+BACKUP_DIR=&quot;/backup/deployments&quot;
+CURRENT_DEPLOYMENT=&quot;/workspace/current&quot;
+PREVIOUS_DEPLOYMENT=&quot;/workspace/previous&quot;
+
+log() {
+    echo &quot;[$(date &#x27;+%Y-%m-%d %H:%M:%S&#x27;)] $1&quot; | tee -a /var/log/robot_rollback.log
+}
+
+# Function to backup current deployment
+backup_current() {
+    log &quot;Creating backup of current deployment...&quot;
+
+    if [ -d &quot;$CURRENT_DEPLOYMENT&quot; ]; then
+        TIMESTAMP=$(date +%Y%m%d_%H%M%S)
+        BACKUP_PATH=&quot;$BACKUP_DIR/backup_${TIMESTAMP}&quot;
+        mkdir -p &quot;$BACKUP_PATH&quot;
+
+        cp -r &quot;$CURRENT_DEPLOYMENT&quot;/* &quot;$BACKUP_PATH/&quot; 2&gt;/dev/null || true
+
+        # Also backup Docker images
+        docker images --format &quot;table {{.Repository}}:{{.Tag}}&quot; | grep robot &gt; &quot;$BACKUP_PATH/docker_images.txt&quot;
+
+        log &quot;Backup created at $BACKUP_PATH&quot;
+    else
+        log &quot;No current deployment to backup&quot;
+    fi
+}
+
+# Function to rollback to previous version
+rollback() {
+    log &quot;Starting rollback process...&quot;
+
+    # Stop current services
+    log &quot;Stopping current services...&quot;
+    docker-compose -f &quot;$CURRENT_DEPLOYMENT/docker-compose.robot.yml&quot; down || true
+
+    # Check if previous deployment exists
+    if [ -d &quot;$PREVIOUS_DEPLOYMENT&quot; ]; then
+        log &quot;Rolling back to previous deployment...&quot;
+
+        # Remove current deployment
+        rm -rf &quot;$CURRENT_DEPLOYMENT&quot;
+
+        # Restore previous deployment
+        cp -r &quot;$PREVIOUS_DEPLOYMENT&quot; &quot;$CURRENT_DEPLOYMENT&quot;
+
+        # Start previous services
+        cd &quot;$CURRENT_DEPLOYMENT&quot;
+        docker-compose -f docker-compose.robot.yml pull
+        docker-compose -f docker-compose.robot.yml up -d
+
+        # Verify services are running
+        sleep 10
+        if docker-compose -f docker-compose.robot.yml ps | grep -q &quot;Up&quot;; then
+            log &quot;Rollback successful - services are running&quot;
+
+            # Update previous deployment to current backup
+            rm -rf &quot;$PREVIOUS_DEPLOYMENT&quot;
+            mv &quot;$BACKUP_DIR/$(ls -t $BACKUP_DIR | head -n1)&quot; &quot;$PREVIOUS_DEPLOYMENT&quot;
+
+            return 0
+        else
+            log &quot;ERROR: Services not running after rollback&quot;
+            return 1
+        fi
+    else
+        log &quot;ERROR: No previous deployment found for rollback&quot;
+        return 1
+    fi
+}
+
+# Function to emergency stop robot
+emergency_stop() {
+    log &quot;Initiating emergency stop...&quot;
+
+    # Stop all robot services
+    docker-compose -f &quot;$CURRENT_DEPLOYMENT/docker-compose.robot.yml&quot; down || true
+
+    # Send emergency stop command to robot
+    ssh robot@localhost &quot;ros2 service call /emergency_stop std_msgs/Empty&quot; || true
+
+    # Cut power to motors (if hardware supports it)
+    # This is hardware-specific and would need to be implemented
+
+    log &quot;Emergency stop initiated&quot;
+}
+
+# Main execution
+case &quot;${1:-help}&quot; in
+    backup)
+        backup_current
+        ;;
+    rollback)
+        rollback
+        ;;
+    emergency)
+        emergency_stop
+        ;;
+    *)
+        echo &quot;Usage: $0 {backup|rollback|emergency}&quot;
+        echo &quot;  backup    - Create backup of current deployment&quot;
+        echo &quot;  rollback  - Rollback to previous deployment&quot;
+        echo &quot;  emergency - Emergency stop robot&quot;
+        exit 1
+        ;;
+esac
+
+log &quot;Script completed&quot;
+</code></pre>
+<h2 id="conclusion">Conclusion</h2>
+<p>Deploying humanoid robots for AI applications requires a comprehensive approach that encompasses hardware setup, software deployment, model management, monitoring, security, and operational procedures. Success in deployment comes from:</p>
+<ol>
+<li><strong>Thorough Planning</strong>: Assess environments, requirements, and constraints before deployment</li>
+<li><strong>Robust Infrastructure</strong>: Implement reliable networking, power, and monitoring systems</li>
+<li><strong>Secure Operations</strong>: Protect robot systems with proper authentication and firewalls</li>
+<li><strong>Continuous Monitoring</strong>: Track performance, health, and operational metrics</li>
+<li><strong>Disaster Recovery</strong>: Plan for failures with backup and rollback procedures</li>
+<li><strong>Performance Optimization</strong>: Monitor and optimize resource usage</li>
+<li><strong>Security</strong>: Implement proper authentication, authorization, and encryption</li>
+</ol>
+<p>Following this guide will help ensure successful deployment of humanoid robots in production environments while maintaining safety, reliability, and operational efficiency.</p>
+<h2 id="exercises">Exercises</h2>
+<ol>
+<li>Create a complete deployment pipeline for a humanoid robot application</li>
+<li>Set up monitoring and alerting for your robot system</li>
+<li>Implement security measures for robot communication</li>
+<li>Create backup and recovery procedures for your robot</li>
+<li>Develop performance optimization strategies for your specific use case</li>
+</ol>
+<div class="starboard-notebook-container"><div class="starboard-notebook-header"><span class="starboard-notebook-icon">📊</span><span class="starboard-notebook-title">Interactive Notebook</span></div><div class="starboard-notebook-content"><div class="starboard-children-container"><pre><code class="language-python"># This would be an interactive code block for students to experiment with deployment strategies
+# In a real implementation, this would connect to robot systems
+# to test deployment and monitoring procedures
+</code></pre></div></div><div class="starboard-notebook-footer"><small>Note: This is a placeholder for interactive Starboard notebooks.</small></div></div></div><footer class="theme-doc-footer docusaurus-mt-lg"><div class="row margin-top--sm theme-doc-footer-edit-meta-row"><div class="col noPrint_WFHX"><a href="https://github.com/facebook/docusaurus/tree/main/packages/create-docusaurus/templates/shared/docs/deployment/01-deployment-guide.mdx" target="_blank" rel="noopener noreferrer" class="theme-edit-this-page"><svg fill="currentColor" height="20" width="20" viewBox="0 0 40 40" class="iconEdit_Z9Sw" aria-hidden="true"><g><path d="m34.5 11.7l-3 3.1-6.3-6.3 3.1-3q0.5-0.5 1.2-0.5t1.1 0.5l3.9 3.9q0.5 0.4 0.5 1.1t-0.5 1.2z m-29.5 17.1l18.4-18.5 6.3 6.3-18.4 18.4h-6.3v-6.2z"></path></g></svg>Edit this page</a></div><div class="col lastUpdated_JAkA"></div></div></footer></article><nav class="docusaurus-mt-lg pagination-nav" aria-label="Docs pages"></nav></div></div><div class="col col--3"><div class="tableOfContents_bqdL thin-scrollbar theme-doc-toc-desktop"><ul class="table-of-contents table-of-contents__left-border"><li><a href="#introduction" class="table-of-contents__link toc-highlight">Introduction</a></li><li><a href="#pre-deployment-planning" class="table-of-contents__link toc-highlight">Pre-Deployment Planning</a><ul><li><a href="#environment-assessment" class="table-of-contents__link toc-highlight">Environment Assessment</a></li><li><a href="#safety-assessment" class="table-of-contents__link toc-highlight">Safety Assessment</a></li></ul></li><li><a href="#hardware-deployment" class="table-of-contents__link toc-highlight">Hardware Deployment</a><ul><li><a href="#robot-assembly-and-integration" class="table-of-contents__link toc-highlight">Robot Assembly and Integration</a></li><li><a href="#infrastructure-setup" class="table-of-contents__link toc-highlight">Infrastructure Setup</a></li></ul></li><li><a href="#software-deployment" class="table-of-contents__link toc-highlight">Software Deployment</a><ul><li><a href="#containerized-deployment-strategy" class="table-of-contents__link toc-highlight">Containerized Deployment Strategy</a></li><li><a href="#cicd-pipeline-for-robot-deployment" class="table-of-contents__link toc-highlight">CI/CD Pipeline for Robot Deployment</a></li></ul></li><li><a href="#model-deployment" class="table-of-contents__link toc-highlight">Model Deployment</a><ul><li><a href="#mlflow-for-model-management" class="table-of-contents__link toc-highlight">MLflow for Model Management</a></li></ul></li><li><a href="#monitoring-and-observability" class="table-of-contents__link toc-highlight">Monitoring and Observability</a><ul><li><a href="#prometheus-and-grafana-setup" class="table-of-contents__link toc-highlight">Prometheus and Grafana Setup</a></li><li><a href="#loki-and-grafana-configuration" class="table-of-contents__link toc-highlight">Loki and Grafana Configuration</a></li></ul></li><li><a href="#backup-and-recovery" class="table-of-contents__link toc-highlight">Backup and Recovery</a><ul><li><a href="#data-backup-strategy" class="table-of-contents__link toc-highlight">Data Backup Strategy</a></li><li><a href="#disaster-recovery-plan" class="table-of-contents__link toc-highlight">Disaster Recovery Plan</a></li></ul></li><li><a href="#security-considerations" class="table-of-contents__link toc-highlight">Security Considerations</a><ul><li><a href="#network-security" class="table-of-contents__link toc-highlight">Network Security</a></li><li><a href="#authentication-and-authorization" class="table-of-contents__link toc-highlight">Authentication and Authorization</a></li></ul></li><li><a href="#performance-optimization" class="table-of-contents__link toc-highlight">Performance Optimization</a><ul><li><a href="#resource-management" class="table-of-contents__link toc-highlight">Resource Management</a></li></ul></li><li><a href="#rollback-procedures" class="table-of-contents__link toc-highlight">Rollback Procedures</a><ul><li><a href="#safe-rollback-strategy" class="table-of-contents__link toc-highlight">Safe Rollback Strategy</a></li></ul></li><li><a href="#conclusion" class="table-of-contents__link toc-highlight">Conclusion</a></li><li><a href="#exercises" class="table-of-contents__link toc-highlight">Exercises</a></li></ul></div></div></div></div></main></div></div></div><footer class="theme-layout-footer footer footer--dark"><div class="container container-fluid"><div class="row footer__links"><div class="theme-layout-footer-column col footer__col"><div class="footer__title">Docs</div><ul class="footer__items clean-list"><li class="footer__item"><a class="footer__link-item" href="/physical-ai-textbook/docs/intro/introduction-to-physical-ai">Textbook</a></li></ul></div><div class="theme-layout-footer-column col footer__col"><div class="footer__title">Community</div><ul class="footer__items clean-list"><li class="footer__item"><a href="https://stackoverflow.com/questions/tagged/docusaurus" target="_blank" rel="noopener noreferrer" class="footer__link-item">Stack Overflow<svg width="13.5" height="13.5" aria-label="(opens in new tab)" class="iconExternalLink_nPIU"><use href="#theme-svg-external-link"></use></svg></a></li><li class="footer__item"><a href="https://discordapp.com/invite/docusaurus" target="_blank" rel="noopener noreferrer" class="footer__link-item">Discord<svg width="13.5" height="13.5" aria-label="(opens in new tab)" class="iconExternalLink_nPIU"><use href="#theme-svg-external-link"></use></svg></a></li><li class="footer__item"><a href="https://twitter.com/docusaurus" target="_blank" rel="noopener noreferrer" class="footer__link-item">Twitter<svg width="13.5" height="13.5" aria-label="(opens in new tab)" class="iconExternalLink_nPIU"><use href="#theme-svg-external-link"></use></svg></a></li></ul></div><div class="theme-layout-footer-column col footer__col"><div class="footer__title">More</div><ul class="footer__items clean-list"><li class="footer__item"><a href="https://github.com/Gulshan-koondhar/physical-ai-textbook" target="_blank" rel="noopener noreferrer" class="footer__link-item">GitHub<svg width="13.5" height="13.5" aria-label="(opens in new tab)" class="iconExternalLink_nPIU"><use href="#theme-svg-external-link"></use></svg></a></li></ul></div></div><div class="footer__bottom text--center"><div class="footer__copyright">Copyright © 2025 My Project, Inc. Built with Docusaurus.</div></div></div></footer></div>
+</body>
+</html>

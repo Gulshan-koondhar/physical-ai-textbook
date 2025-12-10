@@ -1,0 +1,866 @@
+<!doctype html>
+<html lang="en" dir="ltr" class="docs-wrapper plugin-docs plugin-id-default docs-version-current docs-doc-page docs-doc-id-module-2-simulation/sensor-configurations" data-has-hydrated="false">
+<head>
+<meta charset="UTF-8">
+<meta name="generator" content="Docusaurus v3.9.2">
+<title data-rh="true">LiDAR, RealSense, and IMU Sensor Configurations for Humanoid Robots | Physical AI &amp; Humanoid Robotics</title><meta data-rh="true" name="viewport" content="width=device-width,initial-scale=1"><meta data-rh="true" name="twitter:card" content="summary_large_image"><meta data-rh="true" property="og:image" content="https://Gulshan-koondhar.github.io/physical-ai-textbook/img/docusaurus-social-card.jpg"><meta data-rh="true" name="twitter:image" content="https://Gulshan-koondhar.github.io/physical-ai-textbook/img/docusaurus-social-card.jpg"><meta data-rh="true" property="og:url" content="https://Gulshan-koondhar.github.io/physical-ai-textbook/docs/module-2-simulation/sensor-configurations"><meta data-rh="true" property="og:locale" content="en"><meta data-rh="true" name="docusaurus_locale" content="en"><meta data-rh="true" name="docsearch:language" content="en"><meta data-rh="true" name="docusaurus_version" content="current"><meta data-rh="true" name="docusaurus_tag" content="docs-default-current"><meta data-rh="true" name="docsearch:version" content="current"><meta data-rh="true" name="docsearch:docusaurus_tag" content="docs-default-current"><meta data-rh="true" property="og:title" content="LiDAR, RealSense, and IMU Sensor Configurations for Humanoid Robots | Physical AI &amp; Humanoid Robotics"><meta data-rh="true" name="description" content="Detailed configuration examples for LiDAR, RealSense, and IMU sensors in humanoid robot simulation"><meta data-rh="true" property="og:description" content="Detailed configuration examples for LiDAR, RealSense, and IMU sensors in humanoid robot simulation"><meta data-rh="true" name="keywords" content="LiDAR,RealSense,IMU,sensors,configuration,humanoid,Gazebo"><link data-rh="true" rel="icon" href="/physical-ai-textbook/img/favicon.ico"><link data-rh="true" rel="canonical" href="https://Gulshan-koondhar.github.io/physical-ai-textbook/docs/module-2-simulation/sensor-configurations"><link data-rh="true" rel="alternate" href="https://Gulshan-koondhar.github.io/physical-ai-textbook/docs/module-2-simulation/sensor-configurations" hreflang="en"><link data-rh="true" rel="alternate" href="https://Gulshan-koondhar.github.io/physical-ai-textbook/docs/module-2-simulation/sensor-configurations" hreflang="x-default"><script data-rh="true" type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Sensor Configurations","item":"https://Gulshan-koondhar.github.io/physical-ai-textbook/docs/module-2-simulation/sensor-configurations"}]}</script><link rel="stylesheet" href="/physical-ai-textbook/assets/css/styles.4f99da8f.css">
+<script src="/physical-ai-textbook/assets/js/runtime~main.7cf563d1.js" defer="defer"></script>
+<script src="/physical-ai-textbook/assets/js/main.6dcd1921.js" defer="defer"></script>
+</head>
+<body class="navigation-with-keyboard">
+<svg style="display: none;"><defs>
+<symbol id="theme-svg-external-link" viewBox="0 0 24 24"><path fill="currentColor" d="M21 13v10h-21v-19h12v2h-10v15h17v-8h2zm3-12h-10.988l4.035 4-6.977 7.07 2.828 2.828 6.977-7.07 4.125 4.172v-11z"/></symbol>
+</defs></svg>
+<script>!function(){var t=function(){try{return new URLSearchParams(window.location.search).get("docusaurus-theme")}catch(t){}}()||function(){try{return window.localStorage.getItem("theme")}catch(t){}}();document.documentElement.setAttribute("data-theme",t||"light"),document.documentElement.setAttribute("data-theme-choice",t||"light")}(),function(){try{const c=new URLSearchParams(window.location.search).entries();for(var[t,e]of c)if(t.startsWith("docusaurus-data-")){var a=t.replace("docusaurus-data-","data-");document.documentElement.setAttribute(a,e)}}catch(t){}}()</script><div id="__docusaurus"><div role="region" aria-label="Skip to main content"><a class="skipToContent_fXgn" href="#__docusaurus_skipToContent_fallback">Skip to main content</a></div><nav aria-label="Main" class="theme-layout-navbar navbar navbar--fixed-top"><div class="navbar__inner"><div class="theme-layout-navbar-left navbar__items"><button aria-label="Toggle navigation bar" aria-expanded="false" class="navbar__toggle clean-btn" type="button"><svg width="30" height="30" viewBox="0 0 30 30" aria-hidden="true"><path stroke="currentColor" stroke-linecap="round" stroke-miterlimit="10" stroke-width="2" d="M4 7h22M4 15h22M4 23h22"></path></svg></button><a class="navbar__brand" href="/physical-ai-textbook/"><div class="navbar__logo"><img src="/physical-ai-textbook/img/logo.svg" alt="Physical AI Logo" class="themedComponent_mlkZ themedComponent--light_NVdE"><img src="/physical-ai-textbook/img/logo.svg" alt="Physical AI Logo" class="themedComponent_mlkZ themedComponent--dark_xIcU"></div><b class="navbar__title text--truncate">Physical AI Textbook</b></a><a aria-current="page" class="navbar__item navbar__link navbar__link--active" href="/physical-ai-textbook/docs/intro/introduction-to-physical-ai">Textbook</a></div><div class="theme-layout-navbar-right navbar__items navbar__items--right"><a href="https://github.com/Gulshan-koondhar/physical-ai-textbook" target="_blank" rel="noopener noreferrer" class="navbar__item navbar__link">GitHub<svg width="13.5" height="13.5" aria-label="(opens in new tab)" class="iconExternalLink_nPIU"><use href="#theme-svg-external-link"></use></svg></a><div class="toggle_vylO colorModeToggle_DEke"><button class="clean-btn toggleButton_gllP toggleButtonDisabled_aARS" type="button" disabled="" title="system mode" aria-label="Switch between dark and light mode (currently system mode)"><svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" class="toggleIcon_g3eP lightToggleIcon_pyhR"><path fill="currentColor" d="M12,9c1.65,0,3,1.35,3,3s-1.35,3-3,3s-3-1.35-3-3S10.35,9,12,9 M12,7c-2.76,0-5,2.24-5,5s2.24,5,5,5s5-2.24,5-5 S14.76,7,12,7L12,7z M2,13l2,0c0.55,0,1-0.45,1-1s-0.45-1-1-1l-2,0c-0.55,0-1,0.45-1,1S1.45,13,2,13z M20,13l2,0c0.55,0,1-0.45,1-1 s-0.45-1-1-1l-2,0c-0.55,0-1,0.45-1,1S19.45,13,20,13z M11,2v2c0,0.55,0.45,1,1,1s1-0.45,1-1V2c0-0.55-0.45-1-1-1S11,1.45,11,2z M11,20v2c0,0.55,0.45,1,1,1s1-0.45,1-1v-2c0-0.55-0.45-1-1-1C11.45,19,11,19.45,11,20z M5.99,4.58c-0.39-0.39-1.03-0.39-1.41,0 c-0.39,0.39-0.39,1.03,0,1.41l1.06,1.06c0.39,0.39,1.03,0.39,1.41,0s0.39-1.03,0-1.41L5.99,4.58z M18.36,16.95 c-0.39-0.39-1.03-0.39-1.41,0c-0.39,0.39-0.39,1.03,0,1.41l1.06,1.06c0.39,0.39,1.03,0.39,1.41,0c0.39-0.39,0.39-1.03,0-1.41 L18.36,16.95z M19.42,5.99c0.39-0.39,0.39-1.03,0-1.41c-0.39-0.39-1.03-0.39-1.41,0l-1.06,1.06c-0.39,0.39-0.39,1.03,0,1.41 s1.03,0.39,1.41,0L19.42,5.99z M7.05,18.36c0.39-0.39,0.39-1.03,0-1.41c-0.39-0.39-1.03-0.39-1.41,0l-1.06,1.06 c-0.39,0.39-0.39,1.03,0,1.41s1.03,0.39,1.41,0L7.05,18.36z"></path></svg><svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" class="toggleIcon_g3eP darkToggleIcon_wfgR"><path fill="currentColor" d="M9.37,5.51C9.19,6.15,9.1,6.82,9.1,7.5c0,4.08,3.32,7.4,7.4,7.4c0.68,0,1.35-0.09,1.99-0.27C17.45,17.19,14.93,19,12,19 c-3.86,0-7-3.14-7-7C5,9.07,6.81,6.55,9.37,5.51z M12,3c-4.97,0-9,4.03-9,9s4.03,9,9,9s9-4.03,9-9c0-0.46-0.04-0.92-0.1-1.36 c-0.98,1.37-2.58,2.26-4.4,2.26c-2.98,0-5.4-2.42-5.4-5.4c0-1.81,0.89-3.42,2.26-4.4C12.92,3.04,12.46,3,12,3L12,3z"></path></svg><svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" class="toggleIcon_g3eP systemToggleIcon_QzmC"><path fill="currentColor" d="m12 21c4.971 0 9-4.029 9-9s-4.029-9-9-9-9 4.029-9 9 4.029 9 9 9zm4.95-13.95c1.313 1.313 2.05 3.093 2.05 4.95s-0.738 3.637-2.05 4.95c-1.313 1.313-3.093 2.05-4.95 2.05v-14c1.857 0 3.637 0.737 4.95 2.05z"></path></svg></button></div><div class="navbarSearchContainer_Bca1"></div></div></div><div role="presentation" class="navbar-sidebar__backdrop"></div></nav><div id="__docusaurus_skipToContent_fallback" class="theme-layout-main main-wrapper mainWrapper_z2l0"><div class="docsWrapper_hBAB"><button aria-label="Scroll back to top" class="clean-btn theme-back-to-top-button backToTopButton_sjWU" type="button"></button><div class="docRoot_UBD9"><aside class="theme-doc-sidebar-container docSidebarContainer_YfHR"><div class="sidebarViewport_aRkj"><div class="sidebar_njMd"><nav aria-label="Docs sidebar" class="menu thin-scrollbar menu_SIkG"><ul class="theme-doc-sidebar-menu menu__list"><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist menu__link--sublist-caret" role="button" aria-expanded="false" href="/physical-ai-textbook/docs/intro/introduction-to-physical-ai"><span title="Introduction" class="categoryLinkLabel_W154">Introduction</span></a></div></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist menu__link--sublist-caret" role="button" aria-expanded="false" href="/physical-ai-textbook/docs/module-1-ros/ros2-from-zero"><span title="Module 1 - ROS 2 Fundamentals" class="categoryLinkLabel_W154">Module 1 - ROS 2 Fundamentals</span></a></div></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist menu__link--sublist-caret menu__link--active" role="button" aria-expanded="true" href="/physical-ai-textbook/docs/module-2-simulation/gazebo-harmonic-setup"><span title="Module 2 - Simulation" class="categoryLinkLabel_W154">Module 2 - Simulation</span></a></div><ul class="menu__list"><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-2 menu__list-item"><a class="menu__link" tabindex="0" href="/physical-ai-textbook/docs/module-2-simulation/gazebo-harmonic-setup"><span title="Gazebo Harmonic Setup" class="linkLabel_WmDU">Gazebo Harmonic Setup</span></a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-2 menu__list-item"><a class="menu__link" tabindex="0" href="/physical-ai-textbook/docs/module-2-simulation/simulating-humanoid"><span title="Simulating Humanoid in Gazebo" class="linkLabel_WmDU">Simulating Humanoid in Gazebo</span></a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-2 menu__list-item"><a class="menu__link" tabindex="0" href="/physical-ai-textbook/docs/module-2-simulation/unity-rendering"><span title="Unity Rendering" class="linkLabel_WmDU">Unity Rendering</span></a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-2 menu__list-item"><a class="menu__link" tabindex="0" href="/physical-ai-textbook/docs/module-2-simulation/sensor-plugin-configuration"><span title="Sensor Plugin Configuration" class="linkLabel_WmDU">Sensor Plugin Configuration</span></a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-2 menu__list-item"><a class="menu__link menu__link--active" aria-current="page" tabindex="0" href="/physical-ai-textbook/docs/module-2-simulation/sensor-configurations"><span title="Sensor Configurations" class="linkLabel_WmDU">Sensor Configurations</span></a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-2 menu__list-item"><a class="menu__link" tabindex="0" href="/physical-ai-textbook/docs/module-2-simulation/ros-tcp-connector"><span title="ROS TCP Connector Bridge" class="linkLabel_WmDU">ROS TCP Connector Bridge</span></a></li></ul></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist menu__link--sublist-caret" role="button" aria-expanded="false" href="/physical-ai-textbook/docs/module-3-ai-brain/isaac-sim-installation"><span title="Module 3 - AI Brain" class="categoryLinkLabel_W154">Module 3 - AI Brain</span></a></div></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist menu__link--sublist-caret" role="button" aria-expanded="false" href="/physical-ai-textbook/docs/module-4-vla/whisper-gpt-ros-planner"><span title="Module 4 - VLA Integration" class="categoryLinkLabel_W154">Module 4 - VLA Integration</span></a></div></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist menu__link--sublist-caret" role="button" aria-expanded="false" href="/physical-ai-textbook/docs/capstone/red-cup-project"><span title="Capstone Project" class="categoryLinkLabel_W154">Capstone Project</span></a></div></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist menu__link--sublist-caret" role="button" aria-expanded="false" href="/physical-ai-textbook/docs/hardware/hardware-guide"><span title="Hardware Guide" class="categoryLinkLabel_W154">Hardware Guide</span></a></div></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist menu__link--sublist-caret" role="button" aria-expanded="false" href="/physical-ai-textbook/docs/appendix/troubleshooting"><span title="Appendices" class="categoryLinkLabel_W154">Appendices</span></a></div></li></ul></nav></div></div></aside><main class="docMainContainer_TBSr"><div class="container padding-top--md padding-bottom--lg"><div class="row"><div class="col docItemCol_VOVn"><div class="docItemContainer_Djhp"><article><nav class="theme-doc-breadcrumbs breadcrumbsContainer_Z_bl" aria-label="Breadcrumbs"><ul class="breadcrumbs"><li class="breadcrumbs__item"><a aria-label="Home page" class="breadcrumbs__link" href="/physical-ai-textbook/"><svg viewBox="0 0 24 24" class="breadcrumbHomeIcon_YNFT"><path d="M10 19v-5h4v5c0 .55.45 1 1 1h3c.55 0 1-.45 1-1v-7h1.7c.46 0 .68-.57.33-.87L12.67 3.6c-.38-.34-.96-.34-1.34 0l-8.36 7.53c-.34.3-.13.87.33.87H5v7c0 .55.45 1 1 1h3c.55 0 1-.45 1-1z" fill="currentColor"></path></svg></a></li><li class="breadcrumbs__item"><span class="breadcrumbs__link">Module 2 - Simulation</span></li><li class="breadcrumbs__item breadcrumbs__item--active"><span class="breadcrumbs__link">Sensor Configurations</span></li></ul></nav><div class="tocCollapsible_ETCw theme-doc-toc-mobile tocMobile_ITEo"><button type="button" class="clean-btn tocCollapsibleButton_TO0P">On this page</button></div><div class="theme-doc-markdown markdown"><header><h1 id="lidar-realsense-and-imu-sensor-configurations-for-humanoid-robots">LiDAR, RealSense, and IMU Sensor Configurations for Humanoid Robots</h1></header>
+<h2 id="introduction">Introduction</h2>
+<p>LiDAR, RealSense, and IMU sensors are fundamental components for humanoid robot perception and control. Proper configuration of these sensors is crucial for realistic simulation and effective robot behavior. This chapter provides detailed configuration examples for each sensor type, focusing on the specific requirements of humanoid robots.</p>
+<h2 id="lidar-sensor-configurations">LiDAR Sensor Configurations</h2>
+<h3 id="2d-lidar-hokuyo-urg-04lx-ug01">2D LiDAR (Hokuyo URG-04LX-UG01)</h3>
+<p>The Hokuyo URG-04LX-UG01 is a popular 2D LiDAR with 4-meter range and 240-degree field of view:</p>
+<pre><code class="language-xml">&lt;!-- Hokuyo URG-04LX-UG01 configuration --&gt;
+&lt;gazebo reference=&quot;laser_link&quot;&gt;
+  &lt;sensor name=&quot;laser&quot; type=&quot;ray&quot;&gt;
+    &lt;pose&gt;0 0 0 0 0 0&lt;/pose&gt;
+    &lt;visualize&gt;false&lt;/visualize&gt;
+    &lt;update_rate&gt;10&lt;/update_rate&gt;
+    &lt;ray&gt;
+      &lt;scan&gt;
+        &lt;horizontal&gt;
+          &lt;samples&gt;682&lt;/samples&gt;
+          &lt;resolution&gt;1&lt;/resolution&gt;
+          &lt;min_angle&gt;-2.0944&lt;/min_angle&gt; &lt;!-- -120 degrees --&gt;
+          &lt;max_angle&gt;2.0944&lt;/max_angle&gt;   &lt;!-- 120 degrees --&gt;
+        &lt;/horizontal&gt;
+      &lt;/scan&gt;
+      &lt;range&gt;
+        &lt;min&gt;0.06&lt;/min&gt;
+        &lt;max&gt;4.0&lt;/max&gt;
+        &lt;resolution&gt;0.01&lt;/resolution&gt;
+      &lt;/range&gt;
+    &lt;/ray&gt;
+    &lt;plugin name=&quot;laser_controller&quot; filename=&quot;libgazebo_ros_ray_sensor.so&quot;&gt;
+      &lt;ros&gt;
+        &lt;namespace&gt;/humanoid_robot&lt;/namespace&gt;
+        &lt;remapping&gt;~/out:=scan&lt;/remapping&gt;
+      &lt;/ros&gt;
+      &lt;output_type&gt;sensor_msgs/LaserScan&lt;/output_type&gt;
+      &lt;frame_name&gt;laser_link&lt;/frame_name&gt;
+    &lt;/plugin&gt;
+  &lt;/sensor&gt;
+&lt;/gazebo&gt;
+</code></pre>
+<h3 id="2d-lidar-hokuyo-utm-30lx">2D LiDAR (Hokuyo UTM-30LX)</h3>
+<p>For longer-range applications, the Hokuyo UTM-30LX provides up to 30 meters range:</p>
+<pre><code class="language-xml">&lt;!-- Hokuyo UTM-30LX configuration --&gt;
+&lt;gazebo reference=&quot;lidar_link&quot;&gt;
+  &lt;sensor name=&quot;laser_utm30lx&quot; type=&quot;ray&quot;&gt;
+    &lt;always_on&gt;true&lt;/always_on&gt;
+    &lt;visualize&gt;false&lt;/visualize&gt;
+    &lt;update_rate&gt;40&lt;/update_rate&gt;
+    &lt;ray&gt;
+      &lt;scan&gt;
+        &lt;horizontal&gt;
+          &lt;samples&gt;1081&lt;/samples&gt;
+          &lt;resolution&gt;1&lt;/resolution&gt;
+          &lt;min_angle&gt;-3.14159&lt;/min_angle&gt; &lt;!-- -π radians --&gt;
+          &lt;max_angle&gt;3.14159&lt;/max_angle&gt;   &lt;!-- π radians --&gt;
+        &lt;/horizontal&gt;
+      &lt;/scan&gt;
+      &lt;range&gt;
+        &lt;min&gt;0.1&lt;/min&gt;
+        &lt;max&gt;30.0&lt;/max&gt;
+        &lt;resolution&gt;0.01&lt;/resolution&gt;
+      &lt;/range&gt;
+    &lt;/ray&gt;
+    &lt;plugin name=&quot;gazebo_ros_laser&quot; filename=&quot;libgazebo_ros_ray_sensor.so&quot;&gt;
+      &lt;ros&gt;
+        &lt;namespace&gt;/humanoid_robot&lt;/namespace&gt;
+        &lt;remapping&gt;~/out:=scan&lt;/remapping&gt;
+      &lt;/ros&gt;
+      &lt;output_type&gt;sensor_msgs/LaserScan&lt;/output_type&gt;
+      &lt;frame_name&gt;lidar_link&lt;/frame_name&gt;
+    &lt;/plugin&gt;
+  &lt;/sensor&gt;
+&lt;/gazebo&gt;
+</code></pre>
+<h3 id="3d-lidar-velodyne-vlp-16">3D LiDAR (Velodyne VLP-16)</h3>
+<p>For 3D mapping and perception, the Velodyne VLP-16 provides 3D point cloud data:</p>
+<pre><code class="language-xml">&lt;!-- Velodyne VLP-16 configuration --&gt;
+&lt;gazebo reference=&quot;velodyne_link&quot;&gt;
+  &lt;sensor name=&quot;velodyne-VLP-16&quot; type=&quot;ray&quot;&gt;
+    &lt;always_on&gt;true&lt;/always_on&gt;
+    &lt;visualize&gt;false&lt;/visualize&gt;
+    &lt;update_rate&gt;10&lt;/update_rate&gt;
+    &lt;ray&gt;
+      &lt;scan&gt;
+        &lt;horizontal&gt;
+          &lt;samples&gt;1800&lt;/samples&gt;
+          &lt;resolution&gt;1&lt;/resolution&gt;
+          &lt;min_angle&gt;-3.14159&lt;/min_angle&gt;
+          &lt;max_angle&gt;3.14159&lt;/max_angle&gt;
+        &lt;/horizontal&gt;
+        &lt;vertical&gt;
+          &lt;samples&gt;16&lt;/samples&gt;
+          &lt;resolution&gt;1&lt;/resolution&gt;
+          &lt;min_angle&gt;-0.2618&lt;/min_angle&gt; &lt;!-- -15 degrees --&gt;
+          &lt;max_angle&gt;0.2618&lt;/max_angle&gt;   &lt;!-- 15 degrees --&gt;
+        &lt;/vertical&gt;
+      &lt;/scan&gt;
+      &lt;range&gt;
+        &lt;min&gt;0.2&lt;/min&gt;
+        &lt;max&gt;100.0&lt;/max&gt;
+        &lt;resolution&gt;0.01&lt;/resolution&gt;
+      &lt;/range&gt;
+    &lt;/ray&gt;
+    &lt;plugin name=&quot;gazebo_ros_laser&quot; filename=&quot;libgazebo_ros_velodyne_gpu.so&quot;&gt;
+      &lt;ros&gt;
+        &lt;namespace&gt;/humanoid_robot&lt;/namespace&gt;
+        &lt;remapping&gt;~/out:=points&lt;/remapping&gt;
+      &lt;/ros&gt;
+      &lt;frame_name&gt;velodyne_link&lt;/frame_name&gt;
+      &lt;min_range&gt;0.2&lt;/min_range&gt;
+      &lt;max_range&gt;100.0&lt;/max_range&gt;
+      &lt;gaussian_noise&gt;0.008&lt;/gaussian_noise&gt;
+    &lt;/plugin&gt;
+  &lt;/sensor&gt;
+&lt;/gazebo&gt;
+</code></pre>
+<h3 id="multi-lidar-configuration-for-humanoid-robots">Multi-LiDAR Configuration for Humanoid Robots</h3>
+<p>For comprehensive environment perception, humanoid robots often use multiple LiDAR units:</p>
+<pre><code class="language-xml">&lt;!-- Head-mounted 2D LiDAR for navigation --&gt;
+&lt;gazebo reference=&quot;head_lidar_link&quot;&gt;
+  &lt;sensor name=&quot;head_lidar&quot; type=&quot;ray&quot;&gt;
+    &lt;always_on&gt;true&lt;/always_on&gt;
+    &lt;visualize&gt;false&lt;/visualize&gt;
+    &lt;update_rate&gt;40&lt;/update_rate&gt;
+    &lt;ray&gt;
+      &lt;scan&gt;
+        &lt;horizontal&gt;
+          &lt;samples&gt;720&lt;/samples&gt;
+          &lt;resolution&gt;1&lt;/resolution&gt;
+          &lt;min_angle&gt;-3.14159&lt;/min_angle&gt;
+          &lt;max_angle&gt;3.14159&lt;/max_angle&gt;
+        &lt;/horizontal&gt;
+      &lt;/scan&gt;
+      &lt;range&gt;
+        &lt;min&gt;0.1&lt;/min&gt;
+        &lt;max&gt;20.0&lt;/max&gt;
+        &lt;resolution&gt;0.01&lt;/resolution&gt;
+      &lt;/range&gt;
+    &lt;/ray&gt;
+    &lt;plugin name=&quot;head_lidar_controller&quot; filename=&quot;libgazebo_ros_ray_sensor.so&quot;&gt;
+      &lt;ros&gt;
+        &lt;namespace&gt;/humanoid_robot&lt;/namespace&gt;
+        &lt;remapping&gt;~/out:=head_scan&lt;/remapping&gt;
+      &lt;/ros&gt;
+      &lt;output_type&gt;sensor_msgs/LaserScan&lt;/output_type&gt;
+      &lt;frame_name&gt;head_lidar_link&lt;/frame_name&gt;
+    &lt;/plugin&gt;
+  &lt;/sensor&gt;
+&lt;/gazebo&gt;
+
+&lt;!-- Waist-mounted 2D LiDAR for lower body perception --&gt;
+&lt;gazebo reference=&quot;waist_lidar_link&quot;&gt;
+  &lt;sensor name=&quot;waist_lidar&quot; type=&quot;ray&quot;&gt;
+    &lt;always_on&gt;true&lt;/always_on&gt;
+    &lt;visualize&gt;false&lt;/visualize&gt;
+    &lt;update_rate&gt;30&lt;/update_rate&gt;
+    &lt;ray&gt;
+      &lt;scan&gt;
+        &lt;horizontal&gt;
+          &lt;samples&gt;540&lt;/samples&gt;
+          &lt;resolution&gt;1&lt;/resolution&gt;
+          &lt;min_angle&gt;-2.618&lt;/min_angle&gt; &lt;!-- -150 degrees --&gt;
+          &lt;max_angle&gt;2.618&lt;/max_angle&gt;   &lt;!-- 150 degrees --&gt;
+        &lt;/horizontal&gt;
+      &lt;/scan&gt;
+      &lt;range&gt;
+        &lt;min&gt;0.1&lt;/min&gt;
+        &lt;max&gt;15.0&lt;/max&gt;
+        &lt;resolution&gt;0.01&lt;/resolution&gt;
+      &lt;/range&gt;
+    &lt;/ray&gt;
+    &lt;plugin name=&quot;waist_lidar_controller&quot; filename=&quot;libgazebo_ros_ray_sensor.so&quot;&gt;
+      &lt;ros&gt;
+        &lt;namespace&gt;/humanoid_robot&lt;/namespace&gt;
+        &lt;remapping&gt;~/out:=waist_scan&lt;/remapping&gt;
+      &lt;/ros&gt;
+      &lt;output_type&gt;sensor_msgs/LaserScan&lt;/output_type&gt;
+      &lt;frame_name&gt;waist_lidar_link&lt;/frame_name&gt;
+    &lt;/plugin&gt;
+  &lt;/sensor&gt;
+&lt;/gazebo&gt;
+</code></pre>
+<h2 id="realsense-sensor-configurations">RealSense Sensor Configurations</h2>
+<h3 id="intel-realsense-d435-configuration">Intel RealSense D435 Configuration</h3>
+<p>The Intel RealSense D435 provides RGB, depth, and IMU data in a compact package:</p>
+<pre><code class="language-xml">&lt;!-- Intel RealSense D435 configuration --&gt;
+&lt;gazebo reference=&quot;camera_link&quot;&gt;
+  &lt;sensor name=&quot;realsense_D435&quot; type=&quot;depth&quot;&gt;
+    &lt;always_on&gt;true&lt;/always_on&gt;
+    &lt;visualize&gt;true&lt;/visualize&gt;
+    &lt;update_rate&gt;30&lt;/update_rate&gt;
+    &lt;camera name=&quot;realsense_camera&quot;&gt;
+      &lt;horizontal_fov&gt;1.047&lt;/horizontal_fov&gt; &lt;!-- 60 degrees --&gt;
+      &lt;image&gt;
+        &lt;width&gt;640&lt;/width&gt;
+        &lt;height&gt;480&lt;/height&gt;
+        &lt;format&gt;R8G8B8&lt;/format&gt;
+      &lt;/image&gt;
+      &lt;depth_camera&gt;
+        &lt;output&gt;depth&lt;/output&gt;
+      &lt;/depth_camera&gt;
+      &lt;clip&gt;
+        &lt;near&gt;0.1&lt;/near&gt;
+        &lt;far&gt;10&lt;/far&gt;
+      &lt;/clip&gt;
+    &lt;/camera&gt;
+    &lt;plugin name=&quot;realsense_plugin&quot; filename=&quot;libgazebo_ros_openni_kinect.so&quot;&gt;
+      &lt;ros&gt;
+        &lt;namespace&gt;/humanoid_robot&lt;/namespace&gt;
+        &lt;remapping&gt;image_raw:=color/image_raw&lt;/remapping&gt;
+        &lt;remapping&gt;depth/image_raw:=depth/image_rect_raw&lt;/remapping&gt;
+        &lt;remapping&gt;depth/camera_info:=depth/camera_info&lt;/remapping&gt;
+        &lt;remapping&gt;rgb/camera_info:=color/camera_info&lt;/remapping&gt;
+        &lt;remapping&gt;points:=depth/color/points&lt;/remapping&gt;
+      &lt;/ros&gt;
+      &lt;camera_name&gt;realsense_camera&lt;/camera_name&gt;
+      &lt;frame_name&gt;camera_optical_frame&lt;/frame_name&gt;
+      &lt;baseline&gt;0.025&lt;/baseline&gt;
+      &lt;distortion_k1&gt;0.0&lt;/distortion_k1&gt;
+      &lt;distortion_k2&gt;0.0&lt;/distortion_k2&gt;
+      &lt;distortion_k3&gt;0.0&lt;/distortion_k3&gt;
+      &lt;distortion_t1&gt;0.0&lt;/distortion_t1&gt;
+      &lt;distortion_t2&gt;0.0&lt;/distortion_t2&gt;
+      &lt;point_cloud_cutoff&gt;0.1&lt;/point_cloud_cutoff&gt;
+      &lt;point_cloud_cutoff_max&gt;5.0&lt;/point_cloud_cutoff_max&gt;
+      &lt;Cx_prime&gt;0&lt;/Cx_prime&gt;
+      &lt;Cx&gt;320.0&lt;/Cx&gt;
+      &lt;Cy&gt;240.0&lt;/Cy&gt;
+      &lt;focal_length&gt;320.0&lt;/focal_length&gt;
+      &lt;hack_baseline&gt;0.025&lt;/hack_baseline&gt;
+    &lt;/plugin&gt;
+  &lt;/sensor&gt;
+&lt;/gazebo&gt;
+</code></pre>
+<h3 id="multiple-realsense-configuration">Multiple RealSense Configuration</h3>
+<p>For enhanced perception, multiple RealSense cameras can be used:</p>
+<pre><code class="language-xml">&lt;!-- Head-mounted RealSense for forward perception --&gt;
+&lt;gazebo reference=&quot;head_camera_link&quot;&gt;
+  &lt;sensor name=&quot;head_realsense&quot; type=&quot;depth&quot;&gt;
+    &lt;always_on&gt;true&lt;/always_on&gt;
+    &lt;visualize&gt;true&lt;/visualize&gt;
+    &lt;update_rate&gt;30&lt;/update_rate&gt;
+    &lt;camera name=&quot;head_camera&quot;&gt;
+      &lt;horizontal_fov&gt;1.047&lt;/horizontal_fov&gt;
+      &lt;image&gt;
+        &lt;width&gt;640&lt;/width&gt;
+        &lt;height&gt;480&lt;/height&gt;
+        &lt;format&gt;R8G8B8&lt;/format&gt;
+      &lt;/image&gt;
+      &lt;clip&gt;
+        &lt;near&gt;0.1&lt;/near&gt;
+        &lt;far&gt;8&lt;/far&gt;
+      &lt;/clip&gt;
+    &lt;/camera&gt;
+    &lt;plugin name=&quot;head_camera_plugin&quot; filename=&quot;libgazebo_ros_openni_kinect.so&quot;&gt;
+      &lt;ros&gt;
+        &lt;namespace&gt;/humanoid_robot&lt;/namespace&gt;
+        &lt;remapping&gt;image_raw:=head/color/image_raw&lt;/remapping&gt;
+        &lt;remapping&gt;depth/image_raw:=head/depth/image_raw&lt;/remapping&gt;
+        &lt;remapping&gt;camera_info:=head/color/camera_info&lt;/remapping&gt;
+      &lt;/ros&gt;
+      &lt;camera_name&gt;head_camera&lt;/camera_name&gt;
+      &lt;frame_name&gt;head_camera_optical_frame&lt;/frame_name&gt;
+      &lt;baseline&gt;0.025&lt;/baseline&gt;
+    &lt;/plugin&gt;
+  &lt;/sensor&gt;
+&lt;/gazebo&gt;
+
+&lt;!-- Chest-mounted RealSense for manipulation tasks --&gt;
+&lt;gazebo reference=&quot;chest_camera_link&quot;&gt;
+  &lt;sensor name=&quot;chest_realsense&quot; type=&quot;depth&quot;&gt;
+    &lt;always_on&gt;true&lt;/always_on&gt;
+    &lt;visualize&gt;true&lt;/visualize&gt;
+    &lt;update_rate&gt;30&lt;/update_rate&gt;
+    &lt;camera name=&quot;chest_camera&quot;&gt;
+      &lt;horizontal_fov&gt;1.047&lt;/horizontal_fov&gt;
+      &lt;image&gt;
+        &lt;width&gt;640&lt;/width&gt;
+        &lt;height&gt;480&lt;/height&gt;
+        &lt;format&gt;R8G8B8&lt;/format&gt;
+      &lt;/image&gt;
+      &lt;clip&gt;
+        &lt;near&gt;0.1&lt;/near&gt;
+        &lt;far&gt;5&lt;/far&gt;
+      &lt;/clip&gt;
+    &lt;/camera&gt;
+    &lt;plugin name=&quot;chest_camera_plugin&quot; filename=&quot;libgazebo_ros_openni_kinect.so&quot;&gt;
+      &lt;ros&gt;
+        &lt;namespace&gt;/humanoid_robot&lt;/namespace&gt;
+        &lt;remapping&gt;image_raw:=chest/color/image_raw&lt;/remapping&gt;
+        &lt;remapping&gt;depth/image_raw:=chest/depth/image_raw&lt;/remapping&gt;
+        &lt;remapping&gt;camera_info:=chest/color/camera_info&lt;/remapping&gt;
+      &lt;/ros&gt;
+      &lt;camera_name&gt;chest_camera&lt;/camera_name&gt;
+      &lt;frame_name&gt;chest_camera_optical_frame&lt;/frame_name&gt;
+      &lt;baseline&gt;0.025&lt;/baseline&gt;
+    &lt;/plugin&gt;
+  &lt;/sensor&gt;
+&lt;/gazebo&gt;
+</code></pre>
+<h3 id="realsense-t265-configuration-with-tracking">RealSense T265 Configuration (with tracking)</h3>
+<p>The RealSense T265 provides visual-inertial tracking:</p>
+<pre><code class="language-xml">&lt;!-- RealSense T265 for pose tracking --&gt;
+&lt;gazebo reference=&quot;t265_pose_frame&quot;&gt;
+  &lt;sensor name=&quot;t265_tracking&quot; type=&quot;camera&quot;&gt;
+    &lt;always_on&gt;true&lt;/always_on&gt;
+    &lt;visualize&gt;false&lt;/visualize&gt;
+    &lt;update_rate&gt;200&lt;/update_rate&gt;
+    &lt;camera name=&quot;t265_fisheye1&quot;&gt;
+      &lt;horizontal_fov&gt;2.0944&lt;/horizontal_fov&gt; &lt;!-- 120 degrees --&gt;
+      &lt;image&gt;
+        &lt;width&gt;848&lt;/width&gt;
+        &lt;height&gt;800&lt;/height&gt;
+        &lt;format&gt;L8&lt;/format&gt;
+      &lt;/image&gt;
+      &lt;clip&gt;
+        &lt;near&gt;0.1&lt;/near&gt;
+        &lt;far&gt;10&lt;/far&gt;
+      &lt;/clip&gt;
+    &lt;/camera&gt;
+    &lt;plugin name=&quot;t265_plugin&quot; filename=&quot;libgazebo_ros_camera.so&quot;&gt;
+      &lt;ros&gt;
+        &lt;namespace&gt;/humanoid_robot&lt;/namespace&gt;
+        &lt;remapping&gt;image_raw:=t265/fisheye1/image_raw&lt;/remapping&gt;
+        &lt;remapping&gt;camera_info:=t265/fisheye1/camera_info&lt;/remapping&gt;
+      &lt;/ros&gt;
+      &lt;camera_name&gt;t265_camera&lt;/camera_name&gt;
+      &lt;frame_name&gt;t265_pose_frame&lt;/frame_name&gt;
+    &lt;/plugin&gt;
+  &lt;/sensor&gt;
+&lt;/gazebo&gt;
+</code></pre>
+<h2 id="imu-sensor-configurations">IMU Sensor Configurations</h2>
+<h3 id="high-precision-imu-for-balance-control">High-Precision IMU for Balance Control</h3>
+<p>For humanoid balance and orientation control, high-precision IMU configuration is essential:</p>
+<pre><code class="language-xml">&lt;!-- High-precision IMU for balance control --&gt;
+&lt;gazebo reference=&quot;imu_link&quot;&gt;
+  &lt;sensor name=&quot;imu_sensor&quot; type=&quot;imu&quot;&gt;
+    &lt;always_on&gt;true&lt;/always_on&gt;
+    &lt;update_rate&gt;200&lt;/update_rate&gt;
+    &lt;visualize&gt;false&lt;/visualize&gt;
+    &lt;imu&gt;
+      &lt;angular_velocity&gt;
+        &lt;x&gt;
+          &lt;noise type=&quot;gaussian&quot;&gt;
+            &lt;mean&gt;0.0&lt;/mean&gt;
+            &lt;stddev&gt;2e-4&lt;/stddev&gt;
+            &lt;bias_mean&gt;0.0000075&lt;/bias_mean&gt;
+            &lt;bias_stddev&gt;0.0000008&lt;/bias_stddev&gt;
+          &lt;/noise&gt;
+        &lt;/x&gt;
+        &lt;y&gt;
+          &lt;noise type=&quot;gaussian&quot;&gt;
+            &lt;mean&gt;0.0&lt;/mean&gt;
+            &lt;stddev&gt;2e-4&lt;/stddev&gt;
+            &lt;bias_mean&gt;0.0000075&lt;/bias_mean&gt;
+            &lt;bias_stddev&gt;0.0000008&lt;/bias_stddev&gt;
+          &lt;/noise&gt;
+        &lt;/y&gt;
+        &lt;z&gt;
+          &lt;noise type=&quot;gaussian&quot;&gt;
+            &lt;mean&gt;0.0&lt;/mean&gt;
+            &lt;stddev&gt;2e-4&lt;/stddev&gt;
+            &lt;bias_mean&gt;0.0000075&lt;/bias_mean&gt;
+            &lt;bias_stddev&gt;0.0000008&lt;/bias_stddev&gt;
+          &lt;/noise&gt;
+        &lt;/z&gt;
+      &lt;/angular_velocity&gt;
+      &lt;linear_acceleration&gt;
+        &lt;x&gt;
+          &lt;noise type=&quot;gaussian&quot;&gt;
+            &lt;mean&gt;0.0&lt;/mean&gt;
+            &lt;stddev&gt;1.7e-2&lt;/stddev&gt;
+            &lt;bias_mean&gt;0.1&lt;/bias_mean&gt;
+            &lt;bias_stddev&gt;0.001&lt;/bias_stddev&gt;
+          &lt;/noise&gt;
+        &lt;/x&gt;
+        &lt;y&gt;
+          &lt;noise type=&quot;gaussian&quot;&gt;
+            &lt;mean&gt;0.0&lt;/mean&gt;
+            &lt;stddev&gt;1.7e-2&lt;/stddev&gt;
+            &lt;bias_mean&gt;0.1&lt;/bias_mean&gt;
+            &lt;bias_stddev&gt;0.001&lt;/bias_stddev&gt;
+          &lt;/noise&gt;
+        &lt;/y&gt;
+        &lt;z&gt;
+          &lt;noise type=&quot;gaussian&quot;&gt;
+            &lt;mean&gt;0.0&lt;/mean&gt;
+            &lt;stddev&gt;1.7e-2&lt;/stddev&gt;
+            &lt;bias_mean&gt;0.1&lt;/bias_mean&gt;
+            &lt;bias_stddev&gt;0.001&lt;/bias_stddev&gt;
+          &lt;/noise&gt;
+        &lt;/z&gt;
+      &lt;/linear_acceleration&gt;
+    &lt;/imu&gt;
+    &lt;plugin name=&quot;imu_plugin&quot; filename=&quot;libgazebo_ros_imu.so&quot;&gt;
+      &lt;ros&gt;
+        &lt;namespace&gt;/humanoid_robot&lt;/namespace&gt;
+        &lt;remapping&gt;~/out:=imu/data&lt;/remapping&gt;
+      &lt;/ros&gt;
+      &lt;frame_name&gt;imu_link&lt;/frame_name&gt;
+      &lt;body_name&gt;imu_link&lt;/body_name&gt;
+      &lt;update_rate&gt;200&lt;/update_rate&gt;
+      &lt;gaussian_noise&gt;1.7e-2&lt;/gaussian_noise&gt;
+    &lt;/plugin&gt;
+  &lt;/sensor&gt;
+&lt;/gazebo&gt;
+</code></pre>
+<h3 id="multiple-imu-configuration-for-humanoid-robots">Multiple IMU Configuration for Humanoid Robots</h3>
+<p>Humanoid robots often use multiple IMUs for enhanced state estimation:</p>
+<pre><code class="language-xml">&lt;!-- Torso IMU for main body orientation --&gt;
+&lt;gazebo reference=&quot;torso_imu_link&quot;&gt;
+  &lt;sensor name=&quot;torso_imu&quot; type=&quot;imu&quot;&gt;
+    &lt;always_on&gt;true&lt;/always_on&gt;
+    &lt;update_rate&gt;200&lt;/update_rate&gt;
+    &lt;imu&gt;
+      &lt;angular_velocity&gt;
+        &lt;x&gt;
+          &lt;noise type=&quot;gaussian&quot;&gt;
+            &lt;mean&gt;0.0&lt;/mean&gt;
+            &lt;stddev&gt;1e-3&lt;/stddev&gt;
+          &lt;/noise&gt;
+        &lt;/x&gt;
+        &lt;y&gt;
+          &lt;noise type=&quot;gaussian&quot;&gt;
+            &lt;mean&gt;0.0&lt;/mean&gt;
+            &lt;stddev&gt;1e-3&lt;/stddev&gt;
+          &lt;/noise&gt;
+        &lt;/y&gt;
+        &lt;z&gt;
+          &lt;noise type=&quot;gaussian&quot;&gt;
+            &lt;mean&gt;0.0&lt;/mean&gt;
+            &lt;stddev&gt;1e-3&lt;/stddev&gt;
+          &lt;/noise&gt;
+        &lt;/z&gt;
+      &lt;/angular_velocity&gt;
+      &lt;linear_acceleration&gt;
+        &lt;x&gt;
+          &lt;noise type=&quot;gaussian&quot;&gt;
+            &lt;mean&gt;0.0&lt;/mean&gt;
+            &lt;stddev&gt;1.7e-1&lt;/stddev&gt;
+          &lt;/noise&gt;
+        &lt;/x&gt;
+        &lt;y&gt;
+          &lt;noise type=&quot;gaussian&quot;&gt;
+            &lt;mean&gt;0.0&lt;/mean&gt;
+            &lt;stddev&gt;1.7e-1&lt;/stddev&gt;
+          &lt;/noise&gt;
+        &lt;/y&gt;
+        &lt;z&gt;
+          &lt;noise type=&quot;gaussian&quot;&gt;
+            &lt;mean&gt;0.0&lt;/mean&gt;
+            &lt;stddev&gt;1.7e-1&lt;/stddev&gt;
+          &lt;/noise&gt;
+        &lt;/z&gt;
+      &lt;/linear_acceleration&gt;
+    &lt;/imu&gt;
+    &lt;plugin name=&quot;torso_imu_plugin&quot; filename=&quot;libgazebo_ros_imu.so&quot;&gt;
+      &lt;ros&gt;
+        &lt;namespace&gt;/humanoid_robot&lt;/namespace&gt;
+        &lt;remapping&gt;~/out:=torso/imu/data&lt;/remapping&gt;
+      &lt;/ros&gt;
+      &lt;frame_name&gt;torso_imu_link&lt;/frame_name&gt;
+      &lt;body_name&gt;torso_imu_link&lt;/body_name&gt;
+      &lt;update_rate&gt;200&lt;/update_rate&gt;
+    &lt;/plugin&gt;
+  &lt;/sensor&gt;
+&lt;/gazebo&gt;
+
+&lt;!-- Head IMU for head orientation --&gt;
+&lt;gazebo reference=&quot;head_imu_link&quot;&gt;
+  &lt;sensor name=&quot;head_imu&quot; type=&quot;imu&quot;&gt;
+    &lt;always_on&gt;true&lt;/always_on&gt;
+    &lt;update_rate&gt;100&lt;/update_rate&gt;
+    &lt;imu&gt;
+      &lt;angular_velocity&gt;
+        &lt;x&gt;
+          &lt;noise type=&quot;gaussian&quot;&gt;
+            &lt;mean&gt;0.0&lt;/mean&gt;
+            &lt;stddev&gt;2e-4&lt;/stddev&gt;
+          &lt;/noise&gt;
+        &lt;/x&gt;
+        &lt;y&gt;
+          &lt;noise type=&quot;gaussian&quot;&gt;
+            &lt;mean&gt;0.0&lt;/mean&gt;
+            &lt;stddev&gt;2e-4&lt;/stddev&gt;
+          &lt;/noise&gt;
+        &lt;/y&gt;
+        &lt;z&gt;
+          &lt;noise type=&quot;gaussian&quot;&gt;
+            &lt;mean&gt;0.0&lt;/mean&gt;
+            &lt;stddev&gt;2e-4&lt;/stddev&gt;
+          &lt;/noise&gt;
+        &lt;/z&gt;
+      &lt;/angular_velocity&gt;
+      &lt;linear_acceleration&gt;
+        &lt;x&gt;
+          &lt;noise type=&quot;gaussian&quot;&gt;
+            &lt;mean&gt;0.0&lt;/mean&gt;
+            &lt;stddev&gt;1.7e-2&lt;/stddev&gt;
+          &lt;/noise&gt;
+        &lt;/x&gt;
+        &lt;y&gt;
+          &lt;noise type=&quot;gaussian&quot;&gt;
+            &lt;mean&gt;0.0&lt;/mean&gt;
+            &lt;stddev&gt;1.7e-2&lt;/stddev&gt;
+          &lt;/noise&gt;
+        &lt;/y&gt;
+        &lt;z&gt;
+          &lt;noise type=&quot;gaussian&quot;&gt;
+            &lt;mean&gt;0.0&lt;/mean&gt;
+            &lt;stddev&gt;1.7e-2&lt;/stddev&gt;
+          &lt;/noise&gt;
+        &lt;/z&gt;
+      &lt;/linear_acceleration&gt;
+    &lt;/imu&gt;
+    &lt;plugin name=&quot;head_imu_plugin&quot; filename=&quot;libgazebo_ros_imu.so&quot;&gt;
+      &lt;ros&gt;
+        &lt;namespace&gt;/humanoid_robot&lt;/namespace&gt;
+        &lt;remapping&gt;~/out:=head/imu/data&lt;/remapping&gt;
+      &lt;/ros&gt;
+      &lt;frame_name&gt;head_imu_link&lt;/frame_name&gt;
+      &lt;body_name&gt;head_imu_link&lt;/body_name&gt;
+      &lt;update_rate&gt;100&lt;/update_rate&gt;
+    &lt;/plugin&gt;
+  &lt;/sensor&gt;
+&lt;/gazebo&gt;
+
+&lt;!-- Foot IMUs for contact detection --&gt;
+&lt;gazebo reference=&quot;left_foot_imu_link&quot;&gt;
+  &lt;sensor name=&quot;left_foot_imu&quot; type=&quot;imu&quot;&gt;
+    &lt;always_on&gt;true&lt;/always_on&gt;
+    &lt;update_rate&gt;500&lt;/update_rate&gt;
+    &lt;imu&gt;
+      &lt;angular_velocity&gt;
+        &lt;x&gt;
+          &lt;noise type=&quot;gaussian&quot;&gt;
+            &lt;mean&gt;0.0&lt;/mean&gt;
+            &lt;stddev&gt;5e-4&lt;/stddev&gt;
+          &lt;/noise&gt;
+        &lt;/x&gt;
+        &lt;y&gt;
+          &lt;noise type=&quot;gaussian&quot;&gt;
+            &lt;mean&gt;0.0&lt;/mean&gt;
+            &lt;stddev&gt;5e-4&lt;/stddev&gt;
+          &lt;/noise&gt;
+        &lt;/y&gt;
+        &lt;z&gt;
+          &lt;noise type=&quot;gaussian&quot;&gt;
+            &lt;mean&gt;0.0&lt;/mean&gt;
+            &lt;stddev&gt;5e-4&lt;/stddev&gt;
+          &lt;/noise&gt;
+        &lt;/z&gt;
+      &lt;/angular_velocity&gt;
+      &lt;linear_acceleration&gt;
+        &lt;x&gt;
+          &lt;noise type=&quot;gaussian&quot;&gt;
+            &lt;mean&gt;0.0&lt;/mean&gt;
+            &lt;stddev&gt;5e-2&lt;/stddev&gt;
+          &lt;/noise&gt;
+        &lt;/x&gt;
+        &lt;y&gt;
+          &lt;noise type=&quot;gaussian&quot;&gt;
+            &lt;mean&gt;0.0&lt;/mean&gt;
+            &lt;stddev&gt;5e-2&lt;/stddev&gt;
+          &lt;/noise&gt;
+        &lt;/y&gt;
+        &lt;z&gt;
+          &lt;noise type=&quot;gaussian&quot;&gt;
+            &lt;mean&gt;0.0&lt;/mean&gt;
+            &lt;stddev&gt;5e-2&lt;/stddev&gt;
+          &lt;/noise&gt;
+        &lt;/z&gt;
+      &lt;/linear_acceleration&gt;
+    &lt;/imu&gt;
+    &lt;plugin name=&quot;left_foot_imu_plugin&quot; filename=&quot;libgazebo_ros_imu.so&quot;&gt;
+      &lt;ros&gt;
+        &lt;namespace&gt;/humanoid_robot&lt;/namespace&gt;
+        &lt;remapping&gt;~/out:=left_foot/imu/data&lt;/remapping&gt;
+      &lt;/ros&gt;
+      &lt;frame_name&gt;left_foot_imu_link&lt;/frame_name&gt;
+      &lt;body_name&gt;left_foot_imu_link&lt;/body_name&gt;
+      &lt;update_rate&gt;500&lt;/update_rate&gt;
+    &lt;/plugin&gt;
+  &lt;/sensor&gt;
+&lt;/gazebo&gt;
+
+&lt;gazebo reference=&quot;right_foot_imu_link&quot;&gt;
+  &lt;sensor name=&quot;right_foot_imu&quot; type=&quot;imu&quot;&gt;
+    &lt;always_on&gt;true&lt;/always_on&gt;
+    &lt;update_rate&gt;500&lt;/update_rate&gt;
+    &lt;imu&gt;
+      &lt;angular_velocity&gt;
+        &lt;x&gt;
+          &lt;noise type=&quot;gaussian&quot;&gt;
+            &lt;mean&gt;0.0&lt;/mean&gt;
+            &lt;stddev&gt;5e-4&lt;/stddev&gt;
+          &lt;/noise&gt;
+        &lt;/x&gt;
+        &lt;y&gt;
+          &lt;noise type=&quot;gaussian&quot;&gt;
+            &lt;mean&gt;0.0&lt;/mean&gt;
+            &lt;stddev&gt;5e-4&lt;/stddev&gt;
+          &lt;/noise&gt;
+        &lt;/y&gt;
+        &lt;z&gt;
+          &lt;noise type=&quot;gaussian&quot;&gt;
+            &lt;mean&gt;0.0&lt;/mean&gt;
+            &lt;stddev&gt;5e-4&lt;/stddev&gt;
+          &lt;/noise&gt;
+        &lt;/z&gt;
+      &lt;/angular_velocity&gt;
+      &lt;linear_acceleration&gt;
+        &lt;x&gt;
+          &lt;noise type=&quot;gaussian&quot;&gt;
+            &lt;mean&gt;0.0&lt;/mean&gt;
+            &lt;stddev&gt;5e-2&lt;/stddev&gt;
+          &lt;/noise&gt;
+        &lt;/x&gt;
+        &lt;y&gt;
+          &lt;noise type=&quot;gaussian&quot;&gt;
+            &lt;mean&gt;0.0&lt;/mean&gt;
+            &lt;stddev&gt;5e-2&lt;/stddev&gt;
+          &lt;/noise&gt;
+        &lt;/y&gt;
+        &lt;z&gt;
+          &lt;noise type=&quot;gaussian&quot;&gt;
+            &lt;mean&gt;0.0&lt;/mean&gt;
+            &lt;stddev&gt;5e-2&lt;/stddev&gt;
+          &lt;/noise&gt;
+        &lt;/z&gt;
+      &lt;/linear_acceleration&gt;
+    &lt;/imu&gt;
+    &lt;plugin name=&quot;right_foot_imu_plugin&quot; filename=&quot;libgazebo_ros_imu.so&quot;&gt;
+      &lt;ros&gt;
+        &lt;namespace&gt;/humanoid_robot&lt;/namespace&gt;
+        &lt;remapping&gt;~/out:=right_foot/imu/data&lt;/remapping&gt;
+      &lt;/ros&gt;
+      &lt;frame_name&gt;right_foot_imu_link&lt;/frame_name&gt;
+      &lt;body_name&gt;right_foot_imu_link&lt;/body_name&gt;
+      &lt;update_rate&gt;500&lt;/update_rate&gt;
+    &lt;/plugin&gt;
+  &lt;/sensor&gt;
+&lt;/gazebo&gt;
+</code></pre>
+<h2 id="sensor-fusion-configuration">Sensor Fusion Configuration</h2>
+<h3 id="robot-localization-configuration">Robot Localization Configuration</h3>
+<p>Combine multiple sensor inputs for improved state estimation:</p>
+<pre><code class="language-yaml"># config/robot_localization.yaml
+robot_localization:
+  ros__parameters:
+    # Frequency of the main filter loop
+    frequency: 50.0
+
+    # Whether to use a single callback queue for all sensors
+    sensor_timeout: 0.1
+
+    # Whether to publish the transform from the world_frame to the base_link_frame
+    transform_time_offset: 0.0
+
+    # Whether to publish the acceleration data
+    publish_acceleration: false
+
+    # Whether to publish the transform between the odom_frame and base_link_frame
+    publish_tf: true
+
+    # Whether to use differential or absolute measurements for each variable
+    differential: {
+      # Use differential for pose variables (continuous rotation)
+      &#x27;pose&#x27;: true,
+      &#x27;twist&#x27;: false,
+      &#x27;acceleration&#x27;: false
+    }
+
+    # Whether to integrate measurements relative to the starting position of each variable
+    relative: false
+
+    # Whether to use the starting pose as a prior
+    use_control: false
+
+    # Process noise covariance diagonal
+    process_noise_covariance: [
+      0.05, 0.0,    0.0,    0.0,    0.0,    0.0,    0.0,     0.0,     0.0,    0.0,    0.0,    0.0,    0.0,    0.0,    0.0,
+      0.0,    0.05, 0.0,    0.0,    0.0,    0.0,    0.0,     0.0,     0.0,    0.0,    0.0,    0.0,    0.0,    0.0,    0.0,
+      0.0,    0.0,    0.06, 0.0,    0.0,    0.0,    0.0,     0.0,     0.0,    0.0,    0.0,    0.0,    0.0,    0.0,    0.0,
+      0.0,    0.0,    0.0,    0.03, 0.0,    0.0,    0.0,     0.0,     0.0,    0.0,    0.0,    0.0,    0.0,    0.0,    0.0,
+      0.0,    0.0,    0.0,    0.0,    0.03, 0.0,    0.0,     0.0,     0.0,    0.0,    0.0,    0.0,    0.0,    0.0,    0.0,
+      0.0,    0.0,    0.0,    0.0,    0.0,    0.06, 0.0,     0.0,     0.0,    0.0,    0.0,    0.0,    0.0,    0.0,    0.0,
+      0.0,    0.0,    0.0,    0.0,    0.0,    0.0,    0.025, 0.0,     0.0,    0.0,    0.0,    0.0,    0.0,    0.0,    0.0,
+      0.0,    0.0,    0.0,    0.0,    0.0,    0.0,    0.0,     0.025, 0.0,    0.0,    0.0,    0.0,    0.0,    0.0,    0.0,
+      0.0,    0.0,    0.0,    0.0,    0.0,    0.0,    0.0,     0.0,     0.04, 0.0,    0.0,    0.0,    0.0,    0.0,    0.0,
+      0.0,    0.0,    0.0,    0.0,    0.0,    0.0,    0.0,     0.0,     0.0,    0.01, 0.0,    0.0,    0.0,    0.0,    0.0,
+      0.0,    0.0,    0.0,    0.0,    0.0,    0.0,    0.0,     0.0,     0.0,    0.0,    0.01, 0.0,    0.0,    0.0,    0.0,
+      0.0,    0.0,    0.0,    0.0,    0.0,    0.0,    0.0,     0.0,     0.0,    0.0,    0.0,    0.02, 0.0,    0.0,    0.0,
+      0.0,    0.0,    0.0,    0.0,    0.0,    0.0,    0.0,     0.0,     0.0,    0.0,    0.0,    0.0,    0.01, 0.0,    0.0,
+      0.0,    0.0,    0.0,    0.0,    0.0,    0.0,    0.0,     0.0,     0.0,    0.0,    0.0,    0.0,    0.0,    0.01, 0.0,
+      0.0,    0.0,    0.0,    0.0,    0.0,    0.0,    0.0,     0.0,     0.0,    0.0,    0.0,    0.0,    0.0,    0.0,    0.015
+    ]
+
+    # Initial estimate error covariance diagonal
+    initial_estimate_covariance: [
+      0.1, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0
+    ]
+
+    # Configure IMU0 (torso IMU)
+    imu0: &#x27;/humanoid_robot/torso/imu/data&#x27;
+    imu0_config: [true,  true,  true,   # position
+                  false, false, false,  # velocity
+                  true,  true,  true,   # orientation
+                  false, false, false,  # angular velocity
+                  false, false, false,  # linear acceleration
+                  false, false, false]  # acceleration
+
+    imu0_differential: true
+    imu0_relative: false
+    imu0_queue_size: 10
+    imu0_remove_gravitational_acceleration: true
+
+# Additional sensor configurations can be added here
+</code></pre>
+<h2 id="performance-considerations">Performance Considerations</h2>
+<h3 id="optimizing-sensor-update-rates">Optimizing Sensor Update Rates</h3>
+<p>For humanoid robots with multiple sensors, balance accuracy with performance:</p>
+<pre><code class="language-xml">&lt;!-- Physics parameters optimized for sensor accuracy --&gt;
+&lt;physics type=&quot;ode&quot;&gt;
+  &lt;max_step_size&gt;0.001&lt;/max_step_size&gt;  &lt;!-- 1ms for high-frequency sensors --&gt;
+  &lt;real_time_factor&gt;1.0&lt;/real_time_factor&gt;
+  &lt;real_time_update_rate&gt;1000&lt;/real_time_update_rate&gt;
+  &lt;ode&gt;
+    &lt;solver&gt;
+      &lt;type&gt;quick&lt;/type&gt;
+      &lt;iters&gt;100&lt;/iters&gt;  &lt;!-- Increase for stability with multiple sensors --&gt;
+      &lt;sor&gt;1.3&lt;/sor&gt;
+    &lt;/solver&gt;
+    &lt;constraints&gt;
+      &lt;cfm&gt;0.0&lt;/cfm&gt;
+      &lt;erp&gt;0.2&lt;/erp&gt;
+      &lt;contact_max_correcting_vel&gt;100.0&lt;/contact_max_correcting_vel&gt;
+      &lt;contact_surface_layer&gt;0.001&lt;/contact_surface_layer&gt;
+    &lt;/constraints&gt;
+  &lt;/ode&gt;
+&lt;/physics&gt;
+</code></pre>
+<h3 id="sensor-specific-optimization-tips">Sensor-Specific Optimization Tips</h3>
+<h4 id="lidar-optimization">LiDAR Optimization</h4>
+<ul>
+<li>Reduce horizontal samples if high resolution isn&#x27;t needed</li>
+<li>Use appropriate range limits to reduce processing</li>
+<li>Consider using different update rates for different LiDAR units</li>
+</ul>
+<h4 id="realsense-optimization">RealSense Optimization</h4>
+<ul>
+<li>Use lower resolution when possible</li>
+<li>Reduce update rate for less critical applications</li>
+<li>Disable unnecessary streams (e.g., disable depth if only RGB is needed)</li>
+</ul>
+<h4 id="imu-optimization">IMU Optimization</h4>
+<ul>
+<li>Use appropriate noise parameters based on real sensor specifications</li>
+<li>Adjust update rates based on control system requirements</li>
+<li>Consider sensor fusion to reduce the number of physical sensors needed</li>
+</ul>
+<h2 id="troubleshooting-common-issues">Troubleshooting Common Issues</h2>
+<h3 id="lidar-issues">LiDAR Issues</h3>
+<h4 id="no-data-publishing">No Data Publishing</h4>
+<ul>
+<li>Check sensor plugin loading in Gazebo</li>
+<li>Verify topic names and namespaces</li>
+<li>Ensure proper frame_id configuration</li>
+<li>Check TF tree completeness</li>
+</ul>
+<h4 id="inaccurate-range-measurements">Inaccurate Range Measurements</h4>
+<ul>
+<li>Verify noise parameters match real sensor</li>
+<li>Check coordinate frame orientations</li>
+<li>Ensure proper sensor mounting positions</li>
+</ul>
+<h3 id="realsense-issues">RealSense Issues</h3>
+<h4 id="no-depth-data">No Depth Data</h4>
+<ul>
+<li>Check camera calibration parameters</li>
+<li>Verify depth camera configuration</li>
+<li>Ensure proper clipping distances</li>
+</ul>
+<h4 id="poor-point-cloud-quality">Poor Point Cloud Quality</h4>
+<ul>
+<li>Adjust point cloud cutoff values</li>
+<li>Verify camera intrinsics</li>
+<li>Check for proper coordinate transformations</li>
+</ul>
+<h3 id="imu-issues">IMU Issues</h3>
+<h4 id="drifting-readings">Drifting Readings</h4>
+<ul>
+<li>Verify noise parameters are realistic</li>
+<li>Check for proper bias modeling</li>
+<li>Ensure adequate update rates</li>
+</ul>
+<h4 id="inconsistent-orientation">Inconsistent Orientation</h4>
+<ul>
+<li>Verify coordinate frame conventions</li>
+<li>Check for proper mounting orientations</li>
+<li>Ensure consistent TF transformations</li>
+</ul>
+<h2 id="best-practices-for-humanoid-sensor-configurations">Best Practices for Humanoid Sensor Configurations</h2>
+<h3 id="1-redundant-sensing">1. Redundant Sensing</h3>
+<ul>
+<li>Use multiple sensors for critical functions</li>
+<li>Implement sensor fusion for improved reliability</li>
+<li>Cross-validate sensor readings when possible</li>
+</ul>
+<h3 id="2-appropriate-sensor-placement">2. Appropriate Sensor Placement</h3>
+<ul>
+<li>Position sensors for optimal field of view</li>
+<li>Consider robot kinematics when placing sensors</li>
+<li>Avoid sensor occlusion during robot motion</li>
+</ul>
+<h3 id="3-realistic-noise-modeling">3. Realistic Noise Modeling</h3>
+<ul>
+<li>Include appropriate noise models based on real sensors</li>
+<li>Use realistic bias and drift parameters</li>
+<li>Consider environmental factors in noise models</li>
+</ul>
+<h3 id="4-performance-vs-accuracy-balance">4. Performance vs. Accuracy Balance</h3>
+<ul>
+<li>Adjust update rates based on application needs</li>
+<li>Optimize sensor configurations for computational efficiency</li>
+<li>Consider sensor multiplexing for high-frequency data</li>
+</ul>
+<h2 id="summary">Summary</h2>
+<p>In this chapter, you&#x27;ve learned:</p>
+<ul>
+<li>How to configure various LiDAR sensors for humanoid robots (2D and 3D)</li>
+<li>Detailed RealSense sensor configurations for RGB-D perception</li>
+<li>High-precision IMU configurations for balance and orientation</li>
+<li>Multi-sensor configurations for comprehensive robot perception</li>
+<li>Sensor fusion techniques for improved state estimation</li>
+<li>Performance optimization strategies for sensor-heavy simulations</li>
+<li>Troubleshooting techniques for common sensor issues</li>
+<li>Best practices for humanoid robot sensor configurations</li>
+</ul>
+<p>Proper sensor configuration is essential for realistic humanoid robot simulation, enabling effective perception, navigation, and control in various environments.</p>
+<h2 id="exercises">Exercises</h2>
+<ol>
+<li>Configure a humanoid robot with multiple LiDAR units for 360-degree perception</li>
+<li>Set up RealSense cameras for both navigation and manipulation tasks</li>
+<li>Implement sensor fusion using robot_localization package</li>
+<li>Optimize sensor configurations for performance vs. accuracy trade-offs</li>
+<li>Test sensor data quality and validate realistic noise models</li>
+</ol>
+<div class="starboard-notebook-container"><div class="starboard-notebook-header"><span class="starboard-notebook-icon">📊</span><span class="starboard-notebook-title">Interactive Notebook</span></div><div class="starboard-notebook-content"><div class="starboard-children-container"><pre><code class="language-python"># This would be an interactive code block for students to experiment with sensor configurations
+# In a real implementation, this would connect to ROS 2 services
+# to validate sensor data and configurations
+</code></pre></div></div><div class="starboard-notebook-footer"><small>Note: This is a placeholder for interactive Starboard notebooks.</small></div></div></div><footer class="theme-doc-footer docusaurus-mt-lg"><div class="row margin-top--sm theme-doc-footer-edit-meta-row"><div class="col noPrint_WFHX"><a href="https://github.com/facebook/docusaurus/tree/main/packages/create-docusaurus/templates/shared/docs/module-2-simulation/05-sensor-configurations.mdx" target="_blank" rel="noopener noreferrer" class="theme-edit-this-page"><svg fill="currentColor" height="20" width="20" viewBox="0 0 40 40" class="iconEdit_Z9Sw" aria-hidden="true"><g><path d="m34.5 11.7l-3 3.1-6.3-6.3 3.1-3q0.5-0.5 1.2-0.5t1.1 0.5l3.9 3.9q0.5 0.4 0.5 1.1t-0.5 1.2z m-29.5 17.1l18.4-18.5 6.3 6.3-18.4 18.4h-6.3v-6.2z"></path></g></svg>Edit this page</a></div><div class="col lastUpdated_JAkA"></div></div></footer></article><nav class="docusaurus-mt-lg pagination-nav" aria-label="Docs pages"><a class="pagination-nav__link pagination-nav__link--prev" href="/physical-ai-textbook/docs/module-2-simulation/sensor-plugin-configuration"><div class="pagination-nav__sublabel">Previous</div><div class="pagination-nav__label">Sensor Plugin Configuration</div></a><a class="pagination-nav__link pagination-nav__link--next" href="/physical-ai-textbook/docs/module-2-simulation/ros-tcp-connector"><div class="pagination-nav__sublabel">Next</div><div class="pagination-nav__label">ROS TCP Connector Bridge</div></a></nav></div></div><div class="col col--3"><div class="tableOfContents_bqdL thin-scrollbar theme-doc-toc-desktop"><ul class="table-of-contents table-of-contents__left-border"><li><a href="#introduction" class="table-of-contents__link toc-highlight">Introduction</a></li><li><a href="#lidar-sensor-configurations" class="table-of-contents__link toc-highlight">LiDAR Sensor Configurations</a><ul><li><a href="#2d-lidar-hokuyo-urg-04lx-ug01" class="table-of-contents__link toc-highlight">2D LiDAR (Hokuyo URG-04LX-UG01)</a></li><li><a href="#2d-lidar-hokuyo-utm-30lx" class="table-of-contents__link toc-highlight">2D LiDAR (Hokuyo UTM-30LX)</a></li><li><a href="#3d-lidar-velodyne-vlp-16" class="table-of-contents__link toc-highlight">3D LiDAR (Velodyne VLP-16)</a></li><li><a href="#multi-lidar-configuration-for-humanoid-robots" class="table-of-contents__link toc-highlight">Multi-LiDAR Configuration for Humanoid Robots</a></li></ul></li><li><a href="#realsense-sensor-configurations" class="table-of-contents__link toc-highlight">RealSense Sensor Configurations</a><ul><li><a href="#intel-realsense-d435-configuration" class="table-of-contents__link toc-highlight">Intel RealSense D435 Configuration</a></li><li><a href="#multiple-realsense-configuration" class="table-of-contents__link toc-highlight">Multiple RealSense Configuration</a></li><li><a href="#realsense-t265-configuration-with-tracking" class="table-of-contents__link toc-highlight">RealSense T265 Configuration (with tracking)</a></li></ul></li><li><a href="#imu-sensor-configurations" class="table-of-contents__link toc-highlight">IMU Sensor Configurations</a><ul><li><a href="#high-precision-imu-for-balance-control" class="table-of-contents__link toc-highlight">High-Precision IMU for Balance Control</a></li><li><a href="#multiple-imu-configuration-for-humanoid-robots" class="table-of-contents__link toc-highlight">Multiple IMU Configuration for Humanoid Robots</a></li></ul></li><li><a href="#sensor-fusion-configuration" class="table-of-contents__link toc-highlight">Sensor Fusion Configuration</a><ul><li><a href="#robot-localization-configuration" class="table-of-contents__link toc-highlight">Robot Localization Configuration</a></li></ul></li><li><a href="#performance-considerations" class="table-of-contents__link toc-highlight">Performance Considerations</a><ul><li><a href="#optimizing-sensor-update-rates" class="table-of-contents__link toc-highlight">Optimizing Sensor Update Rates</a></li><li><a href="#sensor-specific-optimization-tips" class="table-of-contents__link toc-highlight">Sensor-Specific Optimization Tips</a></li></ul></li><li><a href="#troubleshooting-common-issues" class="table-of-contents__link toc-highlight">Troubleshooting Common Issues</a><ul><li><a href="#lidar-issues" class="table-of-contents__link toc-highlight">LiDAR Issues</a></li><li><a href="#realsense-issues" class="table-of-contents__link toc-highlight">RealSense Issues</a></li><li><a href="#imu-issues" class="table-of-contents__link toc-highlight">IMU Issues</a></li></ul></li><li><a href="#best-practices-for-humanoid-sensor-configurations" class="table-of-contents__link toc-highlight">Best Practices for Humanoid Sensor Configurations</a><ul><li><a href="#1-redundant-sensing" class="table-of-contents__link toc-highlight">1. Redundant Sensing</a></li><li><a href="#2-appropriate-sensor-placement" class="table-of-contents__link toc-highlight">2. Appropriate Sensor Placement</a></li><li><a href="#3-realistic-noise-modeling" class="table-of-contents__link toc-highlight">3. Realistic Noise Modeling</a></li><li><a href="#4-performance-vs-accuracy-balance" class="table-of-contents__link toc-highlight">4. Performance vs. Accuracy Balance</a></li></ul></li><li><a href="#summary" class="table-of-contents__link toc-highlight">Summary</a></li><li><a href="#exercises" class="table-of-contents__link toc-highlight">Exercises</a></li></ul></div></div></div></div></main></div></div></div><footer class="theme-layout-footer footer footer--dark"><div class="container container-fluid"><div class="row footer__links"><div class="theme-layout-footer-column col footer__col"><div class="footer__title">Docs</div><ul class="footer__items clean-list"><li class="footer__item"><a class="footer__link-item" href="/physical-ai-textbook/docs/intro/introduction-to-physical-ai">Textbook</a></li></ul></div><div class="theme-layout-footer-column col footer__col"><div class="footer__title">Community</div><ul class="footer__items clean-list"><li class="footer__item"><a href="https://stackoverflow.com/questions/tagged/docusaurus" target="_blank" rel="noopener noreferrer" class="footer__link-item">Stack Overflow<svg width="13.5" height="13.5" aria-label="(opens in new tab)" class="iconExternalLink_nPIU"><use href="#theme-svg-external-link"></use></svg></a></li><li class="footer__item"><a href="https://discordapp.com/invite/docusaurus" target="_blank" rel="noopener noreferrer" class="footer__link-item">Discord<svg width="13.5" height="13.5" aria-label="(opens in new tab)" class="iconExternalLink_nPIU"><use href="#theme-svg-external-link"></use></svg></a></li><li class="footer__item"><a href="https://twitter.com/docusaurus" target="_blank" rel="noopener noreferrer" class="footer__link-item">Twitter<svg width="13.5" height="13.5" aria-label="(opens in new tab)" class="iconExternalLink_nPIU"><use href="#theme-svg-external-link"></use></svg></a></li></ul></div><div class="theme-layout-footer-column col footer__col"><div class="footer__title">More</div><ul class="footer__items clean-list"><li class="footer__item"><a href="https://github.com/Gulshan-koondhar/physical-ai-textbook" target="_blank" rel="noopener noreferrer" class="footer__link-item">GitHub<svg width="13.5" height="13.5" aria-label="(opens in new tab)" class="iconExternalLink_nPIU"><use href="#theme-svg-external-link"></use></svg></a></li></ul></div></div><div class="footer__bottom text--center"><div class="footer__copyright">Copyright © 2025 My Project, Inc. Built with Docusaurus.</div></div></div></footer></div>
+</body>
+</html>
