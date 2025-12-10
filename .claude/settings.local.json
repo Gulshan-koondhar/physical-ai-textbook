@@ -3,7 +3,9 @@
     "allow": [
       "Bash(npm install --save path-browserify)",
       "Bash(npm start)",
-      "Bash(git add:*)"
+      "Bash(git add:*)",
+      "Bash(npm run build)",
+      "Bash(dir .github /s)"
     ],
     "deny": [],
     "ask": []
