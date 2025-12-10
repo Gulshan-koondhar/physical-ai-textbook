@@ -13,8 +13,5 @@
       "src": "/(.*)",
       "dest": "/index.html"
     }
-  ],
-  "buildCommand": "npm run vercel-build",
-  "outputDirectory": "build",
-  "installCommand": "npm install"
+  ]
 }

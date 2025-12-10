@@ -11,22 +11,15 @@ const config = {
   favicon: 'img/favicon.ico',
 
   // Set the production url of your site here
-  url: typeof process.env.VERCEL_ENV !== 'undefined' ||
-       process.env.DEPLOYMENT_PLATFORM === 'vercel' ||
-       (typeof process.env.npm_lifecycle_script !== 'undefined' && process.env.npm_lifecycle_script && process.env.npm_lifecycle_script.includes('vercel'))
-       ? 'https://your-project-name.vercel.app' // Vercel deployment URL
-       : 'https://Gulshan-koondhar.github.io', // GitHub Pages URL
+  url: 'https://Gulshan-koondhar.github.io',
   // Set the /<baseUrl>/ pathname under which your site is served
-  baseUrl: typeof process.env.VERCEL_ENV !== 'undefined' ||
-           process.env.DEPLOYMENT_PLATFORM === 'vercel' ||
-           (typeof process.env.npm_lifecycle_script !== 'undefined' && process.env.npm_lifecycle_script && process.env.npm_lifecycle_script.includes('vercel'))
-           ? '/' // Root path for Vercel
-           : '/physical-ai-textbook/', // GitHub Pages path
+  // For GitHub pages deployment, it is often '/<organization-name>/'
+  baseUrl: '/physical-ai-textbook/',
 
   // GitHub pages deployment config.
   organizationName: 'Gulshan-koondhar', // Usually your GitHub org/user name.
   projectName: 'physical-ai-textbook', // Usually your repo name.
-  trailingSlash: undefined, // Let Vercel handle this automatically
+  trailingSlash: false,
   onBrokenLinks: 'warn',
   onBrokenMarkdownLinks: 'warn',
   markdown: {

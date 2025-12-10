@@ -17,8 +17,7 @@
     "write-translations": "docusaurus write-translations",
     "write-heading-ids": "docusaurus write-heading-ids",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "vercel-build": "cross-env DEPLOYMENT_PLATFORM=vercel docusaurus build",
-    "build-vercel": "node -e \"process.env.DEPLOYMENT_PLATFORM='vercel'; require('./node_modules/.bin/docusaurus')['build']();\" || docusaurus build --config vercel.config.js"
+    "vercel-build": "npm run build"
   },
   "keywords": [
     "docusaurus",
