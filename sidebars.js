@@ -1,4 +1,5 @@
 // @ts-check
+// Updated to include all modules in the documentation
 
 /** @type {import('@docusaurus/plugin-content-docs').SidebarsConfig} */
 const sidebars = {
