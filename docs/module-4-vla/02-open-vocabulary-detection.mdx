@@ -1,0 +1,1359 @@
+---
+title: Open-Vocabulary Detection for Humanoid Robotics AI
+sidebar_label: Open-Vocabulary Detection
+description: Implement open-vocabulary object detection for humanoid robots using GroundingDINO, SAM, and CLIP
+keywords: [open-vocabulary, detection, GroundingDINO, SAM, CLIP, humanoid, AI, computer vision]
+---
+
+# Open-Vocabulary Detection for Humanoid Robotics AI
+
+## Introduction
+
+Traditional object detection systems are limited to a fixed set of predefined object classes, which severely restricts their applicability in dynamic real-world environments where humanoid robots operate. Open-vocabulary detection addresses this limitation by enabling robots to detect and recognize objects without being constrained to a predefined set of categories. This capability is crucial for humanoid robots that need to interact with diverse, novel, and everyday objects in unstructured environments.
+
+Open-vocabulary detection combines advanced computer vision techniques with natural language processing to enable robots to understand and detect objects based on textual descriptions rather than fixed class labels. This chapter explores the implementation of open-vocabulary detection systems using state-of-the-art models like GroundingDINO, Segment Anything Model (SAM), and CLIP for humanoid robotics applications.
+
+## Understanding Open-Vocabulary Detection
+
+### Traditional vs. Open-Vocabulary Detection
+
+**Traditional Detection:**
+- Limited to predefined object classes (e.g., COCO dataset's 80 classes)
+- Requires retraining for new object categories
+- Inflexible for novel objects in real-world environments
+
+**Open-Vocabulary Detection:**
+- Can detect objects described by natural language
+- No need for retraining on new categories
+- Flexible and adaptable to novel objects
+- Better suited for real-world robotics applications
+
+### Key Technologies for Open-Vocabulary Detection
+
+1. **GroundingDINO**: Text-to-detection model that can detect objects based on text descriptions
+2. **Segment Anything Model (SAM)**: Zero-shot segmentation model for precise object boundaries
+3. **CLIP**: Vision-language model for cross-modal understanding
+4. **Grounding-SAM**: Integration of GroundingDINO and SAM for detection and segmentation
+
+## GroundingDINO Implementation
+
+### Setting up GroundingDINO
+
+GroundingDINO is a zero-shot object detection model that can detect objects based on text prompts:
+
+```python
+# Install required packages
+# pip install transformers torch torchvision supervision
+
+import torch
+import numpy as np
+import cv2
+from transformers import AutoModel, AutoProcessor
+import supervision as sv
+
+class GroundingDINOProcessor:
+    def __init__(self, model_id="IDEA-Research/grounding-dino-base"):
+        # Load GroundingDINO model
+        self.model = AutoModel.from_pretrained(model_id)
+        self.processor = AutoProcessor.from_pretrained(model_id)
+
+        # Device configuration
+        self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+        self.model.to(self.device)
+
+    def detect_objects(self, image, text_prompts, box_threshold=0.35, text_threshold=0.25):
+        """
+        Detect objects in image based on text prompts
+
+        Args:
+            image: Input image (numpy array or PIL Image)
+            text_prompts: List of text descriptions of objects to detect
+            box_threshold: Confidence threshold for bounding boxes
+            text_threshold: Confidence threshold for text matching
+
+        Returns:
+            Detection results with bounding boxes and labels
+        """
+        # Process image and text
+        inputs = self.processor(images=image, text=text_prompts, return_tensors="pt")
+        inputs = {k: v.to(self.device) for k, v in inputs.items()}
+
+        # Forward pass
+        with torch.no_grad():
+            outputs = self.model(**inputs)
+
+        # Process outputs
+        results = self.processor.post_process_grounded_object_detection(
+            outputs,
+            inputs["input_ids"],
+            box_threshold=box_threshold,
+            text_threshold=text_threshold,
+            target_sizes=[image.shape[:2]]
+        )
+
+        return results
+
+    def visualize_detections(self, image, detections, labels):
+        """Visualize detection results on image"""
+        # Create annotators
+        box_annotator = sv.BoxAnnotator()
+        label_annotator = sv.LabelAnnotator()
+
+        # Annotate image
+        annotated_image = box_annotator.annotate(scene=image, detections=detections)
+        annotated_image = label_annotator.annotate(
+            scene=annotated_image,
+            detections=detections,
+            labels=labels
+        )
+
+        return annotated_image
+
+def main():
+    # Initialize GroundingDINO processor
+    detector = GroundingDINOProcessor()
+
+    # Load image
+    image = cv2.imread("test_image.jpg")
+    image_rgb = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
+
+    # Define text prompts for objects to detect
+    text_prompts = ["red cup", "blue bottle", "white chair", "person"]
+
+    # Detect objects
+    results = detector.detect_objects(image_rgb, text_prompts)
+
+    # Process results
+    for result in results:
+        boxes = result["boxes"]
+        labels = result["labels"]
+        scores = result["scores"]
+
+        print(f"Detected {len(boxes)} objects")
+        for i, (box, label, score) in enumerate(zip(boxes, labels, scores)):
+            print(f"Object {i+1}: {label} (confidence: {score:.2f})")
+
+if __name__ == "__main__":
+    main()
+```
+
+### Optimized GroundingDINO for Real-time Processing
+
+For humanoid robots, optimize GroundingDINO for real-time performance:
+
+```python
+class OptimizedGroundingDINO:
+    def __init__(self, model_id="IDEA-Research/grounding-dino-tiny"):
+        # Use smaller model for faster inference
+        self.model = AutoModel.from_pretrained(model_id)
+        self.processor = AutoProcessor.from_pretrained(model_id)
+
+        # Device configuration
+        self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+        self.model.to(self.device).eval()
+
+        # Optimization parameters
+        self.input_size = (640, 640)  # Resize input for faster processing
+        self.confidence_threshold = 0.35
+
+        # Warm up model
+        self.warmup()
+
+    def warmup(self):
+        """Warm up the model for better performance"""
+        dummy_image = torch.randn(1, 3, 640, 640).to(self.device)
+        dummy_text = ["dummy object"]
+
+        # Run a dummy inference
+        with torch.no_grad():
+            _ = self.model(dummy_image, dummy_text)
+
+    def preprocess_image(self, image):
+        """Preprocess image for optimal inference"""
+        # Resize image to fixed size for consistent performance
+        resized = cv2.resize(image, self.input_size)
+
+        # Normalize image
+        normalized = resized.astype(np.float32) / 255.0
+
+        return normalized
+
+    def detect_with_batching(self, images, text_prompts, batch_size=4):
+        """Process multiple images in batches for efficiency"""
+        all_results = []
+
+        for i in range(0, len(images), batch_size):
+            batch = images[i:i+batch_size]
+
+            # Process batch
+            batch_results = []
+            for img in batch:
+                result = self.detect_objects(img, text_prompts)
+                batch_results.append(result)
+
+            all_results.extend(batch_results)
+
+        return all_results
+
+    def detect_objects_optimized(self, image, text_prompts):
+        """Optimized object detection with preprocessing"""
+        # Preprocess image
+        processed_image = self.preprocess_image(image)
+
+        # Process with model
+        inputs = self.processor(
+            images=processed_image,
+            text=text_prompts,
+            return_tensors="pt"
+        )
+        inputs = {k: v.to(self.device) for k, v in inputs.items()}
+
+        with torch.no_grad():
+            outputs = self.model(**inputs)
+
+        # Post-process results
+        results = self.processor.post_process_grounded_object_detection(
+            outputs,
+            inputs["input_ids"],
+            box_threshold=self.confidence_threshold,
+            text_threshold=0.25,
+            target_sizes=[image.shape[:2]]
+        )
+
+        return results
+```
+
+## Segment Anything Model (SAM) Integration
+
+### Setting up SAM for Precise Segmentation
+
+SAM provides precise segmentation masks for detected objects, which is crucial for humanoid robot manipulation:
+
+```python
+# Install SAM
+# pip install segment-anything
+
+from segment_anything import sam_model_registry, SamPredictor
+import torch
+
+class SAMSegmenter:
+    def __init__(self, model_type="vit_h", checkpoint_path="sam_vit_h_4b8939.pth"):
+        # Load SAM model
+        self.sam = sam_model_registry[model_type](checkpoint=checkpoint_path)
+
+        # Device configuration
+        self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+        self.sam.to(device=self.device)
+
+        # Initialize predictor
+        self.predictor = SamPredictor(self.sam)
+
+    def segment_with_prompts(self, image, boxes=None, points=None, labels=None):
+        """
+        Segment objects using bounding boxes or point prompts
+
+        Args:
+            image: Input image
+            boxes: List of bounding boxes [x1, y1, x2, y2]
+            points: List of points [(x, y)]
+            labels: Point labels (1 for foreground, 0 for background)
+
+        Returns:
+            Segmentation masks and additional information
+        """
+        # Set image for predictor
+        self.predictor.set_image(image)
+
+        masks = []
+        ious = []
+        low_res_masks = []
+
+        if boxes is not None:
+            # Convert boxes to points for SAM (box corners)
+            transformed_boxes = self.predictor.transform.apply_boxes_torch(
+                torch.tensor(boxes), image.shape[:2]
+            )
+
+            masks, scores, logits = self.predictor.predict_torch(
+                point_coords=None,
+                point_labels=None,
+                boxes=transformed_boxes,
+                multimask_output=False,
+            )
+
+        if points is not None:
+            point_coords = torch.tensor(points).unsqueeze(1).float()
+            point_labels = torch.tensor(labels).unsqueeze(1).float()
+
+            masks, scores, logits = self.predictor.predict_torch(
+                point_coords=point_coords,
+                point_labels=point_labels,
+                boxes=None,
+                multimask_output=False,
+            )
+
+        return masks, scores, logits
+
+    def segment_from_detections(self, image, detection_boxes):
+        """Segment objects based on detection bounding boxes"""
+        if len(detection_boxes) == 0:
+            return [], []
+
+        # Convert boxes to SAM format
+        boxes_tensor = torch.tensor(detection_boxes).float().to(self.device)
+
+        # Set image
+        self.predictor.set_image(image)
+
+        # Transform boxes
+        transformed_boxes = self.predictor.transform.apply_boxes_torch(
+            boxes_tensor, image.shape[:2]
+        )
+
+        # Predict masks
+        masks, scores, logits = self.predictor.predict_torch(
+            point_coords=None,
+            point_labels=None,
+            boxes=transformed_boxes,
+            multimask_output=False,
+        )
+
+        return masks, scores, logits
+
+def main():
+    # Initialize SAM
+    sam_segmenter = SAMSegmenter()
+
+    # Load image
+    image = cv2.imread("test_image.jpg")
+
+    # Example bounding boxes from detection
+    boxes = [[100, 100, 200, 200], [300, 300, 400, 400]]
+
+    # Segment objects
+    masks, scores, logits = sam_segmenter.segment_from_detections(image, boxes)
+
+    # Visualize results
+    for i, (mask, score) in enumerate(zip(masks, scores)):
+        print(f"Mask {i}: confidence {score.item():.3f}")
+
+if __name__ == "__main__":
+    main()
+```
+
+## Grounding-SAM Integration
+
+### Combining Detection and Segmentation
+
+Grounding-SAM combines GroundingDINO and SAM for comprehensive object understanding:
+
+```python
+class GroundingSAMProcessor:
+    def __init__(self):
+        # Initialize GroundingDINO
+        self.dino = OptimizedGroundingDINO()
+
+        # Initialize SAM
+        self.sam = SAMSegmenter()
+
+        # Device configuration
+        self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+
+    def detect_and_segment(self, image, text_prompts, box_threshold=0.35, text_threshold=0.25):
+        """
+        Detect and segment objects based on text prompts
+
+        Args:
+            image: Input image
+            text_prompts: Text descriptions of objects to find
+            box_threshold: Detection confidence threshold
+            text_threshold: Text matching threshold
+
+        Returns:
+            Combined detection and segmentation results
+        """
+        # Step 1: Detect objects with GroundingDINO
+        detection_results = self.dino.detect_objects_optimized(
+            image, text_prompts
+        )
+
+        # Extract bounding boxes and labels
+        boxes = []
+        labels = []
+        scores = []
+
+        for result in detection_results:
+            boxes.extend(result["boxes"])
+            labels.extend(result["labels"])
+            scores.extend(result["scores"])
+
+        # Filter based on thresholds
+        filtered_boxes = []
+        filtered_labels = []
+        filtered_scores = []
+
+        for box, label, score in zip(boxes, labels, scores):
+            if score >= box_threshold:
+                filtered_boxes.append(box)
+                filtered_labels.append(label)
+                filtered_scores.append(score)
+
+        if len(filtered_boxes) == 0:
+            return {
+                "boxes": [],
+                "labels": [],
+                "scores": [],
+                "masks": [],
+                "segmentation_scores": []
+            }
+
+        # Step 2: Segment objects with SAM
+        masks, segmentation_scores, logits = self.sam.segment_from_detections(
+            image, filtered_boxes
+        )
+
+        return {
+            "boxes": filtered_boxes,
+            "labels": filtered_labels,
+            "scores": filtered_scores,
+            "masks": masks,
+            "segmentation_scores": segmentation_scores
+        }
+
+    def visualize_results(self, image, results):
+        """Visualize detection and segmentation results"""
+        import matplotlib.pyplot as plt
+
+        fig, axes = plt.subplots(1, 3, figsize=(15, 5))
+
+        # Original image
+        axes[0].imshow(cv2.cvtColor(image, cv2.COLOR_BGR2RGB))
+        axes[0].set_title("Original Image")
+        axes[0].axis('off')
+
+        # Bounding boxes
+        image_with_boxes = image.copy()
+        for box in results["boxes"]:
+            x1, y1, x2, y2 = map(int, box)
+            cv2.rectangle(image_with_boxes, (x1, y1), (x2, y2), (0, 255, 0), 2)
+
+        axes[1].imshow(cv2.cvtColor(image_with_boxes, cv2.COLOR_BGR2RGB))
+        axes[1].set_title("Detected Objects")
+        axes[1].axis('off')
+
+        # Segmentation masks
+        if len(results["masks"]) > 0:
+            mask_overlay = image.copy()
+            for mask in results["masks"]:
+                # Convert mask to numpy array and overlay
+                mask_np = mask[0].cpu().numpy()  # Get first mask from batch
+                mask_overlay[mask_np > 0] = [255, 0, 0]  # Red overlay for segmentation
+
+            axes[2].imshow(cv2.cvtColor(mask_overlay, cv2.COLOR_BGR2RGB))
+            axes[2].set_title("Segmentation Masks")
+            axes[2].axis('off')
+        else:
+            axes[2].text(0.5, 0.5, 'No masks detected',
+                        horizontalalignment='center', verticalalignment='center',
+                        transform=axes[2].transAxes)
+            axes[2].set_title("Segmentation Masks")
+
+        plt.tight_layout()
+        plt.show()
+
+def main():
+    # Initialize GroundingSAM processor
+    processor = GroundingSAMProcessor()
+
+    # Load image
+    image = cv2.imread("test_image.jpg")
+
+    # Define text prompts
+    text_prompts = ["red cup", "person", "white chair"]
+
+    # Detect and segment
+    results = processor.detect_and_segment(image, text_prompts)
+
+    print(f"Detected {len(results['boxes'])} objects")
+    for label, score in zip(results["labels"], results["scores"]):
+        print(f"  - {label}: {score:.3f}")
+
+    # Visualize results
+    processor.visualize_results(image, results)
+
+if __name__ == "__main__":
+    main()
+```
+
+## CLIP Integration for Semantic Understanding
+
+### CLIP for Object Classification and Understanding
+
+CLIP provides cross-modal understanding between images and text, enhancing object recognition:
+
+```python
+# Install CLIP
+# pip install openai-clip
+
+import clip
+from PIL import Image
+import torch.nn.functional as F
+
+class CLIPObjectClassifier:
+    def __init__(self, model_name="ViT-B/32"):
+        # Load CLIP model
+        self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+        self.model, self.preprocess = clip.load(model_name, device=self.device)
+
+    def classify_image_region(self, image_region, candidate_labels):
+        """
+        Classify an image region using CLIP
+
+        Args:
+            image_region: PIL Image of the region to classify
+            candidate_labels: List of possible labels
+
+        Returns:
+            Probabilities for each label
+        """
+        # Preprocess image
+        image_input = self.preprocess(image_region).unsqueeze(0).to(self.device)
+
+        # Tokenize text
+        text_input = clip.tokenize(candidate_labels).to(self.device)
+
+        # Get features
+        with torch.no_grad():
+            image_features = self.model.encode_image(image_input)
+            text_features = self.model.encode_text(text_input)
+
+            # Normalize features
+            image_features /= image_features.norm(dim=-1, keepdim=True)
+            text_features /= text_features.norm(dim=-1, keepdim=True)
+
+            # Calculate similarity
+            similarity = (100.0 * image_features @ text_features.T).softmax(dim=-1)
+            probabilities = similarity[0].cpu().numpy()
+
+        return probabilities
+
+    def get_top_k_labels(self, image_region, all_labels, k=5):
+        """Get top-k most likely labels for an image region"""
+        probabilities = self.classify_image_region(image_region, all_labels)
+
+        # Get top-k indices
+        top_k_indices = np.argsort(probabilities)[-k:][::-1]
+
+        top_labels = [(all_labels[i], probabilities[i]) for i in top_k_indices]
+
+        return top_labels
+
+    def verify_detection(self, image_region, expected_label):
+        """Verify if a detected object matches the expected label"""
+        candidate_labels = [expected_label, "other object"]
+        probabilities = self.classify_image_region(image_region, candidate_labels)
+
+        # Return confidence for expected label
+        return probabilities[0]  # Probability of expected label
+```
+
+## ROS Integration for Real-time Processing
+
+### ROS Node for Open-Vocabulary Detection
+
+Create a ROS node that provides open-vocabulary detection services:
+
+```python
+#!/usr/bin/env python3
+import rospy
+import torch
+import cv2
+import numpy as np
+from sensor_msgs.msg import Image
+from std_msgs.msg import String
+from geometry_msgs.msg import Point
+from visualization_msgs.msg import Marker, MarkerArray
+from cv_bridge import CvBridge
+import message_filters
+
+class OpenVocabularyDetectorNode:
+    def __init__(self):
+        # Initialize ROS node
+        rospy.init_node('open_vocabulary_detector')
+
+        # Initialize detector
+        self.detector = GroundingSAMProcessor()
+        self.clip_classifier = CLIPObjectClassifier()
+        self.bridge = CvBridge()
+
+        # Publishers
+        self.detection_pub = rospy.Publisher('/object_detections', String, queue_size=10)
+        self.visualization_pub = rospy.Publisher('/detection_markers', MarkerArray, queue_size=10)
+        self.image_pub = rospy.Publisher('/detection_result', Image, queue_size=10)
+
+        # Subscribers
+        self.image_sub = message_filters.Subscriber('/camera/image_raw', Image)
+
+        # Synchronize image and other potential sensors
+        self.ts = message_filters.ApproximateTimeSynchronizer([self.image_sub], 10, 0.1)
+        self.ts.registerCallback(self.image_callback)
+
+        # Parameters
+        self.default_prompts = rospy.get_param('~default_prompts',
+                                             ['person', 'cup', 'bottle', 'chair'])
+        self.confidence_threshold = rospy.get_param('~confidence_threshold', 0.5)
+        self.publish_visualization = rospy.get_param('~publish_visualization', True)
+
+        rospy.loginfo("Open Vocabulary Detector initialized")
+
+    def image_callback(self, img_msg):
+        """Process incoming image messages"""
+        try:
+            # Convert ROS image to OpenCV format
+            cv_image = self.bridge.imgmsg_to_cv2(img_msg, "bgr8")
+
+            # Get text prompts (could come from another topic or service)
+            text_prompts = self.get_current_prompts()
+
+            # Perform open-vocabulary detection
+            results = self.detector.detect_and_segment(
+                cv_image, text_prompts,
+                box_threshold=self.confidence_threshold
+            )
+
+            # Process results
+            detection_data = self.process_results(results, img_msg.header)
+
+            # Publish detection results
+            detection_msg = String()
+            detection_msg.data = detection_data
+            self.detection_pub.publish(detection_msg)
+
+            # Publish visualization if enabled
+            if self.publish_visualization:
+                self.publish_visualization_markers(results, img_msg.header)
+                self.publish_result_image(cv_image, results, img_msg.header)
+
+        except Exception as e:
+            rospy.logerr(f"Error processing image: {e}")
+
+    def get_current_prompts(self):
+        """Get current text prompts (could be dynamic based on task)"""
+        # In practice, this could come from a service call, parameter server,
+        # or another node that specifies what objects to look for
+        return self.default_prompts
+
+    def process_results(self, results, header):
+        """Process detection results into structured format"""
+        detections = []
+
+        for i, (box, label, score, mask) in enumerate(
+            zip(results["boxes"], results["labels"], results["scores"], results["masks"])
+        ):
+            if score >= self.confidence_threshold:
+                detection = {
+                    "id": i,
+                    "label": label,
+                    "confidence": float(score),
+                    "bbox": [float(x) for x in box.tolist()],
+                    "center": [(box[0] + box[2]) / 2, (box[1] + box[3]) / 2]
+                }
+
+                # Add mask information if available
+                if mask is not None:
+                    # Calculate bounding box from mask
+                    mask_np = mask[0].cpu().numpy()
+                    detection["mask_area"] = float(np.sum(mask_np > 0))
+
+                detections.append(detection)
+
+        # Create result dictionary
+        result_dict = {
+            "header": {
+                "stamp": header.stamp.to_sec(),
+                "frame_id": header.frame_id
+            },
+            "detections": detections,
+            "total_objects": len(detections)
+        }
+
+        return str(result_dict)
+
+    def publish_visualization_markers(self, results, header):
+        """Publish visualization markers for detected objects"""
+        marker_array = MarkerArray()
+
+        for i, (box, label, score) in enumerate(
+            zip(results["boxes"], results["labels"], results["scores"])
+        ):
+            if score >= self.confidence_threshold:
+                # Bounding box marker
+                bbox_marker = Marker()
+                bbox_marker.header = header
+                bbox_marker.ns = "detections"
+                bbox_marker.id = i * 2
+                bbox_marker.type = Marker.LINE_STRIP
+                bbox_marker.action = Marker.ADD
+
+                # Define the four corners of the bounding box
+                x1, y1, x2, y2 = box
+                points = [
+                    Point(x1, y1, 0), Point(x2, y1, 0),
+                    Point(x2, y2, 0), Point(x1, y2, 0),
+                    Point(x1, y1, 0)  # Close the loop
+                ]
+                bbox_marker.points = points
+                bbox_marker.scale.x = 2.0  # Line width
+                bbox_marker.color.r = 0.0
+                bbox_marker.color.g = 1.0
+                bbox_marker.color.b = 0.0
+                bbox_marker.color.a = 1.0
+
+                # Label marker
+                label_marker = Marker()
+                label_marker.header = header
+                label_marker.ns = "labels"
+                label_marker.id = i * 2 + 1
+                label_marker.type = Marker.TEXT_VIEW_FACING
+                label_marker.action = Marker.ADD
+                label_marker.pose.position.x = (box[0] + box[2]) / 2
+                label_marker.pose.position.y = (box[1] + box[3]) / 2
+                label_marker.pose.position.z = 0
+                label_marker.text = f"{label}: {score:.2f}"
+                label_marker.scale.z = 20.0  # Text size
+                label_marker.color.r = 1.0
+                label_marker.color.g = 1.0
+                label_marker.color.b = 1.0
+                label_marker.color.a = 1.0
+
+                marker_array.markers.extend([bbox_marker, label_marker])
+
+        self.visualization_pub.publish(marker_array)
+
+    def publish_result_image(self, original_image, results, header):
+        """Publish processed image with detections"""
+        # Create annotated image
+        annotated_image = original_image.copy()
+
+        for box, label, score in zip(results["boxes"], results["labels"], results["scores"]):
+            if score >= self.confidence_threshold:
+                # Draw bounding box
+                x1, y1, x2, y2 = map(int, box)
+                cv2.rectangle(annotated_image, (x1, y1), (x2, y2), (0, 255, 0), 2)
+
+                # Add label
+                cv2.putText(annotated_image, f"{label}: {score:.2f}",
+                           (x1, y1 - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 2)
+
+        # Convert back to ROS image format
+        result_img_msg = self.bridge.cv2_to_imgmsg(annotated_image, "bgr8")
+        result_img_msg.header = header
+        self.image_pub.publish(result_img_msg)
+
+    def spin(self):
+        """Main spin loop"""
+        rate = rospy.Rate(10)  # 10 Hz processing
+        while not rospy.is_shutdown():
+            rate.sleep()
+
+def main():
+    try:
+        node = OpenVocabularyDetectorNode()
+        node.spin()
+    except rospy.ROSInterruptException:
+        rospy.loginfo("Open Vocabulary Detector node terminated")
+    except KeyboardInterrupt:
+        rospy.loginfo("Open Vocabulary Detector node interrupted")
+
+if __name__ == "__main__":
+    main()
+```
+
+## Advanced Detection Techniques
+
+### Multi-modal Fusion for Better Detection
+
+Combine multiple modalities for improved detection accuracy:
+
+```python
+class MultiModalDetector:
+    def __init__(self):
+        self.grounding_dino = OptimizedGroundingDINO()
+        self.sam = SAMSegmenter()
+        self.clip = CLIPObjectClassifier()
+        self.depth_processor = DepthProcessor()  # For 3D information
+
+    def detect_with_fusion(self, rgb_image, depth_image=None, text_prompts=None):
+        """
+        Perform detection using multi-modal fusion
+
+        Args:
+            rgb_image: RGB image
+            depth_image: Depth image (optional)
+            text_prompts: Text descriptions of objects to detect
+
+        Returns:
+            Fused detection results with confidence scores
+        """
+        # Step 1: Get initial detections from GroundingDINO
+        dino_results = self.grounding_dino.detect_objects_optimized(
+            rgb_image, text_prompts
+        )
+
+        # Step 2: Get precise segmentation from SAM
+        if dino_results["boxes"]:
+            sam_masks, sam_scores, _ = self.sam.segment_from_detections(
+                rgb_image, dino_results["boxes"]
+            )
+        else:
+            sam_masks, sam_scores = [], []
+
+        # Step 3: Verify classifications with CLIP
+        verified_results = []
+        for i, (box, label, score) in enumerate(
+            zip(dino_results["boxes"], dino_results["labels"], dino_results["scores"])
+        ):
+            # Extract region from image
+            x1, y1, x2, y2 = map(int, box)
+            region = rgb_image[y1:y2, x1:x2]
+
+            # Verify with CLIP
+            clip_confidence = self.clip.verify_detection(
+                Image.fromarray(region), label
+            )
+
+            # Combine confidences (weighted average or other fusion method)
+            combined_confidence = 0.6 * score + 0.4 * clip_confidence
+
+            # Include depth information if available
+            depth_info = {}
+            if depth_image is not None:
+                depth_info = self.depth_processor.extract_depth_features(
+                    depth_image, (x1, y1, x2, y2)
+                )
+
+            verified_results.append({
+                "bbox": box,
+                "label": label,
+                "dino_score": score,
+                "clip_score": clip_confidence,
+                "combined_score": combined_confidence,
+                "depth_info": depth_info
+            })
+
+        return verified_results
+
+class DepthProcessor:
+    def __init__(self):
+        pass
+
+    def extract_depth_features(self, depth_image, bbox):
+        """Extract depth-based features for a bounding box"""
+        x1, y1, x2, y2 = bbox
+        depth_region = depth_image[y1:y2, x1:x2]
+
+        # Calculate depth statistics
+        valid_depths = depth_region[depth_region > 0]  # Remove invalid depth values
+
+        if len(valid_depths) > 0:
+            return {
+                "mean_depth": float(np.mean(valid_depths)),
+                "median_depth": float(np.median(valid_depths)),
+                "depth_std": float(np.std(valid_depths)),
+                "min_depth": float(np.min(valid_depths)),
+                "max_depth": float(np.max(valid_depths)),
+                "valid_pixels": len(valid_depths)
+            }
+        else:
+            return {
+                "mean_depth": 0.0,
+                "median_depth": 0.0,
+                "depth_std": 0.0,
+                "min_depth": 0.0,
+                "max_depth": 0.0,
+                "valid_pixels": 0
+            }
+```
+
+## Performance Optimization
+
+### Real-time Optimization Techniques
+
+Optimize open-vocabulary detection for real-time humanoid robot applications:
+
+```python
+import threading
+import queue
+from collections import deque
+
+class OptimizedOpenVocabularyDetector:
+    def __init__(self):
+        # Initialize models
+        self.grounding_dino = OptimizedGroundingDINO()
+        self.sam = SAMSegmenter()
+        self.clip = CLIPObjectClassifier()
+
+        # Processing queues
+        self.input_queue = queue.Queue(maxsize=5)
+        self.output_queue = queue.Queue(maxsize=5)
+
+        # Processing threads
+        self.processing_thread = None
+        self.is_running = False
+
+        # Performance metrics
+        self.processing_times = deque(maxlen=50)
+        self.fps_counter = 0
+        self.fps_timer = rospy.Time.now()
+
+        # Frame skipping for performance
+        self.frame_skip = 2  # Process every 3rd frame
+        self.frame_count = 0
+
+    def start_processing(self):
+        """Start the processing thread"""
+        self.is_running = True
+        self.processing_thread = threading.Thread(target=self.processing_loop)
+        self.processing_thread.daemon = True
+        self.processing_thread.start()
+
+    def processing_loop(self):
+        """Main processing loop running in separate thread"""
+        while self.is_running:
+            try:
+                # Get input from queue
+                input_data = self.input_queue.get(timeout=1.0)
+
+                # Process input
+                start_time = rospy.Time.now().to_sec()
+                results = self.process_frame(input_data)
+                end_time = rospy.Time.now().to_sec()
+
+                # Track performance
+                processing_time = end_time - start_time
+                self.processing_times.append(processing_time)
+
+                # Put results in output queue
+                self.output_queue.put(results)
+
+            except queue.Empty:
+                continue
+            except Exception as e:
+                rospy.logerr(f"Processing error: {e}")
+
+    def process_frame(self, input_data):
+        """Process a single frame with optimizations"""
+        image, text_prompts = input_data
+
+        # Apply optimizations
+        # 1. Resize image for faster processing
+        h, w = image.shape[:2]
+        if h > 640 or w > 640:
+            scale = min(640/h, 640/w)
+            new_w, new_h = int(w*scale), int(h*scale)
+            image = cv2.resize(image, (new_w, new_h))
+
+        # 2. Perform detection and segmentation
+        results = self.grounding_dino.detect_objects_optimized(image, text_prompts)
+
+        # 3. Apply post-processing optimizations
+        optimized_results = self.post_process_results(results)
+
+        return optimized_results
+
+    def post_process_results(self, results):
+        """Apply post-processing optimizations"""
+        # Filter results based on confidence
+        filtered_results = []
+        for result in results:
+            if result["score"] > 0.3:  # Lower threshold for optimization
+                filtered_results.append(result)
+
+        # Apply non-maximum suppression to reduce duplicates
+        nms_results = self.apply_nms(filtered_results)
+
+        return nms_results
+
+    def apply_nms(self, detections, iou_threshold=0.5):
+        """Apply non-maximum suppression"""
+        if not detections:
+            return []
+
+        # Sort by confidence score
+        sorted_detections = sorted(detections, key=lambda x: x["score"], reverse=True)
+
+        keep = []
+        for detection in sorted_detections:
+            overlap = False
+            for kept in keep:
+                # Calculate IoU
+                iou = self.calculate_iou(detection["bbox"], kept["bbox"])
+                if iou > iou_threshold:
+                    overlap = True
+                    break
+
+            if not overlap:
+                keep.append(detection)
+
+        return keep
+
+    def calculate_iou(self, box1, box2):
+        """Calculate Intersection over Union"""
+        x1_1, y1_1, x2_1, y2_1 = box1
+        x1_2, y1_2, x2_2, y2_2 = box2
+
+        # Calculate intersection
+        x1_i = max(x1_1, x1_2)
+        y1_i = max(y1_1, y1_2)
+        x2_i = min(x2_1, x2_2)
+        y2_i = min(y2_1, y2_2)
+
+        if x2_i <= x1_i or y2_i <= y1_i:
+            return 0.0
+
+        intersection = (x2_i - x1_i) * (y2_i - y1_i)
+
+        # Calculate areas
+        area1 = (x2_1 - x1_1) * (y2_1 - y1_1)
+        area2 = (x2_2 - x1_2) * (y2_2 - y1_2)
+        union = area1 + area2 - intersection
+
+        return intersection / union if union > 0 else 0.0
+
+    def get_performance_metrics(self):
+        """Get current performance metrics"""
+        if not self.processing_times:
+            return {"avg_time": 0.0, "fps": 0.0}
+
+        avg_time = sum(self.processing_times) / len(self.processing_times)
+        fps = 1.0 / avg_time if avg_time > 0 else 0.0
+
+        return {
+            "avg_time": avg_time,
+            "fps": fps,
+            "queue_sizes": {
+                "input": self.input_queue.qsize(),
+                "output": self.output_queue.qsize()
+            }
+        }
+
+    def detect_optimized(self, image, text_prompts):
+        """Detect objects with performance optimizations"""
+        # Frame skipping
+        self.frame_count += 1
+        if self.frame_count % (self.frame_skip + 1) != 0:
+            return []  # Skip this frame
+
+        # Add to processing queue
+        input_data = (image, text_prompts)
+
+        try:
+            self.input_queue.put(input_data, timeout=0.1)
+        except queue.Full:
+            rospy.logwarn("Processing queue full, skipping frame")
+            return []
+
+        # Get results from output queue
+        try:
+            results = self.output_queue.get(timeout=0.5)
+            return results
+        except queue.Empty:
+            rospy.logwarn("Processing timeout, returning empty results")
+            return []
+
+    def stop_processing(self):
+        """Stop the processing thread"""
+        self.is_running = False
+        if self.processing_thread:
+            self.processing_thread.join()
+```
+
+## Humanoid Robot Integration
+
+### Object Interaction Planning
+
+Use open-vocabulary detection results for humanoid robot interaction:
+
+```python
+class ObjectInteractionPlanner:
+    def __init__(self):
+        self.detector = OptimizedOpenVocabularyDetector()
+        self.grasp_planner = GraspPlanner()
+        self.navigation_planner = NavigationPlanner()
+
+    def plan_interaction(self, image, target_object_description):
+        """Plan interaction with a target object"""
+        # Detect objects in the scene
+        detections = self.detector.detect_optimized(
+            image, [target_object_description]
+        )
+
+        if not detections:
+            rospy.logwarn(f"Could not find {target_object_description}")
+            return None
+
+        # Find the best matching object
+        target_object = self.select_best_object(detections, target_object_description)
+
+        if not target_object:
+            rospy.logwarn(f"Could not identify target object: {target_object_description}")
+            return None
+
+        # Plan approach to object
+        approach_plan = self.plan_approach_to_object(target_object)
+
+        # Plan grasp for object
+        grasp_plan = self.plan_grasp_for_object(target_object)
+
+        # Combine plans
+        interaction_plan = {
+            "approach": approach_plan,
+            "grasp": grasp_plan,
+            "object_info": target_object
+        }
+
+        return interaction_plan
+
+    def select_best_object(self, detections, target_description):
+        """Select the best matching object based on description"""
+        best_match = None
+        best_score = 0.0
+
+        for detection in detections:
+            # Use CLIP to verify the match between detection and description
+            confidence = self.verify_object_match(detection, target_description)
+
+            if confidence > best_score:
+                best_score = confidence
+                best_match = detection
+
+        return best_match
+
+    def verify_object_match(self, detection, description):
+        """Verify if detection matches the description using CLIP"""
+        # This would involve extracting the region and using CLIP
+        # for verification
+        return detection.get("combined_score", detection.get("score", 0.0))
+
+    def plan_approach_to_object(self, object_info):
+        """Plan navigation approach to object"""
+        # Extract object location from detection
+        bbox = object_info["bbox"]
+        object_center_x = (bbox[0] + bbox[2]) / 2
+        object_center_y = (bbox[1] + bbox[3]) / 2
+
+        # Convert to world coordinates (simplified)
+        # In practice, this would use camera calibration and depth information
+        world_pose = self.pixel_to_world_coordinates(
+            object_center_x, object_center_y, object_info.get("depth_info", {})
+        )
+
+        # Plan navigation to approach position
+        approach_pose = self.calculate_approach_pose(world_pose)
+
+        return {
+            "target_pose": approach_pose,
+            "navigation_required": True
+        }
+
+    def plan_grasp_for_object(self, object_info):
+        """Plan grasp for the detected object"""
+        bbox = object_info["bbox"]
+
+        # Determine grasp approach based on object size and position
+        grasp_params = {
+            "position": [(bbox[0] + bbox[2]) / 2, (bbox[1] + bbox[3]) / 2, 0.1],  # Simplified
+            "orientation": [0, 0, 0, 1],  # Quaternion
+            "grasp_type": self.determine_grasp_type(object_info)
+        }
+
+        return grasp_params
+
+    def determine_grasp_type(self, object_info):
+        """Determine appropriate grasp type based on object properties"""
+        bbox = object_info["bbox"]
+        width = bbox[2] - bbox[0]
+        height = bbox[3] - bbox[1]
+
+        if width > height * 1.5:
+            return "side_grasp"  # Grasp from the side for wide objects
+        elif height > width * 1.5:
+            return "top_grasp"   # Grasp from the top for tall objects
+        else:
+            return "pinch_grasp" # Pinch grasp for objects with similar dimensions
+
+    def pixel_to_world_coordinates(self, pixel_x, pixel_y, depth_info):
+        """Convert pixel coordinates to world coordinates"""
+        # This would use camera intrinsics and depth information
+        # Simplified implementation
+        return [pixel_x, pixel_y, depth_info.get("mean_depth", 1.0)]
+
+    def calculate_approach_pose(self, object_pose):
+        """Calculate safe approach pose for manipulation"""
+        # Calculate approach position (1 meter away from object)
+        approach_x = object_pose[0] - 1.0  # 1 meter back
+        approach_y = object_pose[1]
+        approach_z = object_pose[2]
+
+        return [approach_x, approach_y, approach_z, 0, 0, 0]  # x, y, z, roll, pitch, yaw
+```
+
+## Quality Assurance and Validation
+
+### Detection Quality Metrics
+
+Implement quality metrics for open-vocabulary detection:
+
+```python
+class DetectionQualityAssessor:
+    def __init__(self):
+        self.metrics = {
+            'precision': [],
+            'recall': [],
+            'f1_score': [],
+            'mean_iou': [],
+            'processing_time': []
+        }
+
+    def evaluate_detection(self, predicted_boxes, ground_truth_boxes, iou_threshold=0.5):
+        """Evaluate detection quality against ground truth"""
+        if len(ground_truth_boxes) == 0:
+            # No ground truth, return based on prediction confidence
+            return {
+                'precision': 1.0 if len(predicted_boxes) == 0 else 0.0,
+                'recall': 1.0,
+                'f1_score': 0.0,
+                'mean_iou': 0.0
+            }
+
+        # Calculate true positives, false positives, false negatives
+        tp = 0  # True positives
+        fp = 0  # False positives
+        fn = 0  # False negatives
+
+        # For each predicted box, find best matching ground truth
+        used_gt = [False] * len(ground_truth_boxes)
+
+        for pred_box in predicted_boxes:
+            best_iou = 0
+            best_gt_idx = -1
+
+            # Find best matching ground truth box
+            for gt_idx, gt_box in enumerate(ground_truth_boxes):
+                if used_gt[gt_idx]:
+                    continue
+
+                iou = self.calculate_iou(pred_box, gt_box)
+                if iou > best_iou:
+                    best_iou = iou
+                    best_gt_idx = gt_idx
+
+            if best_iou >= iou_threshold:
+                # True positive
+                tp += 1
+                used_gt[best_gt_idx] = True
+            else:
+                # False positive
+                fp += 1
+
+        # Count false negatives
+        fn = len(ground_truth_boxes) - sum(used_gt)
+
+        # Calculate metrics
+        precision = tp / (tp + fp) if (tp + fp) > 0 else 0.0
+        recall = tp / (tp + fn) if (tp + fn) > 0 else 0.0
+        f1_score = 2 * (precision * recall) / (precision + recall) if (precision + recall) > 0 else 0.0
+
+        # Calculate mean IoU for matched pairs
+        matched_ious = []
+        used_gt = [False] * len(ground_truth_boxes)
+
+        for pred_box in predicted_boxes:
+            best_iou = 0
+            best_gt_idx = -1
+
+            for gt_idx, gt_box in enumerate(ground_truth_boxes):
+                if used_gt[gt_idx]:
+                    continue
+
+                iou = self.calculate_iou(pred_box, gt_box)
+                if iou > best_iou:
+                    best_iou = iou
+                    best_gt_idx = gt_idx
+
+            if best_iou >= iou_threshold:
+                matched_ious.append(best_iou)
+                used_gt[best_gt_idx] = True
+
+        mean_iou = sum(matched_ious) / len(matched_ious) if matched_ious else 0.0
+
+        return {
+            'precision': precision,
+            'recall': recall,
+            'f1_score': f1_score,
+            'mean_iou': mean_iou,
+            'tp': tp,
+            'fp': fp,
+            'fn': fn
+        }
+
+    def calculate_iou(self, box1, box2):
+        """Calculate Intersection over Union between two boxes"""
+        x1_1, y1_1, x2_1, y2_1 = box1
+        x1_2, y1_2, x2_2, y2_2 = box2
+
+        # Calculate intersection
+        x1_i = max(x1_1, x1_2)
+        y1_i = max(y1_1, y1_2)
+        x2_i = min(x2_1, x2_2)
+        y2_i = min(y2_1, y2_2)
+
+        if x2_i <= x1_i or y2_i <= y1_i:
+            return 0.0
+
+        intersection = (x2_i - x1_i) * (y2_i - y1_i)
+
+        # Calculate union
+        area1 = (x2_1 - x1_1) * (y2_1 - y1_1)
+        area2 = (x2_2 - x1_2) * (y2_2 - y1_2)
+        union = area1 + area2 - intersection
+
+        return intersection / union if union > 0 else 0.0
+
+    def log_quality_metrics(self, metrics):
+        """Log quality metrics for analysis"""
+        rospy.loginfo(f"Detection Quality - Precision: {metrics['precision']:.3f}, "
+                     f"Recall: {metrics['recall']:.3f}, "
+                     f"F1: {metrics['f1_score']:.3f}, "
+                     f"Mean IoU: {metrics['mean_iou']:.3f}")
+```
+
+## Summary
+
+In this chapter, you've learned:
+- The fundamentals of open-vocabulary detection and its importance for humanoid robots
+- How to implement GroundingDINO for text-based object detection
+- How to integrate SAM for precise object segmentation
+- How to use CLIP for semantic understanding and verification
+- Complete pipeline integration with ROS for real-time processing
+- Advanced techniques like multi-modal fusion and performance optimization
+- Quality assurance methods for detection systems
+- Integration with humanoid robot interaction planning
+
+Open-vocabulary detection enables humanoid robots to perceive and interact with objects in a more flexible and human-like manner, without being constrained to predefined object categories.
+
+## Exercises
+
+1. Implement the complete Grounding-SAM pipeline for object detection and segmentation
+2. Integrate CLIP for verification of detection results
+3. Create a ROS node that provides open-vocabulary detection services
+4. Optimize the detection pipeline for real-time performance
+5. Test the system with various object descriptions and environments
+
+<StarboardNotebook>
+```python
+# This would be an interactive code block for students to experiment with open-vocabulary detection
+# In a real implementation, this would connect to ROS services
+# to test detection with various text prompts
+```
+</StarboardNotebook>

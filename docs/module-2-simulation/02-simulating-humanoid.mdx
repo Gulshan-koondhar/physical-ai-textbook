@@ -1,0 +1,856 @@
+---
+title: Simulating Humanoid Robots in Gazebo
+sidebar_label: Simulating Humanoid in Gazebo
+description: Learn to simulate complex humanoid robots in Gazebo with physics, sensors, and realistic control
+keywords: [Gazebo, simulation, humanoid, physics, control, ROS 2]
+---
+
+# Simulating Humanoid Robots in Gazebo
+
+## Introduction
+
+Simulating humanoid robots in Gazebo requires careful consideration of physics, control systems, and sensor integration. Unlike simpler wheeled robots, humanoid robots have complex kinematics, many degrees of freedom, and require sophisticated control algorithms to maintain balance and execute tasks. This chapter covers the essential techniques for creating realistic and stable humanoid robot simulations in Gazebo.
+
+## Understanding Humanoid Simulation Challenges
+
+### Balance and Stability
+
+Humanoid robots face unique challenges in simulation:
+
+1. **Center of Mass Management**: The robot must maintain its center of mass within its support polygon
+2. **Dynamic Balance**: Unlike static structures, humanoid robots must actively balance during movement
+3. **Contact Dynamics**: Foot-ground interaction is critical for stable locomotion
+4. **Control Frequency**: High-frequency control is needed for stable balance
+
+### Physics Complexity
+
+Humanoid simulation involves complex physics interactions:
+
+- Multiple simultaneous contacts (feet, hands during manipulation)
+- Complex joint constraints
+- High degrees of freedom requiring precise control
+- Sensitivity to small parameter changes
+
+## Creating a Stable Humanoid Model
+
+### Proper Mass Distribution
+
+For stable simulation, ensure proper mass distribution:
+
+```xml
+<!-- Example: Properly configured humanoid link with mass properties -->
+<link name="torso_link">
+  <inertial>
+    <!-- Mass should reflect real-world values -->
+    <mass value="5.0"/>
+    <!-- Inertia tensor should match the physical shape -->
+    <inertia
+      ixx="0.1" ixy="0.0" ixz="0.0"
+      iyy="0.1" iyz="0.0"
+      izz="0.05"/>
+  </inertial>
+
+  <visual>
+    <geometry>
+      <box size="0.2 0.15 0.4"/>
+    </geometry>
+    <material name="white"/>
+  </visual>
+
+  <collision>
+    <geometry>
+      <box size="0.2 0.15 0.4"/>
+    </geometry>
+  </collision>
+</link>
+```
+
+### Joint Configuration for Stability
+
+Configure joints with appropriate limits and dynamics:
+
+```xml
+<joint name="left_knee_joint" type="revolute">
+  <parent link="left_thigh_link"/>
+  <child link="left_shin_link"/>
+  <origin xyz="0 0 -0.4" rpy="0 0 0"/>
+  <axis xyz="0 1 0"/>
+  <limit lower="0.0" upper="2.356" effort="15.0" velocity="5.0"/>
+  <dynamics damping="0.5" friction="0.1"/>
+</joint>
+
+<!-- Gazebo-specific joint configuration -->
+<gazebo reference="left_knee_joint">
+  <implicit_spring_damper>1</implicit_spring_damper>
+  <provide_feedback>1</provide_feedback>
+  <joint_properties>
+    <ode>
+      <damping>0.5</damping>
+      <friction>0.1</friction>
+      <limit>
+        <cfm>0.0</cfm>
+        <erp>0.2</erp>
+      </limit>
+    </ode>
+  </joint_properties>
+</gazebo>
+```
+
+## Sensor Integration for Humanoid Robots
+
+### IMU Sensors
+
+IMU sensors are crucial for humanoid balance and orientation:
+
+```xml
+<!-- IMU sensor on the torso for balance control -->
+<gazebo reference="torso_link">
+  <sensor name="torso_imu" type="imu">
+    <always_on>true</always_on>
+    <update_rate>100</update_rate>
+    <visualize>false</visualize>
+    <imu>
+      <angular_velocity>
+        <x>
+          <noise type="gaussian">
+            <mean>0.0</mean>
+            <stddev>2e-4</stddev>
+            <bias_mean>0.0000075</bias_mean>
+            <bias_stddev>0.0000008</bias_stddev>
+          </noise>
+        </x>
+        <y>
+          <noise type="gaussian">
+            <mean>0.0</mean>
+            <stddev>2e-4</stddev>
+            <bias_mean>0.0000075</bias_mean>
+            <bias_stddev>0.0000008</bias_stddev>
+          </noise>
+        </y>
+        <z>
+          <noise type="gaussian">
+            <mean>0.0</mean>
+            <stddev>2e-4</stddev>
+            <bias_mean>0.0000075</bias_mean>
+            <bias_stddev>0.0000008</bias_stddev>
+          </noise>
+        </z>
+      </angular_velocity>
+      <linear_acceleration>
+        <x>
+          <noise type="gaussian">
+            <mean>0.0</mean>
+            <stddev>1.7e-2</stddev>
+            <bias_mean>0.1</bias_mean>
+            <bias_stddev>0.001</bias_stddev>
+          </noise>
+        </x>
+        <y>
+          <noise type="gaussian">
+            <mean>0.0</mean>
+            <stddev>1.7e-2</stddev>
+            <bias_mean>0.1</bias_mean>
+            <bias_stddev>0.001</bias_stddev>
+          </noise>
+        </y>
+        <z>
+          <noise type="gaussian">
+            <mean>0.0</mean>
+            <stddev>1.7e-2</stddev>
+            <bias_mean>0.1</bias_mean>
+            <bias_stddev>0.001</bias_stddev>
+          </noise>
+        </z>
+      </linear_acceleration>
+    </imu>
+  </sensor>
+</gazebo>
+```
+
+### Force/Torque Sensors
+
+For contact detection and manipulation:
+
+```xml
+<!-- Force/Torque sensor in the foot for contact detection -->
+<gazebo reference="left_foot_link">
+  <sensor name="left_foot_ft_sensor" type="force_torque">
+    <always_on>true</always_on>
+    <update_rate>100</update_rate>
+    <force_torque>
+      <frame>child</frame>
+      <measure_direction>child_to_parent</measure_direction>
+    </force_torque>
+  </sensor>
+</gazebo>
+```
+
+### Camera and Depth Sensors
+
+For perception and navigation:
+
+```xml
+<!-- Head-mounted RGB-D camera -->
+<gazebo reference="head_camera_link">
+  <sensor name="head_camera" type="camera">
+    <always_on>true</always_on>
+    <update_rate>30</update_rate>
+    <camera>
+      <horizontal_fov>1.047</horizontal_fov>
+      <image>
+        <width>640</width>
+        <height>480</height>
+        <format>R8G8B8</format>
+      </image>
+      <clip>
+        <near>0.1</near>
+        <far>10.0</far>
+      </clip>
+    </camera>
+    <plugin name="camera_controller" filename="libgazebo_ros_camera.so">
+      <frame_name>head_camera_optical_frame</frame_name>
+      <min_depth>0.1</min_depth>
+      <max_depth>10.0</max_depth>
+    </plugin>
+  </sensor>
+</gazebo>
+```
+
+## Control System Integration
+
+### ros2_control Configuration
+
+Set up ros2_control for your humanoid robot:
+
+```yaml
+# config/humanoid_control.yaml
+controller_manager:
+  ros__parameters:
+    update_rate: 1000  # Hz
+
+    joint_state_broadcaster:
+      type: joint_state_broadcaster/JointStateBroadcaster
+
+    # Position controllers for each joint group
+    left_leg_controller:
+      type: position_controllers/JointGroupPositionController
+
+    right_leg_controller:
+      type: position_controllers/JointGroupPositionController
+
+    left_arm_controller:
+      type: position_controllers/JointGroupPositionController
+
+    right_arm_controller:
+      type: position_controllers/JointGroupPositionController
+
+    torso_controller:
+      type: position_controllers/JointGroupPositionController
+
+# Left leg controller configuration
+left_leg_controller:
+  ros__parameters:
+    joints:
+      - left_hip_yaw
+      - left_hip_pitch
+      - left_hip_roll
+      - left_knee
+      - left_ankle_pitch
+      - left_ankle_roll
+
+# Right leg controller configuration
+right_leg_controller:
+  ros__parameters:
+    joints:
+      - right_hip_yaw
+      - right_hip_pitch
+      - right_hip_roll
+      - right_knee
+      - right_ankle_pitch
+      - right_ankle_roll
+
+# Left arm controller configuration
+left_arm_controller:
+  ros__parameters:
+    joints:
+      - left_shoulder_pitch
+      - left_shoulder_yaw
+      - left_shoulder_roll
+      - left_elbow
+      - left_wrist_pitch
+      - left_wrist_yaw
+
+# Right arm controller configuration
+right_arm_controller:
+  ros__parameters:
+    joints:
+      - right_shoulder_pitch
+      - right_shoulder_yaw
+      - right_shoulder_roll
+      - right_elbow
+      - right_wrist_pitch
+      - right_wrist_yaw
+
+# Torso controller configuration
+torso_controller:
+  ros__parameters:
+    joints:
+      - waist_yaw
+      - waist_pitch
+      - chest_yaw
+      - chest_pitch
+```
+
+### Joint Transmission Configuration
+
+Properly configure transmissions for accurate control:
+
+```xml
+<!-- Transmission for a single joint -->
+<transmission name="left_hip_yaw_trans">
+  <type>transmission_interface/SimpleTransmission</type>
+  <joint name="left_hip_yaw">
+    <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+  </joint>
+  <actuator name="left_hip_yaw_motor">
+    <mechanicalReduction>1</mechanicalReduction>
+    <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+  </actuator>
+</transmission>
+
+<!-- For more complex transmissions -->
+<transmission name="left_knee_trans">
+  <type>transmission_interface/SimpleTransmission</type>
+  <joint name="left_knee">
+    <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+    <role>joint1</role>
+  </joint>
+  <actuator name="left_knee_motor">
+    <mechanicalReduction>100</mechanicalReduction>  <!-- Example gear ratio -->
+    <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+  </actuator>
+</transmission>
+```
+
+## Balance Control in Simulation
+
+### Center of Mass Considerations
+
+For stable balance in simulation:
+
+```python
+# Example: Balance controller (simplified)
+import rclpy
+from rclpy.node import Node
+from sensor_msgs.msg import Imu, JointState
+from geometry_msgs.msg import Vector3
+import numpy as np
+
+class BalanceController(Node):
+    def __init__(self):
+        super().__init__('balance_controller')
+
+        # Subscriptions
+        self.imu_sub = self.create_subscription(
+            Imu, '/imu/data', self.imu_callback, 10)
+
+        self.joint_state_sub = self.create_subscription(
+            JointState, '/joint_states', self.joint_state_callback, 10)
+
+        # Publishers
+        self.joint_cmd_pub = self.create_publisher(
+            JointState, '/joint_commands', 10)
+
+        # Timer for control loop (1000 Hz for fast response)
+        self.control_timer = self.create_timer(0.001, self.balance_control)
+
+        # Internal state
+        self.current_imu = Imu()
+        self.current_joints = JointState()
+        self.balance_active = True
+
+        # Balance control parameters
+        self.roll_pid = {'kp': 10.0, 'ki': 0.1, 'kd': 0.5}
+        self.pitch_pid = {'kp': 10.0, 'ki': 0.1, 'kd': 0.5}
+
+    def imu_callback(self, msg):
+        """Handle IMU data for balance feedback"""
+        self.current_imu = msg
+
+    def joint_state_callback(self, msg):
+        """Handle current joint states"""
+        self.current_joints = msg
+
+    def balance_control(self):
+        """Main balance control algorithm"""
+        if not self.balance_active:
+            return
+
+        # Get current orientation from IMU
+        orientation = self.current_imu.orientation
+        roll, pitch, yaw = self.quaternion_to_rpy(orientation)
+
+        # Calculate balance errors
+        roll_error = 0.0 - roll  # Target roll = 0
+        pitch_error = 0.0 - pitch  # Target pitch = 0
+
+        # Simple PID control for balance correction
+        roll_correction = (self.roll_pid['kp'] * roll_error +
+                          self.roll_pid['ki'] * self.integrated_roll_error +
+                          self.roll_pid['kd'] * self.derived_roll_error)
+
+        pitch_correction = (self.pitch_pid['kp'] * pitch_error +
+                           self.pitch_pid['ki'] * self.integrated_pitch_error +
+                           self.pitch_pid['kd'] * self.derived_pitch_error)
+
+        # Apply corrections to ankle joints
+        self.apply_balance_correction(roll_correction, pitch_correction)
+
+    def quaternion_to_rpy(self, quaternion):
+        """Convert quaternion to roll-pitch-yaw"""
+        import math
+        q = quaternion
+        sinr_cosp = 2 * (q.w * q.x + q.y * q.z)
+        cosr_cosp = 1 - 2 * (q.x * q.x + q.y * q.y)
+        roll = math.atan2(sinr_cosp, cosr_cosp)
+
+        sinp = 2 * (q.w * q.y - q.z * q.x)
+        pitch = math.asin(sinp)
+
+        siny_cosp = 2 * (q.w * q.z + q.x * q.y)
+        cosy_cosp = 1 - 2 * (q.y * q.y + q.z * q.z)
+        yaw = math.atan2(siny_cosp, cosy_cosp)
+
+        return roll, pitch, yaw
+
+    def apply_balance_correction(self, roll_correction, pitch_correction):
+        """Apply balance corrections to ankle joints"""
+        cmd_msg = JointState()
+        cmd_msg.header.stamp = self.get_clock().now().to_msg()
+
+        # Add balance corrections to ankle joints
+        cmd_msg.name = ['left_ankle_pitch', 'left_ankle_roll',
+                       'right_ankle_pitch', 'right_ankle_roll']
+        cmd_msg.position = [pitch_correction, roll_correction,
+                           pitch_correction, roll_correction]
+
+        self.joint_cmd_pub.publish(cmd_msg)
+
+def main(args=None):
+    rclpy.init(args=args)
+    balance_controller = BalanceController()
+
+    try:
+        rclpy.spin(balance_controller)
+    except KeyboardInterrupt:
+        pass
+    finally:
+        balance_controller.destroy_node()
+        rclpy.shutdown()
+
+if __name__ == '__main__':
+    main()
+```
+
+## Walking Pattern Generation
+
+### Inverse Kinematics for Walking
+
+Implement walking patterns with inverse kinematics:
+
+```python
+# Example: Simple walking pattern generator
+import numpy as np
+import math
+
+class WalkingPatternGenerator:
+    def __init__(self):
+        # Walking parameters
+        self.step_height = 0.1  # Height of foot lift
+        self.step_length = 0.3  # Distance per step
+        self.step_duration = 1.0  # Time per step
+        self.zmp_margin = 0.05  # Zero Moment Point safety margin
+
+    def generate_step_trajectory(self, time, leg_side, step_phase):
+        """
+        Generate foot trajectory for walking
+        leg_side: 'left' or 'right'
+        step_phase: 0.0 to 1.0 (0 = start of step, 1 = end of step)
+        """
+        # Calculate foot position based on step phase
+        x = self.step_length * step_phase
+        y = 0.0  # Lateral position (depends on gait)
+
+        # Foot lift trajectory (cycloid or similar)
+        if step_phase < 0.5:
+            # Rising phase
+            z = self.step_height * (1 - math.cos(math.pi * step_phase * 2)) / 2
+        else:
+            # Falling phase
+            z = self.step_height * (1 - math.cos(math.pi * (step_phase * 2 - 1))) / 2
+
+        # Adjust for leg side
+        if leg_side == 'left':
+            y = 0.1  # Left leg offset
+        else:
+            y = -0.1  # Right leg offset
+
+        return x, y, z
+
+    def generate_com_trajectory(self, time):
+        """Generate Center of Mass trajectory for balance"""
+        # Simple CoM trajectory for walking
+        com_x = self.step_length * time / self.step_duration
+        com_y = 0.0  # Keep CoM centered laterally
+        com_z = 0.8  # Maintain constant height
+
+        return com_x, com_y, com_z
+```
+
+## Advanced Simulation Techniques
+
+### Multi-Robot Simulation
+
+Simulating multiple humanoid robots:
+
+```xml
+<!-- World file with multiple humanoid robots -->
+<?xml version="1.0" ?>
+<sdf version="1.7">
+  <world name="multi_humanoid_world">
+    <!-- Physics -->
+    <physics type="ode">
+      <gravity>0 0 -9.8</gravity>
+      <max_step_size>0.001</max_step_size>
+    </physics>
+
+    <!-- First humanoid robot -->
+    <include>
+      <name>humanoid_1</name>
+      <uri>model://humanoid_robot</uri>
+      <pose>0 0 1 0 0 0</pose>
+    </include>
+
+    <!-- Second humanoid robot -->
+    <include>
+      <name>humanoid_2</name>
+      <uri>model://humanoid_robot</uri>
+      <pose>2 0 1 0 0 0</pose>
+    </include>
+
+    <!-- Environment -->
+    <include>
+      <uri>model://ground_plane</uri>
+    </include>
+  </world>
+</sdf>
+```
+
+### Sensor Fusion Simulation
+
+Combine multiple sensors for better perception:
+
+```python
+# Example: Sensor fusion for humanoid navigation
+class SensorFusionNode(Node):
+    def __init__(self):
+        super().__init__('sensor_fusion')
+
+        # Multiple sensor subscriptions
+        self.imu_sub = self.create_subscription(Imu, '/imu/data', self.imu_callback, 10)
+        self.odom_sub = self.create_subscription(Odometry, '/odom', self.odom_callback, 10)
+        self.laser_sub = self.create_subscription(LaserScan, '/scan', self.laser_callback, 10)
+
+        # Fused output
+        self.fused_pose_pub = self.create_publisher(PoseWithCovarianceStamped, '/fused_pose', 10)
+
+        # Kalman filter for sensor fusion
+        self.kalman_filter = self.initialize_kalman_filter()
+
+    def initialize_kalman_filter(self):
+        """Initialize Kalman filter for sensor fusion"""
+        # State: [x, y, z, vx, vy, vz, roll, pitch, yaw]
+        # Measurement: [x, y, z, roll, pitch, yaw] from different sensors
+        # Implementation details depend on specific requirements
+        pass
+```
+
+## Performance Optimization
+
+### Reducing Simulation Load
+
+For complex humanoid simulations:
+
+1. **Simplify Collision Geometries**: Use boxes and cylinders instead of complex meshes
+2. **Adjust Update Rates**: Reduce sensor update rates where possible
+3. **Use Efficient Physics**: Choose appropriate physics parameters
+4. **Limit Visual Complexity**: Reduce rendering quality during computation-intensive tasks
+
+### Multi-Threaded Simulation
+
+Configure Gazebo for better performance:
+
+```xml
+<!-- World file with performance settings -->
+<world name="optimized_humanoid_world">
+  <physics type="ode">
+    <max_step_size>0.001</max_step_size>
+    <real_time_factor>1.0</real_time_factor>
+    <real_time_update_rate>1000</real_time_update_rate>
+    <threads>4</threads>  <!-- Use multiple threads -->
+    <ode>
+      <solver>
+        <type>quick</type>
+        <iters>100</iters>  <!-- Balance between accuracy and speed -->
+        <sor>1.3</sor>
+      </solver>
+    </ode>
+  </physics>
+
+  <!-- Disable unnecessary features -->
+  <scene>
+    <shadows>false</shadows>  <!-- Disable shadows for performance -->
+  </scene>
+</world>
+```
+
+## Debugging Humanoid Simulation
+
+### Common Issues and Solutions
+
+#### 1. Robot Falls Over Immediately
+- Check mass distribution and center of mass
+- Verify joint limits and initial positions
+- Check ground contact parameters
+- Ensure proper controller initialization
+
+#### 2. Oscillatory Behavior
+- Reduce controller gains
+- Check sensor noise levels
+- Verify physics parameters (CFM, ERP)
+- Check timing and update rates
+
+#### 3. Joint Limit Violations
+- Verify joint limits in URDF
+- Check controller position bounds
+- Ensure trajectory generators respect limits
+- Add soft limits in controllers
+
+#### 4. High CPU Usage
+- Simplify collision geometries
+- Reduce physics iterations
+- Lower sensor update rates
+- Use efficient controllers
+
+### Debugging Tools
+
+#### TF Tree Analysis
+```bash
+# Check TF tree for humanoid robot
+ros2 run tf2_tools view_frames
+
+# Echo specific transforms
+ros2 run tf2_ros tf2_echo base_link left_foot_link
+```
+
+#### Sensor Data Validation
+```bash
+# Monitor sensor data
+ros2 topic echo /imu/data --field orientation
+ros2 topic echo /joint_states --field position
+```
+
+#### Controller Status
+```bash
+# Check controller status
+ros2 control list_controllers
+ros2 control list_hardware_interfaces
+```
+
+## Integration with Navigation and Manipulation
+
+### Navigation Stack Integration
+
+For humanoid navigation in simulation:
+
+```yaml
+# Navigation configuration for humanoid
+amcl:
+  ros__parameters:
+    use_sim_time: True
+    alpha1: 0.2
+    alpha2: 0.2
+    alpha3: 0.2
+    alpha4: 0.2
+    alpha5: 0.2
+    base_frame_id: "base_link"
+    beam_count: 60
+    initial_pose.x: 0.0
+    initial_pose.y: 0.0
+    initial_pose.z: 0.0
+    initial_pose.yaw: 0.0
+    lambda_short: 0.1
+    max_beams: 60
+    max_particles: 2000
+    min_particles: 500
+    set_initial_pose: True
+    theta_discretization: 210
+    transform_tolerance: 1.0
+    update_min_a: 0.2
+    update_min_d: 0.1
+
+bt_navigator:
+  ros__parameters:
+    use_sim_time: True
+    global_frame: map
+    robot_base_frame: base_link
+    odom_topic: /odom
+    bt_loop_duration: 10
+    default_server_timeout: 20
+    enable_groot_monitoring: True
+    groot_zmq_publisher_port: 1666
+    groot_zmq_server_port: 1667
+    # Specify the path to the BT xml file
+    # default_nav_through_poses_bt_xml: "path/to/navigate_through_poses_w_replanning_and_recovery.xml"
+    # default_nav_to_pose_bt_xml: "path/to/navigate_to_pose_w_replanning_and_recovery.xml"
+    plugin_lib_names:
+    - nav2_compute_path_to_pose_action_bt_node
+    - nav2_compute_path_through_poses_action_bt_node
+    - nav2_smooth_path_action_bt_node
+    - nav2_follow_path_action_bt_node
+    - nav2_spin_action_bt_node
+    - nav2_wait_action_bt_node
+    - nav2_assisted_teleop_action_bt_node
+    - nav2_back_up_action_bt_node
+    - nav2_drive_on_heading_bt_node
+    - nav2_clear_costmap_service_bt_node
+    - nav2_is_stuck_condition_bt_node
+    - nav2_goal_reached_condition_bt_node
+    - nav2_goal_updated_condition_bt_node
+    - nav2_globally_updated_goal_condition_bt_node
+    - nav2_is_path_valid_condition_bt_node
+    - nav2_initial_pose_received_condition_bt_node
+    - nav2_reinitialize_global_localization_service_bt_node
+    - nav2_rate_controller_bt_node
+    - nav2_distance_controller_bt_node
+    - nav2_speed_controller_bt_node
+    - nav2_truncate_path_action_bt_node
+    - nav2_truncate_path_local_action_bt_node
+    - nav2_goal_updater_node_bt_node
+    - nav2_recovery_node_bt_node
+    - nav2_pipeline_sequence_bt_node
+    - nav2_round_robin_node_bt_node
+    - nav2_transform_available_condition_bt_node
+    - nav2_time_expired_condition_bt_node
+    - nav2_path_expiring_timer_condition
+    - nav2_distance_traveled_condition_bt_node
+    - nav2_single_trigger_bt_node
+    - nav2_is_battery_low_condition_bt_node
+    - nav2_navigate_through_poses_action_bt_node
+    - nav2_navigate_to_pose_action_bt_node
+    - nav2_remove_passed_goals_action_bt_node
+    - nav2_planner_selector_bt_node
+    - nav2_controller_selector_bt_node
+    - nav2_goal_checker_selector_bt_node
+    - nav2_controller_cancel_bt_node
+    - nav2_path_longer_on_approach_bt_node
+    - nav2_wait_cancel_bt_node
+    - nav2_spin_cancel_bt_node
+    - nav2_back_up_cancel_bt_node
+    - nav2_assisted_teleop_cancel_bt_node
+    - nav2_drive_on_heading_cancel_bt_node
+```
+
+### Manipulation Integration
+
+For humanoid manipulation in simulation:
+
+```python
+# Example: Simple manipulation controller
+class ManipulationController(Node):
+    def __init__(self):
+        super().__init__('manipulation_controller')
+
+        # Arm control interfaces
+        self.left_arm_controller = self.create_publisher(
+            JointTrajectory, '/left_arm_controller/joint_trajectory', 10)
+
+        self.right_arm_controller = self.create_publisher(
+            JointTrajectory, '/right_arm_controller/joint_trajectory', 10)
+
+        # Object detection
+        self.object_sub = self.create_subscription(
+            ObjectDetectionArray, '/object_detections', self.object_callback, 10)
+
+    def move_arm_to_object(self, arm_side, object_pose):
+        """Move specified arm to reach an object"""
+        # Calculate inverse kinematics
+        joint_trajectory = self.calculate_ik_solution(arm_side, object_pose)
+
+        # Publish trajectory
+        if arm_side == 'left':
+            self.left_arm_controller.publish(joint_trajectory)
+        else:
+            self.right_arm_controller.publish(joint_trajectory)
+```
+
+## Best Practices for Humanoid Simulation
+
+### 1. Iterative Development
+
+- Start with simple models and basic movements
+- Gradually add complexity (sensors, controllers, environment)
+- Test each component individually before integration
+- Validate against real-world data when available
+
+### 2. Realistic Parameters
+
+- Use realistic mass and inertia values
+- Include sensor noise and limitations
+- Model actuator limitations (torque, speed, resolution)
+- Consider environmental factors (friction, terrain)
+
+### 3. Comprehensive Testing
+
+- Test in various environments
+- Validate stability under disturbances
+- Test sensor fusion algorithms
+- Verify controller performance limits
+
+### 4. Performance Monitoring
+
+- Monitor real-time factor consistently
+- Track resource usage (CPU, memory)
+- Measure control loop timing
+- Validate physics accuracy vs. performance trade-offs
+
+## Summary
+
+In this chapter, you've learned:
+- How to create stable humanoid models with proper mass distribution
+- Essential sensor integration for humanoid robots (IMU, force/torque, cameras)
+- Control system setup using ros2_control
+- Balance control algorithms for humanoid stability
+- Walking pattern generation and inverse kinematics
+- Advanced simulation techniques for multi-robot and sensor fusion
+- Performance optimization strategies
+- Debugging techniques for common humanoid simulation issues
+- Integration with navigation and manipulation systems
+
+Creating realistic and stable humanoid simulations requires attention to physics, control systems, and sensor integration. The techniques covered in this chapter provide a foundation for developing sophisticated humanoid robot simulations in Gazebo.
+
+## Exercises
+
+1. Create a complete humanoid model with all necessary sensors and controllers
+2. Implement a basic balance controller using IMU feedback
+3. Generate simple walking patterns and test in simulation
+4. Integrate navigation stack with your humanoid robot in simulation
+5. Create a multi-humanoid simulation with interaction scenarios
+
+<StarboardNotebook>
+```python
+# This would be an interactive code block for students to experiment with humanoid simulation
+# In a real implementation, this would connect to ROS 2 services
+# to interact with the Gazebo simulation
+```
+</StarboardNotebook>

@@ -1,0 +1,1163 @@
+---
+title: Synthetic Data Generation for AI Training in Humanoid Robotics
+sidebar_label: Synthetic Data Generation
+description: Generate synthetic data for training AI models in humanoid robotics using simulation environments
+keywords: [synthetic data, AI training, simulation, Isaac Sim, Gazebo, humanoid, computer vision]
+---
+
+# Synthetic Data Generation for AI Training in Humanoid Robotics
+
+## Introduction
+
+Synthetic data generation has become a cornerstone of modern AI development, particularly in robotics where real-world data collection can be expensive, time-consuming, and sometimes dangerous. For humanoid robotics, synthetic data provides a safe, scalable, and controllable environment for training AI models that can perceive, navigate, and interact with the world. This chapter explores the principles, tools, and techniques for generating high-quality synthetic data specifically for humanoid robotics applications.
+
+## The Importance of Synthetic Data in Humanoid Robotics
+
+### Challenges with Real-World Data
+
+Collecting real-world data for humanoid robots presents several challenges:
+
+1. **Safety Concerns**: Training robots in real environments can pose risks to the robot and humans
+2. **Data Scarcity**: Rare events and scenarios are difficult to capture
+3. **Annotation Costs**: Labeling real-world data is expensive and time-consuming
+4. **Environmental Control**: Real-world conditions are difficult to control and reproduce
+5. **Scalability**: Collecting large datasets is resource-intensive
+
+### Benefits of Synthetic Data
+
+Synthetic data addresses these challenges by providing:
+
+1. **Safety**: Training in simulation eliminates physical risks
+2. **Control**: Environmental conditions can be precisely controlled
+3. **Scalability**: Generate unlimited data with various conditions
+4. **Annotation**: Automatic ground truth generation
+5. **Diversity**: Create diverse scenarios including rare events
+6. **Cost-Effectiveness**: Reduce data collection and annotation costs
+
+## Synthetic Data Generation Tools and Frameworks
+
+### Isaac Sim for Synthetic Data
+
+NVIDIA Isaac Sim provides powerful tools for synthetic data generation:
+
+#### Domain Randomization
+
+Domain randomization is crucial for training robust AI models:
+
+```python
+# Isaac Sim synthetic data generation script
+import omni
+from omni.isaac.core import World
+from omni.isaac.core.utils.stage import add_reference_to_stage
+from omni.isaac.synthetic_utils import SyntheticDataHelper
+from omni.synthetic_utils.scripts.synthetic_data_capture import SyntheticDataCapture
+import numpy as np
+import random
+
+class HumanoidSyntheticDataGenerator:
+    def __init__(self):
+        self.world = World(stage_units_in_meters=1.0)
+        self.sd_helper = SyntheticDataHelper()
+        self.data_capture = SyntheticDataCapture()
+
+        # Domain randomization parameters
+        self.lighting_conditions = {
+            'intensity_range': (100, 1000),
+            'color_temperature_range': (3000, 8000),
+            'direction_range': (0, 360)
+        }
+
+        self.material_properties = {
+            'roughness_range': (0.0, 1.0),
+            'metallic_range': (0.0, 1.0),
+            'albedo_range': (0.0, 1.0)
+        }
+
+    def setup_scene(self):
+        """Setup scene with humanoid robot and objects"""
+        # Add ground plane
+        self.world.scene.add_default_ground_plane()
+
+        # Add humanoid robot
+        add_reference_to_stage(
+            usd_path="/path/to/humanoid_robot.usd",
+            prim_path="/World/Humanoid"
+        )
+
+        # Add random objects for interaction
+        self.add_random_objects()
+
+        # Setup cameras
+        self.setup_cameras()
+
+    def add_random_objects(self):
+        """Add objects with randomized properties"""
+        for i in range(10):  # Add 10 random objects
+            # Random position
+            x = random.uniform(-3, 3)
+            y = random.uniform(-3, 3)
+            z = 0.5  # Place on ground
+
+            # Random object type
+            obj_type = random.choice(['box', 'sphere', 'cylinder'])
+
+            # Random material properties
+            roughness = random.uniform(*self.material_properties['roughness_range'])
+            metallic = random.uniform(*self.material_properties['metallic_range'])
+
+            # Add object to stage
+            self.add_object(obj_type, (x, y, z), roughness, metallic)
+
+    def setup_cameras(self):
+        """Setup multiple cameras for different viewpoints"""
+        # Head camera
+        self.sd_helper.add_camera(
+            prim_path="/World/Humanoid/Cameras/HeadCamera",
+            resolution=(640, 480)
+        )
+
+        # Chest camera
+        self.sd_helper.add_camera(
+            prim_path="/World/Humanoid/Cameras/ChestCamera",
+            resolution=(640, 480)
+        )
+
+        # External camera for top-down view
+        self.sd_helper.add_camera(
+            prim_path="/World/ExternalCamera",
+            resolution=(1280, 720)
+        )
+
+    def randomize_environment(self):
+        """Apply domain randomization to the scene"""
+        # Randomize lighting
+        self.randomize_lighting()
+
+        # Randomize materials
+        self.randomize_materials()
+
+        # Randomize weather conditions (if supported)
+        self.randomize_weather()
+
+        # Randomize object positions and orientations
+        self.randomize_object_poses()
+
+    def randomize_lighting(self):
+        """Randomize lighting conditions"""
+        # Get all lights in the scene
+        lights = self.get_all_lights()
+
+        for light in lights:
+            # Randomize intensity
+            intensity = random.uniform(*self.lighting_conditions['intensity_range'])
+            light.GetIntensityAttr().Set(intensity)
+
+            # Randomize color temperature
+            color_temp = random.uniform(*self.lighting_conditions['color_temperature_range'])
+            light.GetColorAttr().Set(self.color_temperature_to_rgb(color_temp))
+
+    def randomize_materials(self):
+        """Randomize material properties"""
+        # Get all materials in the scene
+        materials = self.get_all_materials()
+
+        for material in materials:
+            # Randomize roughness
+            roughness = random.uniform(*self.material_properties['roughness_range'])
+            material.GetRoughnessAttr().Set(roughness)
+
+            # Randomize metallic
+            metallic = random.uniform(*self.material_properties['metallic_range'])
+            material.GetMetallicAttr().Set(metallic)
+
+    def capture_synthetic_data(self, num_samples=1000):
+        """Capture synthetic data with ground truth"""
+        for i in range(num_samples):
+            # Randomize environment
+            self.randomize_environment()
+
+            # Reset robot to random pose
+            self.randomize_robot_pose()
+
+            # Step simulation
+            self.world.step(render=True)
+
+            # Capture data from all cameras
+            for camera in self.sd_helper.get_cameras():
+                # Capture RGB image
+                rgb_image = self.sd_helper.get_rgb_data(camera)
+
+                # Capture depth image
+                depth_image = self.sd_helper.get_depth_data(camera)
+
+                # Capture segmentation masks
+                seg_masks = self.sd_helper.get_segmentation_data(camera)
+
+                # Capture pose data
+                pose_data = self.get_robot_pose_data()
+
+                # Save data with ground truth
+                self.save_data_sample(i, camera, rgb_image, depth_image, seg_masks, pose_data)
+
+    def save_data_sample(self, sample_id, camera, rgb, depth, seg, pose):
+        """Save synthetic data sample with metadata"""
+        import cv2
+        import json
+
+        # Create output directory
+        output_dir = f"synthetic_data/sample_{sample_id:06d}"
+        import os
+        os.makedirs(output_dir, exist_ok=True)
+
+        # Save RGB image
+        cv2.imwrite(f"{output_dir}/rgb_{camera}.png", cv2.cvtColor(rgb, cv2.COLOR_RGB2BGR))
+
+        # Save depth image
+        cv2.imwrite(f"{output_dir}/depth_{camera}.png", depth)
+
+        # Save segmentation
+        cv2.imwrite(f"{output_dir}/seg_{camera}.png", seg)
+
+        # Save pose data
+        with open(f"{output_dir}/pose_{camera}.json", 'w') as f:
+            json.dump(pose, f)
+
+def main():
+    generator = HumanoidSyntheticDataGenerator()
+    generator.setup_scene()
+    generator.capture_synthetic_data(num_samples=1000)
+
+    print("Synthetic data generation completed!")
+
+if __name__ == "__main__":
+    main()
+```
+
+### Gazebo Simulation for Data Generation
+
+Gazebo can also be used for synthetic data generation:
+
+```python
+# Gazebo synthetic data generation
+import rclpy
+from rclpy.node import Node
+from sensor_msgs.msg import Image, CameraInfo
+from cv_bridge import CvBridge
+import cv2
+import numpy as np
+import random
+
+class GazeboSyntheticDataNode(Node):
+    def __init__(self):
+        super().__init__('gazebo_synthetic_data_node')
+
+        # Initialize CV bridge
+        self.bridge = CvBridge()
+
+        # Create publishers for synthetic data
+        self.rgb_pub = self.create_publisher(Image, '/synthetic/rgb', 10)
+        self.depth_pub = self.create_publisher(Image, '/synthetic/depth', 10)
+        self.camera_info_pub = self.create_publisher(CameraInfo, '/synthetic/camera_info', 10)
+
+        # Timer for data generation
+        self.timer = self.create_timer(0.1, self.generate_data)  # 10 Hz
+
+        # Data counter
+        self.sample_count = 0
+
+        # Domain randomization parameters
+        self.domain_params = {
+            'lighting': {'min': 0.5, 'max': 2.0},
+            'color_shift': {'min': -0.1, 'max': 0.1},
+            'blur_range': {'min': 0, 'max': 3}
+        }
+
+    def generate_data(self):
+        """Generate synthetic data with randomized parameters"""
+        # Generate synthetic RGB image (simulated from Gazebo)
+        synthetic_rgb = self.create_synthetic_image()
+
+        # Apply domain randomization
+        randomized_rgb = self.apply_domain_randomization(synthetic_rgb)
+
+        # Generate corresponding depth data
+        synthetic_depth = self.create_synthetic_depth()
+
+        # Convert to ROS messages
+        rgb_msg = self.bridge.cv2_to_imgmsg(randomized_rgb, encoding="bgr8")
+        depth_msg = self.bridge.cv2_to_imgmsg(synthetic_depth, encoding="32FC1")
+
+        # Set timestamps
+        current_time = self.get_clock().now().to_msg()
+        rgb_msg.header.stamp = current_time
+        depth_msg.header.stamp = current_time
+        rgb_msg.header.frame_id = "synthetic_camera"
+        depth_msg.header.frame_id = "synthetic_camera"
+
+        # Publish data
+        self.rgb_pub.publish(rgb_msg)
+        self.depth_pub.publish(depth_msg)
+
+        # Publish camera info
+        self.publish_camera_info(current_time)
+
+        # Save for training dataset
+        self.save_sample(randomized_rgb, synthetic_depth)
+
+        self.sample_count += 1
+        self.get_logger().info(f"Generated sample {self.sample_count}")
+
+    def create_synthetic_image(self):
+        """Create synthetic image with random objects"""
+        # Create base image
+        height, width = 480, 640
+        img = np.zeros((height, width, 3), dtype=np.uint8)
+
+        # Add random shapes and objects
+        for _ in range(random.randint(3, 8)):
+            # Random shape type
+            shape_type = random.choice(['rectangle', 'circle', 'triangle'])
+
+            # Random position and size
+            x = random.randint(50, width - 50)
+            y = random.randint(50, height - 50)
+            size = random.randint(20, 100)
+
+            # Random color
+            color = (random.randint(0, 255), random.randint(0, 255), random.randint(0, 255))
+
+            if shape_type == 'rectangle':
+                cv2.rectangle(img, (x-size//2, y-size//2), (x+size//2, y+size//2), color, -1)
+            elif shape_type == 'circle':
+                cv2.circle(img, (x, y), size//2, color, -1)
+            elif shape_type == 'triangle':
+                points = np.array([
+                    [x, y-size//2],
+                    [x-size//2, y+size//2],
+                    [x+size//2, y+size//2]
+                ], np.int32)
+                cv2.fillPoly(img, [points], color)
+
+        return img
+
+    def apply_domain_randomization(self, img):
+        """Apply domain randomization techniques"""
+        # Random lighting adjustment
+        lighting_factor = random.uniform(
+            self.domain_params['lighting']['min'],
+            self.domain_params['lighting']['max']
+        )
+        img = np.clip(img.astype(np.float32) * lighting_factor, 0, 255).astype(np.uint8)
+
+        # Random color shifts
+        color_shift = random.uniform(
+            self.domain_params['color_shift']['min'],
+            self.domain_params['color_shift']['max']
+        )
+        img = np.clip(img.astype(np.float32) + color_shift * 255, 0, 255).astype(np.uint8)
+
+        # Random blur
+        blur_kernel = random.randint(
+            self.domain_params['blur_range']['min'],
+            self.domain_params['blur_range']['max']
+        )
+        if blur_kernel > 0:
+            img = cv2.GaussianBlur(img, (blur_kernel*2+1, blur_kernel*2+1), 0)
+
+        return img
+
+    def create_synthetic_depth(self):
+        """Create corresponding synthetic depth map"""
+        height, width = 480, 640
+        depth = np.zeros((height, width), dtype=np.float32)
+
+        # Create depth based on object distances
+        for _ in range(random.randint(3, 8)):
+            x = random.randint(50, width - 50)
+            y = random.randint(50, height - 50)
+            size = random.randint(20, 100)
+            distance = random.uniform(0.5, 10.0)  # meters
+
+            # Create circular depth region
+            y_grid, x_grid = np.ogrid[:height, :width]
+            mask = (x_grid - x)**2 + (y_grid - y)**2 <= (size//2)**2
+            depth[mask] = distance
+
+        return depth
+
+    def publish_camera_info(self, timestamp):
+        """Publish camera info message"""
+        info_msg = CameraInfo()
+        info_msg.header.stamp = timestamp
+        info_msg.header.frame_id = "synthetic_camera"
+        info_msg.width = 640
+        info_msg.height = 480
+        info_msg.distortion_model = "plumb_bob"
+
+        # Camera intrinsic parameters
+        info_msg.k = [500.0, 0.0, 320.0,  # fx, 0, cx
+                      0.0, 500.0, 240.0,  # 0, fy, cy
+                      0.0, 0.0, 1.0]      # 0, 0, 1
+
+        self.camera_info_pub.publish(info_msg)
+
+    def save_sample(self, rgb, depth):
+        """Save sample to training dataset"""
+        import os
+        dataset_dir = "synthetic_dataset"
+        os.makedirs(dataset_dir, exist_ok=True)
+
+        # Save RGB and depth images
+        cv2.imwrite(f"{dataset_dir}/rgb_{self.sample_count:06d}.png", rgb)
+        cv2.imwrite(f"{dataset_dir}/depth_{self.sample_count:06d}.png", depth)
+
+def main(args=None):
+    rclpy.init(args=args)
+    node = GazeboSyntheticDataNode()
+
+    try:
+        rclpy.spin(node)
+    except KeyboardInterrupt:
+        pass
+    finally:
+        node.destroy_node()
+        rclpy.shutdown()
+
+if __name__ == '__main__':
+    main()
+```
+
+## Types of Synthetic Data for Humanoid Robotics
+
+### 1. RGB Images with Annotations
+
+For computer vision tasks, generate RGB images with various annotations:
+
+```python
+# Generate RGB images with bounding box annotations
+def generate_annotated_images(generator, num_samples=1000):
+    """Generate RGB images with bounding box annotations"""
+    for i in range(num_samples):
+        # Capture RGB image
+        rgb_image = generator.get_rgb_image()
+
+        # Generate bounding boxes for objects
+        bboxes = generator.get_object_bboxes()
+
+        # Save image and annotations
+        save_annotated_image(rgb_image, bboxes, f"rgb_annotated_{i:06d}")
+
+        # Apply random augmentations
+        augmented_img, augmented_bboxes = apply_augmentations(rgb_image, bboxes)
+        save_annotated_image(augmented_img, augmented_bboxes, f"rgb_augmented_{i:06d}")
+
+def save_annotated_image(image, bboxes, filename):
+    """Save image with bounding box annotations in YOLO format"""
+    import cv2
+
+    # Save image
+    cv2.imwrite(f"images/{filename}.jpg", cv2.cvtColor(image, cv2.COLOR_RGB2BGR))
+
+    # Save annotations in YOLO format
+    with open(f"labels/{filename}.txt", 'w') as f:
+        for bbox in bboxes:
+            # Convert to YOLO format (normalized center_x, center_y, width, height)
+            center_x = (bbox['xmin'] + bbox['xmax']) / 2 / image.shape[1]
+            center_y = (bbox['ymin'] + bbox['ymax']) / 2 / image.shape[0]
+            width = (bbox['xmax'] - bbox['xmin']) / image.shape[1]
+            height = (bbox['ymax'] - bbox['ymin']) / image.shape[0]
+
+            f.write(f"{bbox['class_id']} {center_x} {center_y} {width} {height}\n")
+```
+
+### 2. Depth and Point Cloud Data
+
+For 3D perception and navigation:
+
+```python
+# Generate depth and point cloud data
+def generate_depth_data(generator, num_samples=1000):
+    """Generate depth images and point clouds"""
+    for i in range(num_samples):
+        # Capture depth image
+        depth_image = generator.get_depth_image()
+
+        # Convert to point cloud
+        point_cloud = depth_to_pointcloud(depth_image, generator.camera_intrinsics)
+
+        # Save depth image
+        save_depth_image(depth_image, f"depth_{i:06d}")
+
+        # Save point cloud
+        save_pointcloud(point_cloud, f"pointcloud_{i:06d}")
+
+def depth_to_pointcloud(depth_image, camera_intrinsics):
+    """Convert depth image to point cloud"""
+    import numpy as np
+
+    height, width = depth_image.shape
+    fx, fy = camera_intrinsics['fx'], camera_intrinsics['fy']
+    cx, cy = camera_intrinsics['cx'], camera_intrinsics['cy']
+
+    # Create coordinate grids
+    x_coords, y_coords = np.meshgrid(np.arange(width), np.arange(height))
+
+    # Convert to 3D coordinates
+    z_coords = depth_image
+    x_coords = (x_coords - cx) * z_coords / fx
+    y_coords = (y_coords - cy) * z_coords / fy
+
+    # Stack coordinates
+    points = np.stack([x_coords, y_coords, z_coords], axis=-1)
+
+    # Reshape to point cloud format
+    point_cloud = points.reshape(-1, 3)
+
+    # Remove invalid points (where depth is 0)
+    valid_points = point_cloud[point_cloud[:, 2] > 0]
+
+    return valid_points
+```
+
+### 3. Semantic and Instance Segmentation
+
+For scene understanding and object manipulation:
+
+```python
+# Generate segmentation data
+def generate_segmentation_data(generator, num_samples=1000):
+    """Generate semantic and instance segmentation masks"""
+    for i in range(num_samples):
+        # Capture segmentation mask
+        seg_mask = generator.get_segmentation_mask()
+
+        # Generate semantic segmentation
+        semantic_mask = create_semantic_mask(seg_mask)
+
+        # Generate instance segmentation
+        instance_mask = create_instance_mask(seg_mask)
+
+        # Save masks
+        save_semantic_mask(semantic_mask, f"semantic_{i:06d}")
+        save_instance_mask(instance_mask, f"instance_{i:06d}")
+
+def create_semantic_mask(seg_mask):
+    """Create semantic segmentation mask from instance segmentation"""
+    # Map instance IDs to semantic classes
+    semantic_map = np.zeros_like(seg_mask)
+
+    # Define mapping from instance ID to semantic class
+    instance_to_semantic = {
+        1: 0,   # background
+        2: 1,   # humanoid robot
+        3: 2,   # table
+        4: 3,   # chair
+        5: 4,   # cup
+        # Add more mappings as needed
+    }
+
+    for instance_id, semantic_id in instance_to_semantic.items():
+        semantic_map[seg_mask == instance_id] = semantic_id
+
+    return semantic_map
+```
+
+## Domain Randomization Techniques
+
+### Lighting Randomization
+
+Randomize lighting conditions to improve model robustness:
+
+```python
+class LightingRandomizer:
+    def __init__(self):
+        self.light_properties = {
+            'intensity_range': (100, 2000),
+            'color_temperature_range': (3000, 8000),
+            'direction_range': (0, 360)
+        }
+
+    def randomize_lighting(self, stage):
+        """Randomize lighting in the scene"""
+        # Get all lights
+        lights = self.get_all_lights(stage)
+
+        for light in lights:
+            # Randomize intensity
+            intensity = random.uniform(*self.light_properties['intensity_range'])
+            light.GetIntensityAttr().Set(intensity)
+
+            # Randomize color temperature
+            color_temp = random.uniform(*self.light_properties['color_temperature_range'])
+            light.GetColorAttr().Set(self.color_temperature_to_rgb(color_temp))
+
+            # Randomize direction (for directional lights)
+            direction = random.uniform(*self.light_properties['direction_range'])
+            # Apply direction transformation
+
+    def color_temperature_to_rgb(self, temperature):
+        """Convert color temperature to RGB values"""
+        # Implementation of color temperature to RGB conversion
+        # This is a simplified version
+        temperature = temperature / 100
+        if temperature <= 66:
+            red = 255
+            green = temperature
+            green = 99.4708025861 * math.log(green) - 161.1195681661
+        else:
+            red = temperature - 60
+            red = 329.698727446 * (red ** -0.1332047592)
+            green = temperature - 60
+            green = 288.1221695283 * (green ** -0.0755148492)
+
+        blue = 255 if temperature >= 66 else temperature - 10
+        blue = 138.5177312231 * math.log(blue) - 305.0447927307 if temperature < 19 else 255
+
+        return (max(0, min(255, red))/255,
+                max(0, min(255, green))/255,
+                max(0, min(255, blue))/255)
+```
+
+### Material Randomization
+
+Randomize material properties to improve generalization:
+
+```python
+class MaterialRandomizer:
+    def __init__(self):
+        self.material_properties = {
+            'roughness_range': (0.0, 1.0),
+            'metallic_range': (0.0, 1.0),
+            'albedo_range': (0.0, 1.0),
+            'specular_range': (0.0, 1.0)
+        }
+
+    def randomize_materials(self, stage):
+        """Randomize material properties in the scene"""
+        materials = self.get_all_materials(stage)
+
+        for material in materials:
+            # Randomize roughness
+            roughness = random.uniform(*self.material_properties['roughness_range'])
+            material.GetRoughnessAttr().Set(roughness)
+
+            # Randomize metallic
+            metallic = random.uniform(*self.material_properties['metallic_range'])
+            material.GetMetallicAttr().Set(metallic)
+
+            # Randomize albedo
+            albedo = random.uniform(*self.material_properties['albedo_range'])
+            material.GetDiffuseColorAttr().Set(Gf.Vec3f(albedo, albedo, albedo))
+
+            # Randomize specular
+            specular = random.uniform(*self.material_properties['specular_range'])
+            material.GetSpecularColorAttr().Set(Gf.Vec3f(specular, specular, specular))
+```
+
+## Synthetic Data Pipeline for Humanoid AI
+
+### Complete Data Generation Pipeline
+
+```python
+# Complete synthetic data pipeline
+class HumanoidSyntheticDataPipeline:
+    def __init__(self, config_file):
+        self.config = self.load_config(config_file)
+        self.generator = self.initialize_generator()
+        self.randomizers = self.initialize_randomizers()
+        self.annotators = self.initialize_annotators()
+
+    def initialize_generator(self):
+        """Initialize the synthetic data generator"""
+        if self.config['generator'] == 'isaac_sim':
+            return IsaacSimGenerator(self.config)
+        elif self.config['generator'] == 'gazebo':
+            return GazeboGenerator(self.config)
+        else:
+            raise ValueError(f"Unknown generator: {self.config['generator']}")
+
+    def initialize_randomizers(self):
+        """Initialize domain randomization components"""
+        return {
+            'lighting': LightingRandomizer(),
+            'materials': MaterialRandomizer(),
+            'objects': ObjectRandomizer(),
+            'weather': WeatherRandomizer()
+        }
+
+    def initialize_annotators(self):
+        """Initialize annotation components"""
+        return {
+            'bounding_boxes': BoundingBoxAnnotator(),
+            'segmentation': SegmentationAnnotator(),
+            'keypoints': KeypointAnnotator(),
+            'poses': PoseAnnotator()
+        }
+
+    def generate_dataset(self, num_samples, output_dir):
+        """Generate complete synthetic dataset"""
+        os.makedirs(output_dir, exist_ok=True)
+        os.makedirs(f"{output_dir}/images", exist_ok=True)
+        os.makedirs(f"{output_dir}/labels", exist_ok=True)
+        os.makedirs(f"{output_dir}/depth", exist_ok=True)
+
+        for i in range(num_samples):
+            # Randomize environment
+            self.randomize_environment()
+
+            # Capture data
+            sample_data = self.generator.capture_data()
+
+            # Annotate data
+            annotations = self.annotate_data(sample_data)
+
+            # Save data
+            self.save_sample(sample_data, annotations, f"{output_dir}/sample_{i:06d}")
+
+            if i % 100 == 0:
+                print(f"Generated {i}/{num_samples} samples")
+
+    def randomize_environment(self):
+        """Apply domain randomization to environment"""
+        for name, randomizer in self.randomizers.items():
+            randomizer.randomize(self.generator.get_stage())
+
+    def annotate_data(self, sample_data):
+        """Generate annotations for sample data"""
+        annotations = {}
+
+        for name, annotator in self.annotators.items():
+            annotations[name] = annotator.annotate(sample_data)
+
+        return annotations
+
+    def save_sample(self, sample_data, annotations, sample_path):
+        """Save a complete sample with all data and annotations"""
+        # Save images
+        for cam_name, img_data in sample_data['images'].items():
+            cv2.imwrite(f"{sample_path}_rgb_{cam_name}.png", img_data)
+
+        # Save depth
+        for cam_name, depth_data in sample_data['depth'].items():
+            cv2.imwrite(f"{sample_path}_depth_{cam_name}.png", depth_data)
+
+        # Save annotations
+        with open(f"{sample_path}_annotations.json", 'w') as f:
+            json.dump(annotations, f, indent=2)
+
+def main():
+    # Initialize pipeline
+    pipeline = HumanoidSyntheticDataPipeline("config/synthetic_data_config.yaml")
+
+    # Generate dataset
+    pipeline.generate_dataset(
+        num_samples=10000,
+        output_dir="synthetic_humanoid_dataset"
+    )
+
+if __name__ == "__main__":
+    main()
+```
+
+## Quality Assurance for Synthetic Data
+
+### Data Quality Metrics
+
+Implement quality checks for synthetic data:
+
+```python
+class SyntheticDataQualityChecker:
+    def __init__(self):
+        self.metrics = {
+            'sharpness': self.calculate_sharpness,
+            'brightness': self.calculate_brightness,
+            'contrast': self.calculate_contrast,
+            'color_balance': self.calculate_color_balance
+        }
+
+    def check_sample_quality(self, image, annotations):
+        """Check quality of synthetic sample"""
+        quality_scores = {}
+
+        for metric_name, metric_func in self.metrics.items():
+            quality_scores[metric_name] = metric_func(image)
+
+        # Overall quality score
+        overall_score = np.mean(list(quality_scores.values()))
+
+        # Check annotation quality
+        annotation_quality = self.check_annotation_quality(annotations)
+
+        return {
+            'quality_scores': quality_scores,
+            'overall_score': overall_score,
+            'annotation_quality': annotation_quality,
+            'is_acceptable': overall_score > 0.7 and annotation_quality > 0.8
+        }
+
+    def calculate_sharpness(self, image):
+        """Calculate image sharpness using Laplacian variance"""
+        gray = cv2.cvtColor(image, cv2.COLOR_RGB2GRAY)
+        laplacian_var = cv2.Laplacian(gray, cv2.CV_64F).var()
+        # Normalize to 0-1 range
+        return min(laplacian_var / 1000.0, 1.0)
+
+    def calculate_brightness(self, image):
+        """Calculate image brightness"""
+        gray = cv2.cvtColor(image, cv2.COLOR_RGB2GRAY)
+        mean_brightness = np.mean(gray) / 255.0
+        # Return score closer to 0.5 (mid-range brightness)
+        return 1.0 - abs(mean_brightness - 0.5) * 2
+
+    def calculate_contrast(self, image):
+        """Calculate image contrast"""
+        gray = cv2.cvtColor(image, cv2.COLOR_RGB2GRAY)
+        std_dev = np.std(gray) / 255.0
+        # Normalize to 0-1 range
+        return min(std_dev * 2, 1.0)  # Multiply by 2 to increase sensitivity
+
+    def calculate_color_balance(self, image):
+        """Calculate color balance across channels"""
+        r_mean = np.mean(image[:, :, 0])
+        g_mean = np.mean(image[:, :, 1])
+        b_mean = np.mean(image[:, :, 2])
+
+        # Calculate balance (lower is better)
+        color_diff = abs(r_mean - g_mean) + abs(g_mean - b_mean) + abs(r_mean - b_mean)
+        # Convert to score (0-1, higher is better)
+        return max(0, 1 - color_diff / 765)  # 765 = 255*3, maximum possible difference
+
+    def check_annotation_quality(self, annotations):
+        """Check quality of annotations"""
+        if not annotations:
+            return 0.0
+
+        # Check for valid annotations
+        valid_annotations = 0
+        total_annotations = 0
+
+        for ann_type, ann_data in annotations.items():
+            if ann_data is not None:
+                valid_annotations += 1
+            total_annotations += 1
+
+        return valid_annotations / total_annotations if total_annotations > 0 else 0.0
+```
+
+## Integration with AI Training Pipelines
+
+### Data Loading for Training
+
+Create data loaders that can handle synthetic data:
+
+```python
+import torch
+from torch.utils.data import Dataset, DataLoader
+import torchvision.transforms as transforms
+
+class SyntheticHumanoidDataset(Dataset):
+    def __init__(self, data_dir, transform=None, use_real_data_ratio=0.2):
+        self.data_dir = data_dir
+        self.transform = transform
+        self.use_real_data_ratio = use_real_data_ratio
+
+        # Load sample paths
+        self.sample_paths = self.load_sample_paths()
+
+        # Initialize real data loader if needed
+        if use_real_data_ratio > 0:
+            self.real_dataset = self.initialize_real_dataset()
+
+    def load_sample_paths(self):
+        """Load paths to all synthetic samples"""
+        import glob
+        rgb_files = glob.glob(f"{self.data_dir}/images/*.png")
+        sample_paths = []
+
+        for rgb_file in rgb_files:
+            sample_id = os.path.basename(rgb_file).split('.')[0]
+            sample_paths.append({
+                'rgb': rgb_file,
+                'depth': f"{self.data_dir}/depth/{sample_id}.png",
+                'labels': f"{self.data_dir}/labels/{sample_id}.txt"
+            })
+
+        return sample_paths
+
+    def __len__(self):
+        return len(self.sample_paths)
+
+    def __getitem__(self, idx):
+        # Randomly decide to use real or synthetic data
+        if random.random() < self.use_real_data_ratio and hasattr(self, 'real_dataset'):
+            return self.real_dataset[random.randint(0, len(self.real_dataset)-1)]
+
+        # Load synthetic sample
+        sample_path = self.sample_paths[idx]
+
+        # Load RGB image
+        rgb_image = cv2.imread(sample_path['rgb'])
+        rgb_image = cv2.cvtColor(rgb_image, cv2.COLOR_BGR2RGB)
+
+        # Load depth image
+        depth_image = cv2.imread(sample_path['depth'], cv2.IMREAD_UNCHANGED)
+        if depth_image is None:
+            depth_image = np.zeros((480, 640), dtype=np.float32)
+
+        # Load labels
+        labels = self.load_labels(sample_path['labels'])
+
+        # Apply transforms
+        if self.transform:
+            rgb_image = self.transform(rgb_image)
+            depth_image = torch.from_numpy(depth_image).float()
+
+        return {
+            'rgb': rgb_image,
+            'depth': depth_image,
+            'labels': labels,
+            'sample_id': idx
+        }
+
+    def load_labels(self, label_path):
+        """Load labels from file"""
+        if not os.path.exists(label_path):
+            return torch.zeros(0, 5)  # Empty tensor
+
+        with open(label_path, 'r') as f:
+            lines = f.readlines()
+
+        labels = []
+        for line in lines:
+            parts = line.strip().split()
+            if len(parts) == 5:
+                class_id, center_x, center_y, width, height = map(float, parts)
+                labels.append([class_id, center_x, center_y, width, height])
+
+        return torch.tensor(labels)
+
+def create_synthetic_data_loader(data_dir, batch_size=32, use_real_ratio=0.1):
+    """Create data loader for synthetic humanoid dataset"""
+    transform = transforms.Compose([
+        transforms.ToTensor(),
+        transforms.Normalize(mean=[0.485, 0.456, 0.406],
+                           std=[0.229, 0.224, 0.225])
+    ])
+
+    dataset = SyntheticHumanoidDataset(
+        data_dir=data_dir,
+        transform=transform,
+        use_real_data_ratio=use_real_ratio
+    )
+
+    return DataLoader(
+        dataset,
+        batch_size=batch_size,
+        shuffle=True,
+        num_workers=4,
+        pin_memory=True
+    )
+```
+
+## Real-to-Sim and Sim-to-Real Transfer
+
+### Domain Adaptation Techniques
+
+```python
+class DomainAdaptationModule:
+    def __init__(self):
+        self.sim_to_real_model = self.build_adaptation_model()
+
+    def build_adaptation_model(self):
+        """Build model to adapt synthetic data to real data style"""
+        import torch.nn as nn
+
+        class AdaptationNet(nn.Module):
+            def __init__(self):
+                super().__init__()
+                self.conv1 = nn.Conv2d(3, 32, 3, padding=1)
+                self.conv2 = nn.Conv2d(32, 32, 3, padding=1)
+                self.conv3 = nn.Conv2d(32, 3, 3, padding=1)
+                self.relu = nn.ReLU()
+
+            def forward(self, x):
+                x = self.relu(self.conv1(x))
+                x = self.relu(self.conv2(x))
+                x = torch.sigmoid(self.conv3(x))
+                return x
+
+        return AdaptationNet()
+
+    def adapt_synthetic_to_real(self, synthetic_image):
+        """Adapt synthetic image to look more like real data"""
+        with torch.no_grad():
+            adapted_image = self.sim_to_real_model(synthetic_image)
+        return adapted_image
+```
+
+## Performance Optimization
+
+### Efficient Data Generation
+
+Optimize synthetic data generation for speed:
+
+```python
+class OptimizedSyntheticGenerator:
+    def __init__(self):
+        self.batch_size = 8
+        self.num_processes = 4
+        self.use_gpu = True
+
+    def generate_batch(self, num_samples):
+        """Generate batch of synthetic samples efficiently"""
+        # Use multi-processing for parallel generation
+        import multiprocessing as mp
+
+        with mp.Pool(self.num_processes) as pool:
+            # Divide work among processes
+            samples_per_process = num_samples // self.num_processes
+            args = [(i, samples_per_process) for i in range(self.num_processes)]
+
+            results = pool.starmap(self.generate_samples_process, args)
+
+        # Combine results
+        all_samples = []
+        for result in results:
+            all_samples.extend(result)
+
+        return all_samples
+
+    def generate_samples_process(self, process_id, num_samples):
+        """Generate samples in a separate process"""
+        samples = []
+        for i in range(num_samples):
+            # Generate individual sample
+            sample = self.generate_single_sample(process_id, i)
+            samples.append(sample)
+        return samples
+
+    def generate_single_sample(self, process_id, sample_id):
+        """Generate a single synthetic sample"""
+        # Apply randomization
+        self.randomize_scene()
+
+        # Capture data
+        rgb = self.capture_rgb()
+        depth = self.capture_depth()
+        seg = self.capture_segmentation()
+
+        # Create sample
+        sample = {
+            'rgb': rgb,
+            'depth': depth,
+            'segmentation': seg,
+            'process_id': process_id,
+            'sample_id': sample_id
+        }
+
+        return sample
+```
+
+## Best Practices for Synthetic Data Generation
+
+### 1. Validation Strategy
+
+Always validate synthetic data quality:
+
+```python
+def validate_synthetic_data(generator, real_data_stats):
+    """Validate synthetic data against real data statistics"""
+    synthetic_samples = generator.generate_samples(100)
+
+    # Calculate synthetic data statistics
+    synthetic_stats = calculate_data_statistics(synthetic_samples)
+
+    # Compare with real data
+    similarity_score = compare_statistics(real_data_stats, synthetic_stats)
+
+    if similarity_score < 0.7:
+        print("Warning: Synthetic data significantly differs from real data")
+        # Adjust domain randomization parameters
+        generator.adjust_randomization_parameters()
+
+    return similarity_score
+```
+
+### 2. Progressive Domain Randomization
+
+Start with realistic conditions and gradually increase randomization:
+
+```python
+class ProgressiveRandomizer:
+    def __init__(self):
+        self.randomization_level = 0.0
+        self.max_level = 1.0
+        self.step_size = 0.1
+
+    def increase_randomization(self):
+        """Gradually increase domain randomization"""
+        self.randomization_level = min(
+            self.randomization_level + self.step_size,
+            self.max_level
+        )
+
+        # Apply current randomization level
+        self.apply_scaled_randomization()
+```
+
+### 3. Curriculum Learning with Synthetic Data
+
+Use synthetic data in a curriculum learning approach:
+
+```python
+def curriculum_synthetic_training(model, curriculum_phases):
+    """Train model with progressively more challenging synthetic data"""
+    for phase_idx, phase_config in enumerate(curriculum_phases):
+        print(f"Starting curriculum phase {phase_idx + 1}")
+
+        # Configure synthetic data generator for this phase
+        generator = configure_generator_for_phase(phase_config)
+
+        # Generate data for this phase
+        dataset = generate_phase_dataset(generator, phase_config['num_samples'])
+
+        # Train on this phase's data
+        train_model_phase(model, dataset, phase_config['epochs'])
+
+        # Evaluate performance
+        performance = evaluate_model(model, validation_set)
+
+        print(f"Phase {phase_idx + 1} performance: {performance}")
+```
+
+## Summary
+
+In this chapter, you've learned:
+- The importance of synthetic data in humanoid robotics AI development
+- Various tools and frameworks for synthetic data generation (Isaac Sim, Gazebo)
+- Different types of synthetic data needed for humanoid robotics (RGB, depth, segmentation, etc.)
+- Domain randomization techniques to improve model generalization
+- Complete synthetic data pipeline implementation
+- Quality assurance methods for synthetic data
+- Integration with AI training pipelines
+- Domain adaptation techniques for sim-to-real transfer
+- Performance optimization strategies
+- Best practices for effective synthetic data generation
+
+Synthetic data generation is crucial for developing robust AI systems for humanoid robots, providing safe, scalable, and diverse training data that enables robots to operate effectively in real-world environments.
+
+## Exercises
+
+1. Set up Isaac Sim for synthetic data generation with domain randomization
+2. Create a synthetic dataset for humanoid object detection
+3. Implement domain randomization techniques for lighting and materials
+4. Build a data quality checker for synthetic images
+5. Integrate synthetic data into a real AI training pipeline
+
+<StarboardNotebook>
+```python
+# This would be an interactive code block for students to experiment with synthetic data generation
+# In a real implementation, this would connect to simulation services
+# to generate and validate synthetic data
+```
+</StarboardNotebook>

@@ -1,0 +1,1152 @@
+---
+title: Whisper-GPT to ROS Planning Pipeline for Voice-Controlled Humanoid Robots
+sidebar_label: Whisper-GPT to ROS Planning
+description: Implement voice-to-action pipeline using Whisper, GPT, and ROS for humanoid robot control
+keywords: [Whisper, GPT, voice control, ROS, planning, humanoid, AI]
+---
+
+# Whisper-GPT to ROS Planning Pipeline for Voice-Controlled Humanoid Robots
+
+## Introduction
+
+Voice-controlled humanoid robots represent the pinnacle of human-robot interaction, requiring sophisticated AI systems that can understand natural language commands and translate them into executable robotic actions. This chapter explores the integration of OpenAI's Whisper for speech recognition, GPT for natural language understanding, and ROS for robotic action planning to create an end-to-end voice-controlled humanoid robot system.
+
+The voice-to-action pipeline involves several key components: converting speech to text, understanding the intent and entities in the command, planning appropriate robotic actions, and executing those actions through the robot's control systems. This integration enables natural, conversational interaction with humanoid robots.
+
+## Understanding the Voice-to-Action Pipeline
+
+### Pipeline Architecture
+
+The complete voice-to-action pipeline consists of:
+
+1. **Speech Recognition**: Converting spoken commands to text using Whisper
+2. **Natural Language Understanding**: Interpreting the command using GPT
+3. **Action Planning**: Converting high-level commands to low-level ROS actions
+4. **Execution**: Executing planned actions through ROS control interfaces
+5. **Feedback**: Providing status updates and confirmation to the user
+
+### System Requirements
+
+For effective voice-to-action processing:
+
+- **Real-time Processing**: Low latency for natural interaction
+- **Robust Recognition**: Handling various accents and background noise
+- **Context Understanding**: Maintaining conversation context
+- **Safety Constraints**: Ensuring safe action execution
+- **Multi-modal Integration**: Combining voice with vision and other sensors
+
+## Whisper Integration for Speech Recognition
+
+### Setting up Whisper
+
+Whisper is OpenAI's automatic speech recognition (ASR) system that can transcribe speech to text with high accuracy:
+
+```python
+# Install required packages
+# pip install openai-whisper torch torchaudio
+
+import whisper
+import torch
+import numpy as np
+import rospy
+from std_msgs.msg import String
+from audio_common_msgs.msg import AudioData
+
+class WhisperSpeechRecognizer:
+    def __init__(self, model_size="base"):
+        # Load Whisper model
+        self.model = whisper.load_model(model_size)
+
+        # Audio processing parameters
+        self.sample_rate = 16000
+        self.audio_buffer = []
+
+        # ROS setup
+        self.audio_sub = rospy.Subscriber("/audio/audio", AudioData, self.audio_callback)
+        self.transcript_pub = rospy.Publisher("/voice/transcript", String, queue_size=10)
+
+        # Processing parameters
+        self.processing_threshold = 0.5  # seconds of audio to process
+        self.silence_threshold = 0.01    # amplitude threshold for silence detection
+
+    def audio_callback(self, audio_msg):
+        """Receive audio data and add to processing buffer"""
+        # Convert audio data to numpy array
+        audio_array = np.frombuffer(audio_msg.data, dtype=np.int16).astype(np.float32) / 32768.0
+
+        # Add to buffer
+        self.audio_buffer.extend(audio_array)
+
+        # Process if enough audio is accumulated
+        if len(self.audio_buffer) >= self.sample_rate * self.processing_threshold:
+            self.process_audio()
+
+    def process_audio(self):
+        """Process accumulated audio and generate transcript"""
+        if len(self.audio_buffer) == 0:
+            return
+
+        # Convert to torch tensor
+        audio_tensor = torch.from_numpy(np.array(self.audio_buffer))
+
+        # Transcribe using Whisper
+        result = self.model.transcribe(audio_tensor.numpy())
+        transcript = result["text"].strip()
+
+        # Check if transcript is meaningful (not just noise or silence)
+        if len(transcript) > 3 and not self.is_likely_noise(transcript):
+            # Publish transcript
+            transcript_msg = String()
+            transcript_msg.data = transcript
+            self.transcript_pub.publish(transcript_msg)
+
+            rospy.loginfo(f"Transcribed: {transcript}")
+
+        # Clear buffer
+        self.audio_buffer = []
+
+    def is_likely_noise(self, transcript):
+        """Check if transcript is likely just noise or silence"""
+        # Check for common noise patterns
+        noise_patterns = ["um", "uh", "ah", "...", "hmm", "eh"]
+        return transcript.lower().strip() in noise_patterns
+
+    def transcribe_file(self, audio_file_path):
+        """Transcribe an audio file directly"""
+        result = self.model.transcribe(audio_file_path)
+        return result["text"]
+
+def main():
+    rospy.init_node('whisper_speech_recognizer')
+    recognizer = WhisperSpeechRecognizer()
+
+    try:
+        rospy.spin()
+    except KeyboardInterrupt:
+        rospy.loginfo("Whisper speech recognizer shutting down")
+
+if __name__ == "__main__":
+    main()
+```
+
+### Optimizing Whisper for Real-time Processing
+
+For humanoid robot applications, optimize Whisper for real-time performance:
+
+```python
+class OptimizedWhisperRecognizer:
+    def __init__(self, model_size="small"):
+        # Use smaller model for faster processing
+        self.model = whisper.load_model(model_size)
+
+        # Initialize with common humanoid commands to improve recognition
+        self.initial_prompt = (
+            "find pick up bring to me turn on off open close "
+            "move go walk stop start continue help please thank you"
+        )
+
+        # Audio processing parameters
+        self.chunk_duration = 2.0  # Process 2-second chunks
+        self.sample_rate = 16000
+        self.chunk_size = int(self.chunk_duration * self.sample_rate)
+
+        # VAD (Voice Activity Detection) parameters
+        self.energy_threshold = 0.02
+        self.silence_duration = 0.5  # Wait for 0.5s of silence before processing
+
+    def process_with_context(self, audio_data, initial_prompt=None):
+        """Process audio with contextual prompting"""
+        if initial_prompt is None:
+            initial_prompt = self.initial_prompt
+
+        # Transcribe with initial prompt for better accuracy
+        result = self.model.transcribe(
+            audio_data,
+            initial_prompt=initial_prompt,
+            language="en"
+        )
+
+        return result["text"]
+
+    def continuous_recognition(self):
+        """Continuous recognition with VAD"""
+        # Implementation for continuous audio processing
+        # with voice activity detection
+        pass
+```
+
+## GPT Integration for Natural Language Understanding
+
+### Setting up GPT for Command Interpretation
+
+Integrate GPT to understand natural language commands and extract structured information:
+
+```python
+import openai
+import json
+import rospy
+from std_msgs.msg import String
+from geometry_msgs.msg import Pose
+
+class GPTCommandInterpreter:
+    def __init__(self, api_key=None):
+        if api_key:
+            openai.api_key = api_key
+        else:
+            # Load from environment or config
+            import os
+            openai.api_key = os.getenv("OPENAI_API_KEY")
+
+        # Publisher for interpreted commands
+        self.command_pub = rospy.Publisher("/parsed_commands", String, queue_size=10)
+
+        # Subscriber for voice transcripts
+        self.transcript_sub = rospy.Subscriber("/voice/transcript", String, self.transcript_callback)
+
+        # System prompt for humanoid robot command understanding
+        self.system_prompt = """
+        You are a command interpreter for a humanoid robot. Your role is to understand natural language commands and convert them into structured robot actions.
+
+        Commands may include:
+        - Navigation: "Go to the kitchen", "Walk to the table"
+        - Manipulation: "Pick up the red cup", "Open the door"
+        - Interaction: "Wave hello", "Point to the object"
+        - Complex tasks: "Find the blue ball and bring it to me"
+
+        Respond in JSON format with the following structure:
+        {
+            "action_type": "navigation|manipulation|interaction|complex",
+            "target_object": "object to interact with (if any)",
+            "target_location": "location to go to (if any)",
+            "parameters": {"additional": "parameters"},
+            "confidence": 0.0-1.0
+        }
+
+        Only respond with valid JSON, no other text.
+        """
+
+    def transcript_callback(self, msg):
+        """Process voice transcript and interpret command"""
+        transcript = msg.data
+
+        try:
+            response = openai.ChatCompletion.create(
+                model="gpt-3.5-turbo",  # or gpt-4 for better accuracy
+                messages=[
+                    {"role": "system", "content": self.system_prompt},
+                    {"role": "user", "content": f"Command: {transcript}"}
+                ],
+                temperature=0.1,  # Low temperature for consistent responses
+                max_tokens=200
+            )
+
+            # Extract and parse JSON response
+            response_text = response.choices[0].message['content'].strip()
+
+            # Clean up response to extract JSON (remove any markdown formatting)
+            if response_text.startswith('```json'):
+                response_text = response_text[7:]  # Remove ```json
+            if response_text.endswith('```'):
+                response_text = response_text[:-3]  # Remove ```
+
+            command_data = json.loads(response_text)
+
+            # Validate and publish command
+            if self.validate_command(command_data):
+                command_msg = String()
+                command_msg.data = json.dumps(command_data)
+                self.command_pub.publish(command_msg)
+
+                rospy.loginfo(f"Parsed command: {command_data}")
+            else:
+                rospy.logwarn(f"Invalid command structure: {command_data}")
+
+        except json.JSONDecodeError:
+            rospy.logerr(f"Failed to parse GPT response as JSON: {response_text}")
+        except Exception as e:
+            rospy.logerr(f"Error processing transcript: {e}")
+
+    def validate_command(self, command_data):
+        """Validate the structure and content of the command"""
+        required_fields = ["action_type"]
+        valid_action_types = ["navigation", "manipulation", "interaction", "complex"]
+
+        # Check required fields
+        for field in required_fields:
+            if field not in command_data:
+                return False
+
+        # Check action type validity
+        if command_data["action_type"] not in valid_action_types:
+            return False
+
+        return True
+
+    def interpret_command_with_context(self, command, context=None):
+        """Interpret command with additional context"""
+        context_prompt = self.system_prompt
+        if context:
+            context_prompt += f"\nAdditional context: {context}"
+
+        response = openai.ChatCompletion.create(
+            model="gpt-3.5-turbo",
+            messages=[
+                {"role": "system", "content": context_prompt},
+                {"role": "user", "content": f"Command: {command}"}
+            ],
+            temperature=0.1,
+            max_tokens=200
+        )
+
+        return json.loads(response.choices[0].message['content'].strip())
+```
+
+### Custom GPT Prompt Engineering for Humanoid Robots
+
+Create specialized prompts for better humanoid robot command understanding:
+
+```python
+class HumanoidCommandPromptEngineer:
+    def __init__(self):
+        self.prompts = {
+            "navigation": {
+                "system": """
+                You are a navigation planner for a humanoid robot. Convert natural language navigation commands into structured navigation goals.
+
+                Examples:
+                - "Go to the kitchen" -> {"action": "navigate", "location": "kitchen", "frame": "map"}
+                - "Walk to the table" -> {"action": "navigate", "location": "table", "frame": "map"}
+                - "Move near the couch" -> {"action": "navigate", "location": "couch", "frame": "map", "distance": 1.0}
+
+                Always respond with valid JSON only.
+                """,
+                "user_template": "Navigation command: {command}"
+            },
+            "manipulation": {
+                "system": """
+                You are a manipulation planner for a humanoid robot. Convert natural language manipulation commands into structured manipulation goals.
+
+                Examples:
+                - "Pick up the red cup" -> {"action": "grasp", "object": "red cup", "arm": "right"}
+                - "Open the door" -> {"action": "manipulate", "object": "door", "action_type": "open"}
+                - "Hand me the book" -> {"action": "deliver", "object": "book", "target": "user"}
+
+                Always respond with valid JSON only.
+                """,
+                "user_template": "Manipulation command: {command}"
+            },
+            "complex": {
+                "system": """
+                You are a complex task planner for a humanoid robot. Break down complex commands into sequences of simpler actions.
+
+                Examples:
+                - "Find the red cup and bring it to me" -> [{"find": "red cup"}, {"grasp": "red cup"}, {"navigate": "to user"}, {"deliver": "red cup"}]
+                - "Go to the kitchen, get water, and come back" -> [{"navigate": "kitchen"}, {"grasp": "water bottle"}, {"navigate": "to user"}]
+
+                Always respond with valid JSON only.
+                """,
+                "user_template": "Complex command: {command}"
+            }
+        }
+
+    def get_specialized_prompt(self, command_type, command):
+        """Get specialized prompt for specific command type"""
+        if command_type in self.prompts:
+            prompt = self.prompts[command_type]
+            return prompt["system"], prompt["user_template"].format(command=command)
+        else:
+            # Default to general prompt
+            return self.prompts["navigation"]["system"], f"Command: {command}"
+```
+
+## ROS Planning Integration
+
+### Converting GPT Output to ROS Actions
+
+Create a bridge between GPT's structured output and ROS action execution:
+
+```python
+import actionlib
+from move_base_msgs.msg import MoveBaseAction, MoveBaseGoal
+from geometry_msgs.msg import Pose, Point, Quaternion
+from moveit_msgs.msg import MoveGroupAction, MoveGroupGoal
+from std_msgs.msg import String
+import json
+
+class ROSCommandExecutor:
+    def __init__(self):
+        # Initialize action clients
+        self.move_base_client = actionlib.SimpleActionClient('move_base', MoveBaseAction)
+        self.move_group_client = actionlib.SimpleActionClient('move_group', MoveGroupAction)
+
+        # Wait for servers
+        rospy.loginfo("Waiting for move_base server...")
+        self.move_base_client.wait_for_server()
+        rospy.loginfo("Waiting for move_group server...")
+        self.move_group_client.wait_for_server()
+
+        # Subscriber for parsed commands
+        self.command_sub = rospy.Subscriber("/parsed_commands", String, self.command_callback)
+
+        # Publisher for execution status
+        self.status_pub = rospy.Publisher("/execution_status", String, queue_size=10)
+
+        # Location database for known locations
+        self.location_database = self.load_location_database()
+
+    def load_location_database(self):
+        """Load known locations and their coordinates"""
+        # This could be loaded from a YAML file or parameter server
+        return {
+            "kitchen": {"x": 2.0, "y": 1.0, "theta": 0.0},
+            "living_room": {"x": 0.0, "y": 0.0, "theta": 0.0},
+            "bedroom": {"x": -2.0, "y": 1.0, "theta": 3.14},
+            "table": {"x": 1.0, "y": 0.5, "theta": 1.57},
+            "couch": {"x": -1.0, "y": -0.5, "theta": 0.0}
+        }
+
+    def command_callback(self, msg):
+        """Process parsed command and execute"""
+        try:
+            command_data = json.loads(msg.data)
+
+            # Execute based on action type
+            if command_data["action_type"] == "navigation":
+                self.execute_navigation_command(command_data)
+            elif command_data["action_type"] == "manipulation":
+                self.execute_manipulation_command(command_data)
+            elif command_data["action_type"] == "interaction":
+                self.execute_interaction_command(command_data)
+            elif command_data["action_type"] == "complex":
+                self.execute_complex_command(command_data)
+            else:
+                rospy.logerr(f"Unknown action type: {command_data['action_type']}")
+
+        except json.JSONDecodeError:
+            rospy.logerr(f"Invalid JSON in command: {msg.data}")
+
+    def execute_navigation_command(self, command_data):
+        """Execute navigation command"""
+        target_location = command_data.get("target_location")
+
+        if target_location in self.location_database:
+            location = self.location_database[target_location]
+
+            # Create navigation goal
+            goal = MoveBaseGoal()
+            goal.target_pose.header.frame_id = "map"
+            goal.target_pose.header.stamp = rospy.Time.now()
+
+            goal.target_pose.pose.position = Point(location["x"], location["y"], 0.0)
+
+            # Convert theta to quaternion
+            from tf.transformations import quaternion_from_euler
+            quat = quaternion_from_euler(0, 0, location["theta"])
+            goal.target_pose.pose.orientation = Quaternion(*quat)
+
+            # Send goal
+            rospy.loginfo(f"Sending navigation goal to {target_location}")
+            self.move_base_client.send_goal(goal)
+
+            # Wait for result
+            finished_within_time = self.move_base_client.wait_for_result(rospy.Duration(60.0))
+
+            if not finished_within_time:
+                self.move_base_client.cancel_goal()
+                rospy.logerr("Navigation goal took too long to complete")
+                return False
+
+            state = self.move_base_client.get_state()
+            result = self.move_base_client.get_result()
+
+            if state == actionlib.GoalStatus.SUCCEEDED:
+                rospy.loginfo(f"Successfully reached {target_location}")
+                self.publish_status(f"Arrived at {target_location}")
+                return True
+            else:
+                rospy.logerr(f"Failed to reach {target_location}, state: {state}")
+                self.publish_status(f"Failed to reach {target_location}")
+                return False
+        else:
+            rospy.logerr(f"Unknown location: {target_location}")
+            self.publish_status(f"Unknown location: {target_location}")
+            return False
+
+    def execute_manipulation_command(self, command_data):
+        """Execute manipulation command"""
+        target_object = command_data.get("target_object")
+
+        if target_object:
+            # This is a simplified example - real implementation would involve
+            # object detection, grasp planning, and manipulation execution
+            rospy.loginfo(f"Planning manipulation for {target_object}")
+
+            # For now, just publish status
+            self.publish_status(f"Manipulation planned for {target_object}")
+            return True
+        else:
+            rospy.logerr("No target object specified for manipulation")
+            self.publish_status("No target object specified")
+            return False
+
+    def execute_interaction_command(self, command_data):
+        """Execute interaction command"""
+        # Handle interaction commands like waving, pointing, etc.
+        rospy.loginfo(f"Executing interaction: {command_data}")
+        self.publish_status(f"Performing interaction")
+        return True
+
+    def execute_complex_command(self, command_data):
+        """Execute complex multi-step command"""
+        # Break down complex command into sequence of simpler commands
+        # This is a simplified example - real implementation would be more sophisticated
+        rospy.loginfo(f"Executing complex command: {command_data}")
+
+        # For now, just acknowledge the command
+        self.publish_status(f"Complex command received: {command_data.get('description', 'Unknown')}")
+        return True
+
+    def publish_status(self, status):
+        """Publish execution status"""
+        status_msg = String()
+        status_msg.data = status
+        self.status_pub.publish(status_msg)
+
+def main():
+    rospy.init_node('ros_command_executor')
+    executor = ROSCommandExecutor()
+
+    try:
+        rospy.spin()
+    except KeyboardInterrupt:
+        rospy.loginfo("ROS command executor shutting down")
+
+if __name__ == "__main__":
+    main()
+```
+
+## Voice Command Processing Pipeline
+
+### Complete Voice-to-Action System
+
+Combine all components into a complete system:
+
+```python
+class VoiceToActionPipeline:
+    def __init__(self):
+        # Initialize components
+        self.whisper_recognizer = WhisperSpeechRecognizer(model_size="small")
+        self.gpt_interpreter = GPTCommandInterpreter()
+        self.ros_executor = ROSCommandExecutor()
+
+        # Initialize ROS node
+        rospy.init_node('voice_to_action_pipeline')
+
+        # Publishers for system status
+        self.status_pub = rospy.Publisher('/voice_system_status', String, queue_size=10)
+
+        # System state
+        self.system_active = True
+
+    def start_pipeline(self):
+        """Start the complete voice-to-action pipeline"""
+        rospy.loginfo("Starting voice-to-action pipeline...")
+
+        # Start all components
+        self.publish_status("Pipeline started and ready for commands")
+
+        try:
+            rospy.spin()
+        except KeyboardInterrupt:
+            rospy.loginfo("Voice-to-action pipeline shutting down")
+            self.system_active = False
+
+    def publish_status(self, status):
+        """Publish system status"""
+        status_msg = String()
+        status_msg.data = status
+        self.status_pub.publish(status_msg)
+
+    def handle_error(self, error_msg):
+        """Handle system errors gracefully"""
+        rospy.logerr(error_msg)
+        self.publish_status(f"Error: {error_msg}")
+
+        # Implement error recovery strategies
+        # For example, switch to manual control mode
+        pass
+
+def main():
+    pipeline = VoiceToActionPipeline()
+    pipeline.start_pipeline()
+
+if __name__ == "__main__":
+    main()
+```
+
+## Advanced Voice Command Features
+
+### Context-Aware Command Processing
+
+Implement context-aware processing for more natural interactions:
+
+```python
+class ContextAwareVoiceProcessor:
+    def __init__(self):
+        self.conversation_context = {
+            "current_location": "unknown",
+            "last_object": None,
+            "task_history": [],
+            "user_preferences": {}
+        }
+
+        self.gpt_interpreter = GPTCommandInterpreter()
+        self.location_memory = LocationMemory()
+
+    def process_command_with_context(self, command):
+        """Process command using conversation context"""
+        # Update context based on command
+        self.update_context_from_command(command)
+
+        # Create contextual prompt for GPT
+        context_prompt = self.build_context_prompt()
+
+        # Interpret command with context
+        interpreted_command = self.gpt_interpreter.interpret_command_with_context(
+            command, context_prompt
+        )
+
+        return interpreted_command
+
+    def build_context_prompt(self):
+        """Build context prompt for GPT"""
+        context_info = f"""
+        Current robot location: {self.conversation_context['current_location']}
+        Last interacted object: {self.conversation_context['last_object']}
+        Recent task history: {self.conversation_context['task_history'][-5:]}
+        """
+
+        return context_info
+
+    def update_context_from_command(self, command):
+        """Update conversation context based on command"""
+        # Extract location information
+        if "at" in command or "in" in command:
+            # Simple location extraction (in practice, use NLP)
+            possible_locations = ["kitchen", "living room", "bedroom", "office"]
+            for loc in possible_locations:
+                if loc in command.lower():
+                    self.conversation_context["current_location"] = loc
+                    break
+
+        # Extract object information
+        if "the" in command:
+            # Simple object extraction
+            words = command.lower().split()
+            for i, word in enumerate(words):
+                if word == "the" and i + 1 < len(words):
+                    self.conversation_context["last_object"] = words[i + 1]
+                    break
+
+class LocationMemory:
+    def __init__(self):
+        self.known_locations = {}
+        self.location_history = []
+
+    def learn_location(self, location_name, coordinates):
+        """Learn a new location"""
+        self.known_locations[location_name] = coordinates
+        self.location_history.append(location_name)
+
+    def get_location_coordinates(self, location_name):
+        """Get coordinates for a known location"""
+        return self.known_locations.get(location_name)
+
+    def update_location(self, location_name, new_coordinates):
+        """Update coordinates for an existing location"""
+        if location_name in self.known_locations:
+            self.known_locations[location_name] = new_coordinates
+```
+
+## Safety and Validation
+
+### Command Validation and Safety Checks
+
+Implement safety measures for voice-controlled robots:
+
+```python
+class SafetyValidator:
+    def __init__(self):
+        self.forbidden_commands = [
+            "self-destruct", "harm", "dangerous", "unsafe"
+        ]
+        self.safety_zones = []  # Define safe areas
+        self.robot_capabilities = self.get_robot_capabilities()
+
+    def validate_command(self, command_data):
+        """Validate command for safety and feasibility"""
+        # Check for forbidden commands
+        if self.contains_forbidden_content(command_data):
+            return False, "Command contains forbidden content"
+
+        # Check if command is within robot capabilities
+        if not self.is_command_feasible(command_data):
+            return False, "Command is not feasible with current robot capabilities"
+
+        # Check if target location is safe
+        if "target_location" in command_data:
+            if not self.is_location_safe(command_data["target_location"]):
+                return False, f"Target location {command_data['target_location']} is not safe"
+
+        # Check if target object is safe to interact with
+        if "target_object" in command_data:
+            if not self.is_object_safe(command_data["target_object"]):
+                return False, f"Target object {command_data['target_object']} may not be safe to interact with"
+
+        return True, "Command is safe and valid"
+
+    def contains_forbidden_content(self, command_data):
+        """Check if command contains forbidden content"""
+        command_str = json.dumps(command_data).lower()
+        for forbidden in self.forbidden_commands:
+            if forbidden in command_str:
+                return True
+        return False
+
+    def is_command_feasible(self, command_data):
+        """Check if command is feasible with robot capabilities"""
+        action_type = command_data.get("action_type")
+
+        if action_type == "navigation":
+            return self.robot_capabilities.get("can_navigate", False)
+        elif action_type == "manipulation":
+            return self.robot_capabilities.get("can_manipulate", False)
+        elif action_type == "interaction":
+            return self.robot_capabilities.get("can_interact", False)
+
+        return True  # Assume other actions are feasible
+
+    def is_location_safe(self, location_name):
+        """Check if location is safe for robot navigation"""
+        # Check if location is in safety zones
+        # In practice, this would check against a map of safe/unsafe areas
+        return True  # Simplified for example
+
+    def is_object_safe(self, object_name):
+        """Check if object is safe to interact with"""
+        # In practice, this would check against a database of safe objects
+        return True  # Simplified for example
+
+    def get_robot_capabilities(self):
+        """Get robot's current capabilities"""
+        return {
+            "can_navigate": True,
+            "can_manipulate": True,
+            "can_interact": True,
+            "max_payload": 2.0,  # kg
+            "navigation_speed": 0.5,  # m/s
+            "manipulation_precision": "medium"
+        }
+```
+
+## Performance Optimization
+
+### Real-time Processing Optimization
+
+Optimize the pipeline for real-time performance:
+
+```python
+import threading
+import queue
+from collections import deque
+
+class OptimizedVoicePipeline:
+    def __init__(self):
+        # Processing queues
+        self.audio_queue = queue.Queue(maxsize=10)
+        self.transcript_queue = queue.Queue(maxsize=5)
+        self.command_queue = queue.Queue(maxsize=3)
+
+        # Processing threads
+        self.audio_thread = None
+        self.nlp_thread = None
+        self.execution_thread = None
+
+        # Performance metrics
+        self.processing_times = deque(maxlen=100)
+
+        # Initialize components
+        self.whisper_model = whisper.load_model("small")
+        self.safety_validator = SafetyValidator()
+
+    def start_processing_pipeline(self):
+        """Start all processing threads"""
+        # Start audio processing thread
+        self.audio_thread = threading.Thread(target=self.audio_processing_loop)
+        self.audio_thread.daemon = True
+        self.audio_thread.start()
+
+        # Start NLP processing thread
+        self.nlp_thread = threading.Thread(target=self.nlp_processing_loop)
+        self.nlp_thread.daemon = True
+        self.nlp_thread.start()
+
+        # Start execution thread
+        self.execution_thread = threading.Thread(target=self.execution_loop)
+        self.execution_thread.daemon = True
+        self.execution_thread.start()
+
+    def audio_processing_loop(self):
+        """Continuous audio processing loop"""
+        while True:
+            try:
+                # Get audio from queue
+                audio_data = self.audio_queue.get(timeout=1.0)
+
+                # Process with Whisper
+                start_time = time.time()
+                transcript = self.whisper_model.transcribe(audio_data)
+                processing_time = time.time() - start_time
+
+                # Add to transcript queue
+                self.transcript_queue.put(transcript)
+
+                # Track performance
+                self.processing_times.append(processing_time)
+
+            except queue.Empty:
+                continue
+            except Exception as e:
+                rospy.logerr(f"Audio processing error: {e}")
+
+    def nlp_processing_loop(self):
+        """Continuous NLP processing loop"""
+        while True:
+            try:
+                # Get transcript from queue
+                transcript = self.transcript_queue.get(timeout=1.0)
+
+                # Process with GPT
+                start_time = time.time()
+                command = self.process_with_gpt(transcript)
+                processing_time = time.time() - start_time
+
+                # Validate command
+                is_safe, reason = self.safety_validator.validate_command(command)
+
+                if is_safe:
+                    self.command_queue.put(command)
+                else:
+                    rospy.logwarn(f"Unsafe command blocked: {reason}")
+
+                # Track performance
+                self.processing_times.append(processing_time)
+
+            except queue.Empty:
+                continue
+            except Exception as e:
+                rospy.logerr(f"NLP processing error: {e}")
+
+    def execution_loop(self):
+        """Continuous execution loop"""
+        while True:
+            try:
+                # Get command from queue
+                command = self.command_queue.get(timeout=1.0)
+
+                # Execute command
+                start_time = time.time()
+                success = self.execute_command(command)
+                execution_time = time.time() - start_time
+
+                # Track performance
+                self.processing_times.append(execution_time)
+
+            except queue.Empty:
+                continue
+            except Exception as e:
+                rospy.logerr(f"Execution error: {e}")
+
+    def get_performance_metrics(self):
+        """Get current performance metrics"""
+        if not self.processing_times:
+            return {"avg_processing_time": 0.0, "throughput": 0.0}
+
+        avg_time = sum(self.processing_times) / len(self.processing_times)
+        throughput = len(self.processing_times) / min(len(self.processing_times), 10)  # commands per 10 seconds
+
+        return {
+            "avg_processing_time": avg_time,
+            "throughput": throughput,
+            "queue_sizes": {
+                "audio": self.audio_queue.qsize(),
+                "transcript": self.transcript_queue.qsize(),
+                "command": self.command_queue.qsize()
+            }
+        }
+```
+
+## Integration with Humanoid Robot Systems
+
+### Complete Integration Example
+
+Create a complete integration example that ties everything together:
+
+```python
+#!/usr/bin/env python3
+import rospy
+import actionlib
+from std_msgs.msg import String
+from audio_common_msgs.msg import AudioData
+import whisper
+import openai
+import json
+import time
+import threading
+import queue
+
+class HumanoidVoiceController:
+    def __init__(self):
+        # Initialize ROS node
+        rospy.init_node('humanoid_voice_controller')
+
+        # Initialize Whisper model
+        rospy.loginfo("Loading Whisper model...")
+        self.whisper_model = whisper.load_model("small")
+
+        # Setup ROS publishers and subscribers
+        self.audio_sub = rospy.Subscriber("/audio/audio", AudioData, self.audio_callback)
+        self.transcript_pub = rospy.Publisher("/voice/transcript", String, queue_size=10)
+        self.command_pub = rospy.Publisher("/parsed_commands", String, queue_size=10)
+        self.status_pub = rospy.Publisher("/voice_system_status", String, queue_size=10)
+
+        # Processing queues
+        self.audio_queue = queue.Queue(maxsize=10)
+        self.transcript_queue = queue.Queue(maxsize=5)
+
+        # Processing threads
+        self.processing_thread = None
+        self.nlp_thread = None
+
+        # System state
+        self.system_active = True
+        self.last_transcript_time = time.time()
+
+        # Setup OpenAI API key
+        import os
+        openai.api_key = os.getenv("OPENAI_API_KEY")
+
+        rospy.loginfo("Humanoid Voice Controller initialized")
+
+    def audio_callback(self, audio_msg):
+        """Handle incoming audio data"""
+        try:
+            # Convert audio data to format suitable for Whisper
+            import numpy as np
+            audio_array = np.frombuffer(audio_msg.data, dtype=np.int16).astype(np.float32) / 32768.0
+
+            # Add to processing queue
+            if not self.audio_queue.full():
+                self.audio_queue.put(audio_array)
+            else:
+                rospy.logwarn("Audio queue full, dropping frame")
+
+        except Exception as e:
+            rospy.logerr(f"Error processing audio: {e}")
+
+    def start_processing(self):
+        """Start the processing threads"""
+        # Audio processing thread
+        self.processing_thread = threading.Thread(target=self.audio_processing_loop)
+        self.processing_thread.daemon = True
+        self.processing_thread.start()
+
+        # NLP processing thread
+        self.nlp_thread = threading.Thread(target=self.nlp_processing_loop)
+        self.nlp_thread.daemon = True
+        self.nlp_thread.start()
+
+        rospy.loginfo("Processing threads started")
+
+    def audio_processing_loop(self):
+        """Process audio data with Whisper"""
+        while self.system_active:
+            try:
+                # Get audio from queue
+                audio_data = self.audio_queue.get(timeout=0.1)
+
+                # Transcribe with Whisper
+                result = self.whisper_model.transcribe(audio_data)
+                transcript = result["text"].strip()
+
+                if len(transcript) > 3:  # Meaningful transcript
+                    # Publish transcript
+                    transcript_msg = String()
+                    transcript_msg.data = transcript
+                    self.transcript_pub.publish(transcript_msg)
+
+                    rospy.loginfo(f"Transcribed: {transcript}")
+
+                    # Add to NLP queue
+                    if not self.transcript_queue.full():
+                        self.transcript_queue.put(transcript)
+
+                    self.last_transcript_time = time.time()
+
+            except queue.Empty:
+                continue
+            except Exception as e:
+                rospy.logerr(f"Audio processing error: {e}")
+
+    def nlp_processing_loop(self):
+        """Process transcripts with GPT and generate commands"""
+        while self.system_active:
+            try:
+                # Get transcript from queue
+                transcript = self.transcript_queue.get(timeout=0.1)
+
+                # Process with GPT
+                command = self.process_with_gpt(transcript)
+
+                if command:
+                    # Publish command
+                    command_msg = String()
+                    command_msg.data = json.dumps(command)
+                    self.command_pub.publish(command_msg)
+
+                    rospy.loginfo(f"Generated command: {command}")
+
+            except queue.Empty:
+                continue
+            except Exception as e:
+                rospy.logerr(f"NLP processing error: {e}")
+
+    def process_with_gpt(self, transcript):
+        """Process transcript with GPT to generate structured command"""
+        try:
+            system_prompt = """
+            You are a command interpreter for a humanoid robot. Convert natural language commands into structured robot actions.
+
+            Respond in JSON format:
+            {
+                "action_type": "navigation|manipulation|interaction",
+                "target": "target_object_or_location",
+                "parameters": {}
+            }
+            """
+
+            response = openai.ChatCompletion.create(
+                model="gpt-3.5-turbo",
+                messages=[
+                    {"role": "system", "content": system_prompt},
+                    {"role": "user", "content": f"Command: {transcript}"}
+                ],
+                temperature=0.1,
+                max_tokens=150
+            )
+
+            response_text = response.choices[0].message['content'].strip()
+
+            # Clean response and parse JSON
+            if response_text.startswith('```json'):
+                response_text = response_text[7:-3]
+            elif response_text.startswith('```'):
+                response_text = response_text[3:-3]
+
+            return json.loads(response_text)
+
+        except Exception as e:
+            rospy.logerr(f"GPT processing error: {e}")
+            return None
+
+    def publish_status(self, status):
+        """Publish system status"""
+        status_msg = String()
+        status_msg.data = status
+        self.status_pub.publish(status_msg)
+
+    def run(self):
+        """Main run loop"""
+        self.start_processing()
+
+        rate = rospy.Rate(1)  # 1 Hz status updates
+
+        while not rospy.is_shutdown() and self.system_active:
+            # Publish status
+            active_time = time.time() - self.last_transcript_time
+            status = f"Active, last transcript {active_time:.1f}s ago"
+            self.publish_status(status)
+
+            rate.sleep()
+
+def main():
+    try:
+        controller = HumanoidVoiceController()
+        controller.run()
+    except rospy.ROSInterruptException:
+        rospy.loginfo("Humanoid Voice Controller interrupted")
+    except KeyboardInterrupt:
+        rospy.loginfo("Humanoid Voice Controller stopped by user")
+
+if __name__ == "__main__":
+    main()
+```
+
+## Best Practices and Considerations
+
+### Privacy and Security
+
+When implementing voice control systems, consider privacy and security:
+
+```python
+class SecureVoiceController:
+    def __init__(self):
+        self.encryption_enabled = True
+        self.data_retention_policy = 30  # days
+        self.privacy_mode = False
+
+    def process_voice_command_securely(self, audio_data):
+        """Process voice command with privacy considerations"""
+        if self.privacy_mode:
+            # Use local processing only
+            return self.process_locally(audio_data)
+        else:
+            # Can use cloud services with proper consent
+            return self.process_with_cloud(audio_data)
+
+    def anonymize_data(self, transcript):
+        """Remove personally identifiable information"""
+        # Implement PII removal
+        # Replace names, addresses, etc. with generic placeholders
+        return transcript
+```
+
+## Summary
+
+In this chapter, you've learned:
+- How to integrate Whisper for speech recognition in humanoid robots
+- How to use GPT for natural language understanding and command interpretation
+- How to convert high-level commands to ROS actions and planning
+- Complete pipeline architecture from voice input to robot action
+- Context-aware processing for more natural interactions
+- Safety and validation mechanisms for voice-controlled robots
+- Performance optimization techniques for real-time processing
+- Privacy and security considerations for voice systems
+
+The Whisper-GPT to ROS planning pipeline enables sophisticated voice-controlled humanoid robots that can understand natural language commands and execute them safely and effectively.
+
+## Exercises
+
+1. Implement the complete voice-to-action pipeline with Whisper and GPT
+2. Create a context-aware command processor for more natural interactions
+3. Implement safety validation for voice commands
+4. Optimize the pipeline for real-time performance
+5. Test the system with various natural language commands
+
+<StarboardNotebook>
+```python
+# This would be an interactive code block for students to experiment with voice-to-action pipeline
+# In a real implementation, this would connect to ROS services
+# to test voice recognition and command execution
+```
+</StarboardNotebook>

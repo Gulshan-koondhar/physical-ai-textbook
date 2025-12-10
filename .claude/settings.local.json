@@ -4,13 +4,8 @@
       "Bash(npm install --save path-browserify)",
       "Bash(npm start)",
       "Bash(git add:*)",
-      "Bash(git commit -m \"\nInitial commit: Physical AI & Humanoid Robotics textbook project\n\n- Created comprehensive specification for interactive textbook\n- Implemented 4-module curriculum (ROS 2, Simulation, AI, VLA)\n- Added capstone project with voice-controlled humanoid demo\n- Included hardware guide and supporting documentation\n- Set up Docusaurus-based documentation structure with 14+ chapters\n- Created implementation plan with 63 tasks across 7 phases\n- Added URDF models, launch files, and code examples\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n\nCo-Authored-By: Claude Sonnet 4.5 <noreply@anthropic.com>\n\")",
-      "Bash(gh repo list)",
-      "Bash(git push -u origin 001-physical-ai)",
-      "Bash(git remote set-url origin https://github.com/Gulshan-koondhar/physical-ai-textbook.git)",
-      "Bash(npm run deploy --dry-run)",
-      "Bash(set GIT_USER=Gulshan-koondhar)",
-      "Bash(npm run deploy)"
+      "Bash(npm run build)",
+      "Bash(dir .github /s)"
     ],
     "deny": [],
     "ask": []
