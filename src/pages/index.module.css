@@ -1,0 +1,401 @@
+/**
+ * CSS files with the .module.css suffix will be treated as CSS modules
+ * locally scoped CSS for the component
+ */
+
+.hero {
+  padding: 4rem 0;
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(135deg, #f5f7fa 0%, #e4edf9 100%);
+}
+
+[data-theme='dark'] .hero {
+  background: linear-gradient(135deg, #0d1117 0%, #161b22 100%);
+}
+
+.heroInner {
+  margin: 0 auto;
+  max-width: 1200px;
+  padding: 0 20px;
+}
+
+.heroRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 3rem;
+}
+
+.heroContent {
+  flex: 1;
+  min-width: 0;
+}
+
+.heroImage {
+  flex: 0 0 300px;
+}
+
+.bookCover {
+  width: 100%;
+  height: 400px;
+  background: linear-gradient(45deg, #2e8555, #205d3b);
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.2), 0 10px 10px -5px rgba(0, 0, 0, 0.1);
+  position: relative;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.bookCover::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+  transform: rotate(45deg);
+  animation: shine 3s infinite;
+}
+
+@keyframes shine {
+  0% { transform: rotate(45deg) translateX(-100%); }
+  100% { transform: rotate(45deg) translateX(100%); }
+}
+
+.bookCoverContent {
+  text-align: center;
+  z-index: 1;
+  padding: 2rem;
+}
+
+.bookIcon {
+  font-size: 4rem;
+  margin-bottom: 1rem;
+}
+
+.bookTitle {
+  font-size: 1.8rem;
+  font-weight: bold;
+  color: white;
+  margin-bottom: 0.5rem;
+}
+
+.bookSubtitle {
+  font-size: 1.2rem;
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.heroProjectTagline {
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin: 0;
+  color: #1c1e21;
+}
+
+[data-theme='dark'] .heroProjectTagline {
+  color: #ffffff;
+}
+
+.heroProjectSubtitle {
+  font-size: 1.3rem;
+  margin: 1rem 0 2rem;
+  color: #6a737d;
+}
+
+[data-theme='dark'] .heroProjectSubtitle {
+  color: #a3aab5;
+}
+
+.indexCtas {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.section {
+  padding: 4rem 0;
+  background-color: transparent;
+}
+
+[data-theme='dark'] .section {
+  background-color: transparent;
+}
+
+.sectionTitle {
+  text-align: center;
+  font-size: 2.5rem;
+  margin-bottom: 1rem;
+  color: #1c1e21;
+}
+
+[data-theme='dark'] .sectionTitle {
+  color: #ffffff;
+}
+
+.sectionDescription {
+  text-align: center;
+  font-size: 1.2rem;
+  color: #6a737d;
+  max-width: 800px;
+  margin: 0 auto 3rem;
+}
+
+[data-theme='dark'] .sectionDescription {
+  color: #a3aab5;
+}
+
+.featureCard {
+  background-color: #ffffff;
+  border-radius: 12px;
+  padding: 2rem;
+  height: 100%;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  text-align: center;
+  border: 1px solid #e1e4e8;
+}
+
+[data-theme='dark'] .featureCard {
+  background-color: #161b22;
+  border: 1px solid #30363d;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.15);
+}
+
+.featureCard:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+}
+
+[data-theme='dark'] .featureCard:hover {
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.25);
+}
+
+.featureIcon {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+}
+
+.featureCard h3 {
+  font-size: 1.5rem;
+  margin: 1rem 0 0.5rem;
+  color: #1c1e21;
+}
+
+[data-theme='dark'] .featureCard h3 {
+  color: #ffffff;
+}
+
+.featureCard p {
+  color: #6a737d;
+  margin-bottom: 1rem;
+}
+
+[data-theme='dark'] .featureCard p {
+  color: #a3aab5;
+}
+
+.featureCard a {
+  color: #2e8555;
+  font-weight: 500;
+  text-decoration: none;
+}
+
+[data-theme='dark'] .featureCard a {
+  color: #25c2a0;
+}
+
+.traditionalList {
+  background-color: #fff8f8;
+  padding: 1.5rem;
+  border-radius: 8px;
+  border-left: 4px solid #ff6b6b;
+}
+
+[data-theme='dark'] .traditionalList {
+  background-color: #2d1e26;
+  border-left: 4px solid #ff6b6b;
+}
+
+.aiNativeList {
+  background-color: #f0fff4;
+  padding: 1.5rem;
+  border-radius: 8px;
+  border-left: 4px solid #51cf66;
+}
+
+[data-theme='dark'] .aiNativeList {
+  background-color: #1c2e21;
+  border-left: 4px solid #51cf66;
+}
+
+.milestone {
+  text-align: center;
+  padding: 2rem 1.5rem;
+  background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+  border-radius: 12px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+  border: 1px solid #e1e4e8;
+  height: 100%;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+[data-theme='dark'] .milestone {
+  background: linear-gradient(135deg, #161b22 0%, #0d1117 100%);
+  border: 1px solid #30363d;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.15);
+}
+
+.milestone:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+}
+
+[data-theme='dark'] .milestone:hover {
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.25);
+}
+
+.milestoneNumber {
+  width: 60px;
+  height: 60px;
+  line-height: 60px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #2e8555 0%, #205d3b 100%);
+  color: white;
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin: 0 auto 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 6px rgba(46, 133, 85, 0.3);
+}
+
+.milestone h4 {
+  margin: 0 0 0.5rem;
+  color: #1c1e21;
+}
+
+[data-theme='dark'] .milestone h4 {
+  color: #ffffff;
+}
+
+.milestone p {
+  margin: 0;
+  color: #6a737d;
+}
+
+[data-theme='dark'] .milestone p {
+  color: #a3aab5;
+}
+
+.ctaSection {
+  padding: 5rem 0;
+  background: linear-gradient(135deg, #2e8555 0%, #205d3b 100%);
+  color: white;
+  text-align: center;
+}
+
+[data-theme='dark'] .ctaSection {
+  background: linear-gradient(135deg, #25c2a0 0%, #1a8870 100%);
+}
+
+.ctaTitle {
+  font-size: 2.5rem;
+  margin-bottom: 1rem;
+}
+
+.ctaDescription {
+  font-size: 1.2rem;
+  margin-bottom: 2rem;
+  opacity: 0.9;
+}
+
+.ctaButtons {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.button--primary {
+  background-color: #ffffff;
+  border-color: #ffffff;
+  color: #2e8555;
+  font-weight: 600;
+}
+
+.button--primary:hover {
+  background-color: #f0f0f0;
+  border-color: #f0f0f0;
+}
+
+.button--secondary {
+  background-color: transparent;
+  border-color: #ffffff;
+  color: #ffffff;
+  font-weight: 600;
+}
+
+.button--secondary:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+  border-color: #f0f0f0;
+}
+
+@media (max-width: 996px) {
+  .heroProjectTagline {
+    font-size: 2.5rem;
+  }
+
+  .heroProjectSubtitle {
+    font-size: 1.25rem;
+  }
+
+  .indexCtas {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .section {
+    padding: 3rem 0;
+  }
+
+  .sectionTitle {
+    font-size: 2rem;
+  }
+
+  .ctaSection {
+    padding: 3rem 0;
+  }
+
+  .ctaTitle {
+    font-size: 2rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .heroProjectTagline {
+    font-size: 2rem;
+  }
+
+  .heroProjectSubtitle {
+    font-size: 1.1rem;
+  }
+
+  .featureCard {
+    margin-bottom: 1.5rem;
+  }
+
+  .milestone {
+    margin-bottom: 1.5rem;
+  }
+
+  .ctaButtons {
+    flex-direction: column;
+    align-items: center;
+  }
+}

@@ -1,24 +1,166 @@
----
-title: Welcome
----
+import styles from './index.module.css';
+import Link from '@docusaurus/Link';
+import useBaseUrl from '@docusaurus/useBaseUrl';
+import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
 
-# Welcome to Physical AI & Humanoid Robotics Textbook
+<div className={styles.hero}>
+  <div className={styles.heroInner}>
+    <div className={styles.heroRow}>
+      <div className={styles.heroContent}>
+        <h1 className={styles.heroProjectTagline}>
+          Physical AI & Humanoid Robotics
+        </h1>
+        <p className={styles.heroProjectSubtitle}>
+          From Digital Intelligence to Embodied Humanoid Agents
+        </p>
+        <div className={styles.indexCtas}>
+          <Link className="button button--primary button--lg" to="/docs/intro/introduction-to-physical-ai">
+            Start Learning
+          </Link>
+          <Link className="button button--secondary button--lg" to="/docs/module-1-ros/ros2-from-zero">
+            Explore Modules →
+          </Link>
+        </div>
+      </div>
+      <div className={styles.heroImage}>
+        <div className={styles.bookCover}>
+          <div className={styles.bookCoverContent}>
+            <div className={styles.bookIcon}>🤖</div>
+            <div className={styles.bookTitle}>Physical AI</div>
+            <div className={styles.bookSubtitle}>Humanoid Robotics</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 
-This is the interactive textbook for learning Physical AI & Humanoid Robotics: From Digital Intelligence to Embodied Humanoid Agents.
+<div className={styles.section}>
+  <div className="container">
+    <div className="row">
+      <div className="col col--4">
+        <div className={styles.featureCard}>
+          <div className={styles.featureIcon}>🤖</div>
+          <h3>ROS 2 Fundamentals</h3>
+          <p>Build a strong foundation in ROS 2 concepts and architecture for robotics development.</p>
+          <Link to="/docs/module-1-ros/ros2-from-zero">Learn More →</Link>
+        </div>
+      </div>
+      <div className="col col--4">
+        <div className={styles.featureCard}>
+          <div className={styles.featureIcon}>🎮</div>
+          <h3>Simulation Pipeline</h3>
+          <p>Create realistic physics simulations to test and validate your robotic systems.</p>
+          <Link to="/docs/intro/introduction-to-physical-ai">Coming Soon →</Link>
+        </div>
+      </div>
+      <div className="col col--4">
+        <div className={styles.featureCard}>
+          <div className={styles.featureIcon}>🧠</div>
+          <h3>AI Robot Brain</h3>
+          <p>Implement intelligent decision-making systems for autonomous robot behavior.</p>
+          <Link to="/docs/intro/introduction-to-physical-ai">Coming Soon →</Link>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 
-## Getting Started
+<div className={styles.section}>
+  <div className="container">
+    <div className="row">
+      <div className="col">
+        <h2 className={styles.sectionTitle}>The Future of Robotics</h2>
+        <p className={styles.sectionDescription}>
+          Physical AI represents the convergence of artificial intelligence and embodied systems.
+          Our comprehensive curriculum takes you from foundational concepts to advanced implementations
+          in humanoid robotics, preparing you for the next generation of intelligent machines.
+        </p>
+      </div>
+    </div>
+    <div className="row">
+      <div className="col col--6">
+        <h3>Traditional Robotics</h3>
+        <ul className={styles.traditionalList}>
+          <li>Rule-based programming</li>
+          <li>Predictable environments</li>
+          <li>Limited adaptability</li>
+          <li>Hard-coded behaviors</li>
+        </ul>
+      </div>
+      <div className="col col--6">
+        <h3>Physical AI Robotics</h3>
+        <ul className={styles.aiNativeList}>
+          <li>Learning-based systems</li>
+          <li>Adaptive to real-world</li>
+          <li>Continuous improvement</li>
+          <li>Intelligent decision-making</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
 
-- Start with the [Introduction](./docs/intro/introduction-to-physical-ai) to understand the scope and structure
-- Proceed through the four modules in sequence to build your knowledge systematically
-- Complete the capstone project to demonstrate your understanding
+<div className={styles.section}>
+  <div className="container">
+    <div className="row">
+      <div className="col">
+        <h2 className={styles.sectionTitle}>Learning Path</h2>
+        <p className={styles.sectionDescription}>
+          Our structured curriculum guides you through the essential components of Physical AI and Humanoid Robotics.
+        </p>
+      </div>
+    </div>
+    <div className="row">
+      <div className="col col--3">
+        <div className={styles.milestone}>
+          <div className={styles.milestoneNumber}>1</div>
+          <h4>Foundation</h4>
+          <p>ROS 2 and system architecture</p>
+        </div>
+      </div>
+      <div className="col col--3">
+        <div className={styles.milestone}>
+          <div className={styles.milestoneNumber}>2</div>
+          <h4>Simulation</h4>
+          <p>Physics engines and testing</p>
+        </div>
+      </div>
+      <div className="col col--3">
+        <div className={styles.milestone}>
+          <div className={styles.milestoneNumber}>3</div>
+          <h4>AI Integration</h4>
+          <p>Neural networks and perception</p>
+        </div>
+      </div>
+      <div className="col col--3">
+        <div className={styles.milestone}>
+          <div className={styles.milestoneNumber}>4</div>
+          <h4>Capstone</h4>
+          <p>Complete humanoid system</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 
-## Modules
-
-1. [ROS 2 Fundamentals](./docs/module-1-ros/ros2-from-zero) - Build a foundation in ROS 2
-2. Simulation Pipeline - Create physics simulations (Coming Soon)
-3. AI Robot Brain - Implement AI components (Coming Soon)
-4. Vision-Language-Action - Build conversational robots (Coming Soon)
-
-## Capstone Project
-
-Complete the [Red Cup Project](./docs/capstone/red-cup-project) to demonstrate your complete understanding of the voice-controlled humanoid robot system.
+<div className={styles.ctaSection}>
+  <div className="container">
+    <div className="row">
+      <div className="col col--8 col--offset-2">
+        <h2 className={styles.ctaTitle}>Ready to Build the Future?</h2>
+        <p className={styles.ctaDescription}>
+          Join thousands of learners advancing the field of Physical AI and Humanoid Robotics.
+        </p>
+        <div className={styles.ctaButtons}>
+          <Link className="button button--primary button--lg" to="/docs/intro/introduction-to-physical-ai">
+            Begin Your Journey
+          </Link>
+          <Link className="button button--secondary button--lg" to="/docs/capstone/red-cup-project">
+            View Capstone Project
+          </Link>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
