@@ -126,3 +126,17 @@ Icon?
 .com.apple.receipts.bom
 .com.apple.receipts.installtype
 .InstallApp
+
+# Python virtual environments
+venv/
+env/
+__pycache__/
+*.pyc
+.pytest_cache/
+
+# Frontend build artifacts
+frontend/dist/
+backend/__pycache__/
+
+# System files
+nul

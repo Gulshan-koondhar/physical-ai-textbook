@@ -1,0 +1,21 @@
+{
+  "name": "docusaurus-plugin-physical-ai-chat",
+  "version": "1.0.0",
+  "description": "Docusaurus plugin for Physical AI Textbook chat widget",
+  "main": "src/index.js",
+  "keywords": [
+    "docusaurus",
+    "plugin",
+    "chat",
+    "textbook",
+    "ai"
+  ],
+  "author": "Physical AI Textbook Team",
+  "license": "MIT",
+  "peerDependencies": {
+    "@docusaurus/core": "^3.0.0"
+  },
+  "devDependencies": {
+    "@docusaurus/types": "^3.0.0"
+  }
+}

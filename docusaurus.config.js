@@ -62,6 +62,10 @@ const config = {
     ],
   ],
 
+  plugins: [
+    './plugins/docusaurus-plugin-physical-ai-chat',
+  ],
+
 
   themeConfig:
     /** @type {import('@docusaurus/preset-classic').ThemeConfig} */
@@ -134,6 +138,7 @@ const config = {
         darkTheme: darkCodeTheme,
       },
     }),
+
 };
 
 module.exports = config;

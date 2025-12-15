@@ -1,0 +1,136 @@
+# API Contracts for Integrated RAG Chatbot
+
+## Chat Endpoints
+
+### POST /api/chat
+Initiates a new chat message or continues an existing conversation using Google Gemini.
+
+**Request**:
+```json
+{
+  "session_id": "string",
+  "message": "string",
+  "query_type": "general|selected_text",
+  "selected_text": "string (optional, required if query_type is 'selected_text')"
+}
+```
+
+**Response**:
+```json
+{
+  "response_id": "string",
+  "session_id": "string",
+  "message": "string",
+  "sources": [
+    {
+      "file_path": "string",
+      "content_snippet": "string",
+      "relevance_score": "number"
+    }
+  ],
+  "timestamp": "ISO 8601 timestamp"
+}
+```
+
+**Success**: 200 OK
+**Validation Errors**: 400 Bad Request
+**Server Error**: 500 Internal Server Error
+
+### POST /api/chat/new-session
+Creates a new chat session.
+
+**Request**:
+```json
+{
+  "user_id": "string (optional)",
+  "metadata": {
+    "source_page": "string",
+    "other_info": "any"
+  }
+}
+```
+
+**Response**:
+```json
+{
+  "session_id": "string",
+  "created_at": "ISO 8601 timestamp"
+}
+```
+
+**Success**: 201 Created
+**Server Error**: 500 Internal Server Error
+
+### GET /api/chat/session/{session_id}
+Retrieves the history of a chat session.
+
+**Response**:
+```json
+{
+  "session_id": "string",
+  "messages": [
+    {
+      "message_id": "string",
+      "role": "user|assistant",
+      "content": "string",
+      "timestamp": "ISO 8601 timestamp",
+      "sources": [
+        {
+          "file_path": "string",
+          "content_snippet": "string",
+          "relevance_score": "number"
+        }
+      ]
+    }
+  ]
+}
+```
+
+**Success**: 200 OK
+**Not Found**: 404 Not Found
+**Server Error**: 500 Internal Server Error
+
+## Health Endpoints
+
+### GET /health
+Checks the health status of the backend service.
+
+**Response**:
+```json
+{
+  "status": "healthy",
+  "timestamp": "ISO 8601 timestamp",
+  "dependencies": {
+    "qdrant": "connected",
+    "postgres": "connected",
+    "openai": "connected"
+  }
+}
+```
+
+**Success**: 200 OK
+
+## Session Management Endpoints
+
+### GET /api/session/{session_id}
+Retrieves session information.
+
+**Response**:
+```json
+{
+  "session_id": "string",
+  "user_id": "string (optional)",
+  "created_at": "ISO 8601 timestamp",
+  "updated_at": "ISO 8601 timestamp",
+  "metadata": "object"
+}
+```
+
+**Success**: 200 OK
+**Not Found**: 404 Not Found
+
+### DELETE /api/session/{session_id}
+Deletes a chat session.
+
+**Success**: 204 No Content
+**Not Found**: 404 Not Found
