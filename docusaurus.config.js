@@ -11,7 +11,7 @@ const config = {
   favicon: 'img/favicon.ico',
 
   // Set the production url of your site here
-  url: 'https://Gulshan-koondhar.github.io',
+  url: 'https://gulshan-koondhar.github.io',
   // Set the /<baseUrl>/ pathname under which your site is served
   // For GitHub pages deployment, it is often '/<organization-name>/'
   baseUrl: '/physical-ai-textbook/',
@@ -63,8 +63,14 @@ const config = {
   ],
 
   plugins: [
-    './plugins/docusaurus-plugin-physical-ai-chat',
+    [
+      './plugins/docusaurus-plugin-physical-ai-chat',
+      {
+        backendUrl: 'https://gulshanmustafa-rag-chatbot.hf.space', // Updated with provided backend URL
+      }
+    ]
   ],
+
 
 
   themeConfig:
